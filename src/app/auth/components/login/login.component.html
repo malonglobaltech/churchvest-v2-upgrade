@@ -1,0 +1,129 @@
+<main class="auth">
+  <div class="grid grid--1fr--2fr">
+    <div class="container">
+      <div class="d-flex w-400 py-4">
+        <a routerLink="/" class="return-link">
+          <mat-icon>keyboard_backspace</mat-icon>Home Page</a
+        >
+      </div>
+      <div class="form-wrap w-400">
+        <form [formGroup]="form" (ngSubmit)="onSubmit()">
+          <div class="d-flex flex-column mb-3">
+            <h2>Log Back Into <br />Your Account</h2>
+            <p class="f12 txt-grey">
+              I don’t have an account yet.
+              <a routerLink="/onboarding/register">GET STARTED</a>
+            </p>
+          </div>
+          <div class="panel mb-3" *ngIf="recordData && recordFound">
+            <span class="f12 txt-green">{{ recordMsg }}</span>
+          </div>
+          <div class="input">
+            <label>Email Address</label>
+            <input
+              type="email"
+              placeholder="Enter email"
+              formControlName="email"
+              (input)="resetControl()"
+              [ngClass]="{
+                'is-invalid':
+                  form.controls['email'].hasError('required') &&
+                  !form.controls['email'].valid &&
+                  form.controls['email'].touched
+              }"
+            />
+            <span class="toggle-btn txt-grey green" *ngIf="recordFound">
+              <mat-icon>check_circle</mat-icon></span
+            >
+          </div>
+          <ng-container *ngIf="!recordFound">
+            <button
+              type="submit"
+              mat-stroked-button
+              (click)="validateEmail()"
+              class="w-100"
+              [disabled]="!form.controls['email'].valid"
+            >
+              Verify <mat-spinner *ngIf="isBusy"> </mat-spinner>
+            </button>
+          </ng-container>
+          <ng-container *ngIf="recordData && recordData.length == 0">
+            <div class="d-flex my-3">
+              <p class="f12 text-danger">
+                No record found:
+                <a routerLink="/onboarding/register">Signup here</a>
+              </p>
+            </div>
+          </ng-container>
+          <ng-container *ngIf="recordFound">
+            <div class="input">
+              <label>Select Church</label>
+              <mat-select
+                placeholder="Connect to church"
+                class="select"
+                (selectionChange)="onChurchSelect($event)"
+              >
+                <mat-option disabled="" selected="" value="">
+                  Select church
+                </mat-option>
+                <mat-option
+                  *ngFor="let item of recordData.memberships"
+                  [value]="item.church"
+                  >{{ item.church.name }}</mat-option
+                >
+              </mat-select>
+            </div>
+            <div class="input">
+              <label>Password</label>
+              <input
+                [type]="show ? 'text' : 'password'"
+                placeholder="Enter password"
+                formControlName="password"
+                [ngClass]="{
+                  'is-invalid':
+                    form.controls['password'].hasError('required') &&
+                    form.controls['password'].touched
+                }"
+              />
+              <span
+                class="toggle-btn txt-grey"
+                *ngIf="!show"
+                (click)="password()"
+              >
+                <mat-icon>visibility_off</mat-icon></span
+              >
+              <span
+                class="toggle-btn txt-grey"
+                *ngIf="show"
+                (click)="password()"
+              >
+                <mat-icon>visibility</mat-icon></span
+              >
+            </div>
+            <div class="d-flex justify-content-between align-items-center my-4">
+              <mat-checkbox [checked]="isChecked">Stay signed in</mat-checkbox>
+              <a routerLink="/onboarding/forgot-password" class="f12"
+                >Reset password</a
+              >
+            </div>
+            <button
+              type="submit"
+              mat-flat-button
+              class="w-100"
+              [disabled]="!form.valid"
+            >
+              Login <mat-spinner *ngIf="isBusy"> </mat-spinner>
+            </button>
+          </ng-container>
+        </form>
+      </div>
+    </div>
+    <div class="banner">
+      <div class="center">
+        <a routerLink="/"
+          ><img src="assets/img/png/light-logo.png" alt="logo"
+        /></a>
+      </div>
+    </div>
+  </div>
+</main>

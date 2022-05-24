@@ -1,0 +1,138 @@
+.mat-button,
+a {
+  border: none;
+  display: flex !important;
+  justify-content: center !important;
+  &:focus {
+    outline: none !important;
+  }
+}
+.mat-button {
+  padding: 0px 15px !important;
+  height: 44px !important;
+  min-width: 74px !important;
+  align-items: center !important;
+  font-family: "Rubik", sans-serif !important;
+  &.print {
+    mat-icon {
+      color: $purple;
+    }
+  }
+}
+.mat-button-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 300 !important;
+  font-family: "Rubik", sans-serif !important;
+}
+
+.mat-flat-button {
+  height: 48px;
+  border-radius: 4px !important;
+  min-width: 175px !important;
+  text-decoration: none !important;
+  width: auto;
+  color: #fff;
+  background: $purple;
+  font-size: 16px;
+  font-family: "Rubik", sans-serif;
+  ion-icon {
+    font-size: 21px;
+    margin: 0em 5px;
+  }
+  &:focus {
+    outline: 0px auto -webkit-focus-ring-color !important;
+  }
+  &:hover {
+    color: $white;
+  }
+  &.w--auto {
+    min-width: 100% !important;
+  }
+  &.w--124 {
+    min-width: 124px !important;
+    height: 52px;
+  }
+  &.w--117 {
+    min-width: 117px !important;
+    height: 52px;
+  }
+
+  &.w--141 {
+    min-width: 141px !important;
+    height: 52px;
+  }
+  &.w--195 {
+    font-weight: bold;
+    min-width: 195px !important;
+  }
+  &.btn-orange {
+    background: $orange !important;
+  }
+  &.btn-light-purple {
+    background: #2f80ed !important;
+  }
+  &.btn-danger {
+    background: rgba($red, 0.1) !important;
+    color: $red;
+  }
+}
+.mat-stroked-button {
+  min-width: 128px !important;
+  height: 48px;
+  text-decoration: none;
+  align-items: center;
+  display: flex;
+  font-size: 14px;
+  border-radius: 4px !important;
+  border: 1px solid $purple !important;
+  color: $purple;
+  &:hover {
+    color: $purple;
+  }
+  &.mat-stroked-secondary {
+    height: 44px;
+    border: 1px solid #cbcbcd !important;
+    color: $black;
+    ion-icon,
+    mat-icon {
+      color: $black;
+    }
+  }
+  &.mat-stroked-primary {
+    height: 44px;
+    border: 1px solid $purple !important;
+    color: $purple;
+    ion-icon,
+    mat-icon {
+      color: $purple;
+    }
+  }
+  &.btn--danger {
+    border: 1px solid $red !important;
+    color: $red;
+  }
+}
+.btn-link {
+  color: $purple !important;
+  text-decoration: underline !important;
+}
+.btn--primary {
+  color: $purple;
+}
+
+.txt-danger {
+  color: $red;
+  &.underline {
+    text-decoration: underline !important;
+  }
+}
+
+.mat-flat-white {
+  background: $white !important;
+  color: $purple !important;
+}
+.fit-content {
+  width: fit-content;
+}

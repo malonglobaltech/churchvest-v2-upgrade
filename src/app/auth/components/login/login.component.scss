@@ -1,0 +1,89 @@
+.auth {
+  height: 100vh;
+  .grid {
+    display: grid;
+    height: 100%;
+    &--1fr--2fr {
+      grid-template-columns: 1fr 1fr;
+    }
+    .return-link {
+      text-decoration: none;
+      display: flex;
+      color: #5c278b;
+      font-size: 14px;
+      mat-icon {
+        margin-right: 10px;
+      }
+    }
+    .banner {
+      position: relative;
+      background: url("/assets/img/png/handup_colored.png");
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      &::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(#03081f, 70%);
+      }
+      .center {
+        position: relative;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100%;
+      }
+    }
+    .form-wrap {
+      padding: 3em 0em;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      align-items: center;
+      h2 {
+        color: #080730;
+        font-weight: 300;
+        line-height: 49px;
+        font-size: 48px;
+        span {
+          display: block;
+          font-size: 16px;
+          font-weight: 300;
+          color: #343a40;
+        }
+      }
+
+      form {
+        padding: 2em 0em;
+        width: 100%;
+      }
+      .d-flex,
+      .d-block {
+        a {
+          color: #4847e0;
+          display: inline-block !important;
+          text-decoration: none;
+          position: relative;
+        }
+      }
+    }
+  }
+
+  @media only screen and (min-width: 320px) and (max-width: 991px) {
+    .grid {
+      &--1fr--2fr {
+        grid-template-columns: auto;
+      }
+      .banner {
+        display: none;
+      }
+      .form-wrap form {
+        padding: 3em 0em;
+      }
+    }
+  }
+}
