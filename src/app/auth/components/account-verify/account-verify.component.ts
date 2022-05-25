@@ -80,7 +80,6 @@ export class AccountVerifyComponent implements OnInit {
   verifyUser(link: string) {
     this.authServ.verify(link).subscribe(
       (res: any) => {
-        console.log(res);
         this.isBusy = false;
 
         if (res.status === 'success') {

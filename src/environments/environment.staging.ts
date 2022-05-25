@@ -4,6 +4,6 @@ export const environment = {
   managementbaseUrl: 'https://back.churchvest.com/api/management',
   mainUrl: 'https://back.churchvest.com/api',
 
-  hostingUrl: 'http://localhost:4200',
+  hostingUrl: 'https://churchvest-v2.churchvest.com',
   paystack: 'pk_test_e15cdc83c8a6ea440c22f8a3e7074137c9b01538',
 };
