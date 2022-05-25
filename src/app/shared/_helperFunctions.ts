@@ -31,3 +31,20 @@ export const compareObjects = (obj1: any, obj2: any) => {
 export const formatDate = (dt: any) => {
   return dt.split('T')[0];
 };
+
+export const validateCapital = (str: any) => {
+  return str == str.toLowerCase();
+};
+
+export const hasNumber = (str) => {
+  return /\d/.test(str);
+};
+
+export const checkForSpecialChars = (str: any) => {
+  var format = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]+/;
+  if (format.test(str)) {
+    return true;
+  } else {
+    return false;
+  }
+};

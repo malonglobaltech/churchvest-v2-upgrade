@@ -113,6 +113,107 @@
 .w-full {
   width: 100%;
 }
+.auth {
+  height: 100vh;
+  .grid {
+    display: grid;
+    height: 100%;
+    &--1fr--2fr {
+      grid-template-columns: 1fr 1fr;
+    }
+    .return-link {
+      text-decoration: none;
+      display: flex;
+      color: #5c278b;
+      font-size: 14px;
+      mat-icon {
+        margin-right: 10px;
+      }
+    }
+    .banner {
+      position: relative;
+      background: url("/assets/img/png/handup_colored.png");
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      &::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(#03081f, 70%);
+      }
+      .center {
+        position: relative;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100%;
+      }
+    }
+    .form-wrap {
+      padding: 3em 0em;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      align-items: center;
+
+      h2 {
+        position: relative;
+        color: #080730;
+        font-weight: 300;
+        line-height: 68px;
+        font-size: 48px;
+        span {
+          display: block;
+          font-size: 16px;
+          font-weight: 300;
+          color: #343a40;
+        }
+        &::before {
+          content: "";
+          position: absolute;
+          left: -3.33em;
+          width: 11px;
+          height: 100%;
+          background: #5c278b;
+          border-radius: 2px;
+        }
+      }
+
+      form {
+        padding: 2em 0em;
+        width: 100%;
+      }
+      .d-flex,
+      .d-block {
+        a {
+          color: #4847e0;
+          display: inline-block !important;
+          text-decoration: none;
+          position: relative;
+        }
+      }
+    }
+  }
+
+  @media only screen and (min-width: 320px) and (max-width: 991px) {
+    .grid {
+      &--1fr--2fr {
+        grid-template-columns: auto;
+      }
+      .banner {
+        display: none;
+      }
+      .form-wrap form {
+        padding: 3em 0em;
+      }
+    }
+  }
+}
+
 .icon-circ {
   border: 1px solid #ccc;
   width: 30px;
@@ -272,6 +373,7 @@ mat-checkbox {
   .mat-checkbox-layout .mat-checkbox-label {
     font-size: 14px;
     color: $black;
+    font-family: "Poppins", sans-serif;
   }
   .mat-checkbox-label {
     overflow: hidden;
@@ -287,15 +389,15 @@ mat-checkbox {
   border-width: 0px !important;
 }
 .mat-checkbox-checked.mat-accent .mat-checkbox-background {
-  background: $blue !important;
+  background: $purple !important;
 }
 .mat-checkbox:active:not(.mat-checkbox-disabled).mat-accent
   .mat-ripple-element {
-  background: $blue !important;
+  background: $purple !important;
 }
 .mat-checkbox-checked:not(.mat-checkbox-disabled).mat-accent
   .mat-ripple-element {
-  background: $blue !important;
+  background: $purple !important;
 }
 .mat-checkbox-indeterminate.mat-accent .mat-checkbox-background {
   background: #9e9e9ea6 !important;
@@ -307,25 +409,25 @@ mat-radio-group {
     padding: 0.5em 0em;
     &.mat-accent {
       .mat-radio-inner-circle {
-        background-color: $blue;
+        background-color: $purple;
       }
       .mat-radio-outer-circle {
         border-color: rgba($black, 20%);
       }
       .mat-radio-persistent-ripple {
-        background-color: $blue;
+        background-color: $purple;
       }
       &:not(.mat-checkbox-disabled).mat-accent .mat-ripple-element {
-        background-color: $blue;
+        background-color: $purple;
       }
       &.mat-radio-checked {
-        border: 1px solid $blue;
+        border: 1px solid $purple;
         .mat-radio-outer-circle {
-          border-color: $blue;
+          border-color: $purple;
         }
 
         .mat-ripple-element {
-          background-color: $blue;
+          background-color: $purple;
         }
       }
     }
@@ -375,7 +477,7 @@ mat-select-trigger {
     margin-left: 9px;
     font-size: 12px;
     font-style: italic;
-    color: $blue;
+    color: $purple;
   }
 }
 
@@ -394,26 +496,24 @@ mat-select-trigger {
   }
 }
 .mat-pseudo-checkbox-checked {
-  background: $blue !important;
+  background: $purple !important;
 }
 /* Material slide-toggle button style*/
 .mat-slide-toggle.mat-checked {
   .mat-slide-toggle-thumb {
-    background-color: $blue !important;
+    background-color: $purple !important;
   }
   .mat-slide-toggle-bar {
-    background-color: rgba($blue, 0.54) !important;
+    background-color: rgba($purple, 0.54) !important;
   }
   .mat-ripple-element {
-    background-color: $blue !important;
+    background-color: $purple !important;
   }
 }
 /* Modal style*/
 .modal {
   .modal-dialog {
-    position: absolute;
-    top: -1.6em;
-    right: 0.1em;
+    margin-top: 10%;
     min-width: fit-content;
   }
   .modal-content-wrap {
@@ -506,6 +606,9 @@ mat-select-trigger {
       .w--500 {
         width: 500px;
       }
+      .w--600 {
+        width: 600px;
+      }
       .w--400 {
         width: 400px;
       }
@@ -538,7 +641,7 @@ mat-select-trigger {
       }
       .total {
         padding: 1em;
-        background: rgba($blue, 0.1);
+        background: rgba($purple, 0.1);
         margin-top: 2em;
         border-radius: 4px;
         .d-flex {
@@ -589,6 +692,46 @@ mat-select-trigger {
           color: $light-grey;
           font-weight: 400;
           font-size: 14px;
+        }
+      }
+      .content {
+        p {
+          color: #063a4f;
+          opacity: 0.8;
+          font-size: 13px;
+          text-align: left;
+        }
+        h3 {
+          line-height: 36px;
+          position: relative;
+          font-size: 18px;
+          color: #063a4f;
+          font-weight: 700;
+          margin: 1em 0 0.5em;
+        }
+        .unordered {
+          padding: 0 1em;
+          color: #063a4f;
+          opacity: 0.8;
+          font-size: 13px;
+          margin: 1em 0.5em;
+          list-style: none;
+          position: relative;
+          li {
+            margin: 0.5em 0;
+            padding: 0 1em;
+            position: relative;
+            &:before {
+              content: "";
+              height: 11px;
+              width: 11px;
+              border-radius: 50%;
+              background: rgba($purple, 0.8);
+              position: absolute;
+              left: -11px;
+              top: 4px;
+            }
+          }
         }
       }
     }
@@ -716,7 +859,7 @@ mat-select-trigger {
   width: 7px;
   height: 7px;
   border-radius: 50%;
-  background: $blue;
+  background: $purple;
   margin: -4px 0 0 -4px;
 }
 .lds-roller div:nth-child(1) {

@@ -1,1 +1,316 @@
-<p>register works!</p>
+<main class="auth">
+  <div class="grid grid--1fr--2fr">
+    <div class="container">
+      <div class="d-flex w-400 pt-5">
+        <a routerLink="/" class="return-link">
+          <mat-icon>keyboard_backspace</mat-icon>Home Page</a
+        >
+      </div>
+      <div class="form-wrap w-400">
+        <form [formGroup]="form" (ngSubmit)="onSubmit()">
+          <div class="d-flex flex-column mb-3">
+            <h2>
+              Sign Up To <br />
+              Use Churchvest
+            </h2>
+            <p class="f12 txt-grey">
+              I have an account already.
+              <a routerLink="/onboarding/login">LOGIN HERE</a>
+            </p>
+          </div>
+          <div class="mb-3" *ngIf="recordData && recordData.length !== 0">
+            <span class="f12 txt-green">{{ recordMsg }}</span>
+          </div>
+          <div *ngIf="validatePassword" class="panel mb-3 p-3">
+            <div class="d-flex align-items-center mb-2">
+              <mat-icon *ngIf="validatePassword.length >= 8" class="txt-green"
+                >check_circle</mat-icon
+              >
+              <mat-icon class="text-danger" *ngIf="validatePassword.length < 8"
+                >cancel</mat-icon
+              >
+              <span class="f12 text-grey ms-2"
+                >Passowrd should contain 8 characters or more</span
+              >
+            </div>
+            <div class="d-flex align-items-center mb-2">
+              <mat-icon *ngIf="!upperCaseChar" class="txt-green"
+                >check_circle</mat-icon
+              >
+              <mat-icon *ngIf="upperCaseChar" class="text-danger"
+                >cancel</mat-icon
+              >
+              <span class="f12 text-grey ms-2"
+                >Passowrd should contain at least one upper case character</span
+              >
+            </div>
+            <div class="d-flex align-items-center mb-2">
+              <mat-icon *ngIf="numberChar" class="txt-green"
+                >check_circle</mat-icon
+              >
+              <mat-icon *ngIf="!numberChar" class="text-danger"
+                >cancel</mat-icon
+              >
+              <span class="f12 text-grey ms-2"
+                >Passowrd should contain at least a number</span
+              >
+            </div>
+            <div class="d-flex align-items-center">
+              <mat-icon *ngIf="specialChar" class="txt-green"
+                >check_circle</mat-icon
+              >
+              <mat-icon *ngIf="!specialChar" class="text-danger"
+                >cancel</mat-icon
+              >
+              <span class="f12 text-grey ms-2"
+                >Passowrd should contain at least one special character</span
+              >
+            </div>
+          </div>
+          <div class="input">
+            <label>Email Address</label>
+            <input
+              type="email"
+              placeholder="Enter email"
+              formControlName="email"
+              (input)="resetControl()"
+              [ngClass]="{
+                'is-invalid':
+                  form.controls['email'].hasError('required') &&
+                  !form.controls['email'].valid &&
+                  form.controls['email'].touched
+              }"
+            />
+            <span class="toggle-btn txt-grey green" *ngIf="recordFound">
+              <mat-icon>check_circle</mat-icon></span
+            >
+          </div>
+          <ng-container *ngIf="!recordFound">
+            <button
+              type="submit"
+              mat-stroked-button
+              (click)="validateEmail()"
+              class="w-100"
+              [disabled]="!form.controls['email'].valid"
+            >
+              Verify <mat-spinner *ngIf="isBusy"> </mat-spinner>
+            </button>
+          </ng-container>
+          <ng-container
+            *ngIf="recordFound && recordData && recordData.length == 0"
+          >
+            <div class="input">
+              <label>Full Name</label>
+              <input
+                type="text"
+                placeholder="Enter full name"
+                formControlName="name"
+                [ngClass]="{
+                  'is-invalid':
+                    form.controls['name'].hasError('required') &&
+                    form.controls['name'].touched
+                }"
+              />
+            </div>
+            <div class="input">
+              <label>Password</label>
+              <input
+                [type]="show ? 'text' : 'password'"
+                placeholder="Enter password"
+                formControlName="password"
+                (input)="checkPassword(passwordValue)"
+                [ngClass]="{
+                  'is-invalid':
+                    form.controls['password'].hasError('required') &&
+                    form.controls['password'].touched
+                }"
+              />
+              <span
+                class="toggle-btn txt-grey"
+                *ngIf="!show"
+                (click)="password()"
+              >
+                <mat-icon>visibility_off</mat-icon></span
+              >
+              <span
+                class="toggle-btn txt-grey"
+                *ngIf="show"
+                (click)="password()"
+              >
+                <mat-icon>visibility</mat-icon></span
+              >
+            </div>
+            <div class="input">
+              <label>Confirm Password</label>
+              <input
+                [type]="show ? 'text' : 'password'"
+                formControlName="confirmPassword"
+                placeholder="Confirm password"
+                [errorStateMatcher]="matcher"
+              />
+              <span
+                class="toggle-btn txt-grey"
+                *ngIf="!show"
+                (click)="password()"
+              >
+                <mat-icon>visibility_off</mat-icon></span
+              >
+              <span
+                class="toggle-btn txt-grey"
+                *ngIf="show"
+                (click)="password()"
+              >
+                <mat-icon>visibility</mat-icon></span
+              >
+              <mat-error
+                class="f12 my-2"
+                *ngIf="
+                  form.hasError('notSame') &&
+                  form.controls['confirmPassword'].touched
+                "
+              >
+                Passwords do not match
+              </mat-error>
+            </div>
+            <div class="d-flex align-items-center my-4">
+              <mat-checkbox [checked]="isChecked">I agree to the</mat-checkbox>
+              <span class="link"
+                ><a data-bs-toggle="modal" data-bs-target="#terms-condition"
+                  >terms & conditions</a
+                >of churchvest</span
+              >
+            </div>
+            <button
+              type="submit"
+              mat-flat-button
+              class="w-100"
+              [disabled]="!form.valid"
+            >
+              Create Account <mat-spinner *ngIf="isBusy"> </mat-spinner>
+            </button>
+          </ng-container>
+          <ng-container *ngIf="recordData && recordData.length !== 0">
+            <p class="f12 text-danger my-3">This email already exists.</p>
+            <div class="panel d-flex align-items-center justify-content-center">
+              <a routerLink="/onboarding/login" class="f12"
+                >Login to Existing Church</a
+              >
+            </div>
+          </ng-container>
+        </form>
+      </div>
+    </div>
+    <div class="banner">
+      <div class="center">
+        <a routerLink="/"
+          ><img src="assets/img/png/light-logo.png" alt="logo"
+        /></a>
+      </div>
+    </div>
+  </div>
+</main>
+<div class="modal fade" id="terms-condition" role="dialog">
+  <div class="modal-dialog modal-wrapper">
+    <div class="modal-content-wrap">
+      <div class="modal-body">
+        <div
+          class="header-top d-flex justify-content-between align-items-center px-4 py-3"
+        >
+          <div class="title">Terms & Conditions</div>
+          <mat-icon data-bs-dismiss="modal" class="cursor">close</mat-icon>
+        </div>
+        <div class="container">
+          <div class="scroll content mt-2 w--600 p-2">
+            <p class="f12">Last modified on 1 August 2021</p>
+            <p>
+              <strong>Note</strong> – These terms are applicable to the
+              Churchvest trade site, where you can buy and sell your products.
+              If you require Terms for the Churchvest (where you can buy/sell
+              products) please go to www.churchvest/terms-conditions Welcome to
+              Churchvest Please read these website Terms & Conditions carefully
+              before using this website (the “Website” or “Churchvest”) and the
+              services and tools offered by Haningburg Dreams Limited.
+              (“Churchvest”). These Website Terms & Conditions (the “Terms &
+              Conditions”) govern your access to and use of the Website,
+              Churchvest products and services, and Churchvest.com mobile
+              applications (together, “Churchvest Services”). Churchvest’s
+              Privacy Statement and its Consent to Arbitration and Governing Law
+              are incorporated in the Terms & Conditions by reference and form
+              part of the Terms & Conditions. Please read the Terms & Conditions
+              carefully. By clicking as indicated below, you accept and agree to
+              be bound by these Terms & Conditions. If you do not agree to be
+              bound by these Terms & Conditions, you must not access or use the
+              Website or any Churchvest Services.
+            </p>
+            <h3>General</h3>
+            <p>
+              Churchvest Services are for the use of persons who are 18 years of
+              age or older only. When using Churchvest Services, you agree that:
+            </p>
+            <ul class="unordered">
+              <li>
+                You are the legal owner or have permission of the owner to sell
+                the items you are attempting to sell through Churchvest;
+              </li>
+              <li>
+                You are at least 18 years of age and reside in the Nigeria or
+                one of its territories or possessions. If you do not meet these
+                eligibility requirements, you must not access or use the
+                Website;
+              </li>
+              <li>
+                You will not violate any laws, third party rights or our Terms &
+                Conditions or other policies;
+              </li>
+              <li>
+                The information you provide will be truthful and accurate;
+              </li>
+              <li>
+                You will not impersonate any individual or provide false
+                registration information; You will not transfer your account or
+                user ID to another party without Churchvest’s consent;
+              </li>
+              <li>
+                You will open and use no more than one account with Churchvest
+                (multiple accounts are not permitted);
+              </li>
+              <li>
+                You are responsible for maintaining the confidentiality of your
+                account information including your password; and
+              </li>
+              <li>
+                You will not copy, modify, creative derivative works of,
+                distribute, publicly perform or display, or otherwise exploit
+                any content from Churchvest Services, except as explicitly
+                permitted by these Terms & Conditions (see the section below
+                titled "License" for more detail).
+              </li>
+            </ul>
+            <p>
+              We may transfer, assign, sub-contract or otherwise dispose of this
+              contract, or any of our rights or obligations arising under it, at
+              any time during the term of the contract at our discretion. You
+              may not transfer, assign, or in any way dispose of this contract
+              or any of your rights or obligations arising under it, without our
+              express written prior consent, which may be electronically
+              communicated by way of email. Churchvest reserves the absolute
+              right to close your account, terminate this agreement, and cease
+              doing business with you at its sole discretion and for any reason
+              it determines.
+            </p>
+            <p>
+              Changes To The Terms And Conditions We may revise and update these
+              Terms and Conditions from time to time in our sole discretion. All
+              changes are effective immediately when we post them, and apply to
+              all access to and use of the Website thereafter. Your continued
+              use of the Website following the posting of revised Terms and
+              Conditions means that you accept and agree to the changes. You are
+              expected to check this each time you access this Website so you
+              are aware of any changes, as they are binding on you.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

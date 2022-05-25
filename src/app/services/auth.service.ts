@@ -18,6 +18,11 @@ export class AuthService {
       .post<any>(environment.managementbaseUrl + `/login`, credentials)
       .pipe(catchError(handleError));
   }
+  register(credentials: any): Observable<any> {
+    return this.http
+      .post<any>(environment.managementbaseUrl + `/register`, credentials)
+      .pipe(catchError(handleError));
+  }
   resolveUser(payload: any): Observable<any> {
     return this.http
       .post<any>(environment.managementbaseUrl + `/resolve_user`, payload)
