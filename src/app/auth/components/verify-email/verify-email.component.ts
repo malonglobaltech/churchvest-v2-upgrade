@@ -25,8 +25,9 @@ export class VerifyEmailComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.token = JSON.parse(localStorage.getItem('token'));
     this.getRoutes();
+    this.token = JSON.parse(localStorage.getItem('token'));
+    console.log(this.token);
   }
   getRoutes() {
     this.route.queryParams

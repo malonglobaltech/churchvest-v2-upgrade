@@ -12,7 +12,8 @@
         <div class="my-3"><img src="assets/img/svg/mail.svg" alt="mail" /></div>
         <div *ngIf="!token">
           <p class="txt-grey my-2">
-            We sent a verification email to {{ queryString }}.
+            We sent a verification email to
+            <span class="f12 text-success">{{ queryString }},</span>
           </p>
           <div class="my-5">
             <p class="txt-grey">
