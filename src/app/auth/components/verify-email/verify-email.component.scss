@@ -1,0 +1,16 @@
+.grid {
+  .content {
+    margin: 0 auto;
+    h2 {
+      position: relative;
+      color: #080730;
+      font-weight: 300;
+      font-size: 48px;
+    }
+  }
+  .banner {
+    position: relative;
+    background: url("/assets/img/png/keyboard-keys.png");
+    background-position: center;
+  }
+}

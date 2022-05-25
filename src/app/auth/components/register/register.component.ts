@@ -155,7 +155,7 @@ export class RegisterComponent implements OnInit {
   navigate(data: any) {
     let navigationExtras: NavigationExtras = {
       queryParams: {
-        data: data,
+        query: data,
       },
     };
     this.router.navigate(['/onboarding/verify-email'], navigationExtras);

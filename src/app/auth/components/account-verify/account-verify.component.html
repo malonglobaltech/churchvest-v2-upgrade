@@ -1,0 +1,81 @@
+<main class="auth">
+  <div class="grid grid--1fr--2fr">
+    <div class="container">
+      <div class="d-flex w-400 pt-5">
+        <a routerLink="/" class="return-link">
+          <mat-icon>keyboard_backspace</mat-icon>Home Page</a
+        >
+      </div>
+      <div class="form-wrap w-400">
+        <form [formGroup]="form" (ngSubmit)="onSubmit()">
+          <div class="d-flex flex-column mb-3">
+            <h2>
+              Login To <br />
+              Your Account
+            </h2>
+            <p class="f12 txt-grey">
+              Kindly complete the email verification process by logging in to
+              your dashboard
+            </p>
+          </div>
+
+          <div class="input">
+            <label>Email Address</label>
+            <input
+              type="email"
+              placeholder="Enter email"
+              formControlName="email"
+              [ngClass]="{
+                'is-invalid':
+                  form.controls['email'].hasError('required') &&
+                  !form.controls['email'].valid &&
+                  form.controls['email'].touched
+              }"
+            />
+          </div>
+          <div class="input">
+            <label>Password</label>
+            <input
+              [type]="show ? 'text' : 'password'"
+              placeholder="Enter password"
+              formControlName="password"
+              [ngClass]="{
+                'is-invalid':
+                  form.controls['password'].hasError('required') &&
+                  form.controls['password'].touched
+              }"
+            />
+            <span
+              class="toggle-btn txt-grey"
+              *ngIf="!show"
+              (click)="password()"
+            >
+              <mat-icon>visibility_off</mat-icon></span
+            >
+            <span class="toggle-btn txt-grey" *ngIf="show" (click)="password()">
+              <mat-icon>visibility</mat-icon></span
+            >
+          </div>
+          <div class="d-flex align-items-center my-4">
+            <mat-checkbox [checked]="isChecked">Stay signed in</mat-checkbox>
+          </div>
+          <button
+            type="submit"
+            mat-flat-button
+            class="w-100"
+            [disabled]="!form.valid"
+          >
+            Login To Account <mat-spinner *ngIf="isBusy"> </mat-spinner>
+          </button>
+        </form>
+      </div>
+    </div>
+    <div class="banner">
+      <div class="center">
+        <a routerLink="/"
+          ><img src="assets/img/png/light-logo.png" alt="logo"
+        /></a>
+      </div>
+    </div>
+  </div>
+</main>

@@ -1,0 +1,16 @@
+.center {
+  display: flex;
+  padding: 2em;
+  flex-direction: column;
+  justify-content: center;
+  h2 {
+    font-size: 34px;
+    color: rgba(#ccc, 0.4);
+  }
+  a {
+    color: #5c278b;
+  }
+  &.h-250 {
+    height: 250px;
+  }
+}

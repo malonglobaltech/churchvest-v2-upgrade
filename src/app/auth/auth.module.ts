@@ -10,6 +10,8 @@ import { AngularMaterialModule } from '../shared/angular-material.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ToastrModule, ToastrService } from 'ngx-toastr';
 import { ForgotPasswordComponent } from './components/forgot-password/forgot-password.component';
+import { BottomSheetComponent } from './components/bottom-sheet/bottom-sheet.component';
+import { AccountVerifyComponent } from './components/account-verify/account-verify.component';
 
 @NgModule({
   declarations: [
@@ -18,6 +20,8 @@ import { ForgotPasswordComponent } from './components/forgot-password/forgot-pas
     RegisterComponent,
     VerifyEmailComponent,
     ForgotPasswordComponent,
+    BottomSheetComponent,
+    AccountVerifyComponent,
   ],
   imports: [
     CommonModule,

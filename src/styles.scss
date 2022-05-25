@@ -11,7 +11,9 @@ html {
   margin: 0;
   font-family: "Poppins", sans-serif;
 }
-
+a {
+  text-decoration: none !important;
+}
 .cdk-global-overlay-wrapper,
 .cdk-overlay-container {
   z-index: 99999 !important;

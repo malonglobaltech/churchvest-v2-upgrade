@@ -75,9 +75,11 @@ export class LoginComponent implements OnInit {
           this.recordFound = true;
           this.recordData = data;
           this.recordMsg = message;
-          this.toastr.info(message, 'Message', {
-            timeOut: 3000,
-          });
+          if (this.recordData.memberships.length !== 0) {
+            this.toastr.info(message, 'Message', {
+              timeOut: 3000,
+            });
+          }
         }
       },
       () => {
@@ -86,7 +88,6 @@ export class LoginComponent implements OnInit {
       }
     );
   }
-
   onSubmit() {
     this.isBusy = true;
     if (this.form.valid) {

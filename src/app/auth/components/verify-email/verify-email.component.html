@@ -1,1 +1,48 @@
-<p>verify-email works!</p>
+<main class="auth">
+  <div class="grid grid--1fr--2fr">
+    <div class="container">
+      <div class="d-flex w-450 pt-5">
+        <a routerLink="/" class="return-link">
+          <mat-icon>keyboard_backspace</mat-icon>Home Page</a
+        >
+      </div>
+      <div class="content w-450 mt-5 d-flex flex-column">
+        <h2>Verify Your Account</h2>
+        <p class="txt-grey my-2">Hello there, welcome to Churchvest!</p>
+        <div class="my-3"><img src="assets/img/svg/mail.svg" alt="mail" /></div>
+        <div *ngIf="!token">
+          <p class="txt-grey my-2">
+            We sent a verification email to {{ queryString }}.
+          </p>
+          <div class="my-5">
+            <p class="txt-grey">
+              Please check your email to confirm your account and complete your
+              account creation process.
+            </p>
+          </div>
+        </div>
+        <div *ngIf="token">
+          <p class="txt-grey">You have not verified your email.</p>
+
+          <p class="txt-grey">
+            Please check your email to confirm your account or click on the text
+            below to resend the verification link
+          </p>
+        </div>
+
+        <p class="txt-grey d-flex" *ngIf="token && !loading">
+          Didn’t get the email?
+          <a class="ms-2 cursor" (click)="resend()"> Resend it</a>
+        </p>
+        <p *ngIf="token && loading">Sending another email...</p>
+      </div>
+    </div>
+    <div class="banner">
+      <div class="center">
+        <a routerLink="/"
+          ><img src="assets/img/png/light-logo.png" alt="logo"
+        /></a>
+      </div>
+    </div>
+  </div>
+</main>

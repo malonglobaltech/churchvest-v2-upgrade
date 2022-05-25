@@ -3,6 +3,9 @@
   font-weight: 700;
   color: $black;
 }
+.cursor {
+  cursor: pointer;
+}
 .title-sm {
   font-size: 18px;
   font-weight: 500;
@@ -14,6 +17,10 @@
 }
 .w-400 {
   width: 400px;
+  margin: 0 auto;
+}
+.w-450 {
+  width: 450px;
   margin: 0 auto;
 }
 .fw-400 {
