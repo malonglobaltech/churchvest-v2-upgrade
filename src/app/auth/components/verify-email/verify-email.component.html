@@ -31,11 +31,13 @@
           </p>
         </div>
 
-        <p class="txt-grey d-flex" *ngIf="token && !loading">
+        <p class="txt-grey d-flex" *ngIf="!token && !loading">
           Didn’t get the email?
           <a class="ms-2 cursor" (click)="resend()"> Resend it</a>
         </p>
-        <p *ngIf="token && loading">Sending another email...</p>
+        <p *ngIf="!token && loading" class="f12 txt-grey">
+          Sending another email...
+        </p>
       </div>
     </div>
     <div class="banner">
