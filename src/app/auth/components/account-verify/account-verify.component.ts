@@ -58,8 +58,13 @@ export class AccountVerifyComponent implements OnInit {
           localStorage.setItem('isLoggedIn', 'true');
           this.getLink();
         },
-        (message) => {
-          this.toastr.error(message, 'Message');
+        (err) => {
+          if (err !== undefined) {
+            this.toastr.error(err, 'Message');
+          } else {
+            this.toastr.error(err, 'Message');
+          }
+
           this.isBusy = false;
         },
         () => {
