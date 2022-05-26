@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { catchError } from 'rxjs/operators';
@@ -56,6 +56,15 @@ export class AuthService {
     return this.http
       .post<any>(
         environment.managementbaseUrl + `/email/verification-notification`,
+        token
+      )
+      .pipe(catchError(handleError));
+  }
+  resendVerificationEmail(): Observable<any> {
+    let token = localStorage.getItem('token');
+    return this.http
+      .post<any>(
+        `${environment.managementbaseUrl}/email/verification-notification`,
         token
       )
       .pipe(catchError(handleError));

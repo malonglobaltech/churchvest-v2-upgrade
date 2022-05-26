@@ -26,8 +26,7 @@ export class VerifyEmailComponent implements OnInit {
 
   ngOnInit(): void {
     this.getRoutes();
-    this.token = JSON.parse(localStorage.getItem('token'));
-    console.log(this.token);
+    this.token = localStorage.getItem('token');
   }
   getRoutes() {
     this.route.queryParams
@@ -41,7 +40,7 @@ export class VerifyEmailComponent implements OnInit {
   }
   resend() {
     this.loading = true;
-    this.authService.resendVerification().subscribe(
+    this.authService.resendVerificationEmail().subscribe(
       (res) => {
         this.loading = false;
         if (res.status === 'success') {

@@ -6,7 +6,7 @@ import {
   FormGroup,
   Validators,
 } from '@angular/forms';
-import { Router } from '@angular/router';
+import { NavigationExtras, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { ObservableInput, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
@@ -88,23 +88,41 @@ export class LoginComponent implements OnInit {
       }
     );
   }
+  navigate(data: any) {
+    let navigationExtras: NavigationExtras = {
+      queryParams: {
+        query: data,
+      },
+    };
+    this.router.navigate(['/onboarding/verify-email'], navigationExtras);
+  }
   onSubmit() {
     this.isBusy = true;
     if (this.form.valid) {
       this.authServ.login(this.value).subscribe(
         (res) => {
           const { data } = res;
-          this.recordFound = false;
-          this.toastr.success('Login successful', 'Message');
-          this.form.reset();
-          localStorage.setItem('token', res.access_token);
-          localStorage.setItem('user_details', JSON.stringify(data));
-          localStorage.setItem('isLoggedIn', 'true');
-          localStorage.setItem(
-            'user_church',
-            JSON.stringify(this.selectedChurch)
-          );
-          // this.router.navigate(['/portal/dashboard']);
+          if (res.status === 'success') {
+            this.recordFound = false;
+            this.toastr.success('Login successful', 'Message');
+            this.form.reset();
+            localStorage.setItem('token', res.access_token);
+            localStorage.setItem('user_details', JSON.stringify(data));
+            localStorage.setItem('isLoggedIn', 'true');
+            if (this.selectedChurch) {
+              localStorage.setItem('user_church', this.selectedChurch);
+              // this.router.navigate(['/portal/activity']);
+            }
+            if (
+              res.data.email_verified_at === null ||
+              !res.data.email_verified_at
+            ) {
+              this.navigate(res.data.email);
+            }
+            if (res.data.email_verified_at !== null && !this.selectedChurch) {
+              this.router.navigateByUrl('get-started/pricing');
+            }
+          }
         },
         (err) => {
           this.toastr.error(err, 'Message');
