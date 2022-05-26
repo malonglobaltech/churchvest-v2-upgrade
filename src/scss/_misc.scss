@@ -24,6 +24,9 @@
   @media only screen and (min-width: 320px) and (max-width: 991px) {
     width: 100%;
   }
+  @media only screen and (min-width: 1680px) {
+    width: 500px;
+  }
 }
 .w-450 {
   width: 450px;
@@ -231,6 +234,16 @@
           padding: 3em 0em;
         }
       }
+    }
+  }
+  @media only screen and (min-width: 1200px) and (max-width: 1439px) {
+    .grid .form-wrap h2:before {
+      left: -2.5em;
+    }
+  }
+  @media only screen and (min-width: 1680px) {
+    .grid .form-wrap h2:before {
+      left: -3.58em;
     }
   }
 }
