@@ -131,7 +131,6 @@ export class ForgotPasswordComponent implements OnInit {
       this.isBusy = false;
       return;
     }
-
     if (this.resetEmailForm.valid) {
       this.authService.resetEmail(this.emailValue).subscribe(
         (res) => {
@@ -140,12 +139,9 @@ export class ForgotPasswordComponent implements OnInit {
           this.openBottomSheet(this.emailTrueValue);
           this.resetEmailForm.reset();
         },
-        () => {
+        (err) => {
           this.isBusy = false;
-          this.toastr.error(
-            'Opps! Something went wrong, refresh page',
-            'Message'
-          );
+          this.toastr.error(err, 'Message');
         },
         () => {
           this.isBusy = false;
