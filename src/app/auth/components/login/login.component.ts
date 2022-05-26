@@ -53,6 +53,9 @@ export class LoginComponent implements OnInit {
   onChurchSelect(evt: any) {
     this.selectedChurch = evt.value;
   }
+  clearStorage() {
+    localStorage.clear();
+  }
   resetControl() {
     if (this.emailCtrInstance.status == 'INVALID') {
       this.recordFound = false;

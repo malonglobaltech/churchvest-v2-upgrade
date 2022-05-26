@@ -2,9 +2,18 @@
   <div class="center h-250">
     <h2>Check Your Mail!</h2>
     <div class="d-flex my-2">
-      <span class="f12 txt-grey"> Verification email sent to:</span>
+      <ng-container *ngIf="data.type == 'verification_link'">
+        <span class="f12 txt-grey">
+          Verification email sent to:</span
+        ></ng-container
+      >
+      <ng-container *ngIf="data.type == 'reset_link'">
+        <span class="f12 txt-grey">
+          Password reset link sent to:</span
+        ></ng-container
+      >
       <a>
-        <span class="ms-2">{{ data }}</span>
+        <span class="ms-2">{{ data.data }}</span>
       </a>
     </div>
     <div class="d-flex mt-auto">

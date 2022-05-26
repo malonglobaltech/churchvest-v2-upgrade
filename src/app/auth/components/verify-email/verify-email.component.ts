@@ -54,7 +54,10 @@ export class VerifyEmailComponent implements OnInit {
   }
   openBottomSheet(): void {
     this._bottomSheet.open(BottomSheetComponent, {
-      data: this.queryString,
+      data: {
+        data: this.queryString,
+        type: 'verification_link',
+      },
     });
   }
 }

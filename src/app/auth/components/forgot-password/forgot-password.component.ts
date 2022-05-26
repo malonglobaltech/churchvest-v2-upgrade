@@ -7,6 +7,7 @@ import {
   ValidatorFn,
   Validators,
 } from '@angular/forms';
+import { MatBottomSheet } from '@angular/material/bottom-sheet';
 import {
   ActivatedRoute,
   NavigationExtras,
@@ -21,6 +22,7 @@ import {
   hasNumber,
   validateCapital,
 } from 'src/app/shared/_helperFunctions';
+import { BottomSheetComponent } from '../bottom-sheet/bottom-sheet.component';
 import { MyErrorStateMatcher } from '../register/register.component';
 
 @Component({
@@ -30,6 +32,7 @@ import { MyErrorStateMatcher } from '../register/register.component';
 })
 export class ForgotPasswordComponent implements OnInit {
   showContentType: boolean = false;
+  queryString: string;
   token: string;
   reset_email: string;
   show: boolean = false;
@@ -38,6 +41,7 @@ export class ForgotPasswordComponent implements OnInit {
   numberChar: any;
   specialChar: any;
   validatePassword: any;
+
   matcher = new MyErrorStateMatcher();
   _validateCaps = validateCapital;
   _hasNumber = hasNumber;
@@ -49,7 +53,8 @@ export class ForgotPasswordComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private fb: FormBuilder,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    private _bottomSheet: MatBottomSheet
   ) {
     this.resetEmailForm = this.fb.group({
       email: [null, [Validators.required, Validators.email]],
@@ -78,6 +83,10 @@ export class ForgotPasswordComponent implements OnInit {
   get emailValue() {
     return this.resetEmailForm.getRawValue();
   }
+  get emailTrueValue() {
+    return this.resetEmailForm.controls['email'].value;
+  }
+
   get passwordValue() {
     return this.resetPasswordForm.getRawValue();
   }
@@ -121,15 +130,25 @@ export class ForgotPasswordComponent implements OnInit {
       this.isBusy = false;
       return;
     }
+
     if (this.resetEmailForm.valid) {
       this.authService.resetEmail(this.emailValue).subscribe(
         (res) => {
           this.isBusy = false;
           this.toastr.success(res.message, 'Message');
+          this.openBottomSheet(this.emailTrueValue);
+          this.resetEmailForm.reset();
         },
         () => {
           this.isBusy = false;
-          this.toastr.error('Opps! Something went wrong', 'Message');
+          this.toastr.error(
+            'Opps! Something went wrong, refresh page',
+            'Message'
+          );
+        },
+        () => {
+          this.isBusy = false;
+          this.resetEmailForm.reset();
         }
       );
     }
@@ -180,7 +199,7 @@ export class ForgotPasswordComponent implements OnInit {
           ) {
             this.navigate(res.data.email);
           } else {
-            // this.router.navigate(['/portal/activity']);
+            this.router.navigate(['/onboarding/login']); // replace with dashboard activity
           }
         }
       },
@@ -192,5 +211,13 @@ export class ForgotPasswordComponent implements OnInit {
         this.isBusy = false;
       }
     );
+  }
+  openBottomSheet(email: string): void {
+    this._bottomSheet.open(BottomSheetComponent, {
+      data: {
+        data: email,
+        type: 'reset_link',
+      },
+    });
   }
 }
