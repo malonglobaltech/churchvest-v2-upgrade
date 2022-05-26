@@ -48,10 +48,6 @@ export class AccountVerifyComponent implements OnInit {
 
   onSubmit() {
     this.isBusy = true;
-    if (this.form.invalid) {
-      this.isBusy = false;
-      return;
-    }
     if (this.form.valid) {
       this.authServ.login(this.value).subscribe(
         (res) => {
@@ -62,8 +58,8 @@ export class AccountVerifyComponent implements OnInit {
           localStorage.setItem('isLoggedIn', 'true');
           this.getLink();
         },
-        (err) => {
-          this.toastr.error('Oops! Something went wrong', 'Message');
+        (message) => {
+          this.toastr.error(message, 'Message');
           this.isBusy = false;
         },
         () => {
@@ -100,7 +96,7 @@ export class AccountVerifyComponent implements OnInit {
             if (churches.length === 1) {
               localStorage.setItem('user_details', JSON.stringify(res.data));
               localStorage.setItem('user_church', JSON.stringify(churches[0]));
-              this.router.navigate(['/admin/activity']);
+              this.router.navigate(['/portal/activity']);
             } else {
               this.toastr.info(
                 'You are an admin in multiple churches. Kindly select a church to continue',

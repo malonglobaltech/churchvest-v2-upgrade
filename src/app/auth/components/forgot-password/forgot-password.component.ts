@@ -1,3 +1,4 @@
+import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import {
   AbstractControl,
@@ -170,8 +171,9 @@ export class ForgotPasswordComponent implements OnInit {
           this.toastr.success(res.message, 'Message');
           this.autoLogUserIn();
         },
-        () => {
+        (message) => {
           this.isBusy = false;
+          this.toastr.error(message, 'Message');
         }
       );
     }

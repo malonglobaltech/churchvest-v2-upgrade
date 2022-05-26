@@ -125,10 +125,7 @@ export class RegisterComponent implements OnInit {
 
   onSubmit() {
     this.isBusy = true;
-    if (this.form.invalid) {
-      this.isBusy = false;
-      return;
-    }
+
     if (this.form.valid) {
       this.authServ.register(this.value).subscribe(
         (res) => {
