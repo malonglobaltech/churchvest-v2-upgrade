@@ -23,6 +23,7 @@ import { MatDividerModule } from '@angular/material/divider';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSortModule } from '@angular/material/sort';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatDialogModule } from '@angular/material/dialog';
 import {
   MatBottomSheetModule,
   MatBottomSheetRef,
@@ -54,6 +55,7 @@ import {
     MatSortModule,
     MatTooltipModule,
     MatBottomSheetModule,
+    MatDialogModule,
   ],
   exports: [
     MatButtonModule,
@@ -79,6 +81,7 @@ import {
     MatSortModule,
     MatTooltipModule,
     MatBottomSheetModule,
+    MatDialogModule,
   ],
   providers: [
     { provide: MatBottomSheetRef, useValue: {} },

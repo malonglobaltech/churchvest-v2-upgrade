@@ -48,6 +48,10 @@ export class AccountVerifyComponent implements OnInit {
 
   onSubmit() {
     this.isBusy = true;
+    if (this.form.invalid) {
+      this.isBusy = false;
+      return;
+    }
     if (this.form.valid) {
       this.authServ.login(this.value).subscribe(
         (res) => {
@@ -59,7 +63,7 @@ export class AccountVerifyComponent implements OnInit {
           this.getLink();
         },
         (err) => {
-          this.toastr.error(err, 'Message');
+          this.toastr.error('Oops! Something went wrong', 'Message');
           this.isBusy = false;
         },
         () => {

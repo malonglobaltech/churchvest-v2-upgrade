@@ -15,6 +15,13 @@ const routes: Routes = [
     // canActivate: [LoggedInAuthGuard],
     children: [
       {
+        path: 'api/email/verify/:*/:*',
+        component: AccountVerifyComponent,
+        data: {
+          title: 'ChurchVest - Account Verification',
+        },
+      },
+      {
         path: 'login',
         component: LoginComponent,
         data: {
@@ -36,17 +43,17 @@ const routes: Routes = [
         },
       },
       {
+        path: 'reset-password/:token',
+        component: ForgotPasswordComponent,
+        data: {
+          title: 'ChurchVest - Reset Your Password',
+        },
+      },
+      {
         path: 'verify-email',
         component: VerifyEmailComponent,
         data: {
           title: 'ChurchVest - Email Verification',
-        },
-      },
-      {
-        path: 'api/email/verify/:*/:*',
-        component: AccountVerifyComponent,
-        data: {
-          title: 'ChurchVest - Account Verification',
         },
       },
 

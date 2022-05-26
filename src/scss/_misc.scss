@@ -14,14 +14,23 @@
 .w-300 {
   width: 300px;
   margin: 0 auto;
+  @media only screen and (min-width: 320px) and (max-width: 991px) {
+    width: 100%;
+  }
 }
 .w-400 {
   width: 400px;
   margin: 0 auto;
+  @media only screen and (min-width: 320px) and (max-width: 991px) {
+    width: 100%;
+  }
 }
 .w-450 {
   width: 450px;
   margin: 0 auto;
+  @media only screen and (min-width: 320px) and (max-width: 991px) {
+    width: 100%;
+  }
 }
 .fw-400 {
   font-weight: 400;
@@ -214,8 +223,13 @@
       .banner {
         display: none;
       }
-      .form-wrap form {
-        padding: 3em 0em;
+      .form-wrap {
+        h2:before {
+          display: none;
+        }
+        form {
+          padding: 3em 0em;
+        }
       }
     }
   }

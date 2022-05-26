@@ -51,15 +51,6 @@ export class AuthService {
       .post<any>(environment.managementbaseUrl + `/resolve_user`, payload)
       .pipe(catchError(handleError));
   }
-  resendVerification(): Observable<any> {
-    let token = JSON.parse(localStorage.getItem('token'));
-    return this.http
-      .post<any>(
-        environment.managementbaseUrl + `/email/verification-notification`,
-        token
-      )
-      .pipe(catchError(handleError));
-  }
   resendVerificationEmail(): Observable<any> {
     let token = localStorage.getItem('token');
     return this.http
@@ -69,6 +60,17 @@ export class AuthService {
       )
       .pipe(catchError(handleError));
   }
+  resetEmail(email: any): Observable<any> {
+    return this.http
+      .post<any>(`${environment.mainUrl}/forgot-password`, email)
+      .pipe(catchError(handleError));
+  }
+  resetPassword(payload: any): Observable<any> {
+    return this.http
+      .post<any>(`${environment.mainUrl}/reset-password`, payload)
+      .pipe(catchError(handleError));
+  }
+
   verify(link: string): Observable<any> {
     return this.http.get<any>(link).pipe(catchError(handleError));
   }
