@@ -75,7 +75,7 @@ export class SidenavComponent implements OnInit {
         useHighlightPadding: true,
       },
       {
-        title: 'Report Tracking 💰',
+        title: 'Report Tracking 📝',
         selector: '.activities-step5',
         content:
           'You can customize, and download reports for church leaders at a time so you save time and focus on what really matters, your firm and clients.',

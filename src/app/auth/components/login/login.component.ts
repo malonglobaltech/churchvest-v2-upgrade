@@ -113,7 +113,10 @@ export class LoginComponent implements OnInit {
             localStorage.setItem('user_details', JSON.stringify(data));
             localStorage.setItem('isLoggedIn', 'true');
             if (this.selectedChurch) {
-              localStorage.setItem('user_church', this.selectedChurch);
+              localStorage.setItem(
+                'user_church',
+                JSON.stringify(this.selectedChurch)
+              );
               this.router.navigate(['/portal/activity']);
             }
             if (
