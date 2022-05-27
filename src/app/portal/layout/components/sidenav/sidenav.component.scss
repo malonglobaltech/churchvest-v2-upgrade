@@ -138,23 +138,16 @@
               &[data-bs-toggle="collapse"] {
                 justify-content: space-between !important;
               }
-              &[aria-expanded="true"] {
-                &[data-bs-toggle="collapse"] {
-                  &::before {
-                    background: $blue;
-                  }
-                }
-              }
               &.active {
                 background: none;
-                &::before {
+                &::after {
                   content: "";
                   position: absolute;
                   width: 7px;
                   height: 7px;
                   border-radius: 50%;
                   background: $blue;
-                  left: 2.5em;
+                  right: 1.36em;
                 }
                 small {
                   color: $blue;

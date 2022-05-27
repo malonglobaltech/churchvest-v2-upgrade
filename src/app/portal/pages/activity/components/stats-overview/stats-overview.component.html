@@ -1,0 +1,145 @@
+<section class="stats-overview">
+  <div class="d-flex justify-content-end">
+    <button mat-mini-fab class="me-2 white-bg" (click)="scrollLeft()">
+      <mat-icon>navigate_before</mat-icon>
+    </button>
+    <button mat-mini-fab class="white-bg" (click)="scrollRight()">
+      <mat-icon>navigate_next</mat-icon>
+    </button>
+  </div>
+  <div class="card--list--wrap" #scrollItems>
+    <div class="items-wrap">
+      <div class="card">
+        <div class="d-flex justify-content-between align-items-center">
+          <img
+            src="assets/img/svg/people-network.svg"
+            alt="people"
+            class="icon"
+          />
+          <div class="cursor" [matMenuTriggerFor]="menu">
+            <span>
+              <mat-icon>more_horiz</mat-icon>
+            </span>
+            <mat-menu #menu="matMenu">
+              <button type="button" mat-menu-item>View all</button>
+            </mat-menu>
+          </div>
+        </div>
+        <label class="title-lg">1</label>
+        <label class="f14 txt-grey"
+          >Regular <br />
+          Members</label
+        >
+      </div>
+      <div class="card">
+        <div class="d-flex justify-content-between align-items-center">
+          <img src="assets/img/svg/plus-heart.svg" alt="people" class="icon" />
+          <div class="cursor" [matMenuTriggerFor]="menu">
+            <span>
+              <mat-icon>more_horiz</mat-icon>
+            </span>
+            <mat-menu #menu="matMenu">
+              <button type="button" mat-menu-item>View all</button>
+            </mat-menu>
+          </div>
+        </div>
+        <label class="title-lg">0</label>
+        <label class="f14 txt-grey"
+          >First <br />
+          Timer</label
+        >
+      </div>
+      <div class="card">
+        <div class="d-flex justify-content-between align-items-center">
+          <img src="assets/img/svg/square-add.svg" alt="people" class="icon" />
+          <div class="cursor" [matMenuTriggerFor]="menu">
+            <span>
+              <mat-icon>more_horiz</mat-icon>
+            </span>
+            <mat-menu #menu="matMenu">
+              <button type="button" mat-menu-item>View all</button>
+            </mat-menu>
+          </div>
+        </div>
+        <label class="title-lg">0</label>
+        <label class="f14 txt-grey"
+          >New <br />
+          Departments</label
+        >
+      </div>
+      <div class="card">
+        <div class="d-flex justify-content-between align-items-center">
+          <img src="assets/img/svg/income.svg" alt="people" class="icon" />
+          <div class="cursor" [matMenuTriggerFor]="menu">
+            <span>
+              <mat-icon>more_horiz</mat-icon>
+            </span>
+            <mat-menu #menu="matMenu">
+              <button type="button" mat-menu-item>View all</button>
+            </mat-menu>
+          </div>
+        </div>
+        <label class="title-lg">0</label>
+        <label class="f14 txt-grey">Income </label>
+      </div>
+      <div class="card">
+        <div class="d-flex justify-content-between align-items-center">
+          <img src="assets/img/svg/expense.svg" alt="expense" class="icon" />
+          <div class="cursor" [matMenuTriggerFor]="menu">
+            <span>
+              <mat-icon>more_horiz</mat-icon>
+            </span>
+            <mat-menu #menu="matMenu">
+              <button type="button" mat-menu-item>View all</button>
+            </mat-menu>
+          </div>
+        </div>
+        <label class="title-lg">1</label>
+        <label class="f14 txt-grey">Expense</label>
+      </div>
+      <div class="card">
+        <div class="d-flex justify-content-between align-items-center">
+          <img
+            src="assets/img/svg/reconciliation.svg"
+            alt="expense"
+            class="icon"
+          />
+          <div class="cursor" [matMenuTriggerFor]="menu">
+            <span>
+              <mat-icon>more_horiz</mat-icon>
+            </span>
+            <mat-menu #menu="matMenu">
+              <button type="button" mat-menu-item>View all</button>
+            </mat-menu>
+          </div>
+        </div>
+        <label class="title-lg">0</label>
+        <label class="f14 txt-grey">Reconciled</label>
+      </div>
+    </div>
+  </div>
+
+  <div class="transactions">
+    <div class="card">
+      <div class="title-sm mb-3">Pending Transactions</div>
+      <div class="item d-flex justify-content-between align-items-center">
+        <div class="icon d-flex"><mat-icon>pending_actions</mat-icon></div>
+        <label class="f12">Adam Smith</label>
+        <label class="f12">Update marketing campaign</label>
+        <label class="f12">Feb 12</label>
+      </div>
+      <div class="item d-flex justify-content-between align-items-center">
+        <div class="icon d-flex"><mat-icon>pending_actions</mat-icon></div>
+        <label class="f12">Jeremiah Austin</label>
+        <label class="f12">Update marketing campaign</label>
+        <label class="f12">Feb 12</label>
+      </div>
+      <div class="item d-flex justify-content-between align-items-center">
+        <div class="icon d-flex"><mat-icon>pending_actions</mat-icon></div>
+        <label class="f12">Ezekiel Davies</label>
+        <label class="f12">Update marketing campaign</label>
+        <label class="f12">Feb 12</label>
+      </div>
+    </div>
+  </div>
+</section>

@@ -9,6 +9,7 @@ import { AuthService } from 'src/app/services/auth.service';
 })
 export class HeaderComponent implements OnInit {
   profileName: any;
+  currentDate = new Date();
   constructor(private authService: AuthService, private router: Router) {}
 
   ngOnInit(): void {

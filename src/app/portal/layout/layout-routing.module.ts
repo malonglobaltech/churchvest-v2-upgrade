@@ -17,6 +17,11 @@ const routes: Routes = [
           ),
       },
       {
+        path: 'people',
+        loadChildren: () =>
+          import('../pages/people/people.module').then((m) => m.PeopleModule),
+      },
+      {
         path: '',
         redirectTo: 'activity',
       },

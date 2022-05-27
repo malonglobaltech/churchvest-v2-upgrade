@@ -1,5 +1,11 @@
 <header>
   <div class="d-flex justify-content-between align-items-center">
+    <div class="title-sm">
+      Hello, {{ profileName.first_name }} 👋
+      <label class="f12 txt-grey"
+        >Today is <span>{{ currentDate | date: "fullDate" }}</span></label
+      >
+    </div>
     <div class="panel d-flex align-items-center justify-content-between">
       <span class="f12 txt-grey">Available SMS Units: 0</span>
       <button mat-flat-button class="b-flat-sm">Buy Sms</button>
@@ -26,7 +32,8 @@
           <mat-icon>expand_more</mat-icon>
         </div>
         <mat-menu #menu="matMenu">
-          <button type="button" mat-menu-item>Edit Profile Details</button>
+          <button type="button" mat-menu-item>Profile Details</button>
+          <button type="button" mat-menu-item>Notification</button>
           <button mat-menu-item type="button">Email Support</button>
           <button type="button" mat-menu-item (click)="logout()">Logout</button>
         </mat-menu>
