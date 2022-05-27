@@ -197,7 +197,7 @@ export class ForgotPasswordComponent implements OnInit {
           ) {
             this.navigate(res.data.email);
           } else {
-            this.router.navigate(['/onboarding/login']); // replace with dashboard activity
+            this.router.navigate(['/portal/activity']);
           }
         }
       },
