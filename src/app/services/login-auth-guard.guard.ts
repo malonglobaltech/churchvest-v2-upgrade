@@ -8,7 +8,7 @@ export class LoggedInAuthGuard implements CanActivate {
 
   canActivate(): boolean {
     if (this._authService.isAuthenticated()) {
-      this._router.navigate(['/portal/dashboard']);
+      this._router.navigate(['/portal/activity']);
       return false;
     } else {
       return true;

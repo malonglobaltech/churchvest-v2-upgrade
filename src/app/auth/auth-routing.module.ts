@@ -12,7 +12,7 @@ const routes: Routes = [
   {
     path: '',
     component: AuthComponent,
-    // canActivate: [LoggedInAuthGuard],
+    canActivate: [LoggedInAuthGuard],
     children: [
       {
         path: 'api/email/verify/:*/:*',
