@@ -1,3 +1,4 @@
+@import "src/scss/_vars.scss";
 .event-list-wrap {
   display: flex;
   flex-direction: column;
@@ -44,7 +45,7 @@
         position: absolute;
         width: 7px;
         height: 7px;
-        background: #9a77cf;
+        background: $purple;
         border-radius: 50%;
         left: -7px;
         top: 0.5em;

@@ -73,6 +73,10 @@
       }
       &:hover {
         background: $white;
+        label {
+          color: $purple;
+          transition: 0.3s ease-in;
+        }
       }
       &:last-child {
         margin-bottom: 0em;

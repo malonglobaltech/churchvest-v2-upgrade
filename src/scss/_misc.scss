@@ -148,7 +148,7 @@
     .return-link {
       text-decoration: none;
       display: flex;
-      color: #5c278b;
+      color: $purple;
       font-size: 14px;
       mat-icon {
         margin-right: 10px;
@@ -212,7 +212,7 @@
           left: -3.33em;
           width: 11px;
           height: 100%;
-          background: #5c278b;
+          background: $purple;
           border-radius: 2px;
         }
       }
