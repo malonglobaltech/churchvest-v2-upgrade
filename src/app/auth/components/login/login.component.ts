@@ -114,7 +114,7 @@ export class LoginComponent implements OnInit {
             localStorage.setItem('isLoggedIn', 'true');
             if (this.selectedChurch) {
               localStorage.setItem('user_church', this.selectedChurch);
-              // this.router.navigate(['/portal/activity']);
+              this.router.navigate(['/portal/activity']);
             }
             if (
               res.data.email_verified_at === null ||

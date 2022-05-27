@@ -1,0 +1,36 @@
+<header>
+  <div class="d-flex justify-content-between align-items-center">
+    <div class="panel d-flex align-items-center justify-content-between">
+      <span class="f12 txt-grey">Available SMS Units: 0</span>
+      <button mat-flat-button class="b-flat-sm">Buy Sms</button>
+    </div>
+    &nbsp;
+    <div class="d-flex align-items-center">
+      <div class="icon msg-wrap me-4">
+        <img src="assets/img/svg/message-icon.svg" alt="msg-icon" />
+      </div>
+      <div class="icon me-4">
+        <img src="assets/img/svg/notification.svg" alt="bell-icon" />
+      </div>
+      <div class="d-block">
+        <label class="profile-name" *ngIf="profileName"
+          >{{ profileName.first_name }} {{ profileName.last_name }}</label
+        >
+      </div>
+      <div class="dropdown cursor" [matMenuTriggerFor]="menu">
+        <div class="d-flex align-items-center">
+          <div
+            class="avatar"
+            style="background: url('assets/img/png/avatar.png')"
+          ></div>
+          <mat-icon>expand_more</mat-icon>
+        </div>
+        <mat-menu #menu="matMenu">
+          <button type="button" mat-menu-item>Edit Profile Details</button>
+          <button mat-menu-item type="button">Email Support</button>
+          <button type="button" mat-menu-item (click)="logout()">Logout</button>
+        </mat-menu>
+      </div>
+    </div>
+  </div>
+</header>

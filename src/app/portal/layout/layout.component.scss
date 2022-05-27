@@ -1,0 +1,27 @@
+main {
+  position: relative;
+  min-height: 100vh;
+
+  .container-wrap {
+    position: relative;
+    left: 250px;
+    width: calc(100% - 250px);
+    background: #f4f5fa;
+  }
+  .main-content {
+    min-height: 100vh;
+    padding: 7em 2em 4em;
+    position: relative;
+    // overflow-x: hidden;
+  }
+  @media only screen and (min-width: 320px) and (max-width: 991px) {
+    overflow: hidden;
+    .container-wrap {
+      left: 0;
+      width: 100%;
+    }
+    .main-content {
+      padding: 8em 1em 1em;
+    }
+  }
+}

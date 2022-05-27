@@ -1,0 +1,63 @@
+<nav id="sidebar" [ngClass]="{ open: _isOpen }">
+  <div class="logo-banner">
+    <div class="d-flex align-items-center">
+      <img
+        src="assets/img/png/church_logo.png"
+        alt="church-logo"
+        class="logo mb-2"
+      />
+    </div>
+    <div class="title">Churchvest</div>
+  </div>
+  <div class="sidebar-content">
+    <ul>
+      <div class="accordion" id="root">
+        <li *ngFor="let item of menu; let i = index">
+          <ng-container *ngIf="item.hasChildren == false">
+            <a [routerLink]="item.url" routerLinkActive="active">
+              <span> <img [src]="item.icon" alt="" /></span>
+              <span>{{ item.title }}</span>
+            </a>
+          </ng-container>
+          <ng-container *ngIf="item.hasChildren == true">
+            <a
+              data-bs-toggle="collapse"
+              [attr.data-bs-target]="'#item' + i"
+              aria-expanded="false"
+            >
+              <div
+                class="d-flex justify-content-between align-items-center w-100"
+              >
+                <div class="d-flex align-items-center">
+                  <span>
+                    <img [src]="item.icon" alt="" />
+                  </span>
+                  <span>{{ item.title }}</span>
+                </div>
+                <div class="caret">
+                  <span>
+                    <mat-icon>navigate_next</mat-icon>
+                  </span>
+                </div>
+              </div>
+            </a>
+            <div [id]="'item' + i" class="collapse" data-bs-parent="#root">
+              <ul>
+                <li *ngFor="let sub of item.children">
+                  <a
+                    [routerLink]="item.url + '/' + sub.url"
+                    routerLinkActive="active"
+                    ><small>{{ sub.title }}</small></a
+                  >
+                </li>
+              </ul>
+            </div>
+          </ng-container>
+        </li>
+      </div>
+    </ul>
+  </div>
+  <div class="snap-btn" (click)="toggleSnap()">
+    <mat-icon>arrow_forward_ios</mat-icon>
+  </div>
+</nav>

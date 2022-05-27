@@ -14,16 +14,10 @@ export class AuthService {
   currentUser: any;
   constructor(private http: HttpClient, public jwtHelper: JwtHelperService) {}
   getUserData() {
-    if (!this.currentUser) {
-      const token = localStorage.getItem('token');
-      if (token) {
-        this.currentUser = JSON.parse(
-          JSON.stringify(this.jwtHelper.decodeToken(token))
-        );
-        return this.currentUser;
-      }
+    const user = JSON.parse(localStorage.getItem('user_details'));
+    if (user) {
+      return user;
     }
-    return this.currentUser;
   }
   isAuthenticated(): any {
     const token = localStorage.getItem('token');
