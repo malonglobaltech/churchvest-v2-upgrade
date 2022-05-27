@@ -14,7 +14,11 @@
       <div class="accordion" id="root">
         <li *ngFor="let item of menu; let i = index">
           <ng-container *ngIf="item.hasChildren == false">
-            <a [routerLink]="item.url" routerLinkActive="active">
+            <a
+              [routerLink]="item.url"
+              routerLinkActive="active"
+              [ngClass]="item.hasSelector === true ? 'activities-step' + i : ''"
+            >
               <span> <img [src]="item.icon" alt="" /></span>
               <span>{{ item.title }}</span>
             </a>
@@ -24,6 +28,7 @@
               data-bs-toggle="collapse"
               [attr.data-bs-target]="'#item' + i"
               aria-expanded="false"
+              [ngClass]="item.hasSelector === true ? 'activities-step' + i : ''"
             >
               <div
                 class="d-flex justify-content-between align-items-center w-100"
@@ -43,7 +48,7 @@
             </a>
             <div [id]="'item' + i" class="collapse" data-bs-parent="#root">
               <ul>
-                <li *ngFor="let sub of item.children">
+                <li *ngFor="let sub of item.children; let subIndex = index">
                   <a
                     [routerLink]="item.url + '/' + sub.url"
                     routerLinkActive="active"
@@ -61,3 +66,4 @@
     <mat-icon>arrow_forward_ios</mat-icon>
   </div>
 </nav>
+<ngx-guided-tour></ngx-guided-tour>

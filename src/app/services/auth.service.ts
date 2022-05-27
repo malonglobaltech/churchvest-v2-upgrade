@@ -32,6 +32,7 @@ export class AuthService {
     localStorage.removeItem('token');
     localStorage.removeItem('isLoggedIn');
     localStorage.removeItem('user_church');
+    localStorage.removeItem('viewed-tour');
     localStorage.removeItem('user_details');
     return false;
   }

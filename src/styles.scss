@@ -4,6 +4,7 @@
 @import "../src/scss/_buttons.scss";
 @import "../src/scss/_input.scss";
 @import "../src/scss/_misc.scss";
+@import "../node_modules/ngx-guided-tour/scss/guided-tour-base-theme.scss";
 @import "~ngx-toastr/toastr";
 
 body,
@@ -49,4 +50,50 @@ mat-spinner {
 .mat-checkbox-label {
   display: flex;
   align-items: center;
+}
+ngx-guided-tour {
+  .tour-step {
+    h3 {
+      &.tour-title {
+        font-size: 17px !important;
+        padding-bottom: 9px !important;
+      }
+    }
+    h2 {
+      &.tour-title {
+        font-size: 24px;
+        text-align: center;
+        padding-bottom: 9px !important;
+      }
+    }
+    .tour-block {
+      border-radius: 8px;
+    }
+    .tour-buttons {
+      .next-button {
+        height: 30px !important;
+        font-size: 12px !important;
+        border-radius: 2px !important;
+        background-color: $purple !important;
+        display: flex;
+        align-items: center;
+      }
+      button.link-button {
+        top: 3px;
+        font-size: 14px !important;
+        color: rgba(#000, 0.3) !important;
+      }
+      button.skip-button {
+        font-size: 12px !important;
+      }
+    }
+    .tour-content {
+      font-size: 13px !important;
+      color: rgba(#000, 0.4);
+    }
+  }
+  .guided-tour-spotlight-overlay {
+    border-radius: 4px;
+    border: 1px solid $purple;
+  }
 }
