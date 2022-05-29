@@ -87,8 +87,8 @@ export class MembersComponent implements OnInit {
         const { data } = res;
         this.memberList = data;
         this.dataSource = new MatTableDataSource(this.memberList);
-        // this.paginator.pageIndex = this.currentPage;
-        // this.paginator.length = pagination.rowCount;
+        this.paginator.pageIndex = this.currentPage;
+        this.paginator.length = this.memberList.length;
       },
       (errors) => {
         if (errors) {
@@ -97,6 +97,15 @@ export class MembersComponent implements OnInit {
         }
       }
     );
+  }
+  getMemberDetails(id: number) {
+    this.itemDetails = this.memberList.find((i) => i.user.id === id);
+    if (typeof this.itemDetails === 'undefined') {
+      this.itemDetails = null;
+      return this.itemDetails;
+    } else {
+      return this.itemDetails;
+    }
   }
   searchMember(query: string) {
     this.peopleService.searchMember(query).subscribe((res: any) => {
@@ -111,7 +120,7 @@ export class MembersComponent implements OnInit {
   pageChanged(event: PageEvent) {
     this.pageSize = event.pageSize;
     this.currentPage = event.pageIndex;
-    // this.getMembers();
+    this.getMembers();
   }
   exportToExcel(): void {
     const edata: Array<any> = [];

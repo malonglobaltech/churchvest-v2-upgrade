@@ -130,6 +130,7 @@
     grid-column-gap: 30px;
   }
   @media screen and (min-width: 320px) and (max-width: 991px) {
+    grid-template-columns: auto;
     &--2fr--1fr {
       grid-template-columns: auto;
       grid-row-gap: 20px;

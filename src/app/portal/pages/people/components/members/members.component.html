@@ -119,11 +119,20 @@
                       mat-menu-item
                       data-bs-toggle="modal"
                       data-bs-target="#view-details"
-                      (click)="selectedIndex = 1"
+                      (click)="getMemberDetails(element['user'].id)"
                     >
                       View
                     </button>
-                    <button mat-menu-item>Edit</button>
+                    <button
+                      mat-menu-item
+                      [routerLink]="['/portal/people/add-member']"
+                      [queryParams]="{
+                        query: 'edit',
+                        id: element['user'].id
+                      }"
+                    >
+                      Edit
+                    </button>
                   </mat-menu>
                 </div>
               </td>
@@ -170,7 +179,12 @@
           </tr>
         </table>
       </ng-container>
-      <mat-paginator showFirstLastButton></mat-paginator>
+      <mat-paginator
+        showFirstLastButton
+        [pageIndex]="currentPage"
+        [pageSize]="pageSize"
+        (page)="pageChanged($event)"
+      ></mat-paginator>
     </div>
   </div>
 </section>
@@ -185,42 +199,99 @@
           <mat-icon data-bs-dismiss="modal" class="cursor">close</mat-icon>
         </div>
         <div class="container px-0">
-          <!-- <ng-container *ngIf="_loading_">
-                        <app-loading-roller></app-loading-roller>
-                    </ng-container> -->
+          <ng-container *ngIf="!itemDetails">
+            <app-loading-roller></app-loading-roller>
+          </ng-container>
           <div class="details-panel">
             <mat-divider></mat-divider>
             <mat-tab-group animationDuration="0.5ms" class="py-4">
               <mat-tab label="Personal Information">
-                <div class="details-wrap-list">
-                  <div class="grid grid--1fr--1fr mb-3">
-                    <label>First Name<span>Andrew</span></label>
-                    <label>Last Name<span>Wams</span></label>
+                <ng-container *ngIf="itemDetails">
+                  <div class="details-wrap-list">
+                    <div class="grid grid--1fr--1fr mb-3">
+                      <label
+                        >First Name<span>{{
+                          itemDetails.user.first_name
+                        }}</span></label
+                      >
+                      <label
+                        >Last Name<span>{{
+                          itemDetails.user.last_name
+                        }}</span></label
+                      >
+                    </div>
+                    <div class="grid grid--1fr--1fr mb-3">
+                      <label
+                        >Email Address<span>{{
+                          itemDetails.user.email
+                        }}</span></label
+                      >
+                      <label>Phone Number<span>08163223507</span></label>
+                    </div>
+                    <div class="grid grid--1fr--1fr mb-3">
+                      <label
+                        >Date of Birth<span>{{
+                          itemDetails["user"].details.personal !== null
+                            ? itemDetails["user"].details.personal.date_of_birth
+                            : "---"
+                        }}</span></label
+                      >
+                      <label
+                        >Residential Area<span>{{
+                          itemDetails["user"].details.personal !== null
+                            ? itemDetails["user"].details.personal
+                                .residential_area
+                            : "---"
+                        }}</span></label
+                      >
+                    </div>
+                    <div class="grid grid--1fr--1fr mb-3">
+                      <label
+                        >Residential Address<span>{{
+                          itemDetails["user"].details.personal !== null
+                            ? itemDetails["user"].details.personal.address
+                            : "---"
+                        }}</span></label
+                      >
+                      <label
+                        >Closest Bus stop<span>{{
+                          itemDetails["user"].details.personal !== null
+                            ? itemDetails["user"].details.personal
+                                .nearest_bus_stop
+                            : "---"
+                        }}</span></label
+                      >
+                    </div>
+                    <div class="grid grid--1fr--1fr mb-3">
+                      <label
+                        >Gender<span>{{
+                          itemDetails["user"].details.personal !== null
+                            ? itemDetails["user"].details.personal.gender
+                            : "---"
+                        }}</span></label
+                      >
+                      <label
+                        >Marital Status<span>{{
+                          itemDetails["user"].details.personal.relationship !==
+                          null
+                            ? itemDetails["user"].details.personal.relationship
+                            : "---"
+                        }}</span></label
+                      >
+                    </div>
+                    <div class="grid grid--1fr--1fr mb-3">
+                      <label
+                        >Marital Date<span>{{
+                          itemDetails["user"].details.personal
+                            .date_of_marriage !== null
+                            ? itemDetails["user"].details.personal
+                                .date_of_marriage
+                            : "---"
+                        }}</span></label
+                      >
+                    </div>
                   </div>
-                  <div class="grid grid--1fr--1fr mb-3">
-                    <label
-                      >Email Address<span>andrew.wams@gmail.com</span></label
-                    >
-                    <label>Phone Number<span>08163223507</span></label>
-                  </div>
-                  <div class="grid grid--1fr--1fr mb-3">
-                    <label>Date of Birth<span>December 7th</span></label>
-                    <label>Residential Area<span>Maryland</span></label>
-                  </div>
-                  <div class="grid grid--1fr--1fr mb-3">
-                    <label
-                      >Residential Address<span>Maryland, Lagos</span></label
-                    >
-                    <label>Closest Bus stop<span>Maryland</span></label>
-                  </div>
-                  <div class="grid grid--1fr--1fr mb-3">
-                    <label>Gender<span>Male</span></label>
-                    <label>Marital Status<span>Single</span></label>
-                  </div>
-                  <div class="grid grid--1fr--1fr mb-3">
-                    <label>Marital Date<span>None</span></label>
-                  </div>
-                </div>
+                </ng-container>
               </mat-tab>
               <mat-tab label="Membership Information">
                 <p>This is member info</p>

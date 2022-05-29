@@ -22,9 +22,9 @@
         </li>
       </ul>
     </aside>
-    <aside>
+    <aside *ngIf="queryString !== 'edit'">
       <ng-container *ngIf="screen == 1">
-        <form>
+        <form [formGroup]="personalInfoForm" (ngSubmit)="onAddPersonalInfo()">
           <div class="form-wrap">
             <div class="title mb-2">
               Personal Information
@@ -36,34 +36,89 @@
             <div class="grid grid--1fr--1fr grid-gap-15 mt-4 mb-3">
               <div class="input">
                 <label>First name</label>
-                <input type="text" placeholder="Enter first name" />
+                <input
+                  type="text"
+                  placeholder="Enter first name"
+                  formControlName="first_name"
+                  [ngClass]="{
+                    'is-invalid':
+                      personalInfoForm.controls['first_name'].hasError(
+                        'required'
+                      ) && personalInfoForm.controls['first_name'].touched
+                  }"
+                />
               </div>
               <div class="input">
                 <label>Last Name </label>
-                <input type="text" placeholder="Enter last name" />
+                <input
+                  type="text"
+                  placeholder="Enter last name"
+                  formControlName="last_name"
+                  [ngClass]="{
+                    'is-invalid':
+                      personalInfoForm.controls['last_name'].hasError(
+                        'required'
+                      ) && personalInfoForm.controls['last_name'].touched
+                  }"
+                />
               </div>
             </div>
             <div class="grid grid--1fr--1fr grid-gap-15 mb-3">
               <div class="input">
                 <label>Email</label>
-                <input type="email" placeholder="Enter email address" />
+                <input
+                  type="email"
+                  placeholder="Enter email address"
+                  formControlName="email"
+                  [ngClass]="{
+                    'is-invalid':
+                      personalInfoForm.controls['email'].hasError('required') &&
+                      personalInfoForm.controls['email'].touched &&
+                      !personalInfoForm.controls['email'].valid
+                  }"
+                />
               </div>
               <div class="input">
-                <label>Phone address </label>
-                <input type="text" placeholder="Enter phone number" />
+                <label>Phone number </label>
+                <input
+                  type="text"
+                  placeholder="Enter phone number"
+                  formControlName="phone"
+                  [ngClass]="{
+                    'is-invalid':
+                      personalInfoForm.controls['phone'].hasError('required') &&
+                      personalInfoForm.controls['phone'].touched
+                  }"
+                />
               </div>
             </div>
             <div class="grid grid--1fr--1fr grid-gap-15 mb-3">
               <div class="input">
                 <label>Date of birth</label>
-                <input type="date" placeholder="Enter date of birth" />
+                <input
+                  type="date"
+                  placeholder="Enter date of birth"
+                  formControlName="date_of_birth"
+                  [ngClass]="{
+                    'is-invalid':
+                      personalInfoForm.controls['date_of_birth'].hasError(
+                        'required'
+                      ) && personalInfoForm.controls['date_of_birth'].touched
+                  }"
+                />
               </div>
               <div class="input">
                 <label>Country </label>
                 <mat-select
                   class="select"
                   placeholder="Select category"
-                  required
+                  formControlName="country"
+                  [ngClass]="{
+                    'is-invalid':
+                      personalInfoForm.controls['country'].hasError(
+                        'required'
+                      ) && personalInfoForm.controls['country'].touched
+                  }"
                 >
                   <mat-option disabled="" selected="" value=""
                     >Select country</mat-option
@@ -75,11 +130,31 @@
             <div class="grid grid--1fr--1fr grid-gap-15 mb-3">
               <div class="input">
                 <label>Residential area</label>
-                <input type="text" placeholder="Enter area of residence" />
+                <input
+                  type="text"
+                  placeholder="Enter area of residence"
+                  formControlName="residential_area"
+                  [ngClass]="{
+                    'is-invalid':
+                      personalInfoForm.controls['residential_area'].hasError(
+                        'required'
+                      ) && personalInfoForm.controls['residential_area'].touched
+                  }"
+                />
               </div>
               <div class="input">
                 <label>Address </label>
-                <input type="text" placeholder="Enter residential adress" />
+                <input
+                  type="text"
+                  placeholder="Enter residential adress"
+                  formControlName="address"
+                  [ngClass]="{
+                    'is-invalid':
+                      personalInfoForm.controls['address'].hasError(
+                        'required'
+                      ) && personalInfoForm.controls['address'].touched
+                  }"
+                />
               </div>
             </div>
             <div class="grid grid--1fr--1fr grid-gap-15 mb-3">
@@ -88,28 +163,50 @@
                 <input
                   type="text"
                   placeholder="Enter bus stop closest to you"
+                  formControlName="nearest_bus_stop"
+                  [ngClass]="{
+                    'is-invalid':
+                      personalInfoForm.controls['nearest_bus_stop'].hasError(
+                        'required'
+                      ) && personalInfoForm.controls['nearest_bus_stop'].touched
+                  }"
                 />
               </div>
               <div class="input m-0">
                 <div class="d-flex flex-column">
                   <label>Gender </label>
-                  <mat-radio-group style="line-height: 34px">
-                    <mat-radio-button value="Male" class="me-2"
+                  <mat-radio-group
+                    style="line-height: 34px"
+                    formControlName="gender"
+                    [ngClass]="{
+                      'is-invalid':
+                        personalInfoForm.controls['gender'].hasError(
+                          'required'
+                        ) && personalInfoForm.controls['gender'].touched
+                    }"
+                  >
+                    <mat-radio-button value="male" class="me-2"
                       >Male</mat-radio-button
                     >
-                    <mat-radio-button value="Female">Female</mat-radio-button>
+                    <mat-radio-button value="female">Female</mat-radio-button>
                   </mat-radio-group>
                 </div>
               </div>
             </div>
             <div class="d-flex align-items-center">
-              <button type="button" mat-flat-button class="me-4">
+              <button
+                type="submit"
+                mat-flat-button
+                class="me-4"
+                [disabled]="!personalInfoForm.valid"
+              >
                 Save <mat-spinner *ngIf="isBusy"> </mat-spinner>
               </button>
               <button
                 type="button"
                 mat-stroked-button
                 (click)="gotoView('next')"
+                [disabled]="!personalInfoForm.valid"
               >
                 Next
               </button>
@@ -218,5 +315,326 @@
         </form>
       </ng-container>
     </aside>
+    <ng-container *ngIf="!itemDetails && queryString == 'edit'">
+      <app-loading-roller></app-loading-roller>
+    </ng-container>
+    <ng-container *ngIf="queryString === 'edit' && itemDetails">
+      <aside>
+        <ng-container *ngIf="screen == 1">
+          <form
+            [formGroup]="updatePersonalInfoForm"
+            (ngSubmit)="onUpdatePersonalInfo()"
+          >
+            <div class="form-wrap">
+              <div class="title mb-2">
+                Personal Information
+                <span class="f12 txt-grey"
+                  >(Must complete this step before proceeding.)</span
+                >
+              </div>
+              <mat-divider></mat-divider>
+              <div class="grid grid--1fr--1fr grid-gap-15 mt-4 mb-3">
+                <div class="input">
+                  <label>First name</label>
+                  <input
+                    type="text"
+                    placeholder="Enter first name"
+                    formControlName="first_name"
+                    [ngClass]="{
+                      'is-invalid':
+                        updatePersonalInfoForm.controls['first_name'].hasError(
+                          'required'
+                        ) &&
+                        updatePersonalInfoForm.controls['first_name'].touched
+                    }"
+                  />
+                </div>
+                <div class="input">
+                  <label>Last Name </label>
+                  <input
+                    type="text"
+                    placeholder="Enter last name"
+                    formControlName="last_name"
+                    [ngClass]="{
+                      'is-invalid':
+                        updatePersonalInfoForm.controls['last_name'].hasError(
+                          'required'
+                        ) &&
+                        updatePersonalInfoForm.controls['last_name'].touched
+                    }"
+                  />
+                </div>
+              </div>
+              <div class="grid grid--1fr--1fr grid-gap-15 mb-3">
+                <div class="input">
+                  <label>Email</label>
+                  <input
+                    type="email"
+                    placeholder="Enter email address"
+                    formControlName="email"
+                    [ngClass]="{
+                      'is-invalid':
+                        updatePersonalInfoForm.controls['email'].hasError(
+                          'required'
+                        ) &&
+                        updatePersonalInfoForm.controls['email'].touched &&
+                        !updatePersonalInfoForm.controls['email'].valid
+                    }"
+                  />
+                </div>
+                <div class="input">
+                  <label>Phone number </label>
+                  <input
+                    type="text"
+                    placeholder="Enter phone number"
+                    formControlName="phone"
+                    [ngClass]="{
+                      'is-invalid':
+                        updatePersonalInfoForm.controls['phone'].hasError(
+                          'required'
+                        ) && updatePersonalInfoForm.controls['phone'].touched
+                    }"
+                  />
+                </div>
+              </div>
+              <div class="grid grid--1fr--1fr grid-gap-15 mb-3">
+                <div class="input">
+                  <label>Date of birth</label>
+                  <input
+                    type="date"
+                    placeholder="Enter date of birth"
+                    formControlName="date_of_birth"
+                    formControlName="date_of_birth"
+                    [ngClass]="{
+                      'is-invalid':
+                        updatePersonalInfoForm.controls[
+                          'date_of_birth'
+                        ].hasError('required') &&
+                        updatePersonalInfoForm.controls['date_of_birth'].touched
+                    }"
+                  />
+                </div>
+                <div class="input">
+                  <label>Country </label>
+                  <mat-select
+                    class="select"
+                    placeholder="Select category"
+                    formControlName="country"
+                    [ngClass]="{
+                      'is-invalid':
+                        updatePersonalInfoForm.controls['country'].hasError(
+                          'required'
+                        ) && updatePersonalInfoForm.controls['country'].touched
+                    }"
+                  >
+                    <mat-option disabled="" selected="" value=""
+                      >Select country</mat-option
+                    >
+                    <mat-option value="Nigeria">Nigeria</mat-option>
+                  </mat-select>
+                </div>
+              </div>
+              <div class="grid grid--1fr--1fr grid-gap-15 mb-3">
+                <div class="input">
+                  <label>Residential area</label>
+                  <input
+                    type="text"
+                    placeholder="Enter area of residence"
+                    formControlName="residential_area"
+                    [ngClass]="{
+                      'is-invalid':
+                        updatePersonalInfoForm.controls[
+                          'residential_area'
+                        ].hasError('required') &&
+                        updatePersonalInfoForm.controls['residential_area']
+                          .touched
+                    }"
+                  />
+                </div>
+                <div class="input">
+                  <label>Address </label>
+                  <input
+                    type="text"
+                    placeholder="Enter residential adress"
+                    formControlName="address"
+                    [ngClass]="{
+                      'is-invalid':
+                        updatePersonalInfoForm.controls['address'].hasError(
+                          'required'
+                        ) && updatePersonalInfoForm.controls['address'].touched
+                    }"
+                  />
+                </div>
+              </div>
+              <div class="grid grid--1fr--1fr grid-gap-15 mb-3">
+                <div class="input">
+                  <label>Nearest bus-stop</label>
+                  <input
+                    type="text"
+                    placeholder="Enter bus stop closest to you"
+                    formControlName="nearest_bus_stop"
+                    [ngClass]="{
+                      'is-invalid':
+                        updatePersonalInfoForm.controls[
+                          'nearest_bus_stop'
+                        ].hasError('required') &&
+                        updatePersonalInfoForm.controls['nearest_bus_stop']
+                          .touched
+                    }"
+                  />
+                </div>
+                <div class="input m-0">
+                  <div class="d-flex flex-column">
+                    <label>Gender </label>
+                    <mat-radio-group
+                      style="line-height: 34px"
+                      formControlName="gender"
+                      [ngClass]="{
+                        'is-invalid':
+                          updatePersonalInfoForm.controls['gender'].hasError(
+                            'required'
+                          ) && updatePersonalInfoForm.controls['gender'].touched
+                      }"
+                    >
+                      <mat-radio-button value="male" class="me-2"
+                        >Male</mat-radio-button
+                      >
+                      <mat-radio-button value="female">Female</mat-radio-button>
+                    </mat-radio-group>
+                  </div>
+                </div>
+              </div>
+              <div class="d-flex align-items-center">
+                <button
+                  type="submit"
+                  mat-flat-button
+                  class="me-4"
+                  [disabled]="!updatePersonalInfoForm.valid"
+                >
+                  Save <mat-spinner *ngIf="isBusy"> </mat-spinner>
+                </button>
+                <button
+                  type="button"
+                  mat-stroked-button
+                  (click)="gotoView('next')"
+                  [disabled]="!updatePersonalInfoForm.valid"
+                >
+                  Next
+                </button>
+              </div>
+            </div>
+          </form>
+        </ng-container>
+        <ng-container *ngIf="screen == 2">
+          <form [formGroup]="updateProfileForm" (ngSubmit)="onUpdateProfile()">
+            <div class="form-wrap">
+              <div class="title mb-2">Membership Information</div>
+              <mat-divider></mat-divider>
+              <div class="pb-3 pt-4">
+                <div class="sm mb-2">Profile Image</div>
+                <app-imageupload
+                  (outToParent)="getChildValue($event, 'fileUpdate')"
+                ></app-imageupload>
+              </div>
+              <div class="d-flex justify-content-between align-items-center">
+                <button
+                  type="submit"
+                  mat-flat-button
+                  class="me-4"
+                  [disabled]="!updateProfileForm.valid"
+                >
+                  Save <mat-spinner *ngIf="isBusy"> </mat-spinner>
+                </button>
+                <div class="d-flex align-items-center">
+                  <button
+                    type="button"
+                    mat-button
+                    class="me-2"
+                    (click)="gotoView('prev')"
+                  >
+                    Prev
+                  </button>
+                  <button
+                    type="button"
+                    mat-stroked-button
+                    (click)="gotoView('next')"
+                  >
+                    Next
+                  </button>
+                </div>
+              </div>
+            </div>
+          </form>
+        </ng-container>
+        <ng-container *ngIf="screen == 3">
+          <form>
+            <div class="form-wrap">
+              <div class="title mb-2">Service Information</div>
+              <mat-divider></mat-divider>
+              <div class="pb-3 pt-4">
+                <div class="input">
+                  <label>Date of membership</label>
+                  <input type="date" placeholder="Enter date of membership" />
+                </div>
+              </div>
+              <div class="d-flex justify-content-between align-items-center">
+                <button type="button" mat-flat-button class="me-4">
+                  Save <mat-spinner *ngIf="isBusy"> </mat-spinner>
+                </button>
+                <div class="d-flex align-items-center">
+                  <button
+                    type="button"
+                    mat-button
+                    class="me-2"
+                    (click)="gotoView('prev')"
+                  >
+                    Prev
+                  </button>
+                  <button
+                    type="button"
+                    mat-stroked-button
+                    (click)="gotoView('next')"
+                  >
+                    Next
+                  </button>
+                </div>
+              </div>
+            </div>
+          </form>
+        </ng-container>
+        <ng-container *ngIf="screen == 4">
+          <form>
+            <div class="form-wrap">
+              <div class="title mb-2">Other Information</div>
+              <mat-divider></mat-divider>
+              <div class="pt-4">
+                <div class="input">
+                  <label>Occupation</label>
+                  <input type="text" placeholder="Enter occupation" />
+                </div>
+              </div>
+              <div class="grid mb-3">
+                <div class="input">
+                  <label>Comment</label>
+                  <textarea
+                    cols="30"
+                    rows="10"
+                    placeholder="Comment"
+                  ></textarea>
+                </div>
+              </div>
+              <div class="d-flex align-items-center">
+                <button type="button" mat-flat-button class="me-4">
+                  Save <mat-spinner *ngIf="isBusy"> </mat-spinner>
+                </button>
+                <button type="button" mat-button (click)="gotoView('prev')">
+                  Prev
+                </button>
+              </div>
+            </div>
+          </form>
+        </ng-container>
+      </aside>
+    </ng-container>
   </section>
 </ng-container>
