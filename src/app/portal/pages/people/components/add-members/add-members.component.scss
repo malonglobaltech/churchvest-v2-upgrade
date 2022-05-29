@@ -23,11 +23,25 @@
           font-size: 14px;
           border-radius: 50%;
           border: 2px solid rgba($light-grey, 0.4);
-          padding: 0.5em 1em;
+          width: 35px;
+          height: 35px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
           color: rgba($light-grey, 0.4);
+          mat-icon {
+            font-size: 17px;
+            width: 17px;
+            height: 17px;
+          }
+          &.icon {
+            display: none;
+          }
         }
+
         label {
           color: rgba($light-grey, 0.4);
+          font-size: 13px;
         }
         &.active {
           span.count {
@@ -41,6 +55,21 @@
         }
         &:last-child {
           margin-bottom: 0em;
+        }
+        &.done {
+          span.count {
+            background: $green;
+            border: none;
+            mat-icon {
+              color: $white;
+            }
+            &.icon {
+              display: flex;
+            }
+            &.txt {
+              display: none;
+            }
+          }
         }
       }
     }

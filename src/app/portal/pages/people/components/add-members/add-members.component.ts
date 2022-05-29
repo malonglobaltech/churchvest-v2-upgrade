@@ -7,6 +7,7 @@ import {
   FormGroup,
   Validators,
 } from '@angular/forms';
+import { getCompletedStatus } from 'src/app/shared/_helperFunctions';
 @Component({
   selector: 'app-add-members',
   templateUrl: './add-members.component.html',
@@ -15,6 +16,7 @@ import {
 export class AddMembersComponent implements OnInit {
   isBusy: boolean = false;
   screen: number = 1;
+  _pathStatus = getCompletedStatus;
   public memberProfileForm: FormGroup = new FormGroup({});
   public updateMemberProfileForm: FormGroup = new FormGroup({});
   constructor(private _location: Location, private fb: FormBuilder) {
@@ -31,27 +33,33 @@ export class AddMembersComponent implements OnInit {
     {
       title: 'Personal Information',
       isActive: true,
+      isCompleted: false,
     },
     {
       title: 'Membership Information',
       isActive: false,
+      isCompleted: false,
     },
     {
       title: 'Service Information',
       isActive: false,
+      isCompleted: false,
     },
     {
       title: 'Other Information',
       isActive: false,
+      isCompleted: false,
     },
   ];
 
   gotoView(screenType?: string, screenIndex?: number) {
     if (screenType === 'next') {
       this.screen = this.screen + 1;
+      this._pathStatus(this.screen, this.stepperPath);
     }
     if (screenType === 'prev') {
       this.screen = this.screen - 1;
+      this._pathStatus(this.screen, this.stepperPath);
     }
     if (screenIndex) {
       this.screen = screenIndex;

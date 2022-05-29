@@ -61,3 +61,14 @@ export const concatColumnString = (colString: string) => {
   const myArray = strtext.split(' ');
   return myArray.join('');
 };
+export const getCompletedStatus = (screen: number, obj: any) => {
+  obj.map((x: any, i: any) => {
+    if (i == screen - 2) {
+      x.isCompleted = true;
+    }
+    if (i == screen - 1) {
+      x.isCompleted = false;
+    }
+    return x.isCompleted;
+  });
+};

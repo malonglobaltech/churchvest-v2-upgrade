@@ -9,11 +9,14 @@
     <aside class="stepper-path">
       <ul>
         <li
-          [ngClass]="{ active: screen == count + 1 }"
+          [ngClass]="{ active: screen == count + 1, done: item.isCompleted }"
           *ngFor="let item of stepperPath; let count = index"
         >
           <div class="d-flex align-items-center">
-            <span class="count me-2">{{ count + 1 }}</span>
+            <span class="count icon me-2 animate animate__bounceIn"
+              ><mat-icon>done</mat-icon></span
+            >
+            <span class="count txt me-2">{{ count + 1 }}</span>
           </div>
           <label>{{ item.title }}</label>
         </li>
