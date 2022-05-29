@@ -48,3 +48,16 @@ export const checkForSpecialChars = (str: any) => {
     return false;
   }
 };
+export const printElement = (id: any) => {
+  let printHtml = document.getElementById(id).outerHTML;
+  let elementPage =
+    '<html><head><title></title></head><body>' + printHtml + '</body>';
+  document.body.outerHTML = elementPage;
+  window.print();
+  document.location.reload();
+};
+export const concatColumnString = (colString: string) => {
+  let strtext = colString;
+  const myArray = strtext.split(' ');
+  return myArray.join('');
+};

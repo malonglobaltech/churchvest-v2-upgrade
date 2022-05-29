@@ -1,0 +1,47 @@
+<div #_progressbarMultiple1>
+  <mat-progress-bar [color]="color" [mode]="mode" [value]="progressValue">
+  </mat-progress-bar>
+</div>
+<figure>
+  <div class="dashed-border crew-wrap bg-white">
+    <span class="spinner" [ngClass]="{ visiblity: isLoading }"
+      ><mat-spinner></mat-spinner
+    ></span>
+    <div class="d-flex py-3">
+      <input
+        type="file"
+        name="file"
+        hidden=""
+        (change)="changeImageUploadListener($event)"
+        #uploadAvatar
+      />
+      <div class="my-2 cursor d-flex align-items-center" (click)="addAvatar()">
+        <div class="d-flex justify-content-center">
+          <div
+            class="fileAvtr"
+            [ngStyle]="{
+              background: setImageFile
+                ? 'url(' + setImageFile + ')'
+                : 'url(' + '/assets/img/png/avatar.png' + ')'
+            }"
+            #uploadedAvatar
+          >
+            <span class="icon abs"><mat-icon>photo_camera</mat-icon></span>
+          </div>
+        </div>
+        <div class="my-2 d-flex justify-content-center" *ngIf="_filename">
+          <span class="f12 txt-grey">{{ _filename }}</span>
+        </div>
+        <div class="block mt-2 ms-2" *ngIf="!_filename">
+          <p>
+            Upload your image here or
+            <span>browse</span>
+            <small style="text-align: center"
+              >Only jpeg or png files are allowed for upload</small
+            >
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</figure>

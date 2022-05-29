@@ -19,6 +19,10 @@ export class AuthService {
       return user;
     }
   }
+  getChurchSlug() {
+    let church: any = JSON.parse(localStorage.getItem('user_church'));
+    return church.slug;
+  }
   isAuthenticated(): any {
     const token = localStorage.getItem('token');
     return !this.jwtHelper.isTokenExpired(token);

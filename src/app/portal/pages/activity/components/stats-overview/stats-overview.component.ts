@@ -6,7 +6,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
   styleUrls: ['./stats-overview.component.scss'],
 })
 export class StatsOverviewComponent implements OnInit {
-  @ViewChild('scrollItems') scrollItems;
+  @ViewChild('scrollItems') scrollItems: any;
   constructor() {}
 
   ngOnInit(): void {}
@@ -22,4 +22,36 @@ export class StatsOverviewComponent implements OnInit {
       behavior: 'smooth',
     });
   }
+  activitiesItems = [
+    {
+      title: 'Regular Members',
+      url: '/portal/people/members',
+      count: '1',
+      icon: 'plus-heart',
+    },
+    {
+      title: 'New Departments',
+      url: '',
+      count: '0',
+      icon: 'square-add',
+    },
+    {
+      title: 'Income',
+      url: '',
+      count: '0',
+      icon: 'income',
+    },
+    {
+      title: 'Expense',
+      url: '',
+      count: '0',
+      icon: 'expense',
+    },
+    {
+      title: 'Reconciled',
+      url: '',
+      count: '0',
+      icon: 'reconciliation',
+    },
+  ];
 }

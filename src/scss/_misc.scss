@@ -93,9 +93,11 @@
   &.grid-gap-30 {
     grid-column-gap: 30px;
   }
+  &.grid-gap-15 {
+    grid-column-gap: 15px;
+  }
   &--1fr--1fr {
     grid-template-columns: 1fr 1fr;
-    grid-column-gap: 20px;
   }
   &--2fr--1fr {
     grid-template-columns: 2fr 1fr;
@@ -326,7 +328,7 @@
         border-bottom-left-radius: 3px;
       }
       &:last-child {
-        padding: 1.2rem 3em 1.2rem 1em;
+        padding: 1.2rem 3em 1.2rem 0em;
         border-top-right-radius: 3px;
         border-bottom-right-radius: 3px;
       }
@@ -343,6 +345,9 @@
         span {
           font-size: 14px;
           font-weight: 400;
+          &.lowercase {
+            text-transform: lowercase;
+          }
           &.tag {
             padding: 8px 3px;
             border-radius: 4px;
@@ -529,7 +534,15 @@ mat-select-trigger {
     color: $purple;
   }
 }
-
+.mat-tab-group {
+  font-family: "Titillium Web", sans-serif;
+  &.mat-primary .mat-ink-bar {
+    background: $purple;
+  }
+}
+.mat-tab-label {
+  font-family: "Titillium Web", sans-serif;
+}
 .mat-menu-content:not(:empty) {
   display: flex;
   flex-direction: column;
@@ -583,7 +596,7 @@ mat-select-trigger {
           color: $white;
         }
         span {
-          color: #fff;
+          color: $purple;
           font-size: 14px;
           font-weight: 400;
         }
@@ -612,9 +625,11 @@ mat-select-trigger {
       p {
         color: $light-grey;
         font-size: 18px;
-        text-align: center;
         span {
           color: #1567bb;
+        }
+        &.center {
+          text-align: center;
         }
         &.sm-txt {
           color: $black;
@@ -665,58 +680,16 @@ mat-select-trigger {
         height: 300px;
         overflow-y: scroll;
       }
-      .list--wrap {
-        .item {
-          padding: 0.7em 0em;
-          background: #f5f5fa;
-          border-top: 0.5px solid #cccccc;
-          border-bottom: 0.5px solid #cccccc;
-          margin-bottom: 10px;
-          .avatar {
-            margin-right: 10px;
-            img {
-              width: 40px;
-              height: 40px;
-            }
-          }
+      .details-wrap-list {
+        padding: 2em;
+        .grid {
           label {
+            font-size: 12px;
+            color: rgba($light-grey, 0.8);
             span {
               display: block;
-              font-weight: 300;
-              color: $light-grey;
-            }
-          }
-        }
-      }
-      .total {
-        padding: 1em;
-        background: rgba($purple, 0.1);
-        margin-top: 2em;
-        border-radius: 4px;
-        .d-flex {
-          label:last-child {
-            font-weight: bold;
-            font-size: 18px;
-          }
-        }
-      }
-      .bg-white {
-        padding: 2em 1.3em;
-        background: $white;
-        box-shadow: 0px 4px 25px rgba(0, 0, 0, 0.1);
-        border-radius: 4px;
-        display: flex;
-        flex-direction: column;
-        .list-items {
-          label {
-            font-size: 14px;
-            font-weight: 500;
-            text-transform: uppercase;
-            span {
-              font-size: 16px;
-              color: $light-grey;
-              font-weight: 400;
-              text-transform: capitalize;
+              font-size: 15px;
+              color: $purple;
             }
           }
         }
@@ -856,13 +829,7 @@ mat-select-trigger {
 .chips_wrap {
   flex-wrap: wrap;
 }
-.hideDate {
-  display: none;
-  &.show_date {
-    display: flex;
-    align-items: center;
-  }
-}
+
 .empty-state {
   min-height: 300px;
 }
@@ -891,87 +858,88 @@ mat-select-trigger {
 }
 
 /* Loading style */
-.lds-roller {
+.lds-default {
   display: inline-block;
   position: relative;
   width: 80px;
   height: 80px;
 }
-.lds-roller div {
-  animation: lds-roller 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
-  transform-origin: 40px 40px;
-}
-.lds-roller div:after {
-  content: " ";
-  display: block;
+.lds-default div {
   position: absolute;
-  width: 7px;
-  height: 7px;
-  border-radius: 50%;
+  width: 6px;
+  height: 6px;
   background: $purple;
-  margin: -4px 0 0 -4px;
+  border-radius: 50%;
+  animation: lds-default 1.2s linear infinite;
 }
-.lds-roller div:nth-child(1) {
-  animation-delay: -0.036s;
+.lds-default div:nth-child(1) {
+  animation-delay: 0s;
+  top: 37px;
+  left: 66px;
 }
-.lds-roller div:nth-child(1):after {
-  top: 63px;
-  left: 63px;
+.lds-default div:nth-child(2) {
+  animation-delay: -0.1s;
+  top: 22px;
+  left: 62px;
 }
-.lds-roller div:nth-child(2) {
-  animation-delay: -0.072s;
+.lds-default div:nth-child(3) {
+  animation-delay: -0.2s;
+  top: 11px;
+  left: 52px;
 }
-.lds-roller div:nth-child(2):after {
-  top: 68px;
-  left: 56px;
+.lds-default div:nth-child(4) {
+  animation-delay: -0.3s;
+  top: 7px;
+  left: 37px;
 }
-.lds-roller div:nth-child(3) {
-  animation-delay: -0.108s;
+.lds-default div:nth-child(5) {
+  animation-delay: -0.4s;
+  top: 11px;
+  left: 22px;
 }
-.lds-roller div:nth-child(3):after {
-  top: 71px;
-  left: 48px;
+.lds-default div:nth-child(6) {
+  animation-delay: -0.5s;
+  top: 22px;
+  left: 11px;
 }
-.lds-roller div:nth-child(4) {
-  animation-delay: -0.144s;
+.lds-default div:nth-child(7) {
+  animation-delay: -0.6s;
+  top: 37px;
+  left: 7px;
 }
-.lds-roller div:nth-child(4):after {
-  top: 72px;
-  left: 40px;
+.lds-default div:nth-child(8) {
+  animation-delay: -0.7s;
+  top: 52px;
+  left: 11px;
 }
-.lds-roller div:nth-child(5) {
-  animation-delay: -0.18s;
+.lds-default div:nth-child(9) {
+  animation-delay: -0.8s;
+  top: 62px;
+  left: 22px;
 }
-.lds-roller div:nth-child(5):after {
-  top: 71px;
-  left: 32px;
+.lds-default div:nth-child(10) {
+  animation-delay: -0.9s;
+  top: 66px;
+  left: 37px;
 }
-.lds-roller div:nth-child(6) {
-  animation-delay: -0.216s;
+.lds-default div:nth-child(11) {
+  animation-delay: -1s;
+  top: 62px;
+  left: 52px;
 }
-.lds-roller div:nth-child(6):after {
-  top: 68px;
-  left: 24px;
+.lds-default div:nth-child(12) {
+  animation-delay: -1.1s;
+  top: 52px;
+  left: 62px;
 }
-.lds-roller div:nth-child(7) {
-  animation-delay: -0.252s;
-}
-.lds-roller div:nth-child(7):after {
-  top: 63px;
-  left: 17px;
-}
-.lds-roller div:nth-child(8) {
-  animation-delay: -0.288s;
-}
-.lds-roller div:nth-child(8):after {
-  top: 56px;
-  left: 12px;
-}
-@keyframes lds-roller {
-  0% {
-    transform: rotate(0deg);
-  }
+@keyframes lds-default {
+  0%,
+  20%,
+  80%,
   100% {
-    transform: rotate(360deg);
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.5);
   }
 }

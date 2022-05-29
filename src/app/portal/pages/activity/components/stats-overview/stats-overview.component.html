@@ -9,10 +9,10 @@
   </div>
   <div class="card--list--wrap" #scrollItems>
     <div class="items-wrap">
-      <div class="card">
+      <div class="card" *ngFor="let item of activitiesItems">
         <div class="d-flex justify-content-between align-items-center">
           <img
-            src="assets/img/svg/people-network.svg"
+            [src]="'assets/img/svg/' + item.icon + '.svg'"
             alt="people"
             class="icon"
           />
@@ -21,100 +21,14 @@
               <mat-icon>more_horiz</mat-icon>
             </span>
             <mat-menu #menu="matMenu">
-              <button type="button" mat-menu-item>View all</button>
+              <button type="button" mat-menu-item [routerLink]="item.url">
+                View all
+              </button>
             </mat-menu>
           </div>
         </div>
-        <label class="title-lg">1</label>
-        <label class="f14 txt-grey"
-          >Regular <br />
-          Members</label
-        >
-      </div>
-      <div class="card">
-        <div class="d-flex justify-content-between align-items-center">
-          <img src="assets/img/svg/plus-heart.svg" alt="people" class="icon" />
-          <div class="cursor" [matMenuTriggerFor]="menu">
-            <span>
-              <mat-icon>more_horiz</mat-icon>
-            </span>
-            <mat-menu #menu="matMenu">
-              <button type="button" mat-menu-item>View all</button>
-            </mat-menu>
-          </div>
-        </div>
-        <label class="title-lg">0</label>
-        <label class="f14 txt-grey"
-          >First <br />
-          Timer</label
-        >
-      </div>
-      <div class="card">
-        <div class="d-flex justify-content-between align-items-center">
-          <img src="assets/img/svg/square-add.svg" alt="people" class="icon" />
-          <div class="cursor" [matMenuTriggerFor]="menu">
-            <span>
-              <mat-icon>more_horiz</mat-icon>
-            </span>
-            <mat-menu #menu="matMenu">
-              <button type="button" mat-menu-item>View all</button>
-            </mat-menu>
-          </div>
-        </div>
-        <label class="title-lg">0</label>
-        <label class="f14 txt-grey"
-          >New <br />
-          Departments</label
-        >
-      </div>
-      <div class="card">
-        <div class="d-flex justify-content-between align-items-center">
-          <img src="assets/img/svg/income.svg" alt="people" class="icon" />
-          <div class="cursor" [matMenuTriggerFor]="menu">
-            <span>
-              <mat-icon>more_horiz</mat-icon>
-            </span>
-            <mat-menu #menu="matMenu">
-              <button type="button" mat-menu-item>View all</button>
-            </mat-menu>
-          </div>
-        </div>
-        <label class="title-lg">0</label>
-        <label class="f14 txt-grey">Income </label>
-      </div>
-      <div class="card">
-        <div class="d-flex justify-content-between align-items-center">
-          <img src="assets/img/svg/expense.svg" alt="expense" class="icon" />
-          <div class="cursor" [matMenuTriggerFor]="menu">
-            <span>
-              <mat-icon>more_horiz</mat-icon>
-            </span>
-            <mat-menu #menu="matMenu">
-              <button type="button" mat-menu-item>View all</button>
-            </mat-menu>
-          </div>
-        </div>
-        <label class="title-lg">1</label>
-        <label class="f14 txt-grey">Expense</label>
-      </div>
-      <div class="card">
-        <div class="d-flex justify-content-between align-items-center">
-          <img
-            src="assets/img/svg/reconciliation.svg"
-            alt="expense"
-            class="icon"
-          />
-          <div class="cursor" [matMenuTriggerFor]="menu">
-            <span>
-              <mat-icon>more_horiz</mat-icon>
-            </span>
-            <mat-menu #menu="matMenu">
-              <button type="button" mat-menu-item>View all</button>
-            </mat-menu>
-          </div>
-        </div>
-        <label class="title-lg">0</label>
-        <label class="f14 txt-grey">Reconciled</label>
+        <label class="title-lg">{{ item.count }}</label>
+        <label class="f14 txt-grey">{{ item.title }}</label>
       </div>
     </div>
   </div>

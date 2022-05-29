@@ -119,7 +119,7 @@ export class SidenavComponent implements OnInit {
         },
         {
           title: 'Regular Members',
-          url: 'regular-members',
+          url: 'members',
         },
         {
           title: 'House Fellowship',

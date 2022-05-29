@@ -1,0 +1,55 @@
+@import "src/scss/_vars.scss";
+.fileAvtr {
+  position: relative;
+  width: 80px;
+  height: 80px;
+  position: relative;
+  background-repeat: no-repeat !important;
+  background-size: cover !important;
+  background-position: center !important;
+  border-radius: 5px;
+  span {
+    display: flex;
+    align-items: center;
+    background: white;
+    border-radius: 50%;
+    width: fit-content;
+    padding: 7px;
+    position: absolute;
+    bottom: -1em;
+    right: 0;
+    z-index: 1;
+  }
+}
+
+.spinner {
+  position: absolute;
+  right: 2em;
+  top: 1em;
+  visibility: hidden;
+  &.visiblity {
+    visibility: visible;
+  }
+}
+.dashed-border {
+  position: relative;
+  border: 1px dashed #d7dbdd;
+  border-radius: 4px;
+  padding: 1em;
+  background: rgba(#f5f4f0, 0.6);
+  &.bg-white {
+    background: #fff;
+    p {
+      font-size: 12px;
+      margin: 0;
+      span {
+        color: $purple;
+      }
+      small {
+        font-size: 10px;
+        display: block;
+        color: rgba(#000, 0.5);
+      }
+    }
+  }
+}
