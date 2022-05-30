@@ -2,23 +2,25 @@ import { SelectionModel } from '@angular/cdk/collections';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
-import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { ExportServiceService } from 'src/app/portal/services/export-service.service';
 import { PeopleService } from 'src/app/portal/services/people.service';
+import { Location } from '@angular/common';
 import {
   concatColumnString,
   printElement,
 } from 'src/app/shared/_helperFunctions';
+import { Router } from '@angular/router';
 
 @Component({
-  selector: 'app-members',
-  templateUrl: './members.component.html',
-  styleUrls: ['./members.component.scss'],
+  selector: 'app-trashed-members',
+  templateUrl: './trashed-members.component.html',
+  styleUrls: ['./trashed-members.component.scss'],
 })
-export class MembersComponent implements OnInit {
+export class TrashedMembersComponent implements OnInit {
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild('closebtn') closebtn: any;
+  @ViewChild('closebtn_') closebtn_: any;
   memberList: any[] = [];
   pageSize: number = 20;
   currentPage = 0;
@@ -27,7 +29,9 @@ export class MembersComponent implements OnInit {
   _loading: boolean = false;
   file_name = 'members_data';
   searchedMemberDetails: any;
-  demo1TabIndex: number = 0;
+  selectedMembers: any[] = [];
+  _isAllSelected: boolean = false;
+  _isSingleSelected: boolean = false;
   _printElement = printElement;
   _concatColumnString = concatColumnString;
   public dataSource: MatTableDataSource<any> = new MatTableDataSource();
@@ -37,8 +41,9 @@ export class MembersComponent implements OnInit {
   constructor(
     private peopleService: PeopleService,
     private exportService: ExportServiceService,
+    private toastr: ToastrService,
     private router: Router,
-    private toastr: ToastrService
+    private _location: Location
   ) {}
 
   ngOnInit(): void {
@@ -80,7 +85,7 @@ export class MembersComponent implements OnInit {
   getMembers() {
     this._loading = true;
     this.memberList = [];
-    this.peopleService.fetchAllMembers().subscribe(
+    this.peopleService.fetchAllMembersFromTrash().subscribe(
       (res: any) => {
         this._loading = false;
         const { data } = res;
@@ -97,6 +102,9 @@ export class MembersComponent implements OnInit {
       }
     );
   }
+  gotoBack() {
+    this._location.back();
+  }
   getMemberDetails(id: number) {
     this.itemDetails = this.memberList.find((i) => i.user.id === id);
     if (typeof this.itemDetails === 'undefined') {
@@ -105,6 +113,10 @@ export class MembersComponent implements OnInit {
     } else {
       return this.itemDetails;
     }
+  }
+  getSelectedMemberItem(arr: any) {
+    let filter = arr.map((x: any) => x.id);
+    this.selectedMembers = filter;
   }
   searchMember(query: string) {
     this.peopleService.searchMember(query).subscribe((res: any) => {
@@ -123,18 +135,57 @@ export class MembersComponent implements OnInit {
   }
   confirmDelete() {
     this.isBusy = true;
-    let payload = {
-      members_id: [this.itemDetails.id],
-    };
-    if (this.itemDetails !== undefined) {
-      this.peopleService.moveToTrash(payload).subscribe(({ message }) => {
+    let payload: any;
+    if (this._isAllSelected) {
+      payload = {
+        members_id: this.selectedMembers,
+      };
+    }
+    if (this._isSingleSelected) {
+      payload = {
+        members_id: [this.itemDetails.id],
+      };
+    }
+    this.peopleService.deleteMember(payload).subscribe(
+      ({ message }) => {
         this.isBusy = false;
         this.toastr.success(message, 'Success');
-        this.router.navigate(['/portal/people/trashed-members']);
         this.closebtn._elementRef.nativeElement.click();
         this.getMembers();
-      });
+      },
+      (msg) => {
+        this.isBusy = false;
+        this.toastr.error(msg, 'Message');
+      }
+    );
+  }
+  confirmRestore() {
+    this.isBusy = true;
+    let payload: any;
+    if (this._isAllSelected) {
+      payload = {
+        members_id: this.selectedMembers,
+      };
     }
+    if (this._isSingleSelected) {
+      payload = {
+        members_id: [this.itemDetails.id],
+      };
+    }
+
+    this.peopleService.restoreMember(payload).subscribe(
+      ({ message }) => {
+        this.isBusy = false;
+        this.toastr.success(message, 'Success');
+        this.router.navigate(['/portal/people/members']);
+        this.closebtn_._elementRef.nativeElement.click();
+        this.getMembers();
+      },
+      (msg) => {
+        this.isBusy = false;
+        this.toastr.error(msg, 'Message');
+      }
+    );
   }
   exportToExcel(): void {
     const edata: Array<any> = [];

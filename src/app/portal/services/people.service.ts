@@ -38,12 +38,60 @@ export class PeopleService {
       )
       .pipe(catchError(handleError));
   }
+  fetchAllMembersFromTrash(): Observable<any> {
+    return this.http
+      .get<any>(
+        `${
+          environment.managementbaseUrl
+        }/${this.authService.getChurchSlug()}/people/members/trash`
+      )
+      .pipe(catchError(handleError));
+  }
   updateProfileImage(model: any): Observable<any> {
     return this.http
       .post<any>(
         ` ${
           environment.managementbaseUrl
         }/${this.authService.getChurchSlug()}/people/members/membership`,
+        model
+      )
+      .pipe(
+        map((status) => status),
+        catchError(handleError)
+      );
+  }
+  moveToTrash(model: any): Observable<any> {
+    return this.http
+      .post<any>(
+        ` ${
+          environment.managementbaseUrl
+        }/${this.authService.getChurchSlug()}/people/members/delete`,
+        model
+      )
+      .pipe(
+        map((status) => status),
+        catchError(handleError)
+      );
+  }
+  deleteMember(model: any): Observable<any> {
+    return this.http
+      .post<any>(
+        ` ${
+          environment.managementbaseUrl
+        }/${this.authService.getChurchSlug()}/people/members/trash/delete`,
+        model
+      )
+      .pipe(
+        map((status) => status),
+        catchError(handleError)
+      );
+  }
+  restoreMember(model: any): Observable<any> {
+    return this.http
+      .post<any>(
+        ` ${
+          environment.managementbaseUrl
+        }/${this.authService.getChurchSlug()}/people/members/trash/restore`,
         model
       )
       .pipe(

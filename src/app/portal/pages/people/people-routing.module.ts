@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { AddMembersComponent } from './components/add-members/add-members.component';
 import { MembersComponent } from './components/members/members.component';
 import { SummaryComponent } from './components/summary/summary.component';
+import { TrashedMembersComponent } from './components/trashed-members/trashed-members.component';
 import { PeopleComponent } from './people.component';
 
 const routes: Routes = [
@@ -21,6 +22,10 @@ const routes: Routes = [
       {
         path: 'summary',
         component: SummaryComponent,
+      },
+      {
+        path: 'trashed-members',
+        component: TrashedMembersComponent,
       },
       {
         path: '**',

@@ -11,12 +11,14 @@ import { LoadingRollerModule } from '../../components/loading-roller/loading-rol
 import { ImageuploadModule } from '../../components/imageupload/imageupload.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgxDropzoneModule } from 'ngx-dropzone';
+import { TrashedMembersComponent } from './components/trashed-members/trashed-members.component';
 @NgModule({
   declarations: [
     PeopleComponent,
     SummaryComponent,
     MembersComponent,
     AddMembersComponent,
+    TrashedMembersComponent,
   ],
   imports: [
     CommonModule,
