@@ -206,6 +206,7 @@
               <button
                 type="button"
                 mat-stroked-button
+                [disabled]="!personalInfoForm.valid"
                 (click)="gotoView('next')"
               >
                 Next
@@ -267,6 +268,7 @@
                   type="button"
                   mat-button
                   class="me-2"
+                  [disabled]="!memberProfileForm.valid"
                   (click)="gotoView('prev')"
                 >
                   Prev
@@ -274,6 +276,7 @@
                 <button
                   type="button"
                   mat-stroked-button
+                  [disabled]="!memberProfileForm.valid"
                   (click)="gotoView('next')"
                 >
                   Next
