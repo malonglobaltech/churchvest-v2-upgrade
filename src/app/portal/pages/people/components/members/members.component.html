@@ -208,6 +208,20 @@
               <mat-tab label="Personal Information">
                 <ng-container *ngIf="itemDetails">
                   <div class="details-wrap-list">
+                    <div class="grid mb-3">
+                      <div class="d-flex avatar">
+                        <img
+                          src="assets/img/png/avatar.png"
+                          alt="avatar"
+                          *ngIf="!itemDetails.profile"
+                        />
+                        <img
+                          [src]="itemDetails.profile"
+                          alt="avatar"
+                          *ngIf="itemDetails.profile"
+                        />
+                      </div>
+                    </div>
                     <div class="grid grid--1fr--1fr mb-3">
                       <label
                         >First Name<span>{{

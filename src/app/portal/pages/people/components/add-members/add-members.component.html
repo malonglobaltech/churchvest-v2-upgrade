@@ -82,6 +82,7 @@
                 <label>Phone number </label>
                 <input
                   type="text"
+                  maxlength="11"
                   placeholder="Enter phone number"
                   formControlName="phone"
                   [ngClass]="{
@@ -206,7 +207,6 @@
                 type="button"
                 mat-stroked-button
                 (click)="gotoView('next')"
-                [disabled]="!personalInfoForm.valid"
               >
                 Next
               </button>
@@ -215,18 +215,51 @@
         </form>
       </ng-container>
       <ng-container *ngIf="screen == 2">
-        <form>
+        <form [formGroup]="memberProfileForm" (ngSubmit)="onAdddProfile()">
           <div class="form-wrap">
             <div class="title mb-2">Membership Information</div>
             <mat-divider></mat-divider>
             <div class="pb-3 pt-4">
               <div class="sm mb-2">Profile Image</div>
-              <app-imageupload
-                (outToParent)="getChildValue($event, 'fileUpload')"
-              ></app-imageupload>
+              <ngx-dropzone (change)="onSelect($event)">
+                <ngx-dropzone-label
+                  ><p class="m-0">
+                    Upload your image here or
+                    <span>browse</span>
+                    <small
+                      class="f12"
+                      style="text-align: center; display: block"
+                      >Only jpeg or png files are allowed for upload</small
+                    >
+                  </p></ngx-dropzone-label
+                >
+                <ngx-dropzone-preview
+                  *ngFor="let f of _files"
+                  [removable]="true"
+                  (removed)="onRemove(f)"
+                >
+                  <ngx-dropzone-label
+                    >{{ f.name }} ({{ f.type }})</ngx-dropzone-label
+                  >
+                </ngx-dropzone-preview>
+                <ngx-dropzone-image-preview
+                  ngProjectAs="ngx-dropzone-preview"
+                  *ngFor="let f of _files"
+                  [file]="f"
+                >
+                  <ngx-dropzone-label
+                    >{{ f.name }} ({{ f.type }})</ngx-dropzone-label
+                  >
+                </ngx-dropzone-image-preview>
+              </ngx-dropzone>
             </div>
             <div class="d-flex justify-content-between align-items-center">
-              <button type="button" mat-flat-button class="me-4">
+              <button
+                type="submit"
+                mat-flat-button
+                class="me-4"
+                [disabled]="!memberProfileForm.valid"
+              >
                 Save <mat-spinner *ngIf="isBusy"> </mat-spinner>
               </button>
               <div class="d-flex align-items-center">
@@ -386,6 +419,7 @@
                   <label>Phone number </label>
                   <input
                     type="text"
+                    maxlength="11"
                     placeholder="Enter phone number"
                     formControlName="phone"
                     [ngClass]="{
@@ -532,9 +566,37 @@
               <mat-divider></mat-divider>
               <div class="pb-3 pt-4">
                 <div class="sm mb-2">Profile Image</div>
-                <app-imageupload
-                  (outToParent)="getChildValue($event, 'fileUpdate')"
-                ></app-imageupload>
+                <ngx-dropzone (change)="onSelect($event)">
+                  <ngx-dropzone-label
+                    ><p class="m-0">
+                      Upload your image here or
+                      <span>browse</span>
+                      <small
+                        class="f12"
+                        style="text-align: center; display: block"
+                        >Only jpeg or png files are allowed for upload</small
+                      >
+                    </p></ngx-dropzone-label
+                  >
+                  <ngx-dropzone-preview
+                    *ngFor="let f of _files"
+                    [removable]="true"
+                    (removed)="onRemove(f)"
+                  >
+                    <ngx-dropzone-label
+                      >{{ f.name }} ({{ f.type }})</ngx-dropzone-label
+                    >
+                  </ngx-dropzone-preview>
+                  <ngx-dropzone-image-preview
+                    ngProjectAs="ngx-dropzone-preview"
+                    *ngFor="let f of _files"
+                    [file]="f"
+                  >
+                    <ngx-dropzone-label
+                      >{{ f.name }} ({{ f.type }})</ngx-dropzone-label
+                    >
+                  </ngx-dropzone-image-preview>
+                </ngx-dropzone>
               </div>
               <div class="d-flex justify-content-between align-items-center">
                 <button

@@ -10,7 +10,7 @@ import { AddMembersComponent } from './components/add-members/add-members.compon
 import { LoadingRollerModule } from '../../components/loading-roller/loading-roller.module';
 import { ImageuploadModule } from '../../components/imageupload/imageupload.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-
+import { NgxDropzoneModule } from 'ngx-dropzone';
 @NgModule({
   declarations: [
     PeopleComponent,
@@ -26,6 +26,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     FormsModule,
     LoadingRollerModule,
     ImageuploadModule,
+    NgxDropzoneModule,
   ],
   exports: [PeopleComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],

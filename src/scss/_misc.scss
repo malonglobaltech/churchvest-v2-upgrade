@@ -684,6 +684,13 @@ mat-select-trigger {
       .details-wrap-list {
         padding: 2em;
         .grid {
+          .avatar {
+            img {
+              border-radius: 50%;
+              width: 150px;
+              height: 150px;
+            }
+          }
           label {
             font-size: 12px;
             color: rgba($light-grey, 0.8);
