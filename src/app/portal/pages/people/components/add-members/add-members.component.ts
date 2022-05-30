@@ -206,7 +206,7 @@ export class AddMembersComponent implements OnInit {
 
       this.updateProfileImage = this.fb.group({
         member_id: [parseInt(this.itemDetails.id)],
-        profile: [],
+        profile: [this.itemDetails?.profile],
       });
       this.updateServiceInfo = this.fb.group({
         member_id: [parseInt(this.itemDetails.id)],
