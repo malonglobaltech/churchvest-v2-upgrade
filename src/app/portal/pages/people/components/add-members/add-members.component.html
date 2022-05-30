@@ -216,50 +216,26 @@
         </form>
       </ng-container>
       <ng-container *ngIf="screen == 2">
-        <form [formGroup]="memberProfileForm" (ngSubmit)="onAdddProfile()">
+        <form
+          [formGroup]="updateProfileImage"
+          (ngSubmit)="onUpdateMemberInfo('profileImage')"
+        >
           <div class="form-wrap">
             <div class="title mb-2">Membership Information</div>
             <mat-divider></mat-divider>
             <div class="pb-3 pt-4">
               <div class="sm mb-2">Profile Image</div>
-              <ngx-dropzone (change)="onSelect($event)">
-                <ngx-dropzone-label
-                  ><p class="m-0">
-                    Upload your image here or
-                    <span>browse</span>
-                    <small
-                      class="f12"
-                      style="text-align: center; display: block"
-                      >Only jpeg or png files are allowed for upload</small
-                    >
-                  </p></ngx-dropzone-label
-                >
-                <ngx-dropzone-preview
-                  *ngFor="let f of _files"
-                  [removable]="true"
-                  (removed)="onRemove(f)"
-                >
-                  <ngx-dropzone-label
-                    >{{ f.name }} ({{ f.type }})</ngx-dropzone-label
-                  >
-                </ngx-dropzone-preview>
-                <ngx-dropzone-image-preview
-                  ngProjectAs="ngx-dropzone-preview"
-                  *ngFor="let f of _files"
-                  [file]="f"
-                >
-                  <ngx-dropzone-label
-                    >{{ f.name }} ({{ f.type }})</ngx-dropzone-label
-                  >
-                </ngx-dropzone-image-preview>
-              </ngx-dropzone>
+              <app-imageupload
+                [setImageFile]="itemDetails?.profile"
+                (outToParent)="getChildValue($event, 'fileUpdate')"
+              ></app-imageupload>
             </div>
             <div class="d-flex justify-content-between align-items-center">
               <button
                 type="submit"
                 mat-flat-button
                 class="me-4"
-                [disabled]="!memberProfileForm.valid"
+                [disabled]="!updateProfileImage.valid"
               >
                 Save <mat-spinner *ngIf="isBusy"> </mat-spinner>
               </button>
@@ -268,15 +244,15 @@
                   type="button"
                   mat-button
                   class="me-2"
-                  [disabled]="!memberProfileForm.valid"
                   (click)="gotoView('prev')"
+                  [disabled]="!updateProfileImage.valid"
                 >
                   Prev
                 </button>
                 <button
                   type="button"
                   mat-stroked-button
-                  [disabled]="!memberProfileForm.valid"
+                  [disabled]="!updateProfileImage.valid"
                   (click)="gotoView('next')"
                 >
                   Next
@@ -287,18 +263,30 @@
         </form>
       </ng-container>
       <ng-container *ngIf="screen == 3">
-        <form>
+        <form
+          [formGroup]="updateServiceInfo"
+          (ngSubmit)="onUpdateMemberInfo('serviceInfo')"
+        >
           <div class="form-wrap">
             <div class="title mb-2">Service Information</div>
             <mat-divider></mat-divider>
             <div class="pb-3 pt-4">
               <div class="input">
                 <label>Date of membership</label>
-                <input type="date" placeholder="Enter date of membership" />
+                <input
+                  type="date"
+                  formControlName="date_of_membership"
+                  placeholder="Enter date of membership"
+                />
               </div>
             </div>
             <div class="d-flex justify-content-between align-items-center">
-              <button type="button" mat-flat-button class="me-4">
+              <button
+                type="submit"
+                mat-flat-button
+                class="me-4"
+                [disabled]="!updateServiceInfo.valid"
+              >
                 Save <mat-spinner *ngIf="isBusy"> </mat-spinner>
               </button>
               <div class="d-flex align-items-center">
@@ -307,6 +295,7 @@
                   mat-button
                   class="me-2"
                   (click)="gotoView('prev')"
+                  [disabled]="!updateServiceInfo.valid"
                 >
                   Prev
                 </button>
@@ -314,6 +303,7 @@
                   type="button"
                   mat-stroked-button
                   (click)="gotoView('next')"
+                  [disabled]="!updateServiceInfo.valid"
                 >
                   Next
                 </button>
@@ -323,32 +313,74 @@
         </form>
       </ng-container>
       <ng-container *ngIf="screen == 4">
-        <form>
+        <form
+          [formGroup]="updateOtherInfo"
+          (ngSubmit)="onUpdateMemberInfo('otherInfo')"
+        >
           <div class="form-wrap">
             <div class="title mb-2">Other Information</div>
             <mat-divider></mat-divider>
             <div class="pt-4">
               <div class="input">
                 <label>Occupation</label>
-                <input type="text" placeholder="Enter occupation" />
+                <input
+                  type="text"
+                  formControlName="occupation"
+                  placeholder="Enter occupation"
+                  [ngClass]="{
+                    'is-invalid':
+                      updateOtherInfo.controls['occupation'].hasError(
+                        'required'
+                      ) && updateOtherInfo.controls['occupation'].touched
+                  }"
+                />
               </div>
             </div>
             <div class="grid mb-3">
               <div class="input">
                 <label>Comment</label>
-                <textarea cols="30" rows="10" placeholder="Comment"></textarea>
+                <textarea
+                  cols="30"
+                  rows="10"
+                  placeholder="Comment"
+                  formControlName="comment"
+                ></textarea>
               </div>
             </div>
             <div class="d-flex align-items-center">
-              <button type="button" mat-flat-button class="me-4">
+              <button
+                type="submit"
+                mat-flat-button
+                class="me-4"
+                [disabled]="!updateOtherInfo.valid"
+              >
                 Save <mat-spinner *ngIf="isBusy"> </mat-spinner>
               </button>
-              <button type="button" mat-button (click)="gotoView('prev')">
+              <button
+                type="button"
+                mat-button
+                (click)="gotoView('prev')"
+                [disabled]="!updateOtherInfo.valid"
+              >
                 Prev
               </button>
             </div>
           </div>
         </form>
+      </ng-container>
+      <ng-container *ngIf="screen == 5">
+        <div class="bg-white">
+          <div class="center">
+            <h2>All Done</h2>
+            <span class="py-2 icon">🎊🎊🎊</span>
+            <p class="f12 txt-grey">Profile update completed</p>
+            <div class="mt-2">
+              <button mat-stroked-button routerLink="/portal/people/members">
+                Go back
+              </button>
+            </div>
+          </div>
+        </div>
       </ng-container>
     </aside>
     <ng-container *ngIf="!itemDetails && queryString == 'edit'">
@@ -563,50 +595,26 @@
           </form>
         </ng-container>
         <ng-container *ngIf="screen == 2">
-          <form [formGroup]="updateProfileForm" (ngSubmit)="onUpdateProfile()">
+          <form
+            [formGroup]="updateProfileImage"
+            (ngSubmit)="onUpdateMemberInfo('profileImage')"
+          >
             <div class="form-wrap">
               <div class="title mb-2">Membership Information</div>
               <mat-divider></mat-divider>
               <div class="pb-3 pt-4">
                 <div class="sm mb-2">Profile Image</div>
-                <ngx-dropzone (change)="onSelect($event)">
-                  <ngx-dropzone-label
-                    ><p class="m-0">
-                      Upload your image here or
-                      <span>browse</span>
-                      <small
-                        class="f12"
-                        style="text-align: center; display: block"
-                        >Only jpeg or png files are allowed for upload</small
-                      >
-                    </p></ngx-dropzone-label
-                  >
-                  <ngx-dropzone-preview
-                    *ngFor="let f of _files"
-                    [removable]="true"
-                    (removed)="onRemove(f)"
-                  >
-                    <ngx-dropzone-label
-                      >{{ f.name }} ({{ f.type }})</ngx-dropzone-label
-                    >
-                  </ngx-dropzone-preview>
-                  <ngx-dropzone-image-preview
-                    ngProjectAs="ngx-dropzone-preview"
-                    *ngFor="let f of _files"
-                    [file]="f"
-                  >
-                    <ngx-dropzone-label
-                      >{{ f.name }} ({{ f.type }})</ngx-dropzone-label
-                    >
-                  </ngx-dropzone-image-preview>
-                </ngx-dropzone>
+                <app-imageupload
+                  [setImageFile]="itemDetails.profile"
+                  (outToParent)="getChildValue($event, 'fileUpdate')"
+                ></app-imageupload>
               </div>
               <div class="d-flex justify-content-between align-items-center">
                 <button
                   type="submit"
                   mat-flat-button
                   class="me-4"
-                  [disabled]="!updateProfileForm.valid"
+                  [disabled]="!updateProfileImage.valid"
                 >
                   Save <mat-spinner *ngIf="isBusy"> </mat-spinner>
                 </button>
@@ -632,18 +640,30 @@
           </form>
         </ng-container>
         <ng-container *ngIf="screen == 3">
-          <form>
+          <form
+            [formGroup]="updateServiceInfo"
+            (ngSubmit)="onUpdateMemberInfo('serviceInfo')"
+          >
             <div class="form-wrap">
               <div class="title mb-2">Service Information</div>
               <mat-divider></mat-divider>
               <div class="pb-3 pt-4">
                 <div class="input">
                   <label>Date of membership</label>
-                  <input type="date" placeholder="Enter date of membership" />
+                  <input
+                    type="date"
+                    formControlName="date_of_membership"
+                    placeholder="Enter date of membership"
+                  />
                 </div>
               </div>
               <div class="d-flex justify-content-between align-items-center">
-                <button type="button" mat-flat-button class="me-4">
+                <button
+                  type="submit"
+                  mat-flat-button
+                  class="me-4"
+                  [disabled]="!updateServiceInfo.valid"
+                >
                   Save <mat-spinner *ngIf="isBusy"> </mat-spinner>
                 </button>
                 <div class="d-flex align-items-center">
@@ -668,14 +688,27 @@
           </form>
         </ng-container>
         <ng-container *ngIf="screen == 4">
-          <form>
+          <form
+            [formGroup]="updateOtherInfo"
+            (ngSubmit)="onUpdateMemberInfo('otherInfo')"
+          >
             <div class="form-wrap">
               <div class="title mb-2">Other Information</div>
               <mat-divider></mat-divider>
               <div class="pt-4">
                 <div class="input">
                   <label>Occupation</label>
-                  <input type="text" placeholder="Enter occupation" />
+                  <input
+                    type="text"
+                    formControlName="occupation"
+                    placeholder="Enter occupation"
+                    [ngClass]="{
+                      'is-invalid':
+                        updateOtherInfo.controls['occupation'].hasError(
+                          'required'
+                        ) && updateOtherInfo.controls['occupation'].touched
+                    }"
+                  />
                 </div>
               </div>
               <div class="grid mb-3">
@@ -685,11 +718,17 @@
                     cols="30"
                     rows="10"
                     placeholder="Comment"
+                    formControlName="comment"
                   ></textarea>
                 </div>
               </div>
               <div class="d-flex align-items-center">
-                <button type="button" mat-flat-button class="me-4">
+                <button
+                  type="submit"
+                  mat-flat-button
+                  class="me-4"
+                  [disabled]="!updateOtherInfo.valid"
+                >
                   Save <mat-spinner *ngIf="isBusy"> </mat-spinner>
                 </button>
                 <button type="button" mat-button (click)="gotoView('prev')">
@@ -698,6 +737,20 @@
               </div>
             </div>
           </form>
+        </ng-container>
+        <ng-container *ngIf="screen == 5">
+          <div class="bg-white">
+            <div class="center">
+              <h2>All Done</h2>
+              <span class="py-2 icon">🎊🎊🎊</span>
+              <p class="f12 txt-grey">Profile update completed</p>
+              <div class="mt-2">
+                <button mat-stroked-button routerLink="/portal/people/members">
+                  Go back
+                </button>
+              </div>
+            </div>
+          </div>
         </ng-container>
       </aside>
     </ng-container>

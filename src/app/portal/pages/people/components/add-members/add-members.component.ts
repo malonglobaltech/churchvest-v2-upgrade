@@ -27,11 +27,11 @@ export class AddMembersComponent implements OnInit {
   _files: any[] = [];
   fileData: any;
   _pathStatus = getCompletedStatus;
-  public memberProfileForm: FormGroup = new FormGroup({});
   public personalInfoForm: FormGroup = new FormGroup({});
-  public updateProfileForm: FormGroup = new FormGroup({});
   public updatePersonalInfoForm: FormGroup = new FormGroup({});
-  public updateServiceInfoForm: FormGroup = new FormGroup({});
+  public updateProfileImage: FormGroup = new FormGroup({});
+  public updateServiceInfo: FormGroup = new FormGroup({});
+  public updateOtherInfo: FormGroup = new FormGroup({});
   constructor(
     private peopleServ: PeopleService,
     private toastr: ToastrService,
@@ -52,9 +52,18 @@ export class AddMembersComponent implements OnInit {
       address: [null, Validators.required],
       gender: [null, Validators.required],
     });
-    this.memberProfileForm = this.fb.group({
+    this.updateProfileImage = this.fb.group({
       member_id: [null],
-      profile: ['', Validators.required],
+      profile: [null, Validators.required],
+    });
+    this.updateServiceInfo = this.fb.group({
+      member_id: [null],
+      date_of_membership: [null, Validators.required],
+    });
+    this.updateOtherInfo = this.fb.group({
+      member_id: [null],
+      occupation: ['', Validators.required],
+      comment: [''],
     });
   }
 
@@ -89,20 +98,7 @@ export class AddMembersComponent implements OnInit {
   gotoBack() {
     this._location.back();
   }
-  onSelect(event: any) {
-    this.fileData = event.addedFiles[0];
-    this._files.push(...event.addedFiles);
-    const file = event.addedFiles[0];
-    this.queryString == 'edit'
-      ? this.updateProfileForm.get('profile').setValue(file)
-      : this.memberProfileForm.get('profile').setValue(file);
-  }
-  onRemove(event: any) {
-    this._files.splice(this._files.indexOf(event), 1);
-    this.queryString == 'edit'
-      ? this.updateProfileForm.get('profile').setValue(null)
-      : this.memberProfileForm.get('profile').setValue(null);
-  }
+
   get personalInforValue(): any {
     return this.personalInfoForm.getRawValue();
   }
@@ -128,11 +124,8 @@ export class AddMembersComponent implements OnInit {
   }
   addToFormControl(val: any, identifier?: any) {
     switch (val !== null && identifier) {
-      case (identifier = 'fileUpload'):
-        var imgurl = this.memberProfileForm.get('profile') as FormControl;
-        return imgurl.setValue(val);
       case (identifier = 'fileUpdate'):
-        var imgUrl = this.updateProfileForm.get('profile') as FormControl;
+        var imgUrl = this.updateProfileImage.get('profile') as FormControl;
 
         return imgUrl.setValue(val);
 
@@ -178,7 +171,7 @@ export class AddMembersComponent implements OnInit {
     }
   }
   setFormControlElement() {
-    if (this.queryString == 'edit') {
+    if (this.queryString == 'edit' && this._memberId !== undefined) {
       this.updatePersonalInfoForm = this.fb.group({
         member_id: [parseInt(this.itemDetails.id)],
         first_name: [this.itemDetails['user'].first_name, Validators.required],
@@ -211,9 +204,24 @@ export class AddMembersComponent implements OnInit {
         ],
       });
 
-      this.updateProfileForm = this.fb.group({
+      this.updateProfileImage = this.fb.group({
         member_id: [parseInt(this.itemDetails.id)],
-        profile: [null],
+        profile: [],
+      });
+      this.updateServiceInfo = this.fb.group({
+        member_id: [parseInt(this.itemDetails.id)],
+        date_of_membership: [
+          this.itemDetails['details']?.service?.date_of_membership,
+          Validators.required,
+        ],
+      });
+      this.updateOtherInfo = this.fb.group({
+        member_id: [parseInt(this.itemDetails.id)],
+        occupation: [
+          this.itemDetails['details']?.other?.occupation,
+          Validators.required,
+        ],
+        comment: [this.itemDetails['details']?.other?.comment],
       });
     }
   }
@@ -231,6 +239,7 @@ export class AddMembersComponent implements OnInit {
           this.toastr.success(message, 'Message');
           this.personalInfoForm.reset();
           this.isBusy = false;
+          this.getMembers();
           this.gotoView('next');
         },
         (error) => {
@@ -242,41 +251,6 @@ export class AddMembersComponent implements OnInit {
         () => {
           this.isBusy = false;
           this.personalInfoForm.reset();
-        }
-      );
-    }
-  }
-  onAdddProfile() {
-    this.isBusy = true;
-    const formData = new FormData();
-    this.memberProfileForm.patchValue({
-      member_id: parseInt(this._memberId),
-    });
-
-    formData.append('member_id', this.memberProfileForm.get('member_id').value);
-    formData.append('profile', this.memberProfileForm.get('profile').value);
-    if (this.memberProfileForm.invalid) {
-      this.isBusy = false;
-      return;
-    }
-    if (this.memberProfileForm.valid) {
-      //Make api call here...
-      this.peopleServ.updateProfileImage(formData).subscribe(
-        ({ message, data }) => {
-          this.toastr.success(message, 'Message');
-          this.memberProfileForm.reset();
-          this.isBusy = false;
-          this.gotoView('next');
-        },
-        (error) => {
-          this.isBusy = false;
-          this.toastr.error(error, 'Message', {
-            timeOut: 3000,
-          });
-        },
-        () => {
-          this.isBusy = false;
-          this.memberProfileForm.reset();
         }
       );
     }
@@ -309,34 +283,112 @@ export class AddMembersComponent implements OnInit {
       );
     }
   }
-  onUpdateProfile() {
+  onUpdateMemberInfo(query: string) {
     this.isBusy = true;
-    const formData = new FormData();
-    formData.append('profile', this.updateProfileForm.get('profile').value);
-    formData.append('member_id', this.updateProfileForm.get('member_id').value);
 
-    if (this.updateProfileForm.invalid) {
-      this.isBusy = false;
-      return;
-    }
-    if (this.updateProfileForm.valid) {
-      //Make api call here...
-      this.peopleServ.updateProfileImage(formData).subscribe(
-        ({ message, data }) => {
-          this.toastr.success(message, 'Message');
-          this.isBusy = false;
-          this.gotoView('next');
-        },
-        (error) => {
-          this.isBusy = false;
-          this.toastr.error(error, 'Message', {
-            timeOut: 3000,
-          });
-        },
-        () => {
-          this.isBusy = false;
-        }
+    if (query == 'profileImage') {
+      if (this.queryString !== 'edit') {
+        this.updateProfileImage.patchValue({
+          member_id: parseInt(this._memberId),
+        });
+      }
+      const formData = new FormData();
+      formData.append('profile', this.updateProfileImage.get('profile').value);
+      formData.append(
+        'member_id',
+        this.updateProfileImage.get('member_id').value
       );
+
+      if (this.updateProfileImage.invalid) {
+        this.isBusy = false;
+        return;
+      }
+      if (this.updateProfileImage.valid) {
+        //Make api call here...
+        this.peopleServ.updateProfileImage(formData).subscribe(
+          ({ message, data }) => {
+            this.toastr.success(message, 'Message');
+            this.isBusy = false;
+            this.getMembers();
+            this.gotoView('next');
+          },
+          (error) => {
+            this.isBusy = false;
+            this.toastr.error(error, 'Message', {
+              timeOut: 3000,
+            });
+          },
+          () => {
+            this.isBusy = false;
+          }
+        );
+      }
+    }
+    if (query == 'serviceInfo') {
+      if (this.queryString !== 'edit') {
+        this.updateServiceInfo.patchValue({
+          member_id: parseInt(this._memberId),
+        });
+      }
+      if (this.updateServiceInfo.invalid) {
+        this.isBusy = false;
+        return;
+      }
+      if (this.updateServiceInfo.valid) {
+        //Make api call here...
+        this.peopleServ
+          .updateMemberServiceInfo(this.updateServiceInfo.getRawValue())
+          .subscribe(
+            ({ message, data }) => {
+              this.toastr.success(message, 'Message');
+              this.isBusy = false;
+              this.getMembers();
+              this.gotoView('next');
+            },
+            (error) => {
+              this.isBusy = false;
+              this.toastr.error(error, 'Message', {
+                timeOut: 3000,
+              });
+            },
+            () => {
+              this.isBusy = false;
+            }
+          );
+      }
+    }
+    if (query == 'otherInfo') {
+      if (this.queryString !== 'edit') {
+        this.updateOtherInfo.patchValue({
+          member_id: parseInt(this._memberId),
+        });
+      }
+      if (this.updateOtherInfo.invalid) {
+        this.isBusy = false;
+        return;
+      }
+      if (this.updateOtherInfo.valid) {
+        //Make api call here...
+        this.peopleServ
+          .updateMemberOtherInfo(this.updateOtherInfo.getRawValue())
+          .subscribe(
+            ({ message, data }) => {
+              this.toastr.success(message, 'Message');
+              this.isBusy = false;
+              this.getMembers();
+              this.gotoView('next');
+            },
+            (error) => {
+              this.isBusy = false;
+              this.toastr.error(error, 'Message', {
+                timeOut: 3000,
+              });
+            },
+            () => {
+              this.isBusy = false;
+            }
+          );
+      }
     }
   }
 }

@@ -7,8 +7,4 @@ export const environment = {
   managementbaseUrl: 'https://backend.churchvest.com/api/management',
   mainUrl: 'https://backend.churchvest.com/api',
   hostingUrl: 'https://www.churchvest.com/',
-  accessKeyId: 'AKIAZG3ZF6NYYLWHMPPK',
-  secretAccessKey: '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',
-  bucketName: 'churchvest',
-  region: 'us-east-1',
 };

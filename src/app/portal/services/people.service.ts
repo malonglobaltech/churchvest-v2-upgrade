@@ -28,7 +28,19 @@ export class PeopleService {
         catchError(handleError)
       );
   }
-  // Fetch Regular Members
+  deleteMember(model: any): Observable<any> {
+    return this.http
+      .post<any>(
+        ` ${
+          environment.managementbaseUrl
+        }/${this.authService.getChurchSlug()}/people/members/trash/delete`,
+        model
+      )
+      .pipe(
+        map((status) => status),
+        catchError(handleError)
+      );
+  }
   fetchAllMembers(): Observable<any> {
     return this.http
       .get<any>(
@@ -47,38 +59,12 @@ export class PeopleService {
       )
       .pipe(catchError(handleError));
   }
-  updateProfileImage(model: any): Observable<any> {
-    return this.http
-      .post<any>(
-        ` ${
-          environment.managementbaseUrl
-        }/${this.authService.getChurchSlug()}/people/members/membership`,
-        model
-      )
-      .pipe(
-        map((status) => status),
-        catchError(handleError)
-      );
-  }
   moveToTrash(model: any): Observable<any> {
     return this.http
       .post<any>(
         ` ${
           environment.managementbaseUrl
         }/${this.authService.getChurchSlug()}/people/members/delete`,
-        model
-      )
-      .pipe(
-        map((status) => status),
-        catchError(handleError)
-      );
-  }
-  deleteMember(model: any): Observable<any> {
-    return this.http
-      .post<any>(
-        ` ${
-          environment.managementbaseUrl
-        }/${this.authService.getChurchSlug()}/people/members/trash/delete`,
         model
       )
       .pipe(
@@ -107,5 +93,44 @@ export class PeopleService {
         }/${this.authService.getChurchSlug()}/people/members/search?query=${params}`
       )
       .pipe(catchError(handleError));
+  }
+  updateProfileImage(model: any): Observable<any> {
+    return this.http
+      .post<any>(
+        ` ${
+          environment.managementbaseUrl
+        }/${this.authService.getChurchSlug()}/people/members/membership`,
+        model
+      )
+      .pipe(
+        map((status) => status),
+        catchError(handleError)
+      );
+  }
+  updateMemberServiceInfo(model: any): Observable<any> {
+    return this.http
+      .post<any>(
+        ` ${
+          environment.managementbaseUrl
+        }/${this.authService.getChurchSlug()}/people/members/service`,
+        model
+      )
+      .pipe(
+        map((status) => status),
+        catchError(handleError)
+      );
+  }
+  updateMemberOtherInfo(model: any): Observable<any> {
+    return this.http
+      .post<any>(
+        ` ${
+          environment.managementbaseUrl
+        }/${this.authService.getChurchSlug()}/people/members/other`,
+        model
+      )
+      .pipe(
+        map((status) => status),
+        catchError(handleError)
+      );
   }
 }

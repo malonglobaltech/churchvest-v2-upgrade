@@ -329,16 +329,55 @@
                 </ng-container>
               </mat-tab>
               <mat-tab label="Membership Information">
-                <p>This is member info</p>
+                <ng-container *ngIf="itemDetails">
+                  <div class="details-wrap-list">
+                    <div class="grid grid--1fr--1fr mb-3">
+                      <label
+                        >Date of membership
+                        <span>{{
+                          itemDetails.details?.service?.date_of_membership
+                            ? (itemDetails.details?.service.date_of_membership
+                              | date: "mediumDate")
+                            : "---"
+                        }}</span>
+                      </label>
+                      <label>Worker position<span>---</span></label>
+                    </div>
+                  </div>
+                </ng-container>
               </mat-tab>
               <mat-tab label="Other Information">
-                <p>This is other info</p>
+                <ng-container *ngIf="itemDetails">
+                  <div class="details-wrap-list">
+                    <div class="grid grid--1fr--1fr mb-3">
+                      <label
+                        >Occupation of Member
+                        <span>{{
+                          itemDetails.details?.other?.occupation
+                            ? itemDetails.details?.other.occupation
+                            : "---"
+                        }}</span>
+                      </label>
+                      <label
+                        >Comment
+                        <span>{{
+                          itemDetails.details?.other?.comment
+                            ? itemDetails.details?.other.comment
+                            : "---"
+                        }}</span>
+                      </label>
+                    </div>
+                  </div>
+                </ng-container>
               </mat-tab>
-              <mat-tab label="Service Information">
-                <p>This is service info</p>
-              </mat-tab>
-              <mat-tab label="Comment">
-                <p>This is comment</p>
+              <mat-tab label="Fellowship Membership">
+                <ng-container *ngIf="itemDetails">
+                  <div class="details-wrap-list">
+                    <p class="txt-grey" style="font-size: 12px">
+                      No information at the momenet.
+                    </p>
+                  </div>
+                </ng-container>
               </mat-tab>
             </mat-tab-group>
           </div>
