@@ -218,16 +218,28 @@
         <div class="container">
           <div class="pb-3">
             <div class="center">
-              <p>
+              <p
+                *ngIf="selection.selected.length !== 0"
+                class="text-center m-0"
+              >
                 Are you sure you want to delete
                 {{ selection.selected.length > 1 ? "these" : "this" }} member?
+                <br />
                 They will no longer be accessible.
+              </p>
+              <p *ngIf="selection.selected.length == 0" class="text-center m-0">
+                Please select one or more member
               </p>
             </div>
           </div>
         </div>
         <div class="modal-footer d-flex justify-content-end align-items-center">
-          <button mat-button class="text-danger me-3" (click)="confirmDelete()">
+          <button
+            mat-button
+            class="text-danger me-3"
+            [disabled]="selection.selected.length == 0"
+            (click)="confirmDelete()"
+          >
             Delete <mat-spinner *ngIf="isBusy"> </mat-spinner>
           </button>
           <button mat-stroked-button data-bs-dismiss="modal" #closebtn>
@@ -251,15 +263,26 @@
         <div class="container">
           <div class="pb-3">
             <div class="center">
-              <p>
+              <p
+                *ngIf="selection.selected.length !== 0"
+                class="text-center m-0"
+              >
                 Are you sure you want to restore
                 {{ selection.selected.length > 1 ? "these" : "this" }} member?
+              </p>
+              <p *ngIf="selection.selected.length == 0" class="text-center m-0">
+                Please select one or more member
               </p>
             </div>
           </div>
         </div>
         <div class="modal-footer d-flex justify-content-end align-items-center">
-          <button mat-flat-button class="me-3" (click)="confirmRestore()">
+          <button
+            mat-flat-button
+            class="me-3"
+            [disabled]="selection.selected.length == 0"
+            (click)="confirmRestore()"
+          >
             Restore <mat-spinner *ngIf="isBusy"> </mat-spinner>
           </button>
           <button mat-stroked-button data-bs-dismiss="modal" #closebtn_>
