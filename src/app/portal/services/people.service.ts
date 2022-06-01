@@ -58,12 +58,23 @@ export class PeopleService {
       )
       .pipe(catchError(handleError));
   }
-  fetchAllMembersFromTrash(): Observable<any> {
+  fetchTrashedMember(id: any): Observable<any> {
+    return this.http
+      .get<any>(
+        environment.managementbaseUrl +
+          `/${this.authService.getChurchSlug()}/people/members/trash/${id}`
+      )
+      .pipe(catchError(handleError));
+  }
+  fetchAllMembersFromTrash(
+    pageNumber?: number,
+    pageSize?: number
+  ): Observable<any> {
     return this.http
       .get<any>(
         `${
           environment.managementbaseUrl
-        }/${this.authService.getChurchSlug()}/people/members/trash`
+        }/${this.authService.getChurchSlug()}/people/members/trash/?page=${pageNumber}&size=${pageSize}`
       )
       .pipe(catchError(handleError));
   }

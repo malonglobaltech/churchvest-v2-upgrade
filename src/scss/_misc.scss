@@ -356,7 +356,16 @@
             font-size: 13px;
             font-weight: 500;
             display: block;
-
+            &.green {
+              background: rgba($green, 0.1);
+              color: $green;
+              text-align: center;
+            }
+            &.purple {
+              background: rgba($purple, 0.1);
+              color: $purple;
+              text-align: center;
+            }
             &.status-approved {
               background: rgba($green, 0.1);
               color: $green;

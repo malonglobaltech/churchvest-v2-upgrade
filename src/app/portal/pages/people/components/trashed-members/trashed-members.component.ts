@@ -27,6 +27,7 @@ export class TrashedMembersComponent implements OnInit {
   isBusy: boolean = false;
   itemDetails: any;
   _loading: boolean = false;
+  _loading_: boolean = false;
   file_name = 'members_data';
   searchedMemberDetails: any;
   selectedMembers: any[] = [];
@@ -85,22 +86,24 @@ export class TrashedMembersComponent implements OnInit {
   getMembers() {
     this._loading = true;
     this.memberList = [];
-    this.peopleService.fetchAllMembersFromTrash().subscribe(
-      (res: any) => {
-        this._loading = false;
-        const { data } = res;
-        this.memberList = data;
-        this.dataSource = new MatTableDataSource(this.memberList);
-        this.paginator.pageIndex = this.currentPage;
-        this.paginator.length = this.memberList.length;
-      },
-      (errors) => {
-        if (errors) {
+    this.peopleService
+      .fetchAllMembersFromTrash(this.currentPage + 1, this.pageSize)
+      .subscribe(
+        (res: any) => {
           this._loading = false;
-          this.memberList = [];
+          const { data, meta } = res;
+          this.memberList = data;
+          this.dataSource = new MatTableDataSource(this.memberList);
+          this.paginator.pageIndex = this.currentPage;
+          this.paginator.length = meta.total;
+        },
+        (errors) => {
+          if (errors) {
+            this._loading = false;
+            this.memberList = [];
+          }
         }
-      }
-    );
+      );
   }
   gotoBack() {
     this._location.back();

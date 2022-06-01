@@ -29,6 +29,10 @@ export class MembersComponent implements OnInit {
   file_name = 'members_data';
   searchedMemberDetails: any;
   memberId: number;
+  selectedMembers: any[] = [];
+  _isAllSelected: boolean = false;
+  _isSingleSelected: boolean = false;
+  payload: any[] = [];
   _printElement = printElement;
   _concatColumnString = concatColumnString;
   public dataSource: MatTableDataSource<any> = new MatTableDataSource();
@@ -50,11 +54,12 @@ export class MembersComponent implements OnInit {
     this.dataSource.paginator = this.paginator;
   }
 
-  column = ['first name', 'last name', 'phone', 'email', 'action'];
+  column = ['first name', 'last name', 'role', 'phone', 'email', 'action'];
 
   isAllSelected() {
+    let filtered = this.dataSource.data.filter((x) => x.role !== 'admin');
     const numSelected = this.selection.selected.length;
-    const numRows = this.dataSource.data.length;
+    const numRows = filtered.length;
     return numSelected === numRows;
   }
   masterToggle() {
@@ -62,7 +67,8 @@ export class MembersComponent implements OnInit {
       this.selection.clear();
       return;
     }
-    this.selection.select(...this.dataSource.data);
+    let filtered = this.dataSource.data.filter((x) => x.role !== 'admin');
+    this.selection.select(...filtered);
   }
 
   checkboxLabel(row?: any): string {
@@ -99,6 +105,10 @@ export class MembersComponent implements OnInit {
         }
       );
   }
+  getSelectedMemberItem(arr: any) {
+    let filter = arr.map((x: any) => x.id);
+    this.selectedMembers = filter;
+  }
   getMemberDetails(id: any) {
     this._loading_ = true;
     this.memberId = id;
@@ -132,18 +142,24 @@ export class MembersComponent implements OnInit {
   }
   confirmDelete() {
     this.isBusy = true;
-    let payload = {
-      members_id: [this.itemDetails.id],
-    };
-    if (this.itemDetails !== undefined) {
-      this.peopleService.moveToTrash(payload).subscribe(({ message }) => {
-        this.isBusy = false;
-        this.toastr.success(message, 'Success');
-        this.router.navigate(['/portal/people/trashed-members']);
-        this.closebtn._elementRef.nativeElement.click();
-        this.getMembers();
-      });
+    let payload: any;
+    if (this._isSingleSelected) {
+      payload = {
+        members_id: [this.itemDetails.id],
+      };
     }
+    if (this._isAllSelected) {
+      payload = {
+        members_id: this.selectedMembers,
+      };
+    }
+    this.peopleService.moveToTrash(payload).subscribe(({ message }) => {
+      this.isBusy = false;
+      this.toastr.success(message, 'Success');
+      this.router.navigate(['/portal/people/trashed-members']);
+      this.closebtn._elementRef.nativeElement.click();
+      this.getMembers();
+    });
   }
   exportToExcel(): void {
     const edata: Array<any> = [];
