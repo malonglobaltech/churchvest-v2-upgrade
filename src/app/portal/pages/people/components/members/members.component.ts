@@ -27,6 +27,7 @@ export class MembersComponent implements OnInit {
   _loading: boolean = false;
   _loading_: boolean = false;
   file_name = 'members_data';
+  filterValue: string;
   searchedMemberDetails: any;
   memberId: number;
   selectedMembers: any[] = [];
@@ -80,8 +81,8 @@ export class MembersComponent implements OnInit {
     }`;
   }
   applyFilter(event: Event) {
-    const filterValue = (event.target as HTMLInputElement).value;
-    this.dataSource.filter = filterValue.trim().toLowerCase();
+    this.filterValue = (event.target as HTMLInputElement).value;
+    this.dataSource.filter = this.filterValue.trim().toLowerCase();
   }
   getMembers() {
     this._loading = true;
