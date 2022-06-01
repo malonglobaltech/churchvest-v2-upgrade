@@ -11,7 +11,8 @@ import { getCompletedStatus } from 'src/app/shared/_helperFunctions';
 import { PeopleService } from 'src/app/portal/services/people.service';
 import { ToastrService } from 'ngx-toastr';
 import { ActivatedRoute, Router } from '@angular/router';
-import { filter } from 'rxjs/operators';
+import { catchError, filter } from 'rxjs/operators';
+import { ObservableInput, throwError } from 'rxjs';
 @Component({
   selector: 'app-add-members',
   templateUrl: './add-members.component.html',
@@ -138,8 +139,6 @@ export class AddMembersComponent implements OnInit {
       (res: any) => {
         const { data } = res;
         this.memberList = data;
-        this.getMemberDetails(parseInt(this._memberId));
-        this.setFormControlElement();
       },
       (errors) => {
         if (errors) {
@@ -154,20 +153,26 @@ export class AddMembersComponent implements OnInit {
       .subscribe((params) => {
         this.queryString = params.query;
         this._memberId = params.id;
+        this.getMemberDetails();
       });
     if (this.queryString === '') {
       this.router.navigate(['/portal/jackpot-game']);
     }
   }
-  getMemberDetails(id: number) {
-    if (this.memberList.length !== 0) {
-      this.itemDetails = this.memberList.find((i) => i.user.id === id);
-      if (typeof this.itemDetails === 'undefined') {
-        this.itemDetails = null;
-        return this.itemDetails;
-      } else {
-        return this.itemDetails;
-      }
+  getMemberDetails() {
+    if (this._memberId !== undefined) {
+      this.peopleServ
+        .fetchMemberDetails(this._memberId)
+        .pipe(
+          catchError((err: any): ObservableInput<any> => {
+            return throwError(err);
+          })
+        )
+        .subscribe((res) => {
+          const { data } = res;
+          this.itemDetails = data;
+          this.setFormControlElement();
+        });
     }
   }
   setFormControlElement() {
@@ -266,7 +271,6 @@ export class AddMembersComponent implements OnInit {
       this.peopleServ.addPersonalInfo(this.updatedFormValue).subscribe(
         ({ message, data }) => {
           this.toastr.success(message, 'Message');
-          // this.updatePersonalInfoForm.reset();
           this.isBusy = false;
           this.gotoView('next');
         },
@@ -278,7 +282,6 @@ export class AddMembersComponent implements OnInit {
         },
         () => {
           this.isBusy = false;
-          // this.updatePersonalInfoForm.reset();
         }
       );
     }

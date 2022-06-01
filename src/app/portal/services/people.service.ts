@@ -41,12 +41,20 @@ export class PeopleService {
         catchError(handleError)
       );
   }
-  fetchAllMembers(): Observable<any> {
+  fetchAllMembers(pageNumber?: number, pageSize?: number): Observable<any> {
     return this.http
       .get<any>(
         `${
           environment.managementbaseUrl
-        }/${this.authService.getChurchSlug()}/people/members`
+        }/${this.authService.getChurchSlug()}/people/members/?page=${pageNumber}&size=${pageSize}`
+      )
+      .pipe(catchError(handleError));
+  }
+  fetchMemberDetails(id: any): Observable<any> {
+    return this.http
+      .get<any>(
+        environment.managementbaseUrl +
+          `/${this.authService.getChurchSlug()}/people/members/member/${id}`
       )
       .pipe(catchError(handleError));
   }

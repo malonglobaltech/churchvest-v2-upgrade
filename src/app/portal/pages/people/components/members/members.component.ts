@@ -20,14 +20,15 @@ export class MembersComponent implements OnInit {
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild('closebtn') closebtn: any;
   memberList: any[] = [];
-  pageSize: number = 20;
+  pageSize: number = 50;
   currentPage = 0;
   isBusy: boolean = false;
   itemDetails: any;
   _loading: boolean = false;
+  _loading_: boolean = false;
   file_name = 'members_data';
   searchedMemberDetails: any;
-  demo1TabIndex: number = 0;
+  memberId: number;
   _printElement = printElement;
   _concatColumnString = concatColumnString;
   public dataSource: MatTableDataSource<any> = new MatTableDataSource();
@@ -61,7 +62,6 @@ export class MembersComponent implements OnInit {
       this.selection.clear();
       return;
     }
-
     this.selection.select(...this.dataSource.data);
   }
 
@@ -80,30 +80,39 @@ export class MembersComponent implements OnInit {
   getMembers() {
     this._loading = true;
     this.memberList = [];
-    this.peopleService.fetchAllMembers().subscribe(
-      (res: any) => {
-        this._loading = false;
-        const { data } = res;
-        this.memberList = data;
-        this.dataSource = new MatTableDataSource(this.memberList);
-        this.paginator.pageIndex = this.currentPage;
-        this.paginator.length = this.memberList.length;
-      },
-      (errors) => {
-        if (errors) {
+    this.peopleService
+      .fetchAllMembers(this.currentPage + 1, this.pageSize)
+      .subscribe(
+        (res: any) => {
           this._loading = false;
-          this.memberList = [];
+          const { data, meta } = res;
+          this.memberList = data;
+          this.dataSource = new MatTableDataSource(this.memberList);
+          this.paginator.pageIndex = this.currentPage;
+          this.paginator.length = meta.total;
+        },
+        (errors) => {
+          if (errors) {
+            this._loading = false;
+            this.memberList = [];
+          }
         }
-      }
-    );
+      );
   }
-  getMemberDetails(id: number) {
-    this.itemDetails = this.memberList.find((i) => i.user.id === id);
-    if (typeof this.itemDetails === 'undefined') {
-      this.itemDetails = null;
-      return this.itemDetails;
-    } else {
-      return this.itemDetails;
+  getMemberDetails(id: any) {
+    this._loading_ = true;
+    this.memberId = id;
+    if (this.memberId !== undefined) {
+      this.peopleService.fetchMemberDetails(id).subscribe(
+        (res) => {
+          this._loading_ = false;
+          const { data } = res;
+          this.itemDetails = data;
+        },
+        (msg) => {
+          this._loading_ = false;
+        }
+      );
     }
   }
   searchMember(query: string) {

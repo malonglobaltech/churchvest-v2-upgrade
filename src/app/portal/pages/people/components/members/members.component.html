@@ -130,7 +130,7 @@
                       mat-menu-item
                       data-bs-toggle="modal"
                       data-bs-target="#view-details"
-                      (click)="getMemberDetails(element['user'].id)"
+                      (click)="getMemberDetails(element.id)"
                     >
                       View
                     </button>
@@ -139,7 +139,7 @@
                       [routerLink]="['/portal/people/add-member']"
                       [queryParams]="{
                         query: 'edit',
-                        id: element['user'].id
+                        id: element.id
                       }"
                     >
                       Edit
@@ -149,7 +149,7 @@
                       mat-menu-item
                       data-bs-toggle="modal"
                       data-bs-target="#delete-member"
-                      (click)="getMemberDetails(element['user'].id)"
+                      (click)="getMemberDetails(element.id)"
                       *ngIf="element['role'] == 'member'"
                     >
                       Move to trash
@@ -220,14 +220,18 @@
           <mat-icon data-bs-dismiss="modal" class="cursor">close</mat-icon>
         </div>
         <div class="container px-0">
-          <ng-container *ngIf="!itemDetails">
+          <ng-container *ngIf="_loading_">
             <app-loading-roller></app-loading-roller>
           </ng-container>
           <div class="details-panel">
             <mat-divider></mat-divider>
-            <mat-tab-group animationDuration="0.5ms" class="py-4">
+            <mat-tab-group
+              animationDuration="0.5ms"
+              class="py-4"
+              *ngIf="itemDetails && !_loading_"
+            >
               <mat-tab label="Personal Information">
-                <ng-container *ngIf="itemDetails">
+                <ng-container>
                   <div class="details-wrap-list">
                     <div class="grid mb-3">
                       <div class="d-flex avatar">
@@ -329,7 +333,7 @@
                 </ng-container>
               </mat-tab>
               <mat-tab label="Membership Information">
-                <ng-container *ngIf="itemDetails">
+                <ng-container>
                   <div class="details-wrap-list">
                     <div class="grid grid--1fr--1fr mb-3">
                       <label
@@ -347,7 +351,7 @@
                 </ng-container>
               </mat-tab>
               <mat-tab label="Other Information">
-                <ng-container *ngIf="itemDetails">
+                <ng-container>
                   <div class="details-wrap-list">
                     <div class="grid grid--1fr--1fr mb-3">
                       <label
@@ -371,7 +375,7 @@
                 </ng-container>
               </mat-tab>
               <mat-tab label="Fellowship Membership">
-                <ng-container *ngIf="itemDetails">
+                <ng-container>
                   <div class="details-wrap-list">
                     <p class="txt-grey" style="font-size: 12px">
                       No information at the momenet.
@@ -403,10 +407,18 @@
         </div>
         <div class="container">
           <div class="pb-3">
-            <div class="center">
+            <ng-container *ngIf="_loading_">
+              <app-loading-roller></app-loading-roller>
+            </ng-container>
+            <div class="center" *ngIf="itemDetails && !_loading_">
               <p>
-                Are you sure you want to move this member to trash? This will be
-                temporarily deleted, and can be recovered from trash
+                Are you sure you want to move this member
+                <span
+                  >{{ itemDetails["user"].first_name }}
+                  {{ itemDetails["user"].last_name }}</span
+                >
+                to trash? This will be temporarily deleted, and can be recovered
+                from trash
               </p>
             </div>
           </div>

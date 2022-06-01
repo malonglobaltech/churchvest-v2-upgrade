@@ -383,9 +383,10 @@
         </div>
       </ng-container>
     </aside>
-    <ng-container *ngIf="!itemDetails && queryString == 'edit'">
+    <ng-container *ngIf="queryString == 'edit' && !itemDetails">
       <app-loading-roller></app-loading-roller>
     </ng-container>
+
     <ng-container *ngIf="queryString === 'edit' && itemDetails">
       <aside>
         <ng-container *ngIf="screen == 1">
