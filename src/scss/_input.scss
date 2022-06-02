@@ -112,14 +112,12 @@
     }
   }
 }
-.mat-form-field {
-  width: 100%;
-}
+
 mat-form-field {
   border-radius: 4px;
-  padding: 0.9em 1.5em;
+  padding: 0.3em 1.5em;
   border: 1px solid #cbcbcd;
-  font-size: 14px;
+  font-size: 14px !important;
   font-family: "Titillium Web", sans-serif;
   width: 100%;
   &:focus,
