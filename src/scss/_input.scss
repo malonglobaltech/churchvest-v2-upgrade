@@ -115,6 +115,19 @@
 .mat-form-field {
   width: 100%;
 }
+mat-form-field {
+  border-radius: 4px;
+  padding: 0.9em 1.5em;
+  border: 1px solid #cbcbcd;
+  font-size: 14px;
+  font-family: "Titillium Web", sans-serif;
+  width: 100%;
+  &:focus,
+  &:active {
+    outline: none;
+    border: 1px solid $purple;
+  }
+}
 .search-input {
   position: relative;
   input[type="text"] {
@@ -143,4 +156,25 @@
 }
 .mat-select-arrow-wrapper {
   visibility: hidden;
+}
+.mat-form-field-appearance-legacy.mat-form-field-can-float.mat-form-field-should-float
+  .mat-form-field-label {
+  visibility: hidden !important;
+}
+.mat-form-field-appearance-legacy {
+  .mat-form-field-wrapper {
+    padding-bottom: 0em;
+  }
+  .mat-form-field-underline {
+    display: none;
+  }
+  .mat-button-wrapper {
+    font-size: 20px;
+  }
+  .mat-form-field-flex {
+    align-items: center;
+  }
+  .mat-form-field-infix {
+    border-top: none;
+  }
 }

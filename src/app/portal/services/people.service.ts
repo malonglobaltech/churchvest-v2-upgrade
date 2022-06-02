@@ -14,8 +14,8 @@ export class PeopleService {
   constructor(private http: HttpClient, private authService: AuthService) {
     this.authService.getChurchSlug();
   }
-  //add Personal information
 
+  //add Personal information
   addPersonalInfo(model: IPersonalInfo): Observable<any> {
     return this.http
       .post<IPersonalInfo>(
@@ -86,6 +86,24 @@ export class PeopleService {
         `${
           environment.managementbaseUrl
         }/${this.authService.getChurchSlug()}/people/members/trash/?page=${pageNumber}&size=${pageSize}`
+      )
+      .pipe(catchError(handleError));
+  }
+  getFellowshipSummary(date?: any): Observable<any> {
+    return this.http
+      .get<any>(
+        `${
+          environment.managementbaseUrl
+        }/${this.authService.getChurchSlug()}/people/fellowships/summary/?date=${date}`
+      )
+      .pipe(catchError(handleError));
+  }
+  getEvangelismSummary(date?: any): Observable<any> {
+    return this.http
+      .get<any>(
+        `${
+          environment.managementbaseUrl
+        }/${this.authService.getChurchSlug()}/people/evangelism/summary/?date=${date}`
       )
       .pipe(catchError(handleError));
   }

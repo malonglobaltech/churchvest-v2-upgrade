@@ -3,109 +3,420 @@
     <mat-tab-group animationDuration="0.5ms" class="py-4">
       <mat-tab label="All Members">
         <section class="summary py-3 px-2">
-          <div class="">
-            <ng-container *ngIf="_loading">
-              <app-loading-roller></app-loading-roller>
-            </ng-container>
-            <ng-container *ngIf="memberSummary">
-              <div class="grid grid-gap-15 item-list">
-                <div class="card">
-                  <label
-                    >{{ memberSummary.members_count }}
-                    <span>Membership Size</span></label
-                  >
-                </div>
-                <div class="card">
-                  <label
-                    >{{ memberSummary.male_count }}
-                    <span>Number of Males</span></label
-                  >
-                </div>
-                <div class="card">
-                  <label
-                    >{{ memberSummary.female_count }}
-                    <span>Number of Females</span></label
-                  >
-                </div>
-                <div class="card">
-                  <label
-                    >{{ memberSummary.adult_count
-                    }}<span>Aged Member</span></label
-                  >
-                </div>
-              </div>
-            </ng-container>
+          <div class="my-3">
+            <mat-form-field>
+              <mat-label>Query by date</mat-label>
+              <input
+                #ref
+                matInput
+                [matDatepicker]="datepicker"
+                (dateChange)="onSummaryChange(ref.value, 1)"
+              />
+              <mat-datepicker-toggle
+                matSuffix
+                [for]="datepicker"
+              ></mat-datepicker-toggle>
+              <mat-datepicker #datepicker>
+                <mat-datepicker-actions>
+                  <button mat-button matDatepickerCancel>Cancel</button>
+                  <button mat-raised-button color="primary" matDatepickerApply>
+                    Apply
+                  </button>
+                </mat-datepicker-actions>
+              </mat-datepicker>
+            </mat-form-field>
           </div>
+          <ng-container *ngIf="_loading">
+            <app-loading-roller></app-loading-roller>
+          </ng-container>
+          <ng-container *ngIf="!_loading && memberSummary">
+            <div class="grid grid-gap-15 item-list">
+              <div class="card">
+                <label
+                  >{{ memberSummary.male_count }}
+                  <span>Number of Males</span></label
+                >
+              </div>
+              <div class="card">
+                <label
+                  >{{ memberSummary.female_count }}
+                  <span>Number of Females</span></label
+                >
+              </div>
+              <div class="card">
+                <label
+                  >{{ memberSummary.children_count
+                  }}<span>Number of Children</span></label
+                >
+              </div>
+              <div class="card">
+                <label
+                  >{{ memberSummary.adult_count
+                  }}<span>Aged Member</span></label
+                >
+              </div>
+            </div>
+            <div class="grid mt-3">
+              <div class="card">
+                <label
+                  >{{ memberSummary.members_count }}
+                  <span>Membership Size</span></label
+                >
+              </div>
+            </div>
+          </ng-container>
         </section>
       </mat-tab>
-      <mat-tab label="House Fellowship"> </mat-tab>
-      <mat-tab label="Evangelism"> </mat-tab>
-      <mat-tab label="New Convert">
+      <mat-tab label="House Fellowship">
         <section class="summary py-3 px-2">
-          <div class="">
-            <ng-container *ngIf="_loading">
-              <app-loading-roller></app-loading-roller>
-            </ng-container>
-            <ng-container *ngIf="convertSummary">
-              <div class="grid grid-gap-15 item-list mb-3">
-                <div class="card">
-                  <label
-                    >{{ convertSummary.converts_count }}
-                    <span>Total Converts</span></label
-                  >
+          <div class="my-3">
+            <mat-form-field>
+              <mat-label>Query by date</mat-label>
+              <input
+                #ref_2
+                matInput
+                [matDatepicker]="date2"
+                (dateChange)="onSummaryChange(ref_2.value, 2)"
+              />
+              <mat-datepicker-toggle
+                matSuffix
+                [for]="date2"
+              ></mat-datepicker-toggle>
+              <mat-datepicker #date2>
+                <mat-datepicker-actions>
+                  <button mat-button matDatepickerCancel>Cancel</button>
+                  <button mat-raised-button color="primary" matDatepickerApply>
+                    Apply
+                  </button>
+                </mat-datepicker-actions>
+              </mat-datepicker>
+            </mat-form-field>
+          </div>
+          <ng-container *ngIf="_loading">
+            <app-loading-roller></app-loading-roller>
+          </ng-container>
+          <ng-container *ngIf="!_loading && fellowshipSummary">
+            <div class="grid grid--1fr--1fr grid-gap-15">
+              <aside class="panel">
+                <div class="title-sm f14 mb-2 d-flex align-items-center">
+                  Fellowship Co-ordinators
+                  <span class="ms-2 badge_">{{
+                    fellowshipSummary.coordinators.length
+                  }}</span>
                 </div>
-                <div class="card">
-                  <label
-                    >{{ convertSummary.adult_count }}
-                    <span>Converted Adults</span></label
-                  >
-                </div>
-                <div class="card">
-                  <label
-                    >{{ convertSummary.male_count }}
-                    <span>Converted Men</span></label
-                  >
-                </div>
-                <div class="card">
-                  <label
-                    >{{ convertSummary.female_count
-                    }}<span>Converted Women</span></label
-                  >
-                </div>
-              </div>
-              <div class="grid grid--1fr--3fr grid-gap-15">
-                <div class="card">
-                  <label
-                    >{{ convertSummary.children_count }}
-                    <span>Converted Children</span></label
-                  >
-                </div>
-                <ng-container *ngIf="!convertSummary?.event_highest_converts">
+                <ng-container
+                  *ngIf="fellowshipSummary.coordinators.length == 0"
+                >
                   <app-empty-state></app-empty-state>
                 </ng-container>
-                <ng-container *ngIf="convertSummary?.event_highest_converts">
-                  <div class="card bg-card">
-                    <label
-                      >{{ convertSummary.event_highest_converts?.name }}
-                      <span>Event with the most conversion</span></label
-                    >
-                    <div class="d-flex justify-content-center mt-3">
-                      <button
-                        mat-stroked-button
-                        data-bs-toggle="modal"
-                        data-bs-target="#view-details"
-                      >
-                        More Details
-                      </button>
-                    </div>
-                  </div>
+                <ul>
+                  <li *ngFor="let item of fellowshipSummary.coordinators">
+                    {{ item }}
+                  </li>
+                </ul>
+              </aside>
+              <aside class="panel">
+                <div class="title-sm f14 mb-2 d-flex align-items-center">
+                  Newly Added Fellowships
+                  <span class="ms-2 badge_">{{
+                    fellowshipSummary.fellowships_count
+                  }}</span>
+                </div>
+                <ng-container
+                  *ngIf="fellowshipSummary.latest_fellowships.length == 0"
+                >
+                  <app-empty-state></app-empty-state>
                 </ng-container>
-              </div>
-            </ng-container>
-          </div>
+                <ul>
+                  <li *ngFor="let item of fellowshipSummary.latest_fellowships">
+                    <div class="d-flex flex-column">
+                      <div class="grid grid--1fr--1fr grid-gap-15">
+                        <label
+                          >Name <span> {{ item.name }}</span></label
+                        >
+                        <label
+                          >Date Created
+                          <span>
+                            {{
+                              item.date_of_creation | date: "mediumDate"
+                            }}</span
+                          ></label
+                        >
+                      </div>
+                      <div class="mt-3">
+                        <button
+                          mat-stroked-button
+                          data-bs-toggle="modal"
+                          data-bs-target="#fellowship-details"
+                          (click)="getListItem(item)"
+                        >
+                          More Details
+                        </button>
+                      </div>
+                    </div>
+                  </li>
+                </ul>
+              </aside>
+            </div>
+          </ng-container>
         </section>
       </mat-tab>
-      <mat-tab label="First timers"> </mat-tab>
+      <mat-tab label="Evangelism">
+        <section class="summary py-3 px-2">
+          <div class="my-3">
+            <mat-form-field>
+              <mat-label>Query by date</mat-label>
+              <input
+                #ref_3
+                matInput
+                [matDatepicker]="date3"
+                (dateChange)="onSummaryChange(ref_3.value, 3)"
+              />
+              <mat-datepicker-toggle
+                matSuffix
+                [for]="date3"
+              ></mat-datepicker-toggle>
+              <mat-datepicker #date3>
+                <mat-datepicker-actions>
+                  <button mat-button matDatepickerCancel>Cancel</button>
+                  <button mat-raised-button color="primary" matDatepickerApply>
+                    Apply
+                  </button>
+                </mat-datepicker-actions>
+              </mat-datepicker>
+            </mat-form-field>
+          </div>
+          <ng-container *ngIf="_loading">
+            <app-loading-roller></app-loading-roller>
+          </ng-container>
+          <ng-container *ngIf="!_loading && evangelismSummary">
+            <div class="grid grid--1fr--1fr grid-gap-15 mb-3">
+              <div class="card">
+                <label>
+                  {{ evangelismSummary.evangelism_count }}
+                  <span>Total Evangelism</span></label
+                >
+              </div>
+              <div class="card">
+                <label *ngIf="convertSummary">
+                  {{ convertSummary.converts_count }}
+                  <span>Total Converts</span></label
+                >
+              </div>
+            </div>
+            <div class="grid grid--1fr--1fr grid-gap-15">
+              <aside class="panel">
+                <div class="title-sm f14 mb-2 d-flex align-items-center">
+                  Evangelism Leads
+                  <span class="ms-2 badge_">{{
+                    evangelismSummary.organizers.length
+                  }}</span>
+                </div>
+                <ng-container *ngIf="evangelismSummary.organizers.length == 0">
+                  <app-empty-state></app-empty-state>
+                </ng-container>
+                <ul>
+                  <li *ngFor="let item of evangelismSummary.organizers">
+                    {{ item }}
+                  </li>
+                </ul>
+              </aside>
+              <aside class="panel">
+                <div class="title-sm f14 mb-2 d-flex align-items-center">
+                  Upcoming Evangelism Events
+                  <span class="ms-2 badge_">{{
+                    evangelismSummary.latest_evangelism.length
+                  }}</span>
+                </div>
+                <ng-container
+                  *ngIf="evangelismSummary.latest_evangelism.length == 0"
+                >
+                  <app-empty-state></app-empty-state>
+                </ng-container>
+                <ul>
+                  <li *ngFor="let item of evangelismSummary.latest_evangelism">
+                    <div class="d-flex flex-column">
+                      <div class="grid grid--1fr--1fr grid-gap-15">
+                        <label
+                          >Name <span> {{ item.name }}</span></label
+                        >
+                        <label
+                          >Date Created
+                          <span>
+                            {{ item.created_at | date: "mediumDate" }}</span
+                          ></label
+                        >
+                      </div>
+                      <div class="mt-3">
+                        <button
+                          mat-stroked-button
+                          data-bs-toggle="modal"
+                          data-bs-target="#evangelism-details"
+                          (click)="getListItem(item)"
+                        >
+                          More Details
+                        </button>
+                      </div>
+                    </div>
+                  </li>
+                </ul>
+              </aside>
+            </div>
+          </ng-container>
+        </section>
+      </mat-tab>
+      <mat-tab label="New Convert">
+        <section class="summary py-3 px-2">
+          <div class="my-3">
+            <mat-form-field>
+              <mat-label>Query by date</mat-label>
+              <input
+                #ref_4
+                matInput
+                [matDatepicker]="date4"
+                (dateChange)="onSummaryChange(ref_4.value, 4)"
+              />
+              <mat-datepicker-toggle
+                matSuffix
+                [for]="date4"
+              ></mat-datepicker-toggle>
+              <mat-datepicker #date4>
+                <mat-datepicker-actions>
+                  <button mat-button matDatepickerCancel>Cancel</button>
+                  <button mat-raised-button color="primary" matDatepickerApply>
+                    Apply
+                  </button>
+                </mat-datepicker-actions>
+              </mat-datepicker>
+            </mat-form-field>
+          </div>
+          <ng-container *ngIf="_loading">
+            <app-loading-roller></app-loading-roller>
+          </ng-container>
+          <ng-container *ngIf="!_loading && convertSummary">
+            <div class="grid grid-gap-15 item-list mb-3">
+              <div class="card">
+                <label
+                  >{{ convertSummary.converts_count }}
+                  <span>Total Converts</span></label
+                >
+              </div>
+              <div class="card">
+                <label
+                  >{{ convertSummary.adult_count }}
+                  <span>Converted Adults</span></label
+                >
+              </div>
+              <div class="card">
+                <label
+                  >{{ convertSummary.male_count }}
+                  <span>Converted Men</span></label
+                >
+              </div>
+              <div class="card">
+                <label
+                  >{{ convertSummary.female_count
+                  }}<span>Converted Women</span></label
+                >
+              </div>
+            </div>
+            <div class="grid grid--1fr--3fr grid-gap-15">
+              <div class="card">
+                <label
+                  >{{ convertSummary.children_count }}
+                  <span>Converted Children</span></label
+                >
+              </div>
+              <ng-container *ngIf="!convertSummary?.event_highest_converts">
+                <app-empty-state></app-empty-state>
+              </ng-container>
+              <ng-container *ngIf="convertSummary?.event_highest_converts">
+                <div class="card bg-card">
+                  <label
+                    >{{ convertSummary.event_highest_converts?.name }}
+                    <span>Event with the most conversion</span></label
+                  >
+                  <div class="d-flex justify-content-center mt-3">
+                    <button
+                      mat-stroked-button
+                      data-bs-toggle="modal"
+                      data-bs-target="#view-details"
+                    >
+                      More Details
+                    </button>
+                  </div>
+                </div>
+              </ng-container>
+            </div>
+          </ng-container>
+        </section>
+      </mat-tab>
+      <mat-tab label="First timers">
+        <section class="summary py-3 px-2">
+          <div class="my-3">
+            <mat-form-field>
+              <mat-label>Query by date</mat-label>
+              <input
+                #ref_5
+                matInput
+                [matDatepicker]="date5"
+                (dateChange)="onSummaryChange(ref_5.value, 5)"
+              />
+              <mat-datepicker-toggle
+                matSuffix
+                [for]="date5"
+              ></mat-datepicker-toggle>
+              <mat-datepicker #date5>
+                <mat-datepicker-actions>
+                  <button mat-button matDatepickerCancel>Cancel</button>
+                  <button mat-raised-button color="primary" matDatepickerApply>
+                    Apply
+                  </button>
+                </mat-datepicker-actions>
+              </mat-datepicker>
+            </mat-form-field>
+          </div>
+          <ng-container *ngIf="_loading">
+            <app-loading-roller></app-loading-roller>
+          </ng-container>
+          <ng-container *ngIf="!_loading && firstTimerSummary">
+            <div class="grid grid-gap-15 item-list">
+              <div class="card">
+                <label
+                  >{{ firstTimerSummary.male_count }}
+                  <span>Number of Males</span></label
+                >
+              </div>
+              <div class="card">
+                <label
+                  >{{ firstTimerSummary.female_count }}
+                  <span>Number of Females</span></label
+                >
+              </div>
+              <div class="card">
+                <label
+                  >{{ firstTimerSummary.children_count
+                  }}<span>Number of Children</span></label
+                >
+              </div>
+              <div class="card">
+                <label
+                  >{{ firstTimerSummary.adult_count
+                  }}<span>Aged Member</span></label
+                >
+              </div>
+            </div>
+            <div class="grid mt-3">
+              <div class="card">
+                <label
+                  >{{ firstTimerSummary.first_timers_count }}
+                  <span>Total First-Timer</span></label
+                >
+              </div>
+            </div>
+          </ng-container>
+        </section>
+      </mat-tab>
     </mat-tab-group>
     <div class="event-list px-3 py-3">
       <div
@@ -127,7 +438,9 @@
           <p class="f12 txt-grey mt-2">No upcoming birthdays</p>
         </div>
       </ng-container>
-      <ng-container *ngIf="memberSummary && memberSummary.upcoming_birthdays">
+      <ng-container
+        *ngIf="!_loading && memberSummary && memberSummary.upcoming_birthdays"
+      >
         <div class="list--items">
           <div
             class="item d-flex align-items-center"
@@ -198,6 +511,126 @@
                 <label
                   >Address<span>{{
                     convertSummary.event_highest_converts?.location_address
+                  }}</span></label
+                >
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer d-flex justify-content-end px-4">
+          <button type="button" mat-stroked-button data-bs-dismiss="modal">
+            Dismiss
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal fade" id="fellowship-details" role="dialog">
+  <div class="modal-dialog modal-wrapper">
+    <div class="modal-content-wrap">
+      <div class="modal-body">
+        <div
+          class="header-top d-flex justify-content-between align-items-center px-4 py-3"
+        >
+          <div class="title" *ngIf="fellowshipSummary">
+            {{ listItem?.name }}
+          </div>
+          <mat-icon data-bs-dismiss="modal" class="cursor">close</mat-icon>
+        </div>
+        <div class="container px-0">
+          <div class="details-panel">
+            <mat-divider></mat-divider>
+            <div
+              class="details-wrap-list"
+              *ngIf="fellowshipSummary && listItem"
+            >
+              <div class="grid grid--1fr--1fr mb-3">
+                <label
+                  >Meetings day<span class="capitalize">{{
+                    listItem?.meeting_day
+                  }}</span></label
+                >
+                <label
+                  >Address<span style="width: 250px">{{
+                    listItem.address
+                  }}</span></label
+                >
+              </div>
+              <div class="grid grid--1fr--1fr mb-3">
+                <label
+                  >Comment<span>{{ listItem?.comment }}</span></label
+                >
+                <label
+                  >Date Created<span>{{
+                    listItem?.date_of_creation
+                  }}</span></label
+                >
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer d-flex justify-content-end px-4">
+          <button type="button" mat-stroked-button data-bs-dismiss="modal">
+            Dismiss
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal fade" id="evangelism-details" role="dialog">
+  <div class="modal-dialog modal-wrapper">
+    <div class="modal-content-wrap">
+      <div class="modal-body">
+        <div
+          class="header-top d-flex justify-content-between align-items-center px-4 py-3"
+        >
+          <div class="title" *ngIf="evangelismSummary">
+            {{ listItem?.name }}
+          </div>
+          <mat-icon data-bs-dismiss="modal" class="cursor">close</mat-icon>
+        </div>
+        <div class="container px-0">
+          <div class="details-panel">
+            <mat-divider></mat-divider>
+            <div
+              class="details-wrap-list"
+              *ngIf="evangelismSummary && listItem"
+            >
+              <div class="grid grid--1fr--1fr mb-3">
+                <label
+                  >Organizer<span class="capitalize">{{
+                    listItem?.organizer
+                  }}</span></label
+                >
+                <label
+                  >Address<span style="width: 250px">{{
+                    listItem.address
+                  }}</span></label
+                >
+              </div>
+              <div class="grid grid--1fr--1fr mb-3">
+                <label
+                  >Start Date<span class="capitalize">{{
+                    listItem?.start_date | date: "mediumDate"
+                  }}</span></label
+                >
+                <label
+                  >End Date<span style="width: 250px">{{
+                    listItem?.end_date | date: "mediumDate"
+                  }}</span></label
+                >
+              </div>
+              <div class="grid grid--1fr--1fr mb-3">
+                <label
+                  >Comment<span style="width: 200px">{{
+                    listItem?.comment
+                  }}</span></label
+                >
+                <label
+                  >Date Created<span>{{
+                    listItem?.created_at | date: "mediumDate"
                   }}</span></label
                 >
               </div>

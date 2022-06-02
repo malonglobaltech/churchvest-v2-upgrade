@@ -78,13 +78,41 @@ export const getCompletedStatus = (screen: number, obj: any) => {
     return x.isCompleted;
   });
 };
-
 export const getDayList = () => {
   let arr = [];
   for (let i = 1; i < 32; i++) {
     arr.push(i);
   }
   return arr;
+};
+export const setDateQuery = (query: string) => {
+  let inputedDate = new Date(query);
+  let today = new Date();
+  let date =
+    today.getFullYear() +
+    '-' +
+    ('0' + (today.getMonth() + 1)).slice(-2) +
+    '-' +
+    ('0' + today.getDate()).slice(-2);
+  if (query !== '' && query !== undefined) {
+    inputedDate.setDate(inputedDate.getDate() + 1);
+    date = inputedDate.toISOString().split('T')[0];
+  }
+  return date;
+};
+export const checkForBirthdayMonth = (val) => {
+  const parts = val.split(/[- :]/);
+  var month = parts[1];
+  var day = parts[2];
+  var today, bday, diff, days;
+  today = new Date();
+  bday = new Date(today.getFullYear(), month - 1, day);
+  if (today.getTime() > bday.getTime()) {
+    bday.setFullYear(bday.getFullYear() + 1);
+  }
+  diff = bday.getTime() - today.getTime();
+  days = Math.floor(diff / (1000 * 60 * 60 * 24)) + 1;
+  return days;
 };
 export const getMonthList = () => {
   let mlist = [
