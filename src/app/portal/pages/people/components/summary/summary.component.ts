@@ -89,6 +89,7 @@ export class SummaryComponent implements OnInit {
     this.peopleService.getConvertsSummary(date).subscribe((res) => {
       this._loading = false;
       const { data } = res;
+      this.convertSummary = data;
     });
   }
   fetchFirstTimerSummary() {
