@@ -39,7 +39,13 @@ export const validateCapital = (str: any) => {
 export const hasNumber = (str) => {
   return /\d/.test(str);
 };
-
+export const truncateString = (str: string, num: number) => {
+  if (str.length > num) {
+    return str.slice(0, num) + '...';
+  } else {
+    return str;
+  }
+};
 export const checkForSpecialChars = (str: any) => {
   var format = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]+/;
   if (format.test(str)) {
@@ -71,4 +77,29 @@ export const getCompletedStatus = (screen: number, obj: any) => {
     }
     return x.isCompleted;
   });
+};
+
+export const getDayList = () => {
+  let arr = [];
+  for (let i = 1; i < 32; i++) {
+    arr.push(i);
+  }
+  return arr;
+};
+export const getMonthList = () => {
+  let mlist = [
+    'January',
+    'February',
+    'March',
+    'April',
+    'May',
+    'June',
+    'July',
+    'August',
+    'September',
+    'October',
+    'November',
+    'December',
+  ];
+  return mlist;
 };

@@ -38,6 +38,9 @@
     width: 100%;
   }
 }
+.w-500 {
+  width: 500px;
+}
 .fw-400 {
   font-weight: 400;
 }
@@ -98,6 +101,9 @@
   }
   &--1fr--1fr {
     grid-template-columns: 1fr 1fr;
+  }
+  &--1fr--3fr {
+    grid-template-columns: 1fr 3fr;
   }
   &--2fr--1fr {
     grid-template-columns: 2fr 1fr;
@@ -283,8 +289,8 @@
   }
 }
 ::-webkit-scrollbar {
-  width: 0.8em;
-  height: 0.8em;
+  width: 0.7em;
+  height: 0.7em;
 }
 ::-webkit-scrollbar-track {
   border: solid 10px transparent;

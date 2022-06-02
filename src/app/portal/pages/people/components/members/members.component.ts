@@ -49,6 +49,7 @@ export class MembersComponent implements OnInit {
 
   ngOnInit(): void {
     this.getMembers();
+
     this.displayedColumns = this.column;
   }
   ngAfterViewInit() {
@@ -126,6 +127,7 @@ export class MembersComponent implements OnInit {
       );
     }
   }
+
   searchMember(query: string) {
     this.peopleService.searchMember(query).subscribe((res: any) => {
       this._loading = false;

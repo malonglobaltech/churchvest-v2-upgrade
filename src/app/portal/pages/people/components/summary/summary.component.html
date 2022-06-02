@@ -1,42 +1,215 @@
 <div class="bg-white px-4 py-3">
-  <mat-tab-group animationDuration="0.5ms" class="py-4">
-    <mat-tab label="All Members">
-      <section class="summary py-3 px-3">
-        <div class="grid grid--2fr--1fr grid-gap-30">
-          <div class="grid grid-gap-15 item-list">
-            <div class="card">
-              <label>103 <span>Membership Size</span></label>
-            </div>
-            <div class="card">
-              <label>103 <span>Number of Males</span></label>
-            </div>
-            <div class="card">
-              <label>103 <span>Number of Females</span></label>
-            </div>
-            <div class="card">
-              <label>103 <span>Aged Member</span></label>
-            </div>
+  <div class="grid grid--2fr--1fr grid-gap-15">
+    <mat-tab-group animationDuration="0.5ms" class="py-4">
+      <mat-tab label="All Members">
+        <section class="summary py-3 px-2">
+          <div class="">
+            <ng-container *ngIf="_loading">
+              <app-loading-roller></app-loading-roller>
+            </ng-container>
+            <ng-container *ngIf="memberSummary">
+              <div class="grid grid-gap-15 item-list">
+                <div class="card">
+                  <label
+                    >{{ memberSummary.members_count }}
+                    <span>Membership Size</span></label
+                  >
+                </div>
+                <div class="card">
+                  <label
+                    >{{ memberSummary.male_count }}
+                    <span>Number of Males</span></label
+                  >
+                </div>
+                <div class="card">
+                  <label
+                    >{{ memberSummary.female_count }}
+                    <span>Number of Females</span></label
+                  >
+                </div>
+                <div class="card">
+                  <label
+                    >{{ memberSummary.adult_count
+                    }}<span>Aged Member</span></label
+                  >
+                </div>
+              </div>
+            </ng-container>
           </div>
-          <div class="event-list px-4 py-3">
-            <div
-              class="header d-flex justify-content-between align-items-center pb-3"
-            >
-              <div class="title-sm-sm">Upcoming Birthdays</div>
+        </section>
+      </mat-tab>
+      <mat-tab label="House Fellowship"> </mat-tab>
+      <mat-tab label="Evangelism"> </mat-tab>
+      <mat-tab label="New Convert">
+        <section class="summary py-3 px-2">
+          <div class="">
+            <ng-container *ngIf="_loading">
+              <app-loading-roller></app-loading-roller>
+            </ng-container>
+            <ng-container *ngIf="convertSummary">
+              <div class="grid grid-gap-15 item-list mb-3">
+                <div class="card">
+                  <label
+                    >{{ convertSummary.converts_count }}
+                    <span>Total Converts</span></label
+                  >
+                </div>
+                <div class="card">
+                  <label
+                    >{{ convertSummary.adult_count }}
+                    <span>Converted Adults</span></label
+                  >
+                </div>
+                <div class="card">
+                  <label
+                    >{{ convertSummary.male_count }}
+                    <span>Converted Men</span></label
+                  >
+                </div>
+                <div class="card">
+                  <label
+                    >{{ convertSummary.female_count
+                    }}<span>Converted Women</span></label
+                  >
+                </div>
+              </div>
+              <div class="grid grid--1fr--3fr grid-gap-15">
+                <div class="card">
+                  <label
+                    >{{ convertSummary.children_count }}
+                    <span>Converted Children</span></label
+                  >
+                </div>
+                <ng-container *ngIf="!convertSummary?.event_highest_converts">
+                  <app-empty-state></app-empty-state>
+                </ng-container>
+                <ng-container *ngIf="convertSummary?.event_highest_converts">
+                  <div class="card">
+                    <label
+                      >{{ convertSummary.event_highest_converts?.name }}
+                      <span>Event with the most conversion</span></label
+                    >
+                    <div class="d-flex justify-content-center mt-3">
+                      <button
+                        mat-stroked-button
+                        data-bs-toggle="modal"
+                        data-bs-target="#view-details"
+                      >
+                        More Details
+                      </button>
+                    </div>
+                  </div>
+                </ng-container>
+              </div>
+            </ng-container>
+          </div>
+        </section>
+      </mat-tab>
+      <mat-tab label="First timers"> </mat-tab>
+    </mat-tab-group>
+    <div class="event-list px-3 py-3">
+      <div
+        class="header d-flex justify-content-between align-items-center pb-3"
+      >
+        <div class="title-sm-sm">Upcoming Birthdays</div>
+      </div>
+      <mat-divider></mat-divider>
+      <ng-container *ngIf="_loading">
+        <app-loading-roller></app-loading-roller>
+      </ng-container>
+      <ng-container
+        *ngIf="memberSummary && memberSummary.upcoming_birthdays.length == 0"
+      >
+        <div
+          class="empty-state d-flex flex-column justify-content-center align-items-center"
+        >
+          <img src="assets/img/png/no-event.png" alt="no-event" />
+          <p class="f12 txt-grey mt-2">No upcoming birthdays</p>
+        </div>
+      </ng-container>
+      <ng-container *ngIf="memberSummary && memberSummary.upcoming_birthdays">
+        <div class="list--items">
+          <div
+            class="item d-flex align-items-center"
+            *ngFor="let item of memberSummary.upcoming_birthdays"
+          >
+            <div class="icon d-flex align-items-center me-2">
+              <mat-icon>celebration</mat-icon>
             </div>
+            <label
+              >{{ item.user.first_name }} {{ item.user.last_name }}
+              <span
+                >{{ getBirthDay(item.user.details.personal.date_of_birth) }}
+              </span>
+              <span>
+                {{ isBirthdayMonth(item.user.details.personal.date_of_birth) }}
+              </span>
+            </label>
+          </div>
+        </div>
+      </ng-container>
+    </div>
+  </div>
+</div>
+<div class="modal fade" id="view-details" role="dialog">
+  <div class="modal-dialog modal-wrapper">
+    <div class="modal-content-wrap">
+      <div class="modal-body">
+        <div
+          class="header-top d-flex justify-content-between align-items-center px-4 py-3"
+        >
+          <div class="title" *ngIf="convertSummary">
+            {{ convertSummary.event_highest_converts?.name }}
+          </div>
+          <mat-icon data-bs-dismiss="modal" class="cursor">close</mat-icon>
+        </div>
+        <div class="container px-0">
+          <div class="details-panel">
             <mat-divider></mat-divider>
-            <div
-              class="empty-state d-flex flex-column justify-content-center align-items-center"
-            >
-              <img src="assets/img/png/no-event.png" alt="no-event" />
-              <p class="f12 txt-grey mt-2">No upcoming birthdays</p>
+            <div class="details-wrap-list" *ngIf="convertSummary">
+              <div class="grid mb-3">
+                <div class="d-flex">
+                  <img
+                    [src]="convertSummary.event_highest_converts?.image"
+                    class="w-500"
+                  />
+                </div>
+              </div>
+              <div class="grid grid--1fr--1fr mb-3">
+                <label
+                  >Event Start Date<span>{{
+                    convertSummary.event_highest_converts?.start_date
+                      | date: "mediumDate"
+                  }}</span></label
+                >
+                <label
+                  >Event End Date<span>{{
+                    convertSummary.event_highest_converts?.end_date
+                      | date: "mediumDate"
+                  }}</span></label
+                >
+              </div>
+              <div class="grid grid--1fr--1fr mb-3">
+                <label
+                  >Location<span>{{
+                    convertSummary.event_highest_converts?.location_name
+                  }}</span></label
+                >
+                <label
+                  >Address<span>{{
+                    convertSummary.event_highest_converts?.location_address
+                  }}</span></label
+                >
+              </div>
             </div>
           </div>
         </div>
-      </section>
-    </mat-tab>
-    <mat-tab label="House Fellowship"> </mat-tab>
-    <mat-tab label="Evangelism"> </mat-tab>
-    <mat-tab label="New Convert"> </mat-tab>
-    <mat-tab label="First timers"> </mat-tab>
-  </mat-tab-group>
+        <div class="modal-footer d-flex justify-content-end px-4">
+          <button type="button" mat-stroked-button data-bs-dismiss="modal">
+            Dismiss
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>

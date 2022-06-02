@@ -1,35 +1,78 @@
 @import "src/scss/_vars.scss";
-.item-list {
-  grid-template-columns: repeat(4, 23.4%);
-  .card {
-    padding: 1em;
-    justify-content: center;
-    text-align: center;
-    border: none;
-    box-shadow: 0px 1px 15px 2px #bdbdbd45;
-    label {
-      font-size: 30px;
-      font-weight: 600;
-      span {
-        display: block;
-        font-size: 12px;
-        font-weight: 100;
-        color: rgba($purple, 0.7);
-      }
+.card {
+  padding: 3em 1em;
+  justify-content: center;
+  text-align: center;
+  border: none;
+  box-shadow: 0px 1px 15px 2px #bdbdbd45;
+  label {
+    font-size: 60px;
+    font-weight: 600;
+    span {
+      display: block;
+      font-size: 13px;
+      font-weight: 100;
+      color: rgba($purple, 0.7);
     }
   }
+  &:nth-child(1) {
+    background: #e2e0fe;
+  }
+  &:nth-child(2) {
+    background: #f2edea;
+  }
+  &:nth-child(3) {
+    background: #d8f8e8;
+  }
+  &:nth-child(4) {
+    background: #e1f5fe;
+  }
+}
+.item-list {
+  grid-template-columns: repeat(4, 23.4%);
 }
 .grid {
   height: fit-content;
 }
+
 .event-list {
   border-radius: 10px;
-  background: #d0d8f96b;
-  box-shadow: 0px 1px 15px 2px #d2daf6;
+  background: #ffffff;
+  box-shadow: 0px 1px 15px 2px #f2edea;
   height: 100%;
   .empty-state {
     img {
       width: 150px;
+    }
+  }
+
+  .list--items {
+    margin: 0em 0em;
+    height: 266px;
+    overflow: scroll;
+    padding: 1em 0em;
+    .item {
+      margin-bottom: 1em;
+      border-left: none;
+      .icon {
+        background: #cdd7fa;
+        border-radius: 8px;
+        padding: 0.3em;
+        mat-icon {
+          color: #fff;
+        }
+      }
+      label {
+        font-size: 13px;
+        span {
+          font-size: 12px;
+          color: rgba(#000, 0.3);
+          display: block;
+        }
+      }
+      &.colored {
+        border-left: 1px solid blue;
+      }
     }
   }
 }

@@ -15,6 +15,7 @@ export class PeopleService {
     this.authService.getChurchSlug();
   }
   //add Personal information
+
   addPersonalInfo(model: IPersonalInfo): Observable<any> {
     return this.http
       .post<IPersonalInfo>(
@@ -27,6 +28,16 @@ export class PeopleService {
         map((status) => status),
         catchError(handleError)
       );
+  }
+  assignMemberRole(model: any, id?: number): Observable<any> {
+    return this.http
+      .post<any>(
+        `${
+          environment.managementbaseUrl
+        }/${this.authService.getChurchSlug()}/people/members/${id}/role`,
+        model
+      )
+      .pipe(catchError(handleError));
   }
   deleteMember(model: any): Observable<any> {
     return this.http
@@ -75,6 +86,33 @@ export class PeopleService {
         `${
           environment.managementbaseUrl
         }/${this.authService.getChurchSlug()}/people/members/trash/?page=${pageNumber}&size=${pageSize}`
+      )
+      .pipe(catchError(handleError));
+  }
+  getMembersSummary(date?: any): Observable<any> {
+    return this.http
+      .get<any>(
+        `${
+          environment.managementbaseUrl
+        }/${this.authService.getChurchSlug()}/people/members/summary/?date=${date}`
+      )
+      .pipe(catchError(handleError));
+  }
+  getConvertsSummary(date?: any): Observable<any> {
+    return this.http
+      .get<any>(
+        `${
+          environment.managementbaseUrl
+        }/${this.authService.getChurchSlug()}/people/members/converts/summary/?date=${date}`
+      )
+      .pipe(catchError(handleError));
+  }
+  getFirstTimerSummary(date?: any): Observable<any> {
+    return this.http
+      .get<any>(
+        `${
+          environment.managementbaseUrl
+        }/${this.authService.getChurchSlug()}/people/members/first_timers/summary/?date=${date}`
       )
       .pipe(catchError(handleError));
   }

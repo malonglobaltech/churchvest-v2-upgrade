@@ -12,6 +12,7 @@ import { ImageuploadModule } from '../../components/imageupload/imageupload.modu
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgxDropzoneModule } from 'ngx-dropzone';
 import { TrashedMembersComponent } from './components/trashed-members/trashed-members.component';
+import { EmptyStateModule } from '../../components/empty-state/empty-state.module';
 @NgModule({
   declarations: [
     PeopleComponent,
@@ -29,6 +30,7 @@ import { TrashedMembersComponent } from './components/trashed-members/trashed-me
     LoadingRollerModule,
     ImageuploadModule,
     NgxDropzoneModule,
+    EmptyStateModule,
   ],
   exports: [PeopleComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
