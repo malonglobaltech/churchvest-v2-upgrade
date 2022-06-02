@@ -102,9 +102,9 @@ export const setDateQuery = (query: string) => {
 };
 export const checkForBirthdayMonth = (val) => {
   const parts = val.split(/[- :]/);
-  var month = parts[1];
-  var day = parts[2];
-  var today, bday, diff, days;
+  let month = parts[1];
+  let day = parts[2];
+  let today, bday, diff, days;
   today = new Date();
   bday = new Date(today.getFullYear(), month - 1, day);
   if (today.getTime() > bday.getTime()) {

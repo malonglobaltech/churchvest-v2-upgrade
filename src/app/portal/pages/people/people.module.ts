@@ -13,6 +13,14 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgxDropzoneModule } from 'ngx-dropzone';
 import { TrashedMembersComponent } from './components/trashed-members/trashed-members.component';
 import { EmptyStateModule } from '../../components/empty-state/empty-state.module';
+import { FellowshipComponent } from './components/fellowship/fellowship.component';
+import { AddFellowshipComponent } from './components/add-fellowship/add-fellowship.component';
+import { AddEvangelismComponent } from './components/add-evangelism/add-evangelism.component';
+import { EvangelismComponent } from './components/evangelism/evangelism.component';
+import { NewConvertsComponent } from './components/new-converts/new-converts.component';
+import { AddNewConvertsComponent } from './components/add-new-converts/add-new-converts.component';
+import { FirstTimersComponent } from './components/first-timers/first-timers.component';
+import { AddFirstTimersComponent } from './components/add-first-timers/add-first-timers.component';
 @NgModule({
   declarations: [
     PeopleComponent,
@@ -20,6 +28,14 @@ import { EmptyStateModule } from '../../components/empty-state/empty-state.modul
     MembersComponent,
     AddMembersComponent,
     TrashedMembersComponent,
+    FellowshipComponent,
+    AddFellowshipComponent,
+    AddEvangelismComponent,
+    EvangelismComponent,
+    NewConvertsComponent,
+    AddNewConvertsComponent,
+    FirstTimersComponent,
+    AddFirstTimersComponent,
   ],
   imports: [
     CommonModule,
