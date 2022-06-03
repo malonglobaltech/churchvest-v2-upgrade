@@ -90,7 +90,7 @@ export class TrashedFellowshipsComponent implements OnInit {
     this._loading = true;
     this.fellowshipList = [];
     this.peopleService
-      .fetchAllFellowshipFromTrash(this.currentPage + 1, this.pageSize)
+      .fetchAllFromTrash('fellowships', this.currentPage + 1, this.pageSize)
       .subscribe(
         (res: any) => {
           this._loading = false;
@@ -124,7 +124,6 @@ export class TrashedFellowshipsComponent implements OnInit {
     let filter = arr.map((x: any) => x.id);
     this.selectedFellowship = filter;
   }
-
   pageChanged(event: PageEvent) {
     this.pageSize = event.pageSize;
     this.currentPage = event.pageIndex;
@@ -143,7 +142,7 @@ export class TrashedFellowshipsComponent implements OnInit {
         fellowships_id: [this.itemDetails.id],
       };
     }
-    this.peopleService.deleteFellowship(payload).subscribe(
+    this.peopleService.deleteFromTrash(payload, 'fellowships').subscribe(
       ({ message }) => {
         this.isBusy = false;
         this.toastr.success(message, 'Success');
@@ -170,7 +169,7 @@ export class TrashedFellowshipsComponent implements OnInit {
       };
     }
 
-    this.peopleService.restoreFellowship(payload).subscribe(
+    this.peopleService.restore(payload, 'fellowships').subscribe(
       ({ message }) => {
         this.isBusy = false;
         this.toastr.success(message, 'Success');

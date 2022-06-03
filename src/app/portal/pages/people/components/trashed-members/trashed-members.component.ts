@@ -84,7 +84,7 @@ export class TrashedMembersComponent implements OnInit {
     this._loading = true;
     this.memberList = [];
     this.peopleService
-      .fetchAllMembersFromTrash(this.currentPage + 1, this.pageSize)
+      .fetchAllFromTrash('members', this.currentPage + 1, this.pageSize)
       .subscribe(
         (res: any) => {
           this._loading = false;
@@ -146,7 +146,7 @@ export class TrashedMembersComponent implements OnInit {
         members_id: [this.itemDetails.id],
       };
     }
-    this.peopleService.deleteMember(payload).subscribe(
+    this.peopleService.deleteFromTrash(payload, 'members').subscribe(
       ({ message }) => {
         this.isBusy = false;
         this.toastr.success(message, 'Success');
@@ -173,7 +173,7 @@ export class TrashedMembersComponent implements OnInit {
       };
     }
 
-    this.peopleService.restoreMember(payload).subscribe(
+    this.peopleService.restore(payload, 'members').subscribe(
       ({ message }) => {
         this.isBusy = false;
         this.toastr.success(message, 'Success');

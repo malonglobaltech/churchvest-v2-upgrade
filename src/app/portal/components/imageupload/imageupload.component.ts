@@ -53,7 +53,7 @@ export class ImageuploadComponent implements OnInit {
           this._filesize = Math.round(this._filesize / 1000);
           this._filename = this.fileImage.name;
           this.outToParent.emit(this.fileImage);
-          this.toastr.success('File successfully uploaded', 'Message');
+          this.toastr.success('File successfully added', 'Message');
           this.isLoading = false;
         } else {
           this.isLoading = false;

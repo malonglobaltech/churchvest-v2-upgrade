@@ -96,7 +96,7 @@ export class FellowshipComponent implements OnInit {
     this._loading = true;
     this.fellowshipList = [];
     this.peopleService
-      .fetchAllFellowships(this.currentPage + 1, this.pageSize)
+      .fetchAll('fellowships', this.currentPage + 1, this.pageSize)
       .subscribe(
         (res: any) => {
           this._loading = false;
@@ -122,7 +122,7 @@ export class FellowshipComponent implements OnInit {
     this._loading_ = true;
     this.memberId = id;
     if (this.memberId !== undefined) {
-      this.peopleService.fetchFellowshipDetails(id).subscribe(
+      this.peopleService.fetchDetails(id, 'fellowships', 'show').subscribe(
         (res) => {
           this._loading_ = false;
           const { data } = res;
@@ -134,7 +134,6 @@ export class FellowshipComponent implements OnInit {
       );
     }
   }
-
   pageChanged(event: PageEvent) {
     this.pageSize = event.pageSize;
     this.currentPage = event.pageIndex;
@@ -154,7 +153,7 @@ export class FellowshipComponent implements OnInit {
       };
     }
     this.peopleService
-      .moveFellowshipToTrash(payload)
+      .moveToTrash(payload, 'fellowships')
       .subscribe(({ message }) => {
         this.isBusy = false;
         this.toastr.success(message, 'Success');

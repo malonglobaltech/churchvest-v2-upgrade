@@ -27,11 +27,9 @@ export const compareObjects = (obj1: any, obj2: any) => {
 export const formatDate = (dt: any) => {
   return dt.split('T')[0];
 };
-
 export const validateCapital = (str: any) => {
   return str == str.toLowerCase();
 };
-
 export const hasNumber = (str) => {
   return /\d/.test(str);
 };

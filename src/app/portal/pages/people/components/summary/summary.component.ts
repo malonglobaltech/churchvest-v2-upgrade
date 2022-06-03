@@ -64,14 +64,16 @@ export class SummaryComponent implements OnInit {
     let date = this._setDateQuery(query);
     switch (service) {
       case (service = 1):
-        return this.peopleService.getMembersSummary(date).subscribe((res) => {
-          this._loading = false;
-          const { data } = res;
-          this.memberSummary = data;
-        });
+        return this.peopleService
+          .getSummary('members', date)
+          .subscribe((res) => {
+            this._loading = false;
+            const { data } = res;
+            this.memberSummary = data;
+          });
       case (service = 2):
         return this.peopleService
-          .getFellowshipSummary(date)
+          .getSummary('fellowships', date)
           .subscribe((res) => {
             this._loading = false;
             const { data } = res;
@@ -79,21 +81,23 @@ export class SummaryComponent implements OnInit {
           });
       case (service = 3):
         return this.peopleService
-          .getEvangelismSummary(date)
+          .getSummary('evangelism', date)
           .subscribe((res) => {
             this._loading = false;
             const { data } = res;
             this.evangelismSummary = data;
           });
       case (service = 4):
-        return this.peopleService.getConvertsSummary(date).subscribe((res) => {
-          this._loading = false;
-          const { data } = res;
-          this.convertSummary = data;
-        });
+        return this.peopleService
+          .getSummary('members/converts', date)
+          .subscribe((res) => {
+            this._loading = false;
+            const { data } = res;
+            this.convertSummary = data;
+          });
       case (service = 5):
         return this.peopleService
-          .getFirstTimerSummary(date)
+          .getSummary('members/first_timers', date)
           .subscribe((res) => {
             this._loading = false;
             const { data } = res;

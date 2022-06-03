@@ -20,6 +20,8 @@ import { ObservableInput, throwError } from 'rxjs';
 })
 export class AddMembersComponent implements OnInit {
   queryString: string;
+  pageSize: number = 50;
+  currentPage = 0;
   isBusy: boolean = false;
   screen: number = 1;
   itemDetails: any;
@@ -135,17 +137,19 @@ export class AddMembersComponent implements OnInit {
     }
   }
   getMembers() {
-    this.peopleServ.fetchAllMembers().subscribe(
-      (res: any) => {
-        const { data } = res;
-        this.memberList = data;
-      },
-      (errors) => {
-        if (errors) {
-          this.memberList = [];
+    this.peopleServ
+      .fetchAll('members', this.currentPage + 1, this.pageSize)
+      .subscribe(
+        (res: any) => {
+          const { data, meta } = res;
+          this.memberList = data;
+        },
+        (errors) => {
+          if (errors) {
+            this.memberList = [];
+          }
         }
-      }
-    );
+      );
   }
   getRoutes() {
     this.route.queryParams
@@ -162,7 +166,7 @@ export class AddMembersComponent implements OnInit {
   getMemberDetails() {
     if (this._memberId !== undefined) {
       this.peopleServ
-        .fetchMemberDetails(this._memberId)
+        .fetchDetails(this._memberId, 'members/member', '')
         .pipe(
           catchError((err: any): ObservableInput<any> => {
             return throwError(err);
@@ -308,7 +312,7 @@ export class AddMembersComponent implements OnInit {
       }
       if (this.updateProfileImage.valid) {
         //Make api call here...
-        this.peopleServ.updateProfileImage(formData).subscribe(
+        this.peopleServ.updateMember(formData, 'membership').subscribe(
           ({ message, data }) => {
             this.toastr.success(message, 'Message');
             this.isBusy = false;
@@ -340,7 +344,7 @@ export class AddMembersComponent implements OnInit {
       if (this.updateServiceInfo.valid) {
         //Make api call here...
         this.peopleServ
-          .updateMemberServiceInfo(this.updateServiceInfo.getRawValue())
+          .updateMember(this.updateServiceInfo.getRawValue(), 'service')
           .subscribe(
             ({ message, data }) => {
               this.toastr.success(message, 'Message');
@@ -373,7 +377,7 @@ export class AddMembersComponent implements OnInit {
       if (this.updateOtherInfo.valid) {
         //Make api call here...
         this.peopleServ
-          .updateMemberOtherInfo(this.updateOtherInfo.getRawValue())
+          .updateMember(this.updateOtherInfo.getRawValue(), 'other')
           .subscribe(
             ({ message, data }) => {
               this.toastr.success(message, 'Message');

@@ -49,7 +49,6 @@ export class MembersComponent implements OnInit {
 
   ngOnInit(): void {
     this.getMembers();
-
     this.displayedColumns = this.column;
   }
   ngAfterViewInit() {
@@ -89,7 +88,7 @@ export class MembersComponent implements OnInit {
     this._loading = true;
     this.memberList = [];
     this.peopleService
-      .fetchAllMembers(this.currentPage + 1, this.pageSize)
+      .fetchAll('members', this.currentPage + 1, this.pageSize)
       .subscribe(
         (res: any) => {
           this._loading = false;
@@ -115,7 +114,7 @@ export class MembersComponent implements OnInit {
     this._loading_ = true;
     this.memberId = id;
     if (this.memberId !== undefined) {
-      this.peopleService.fetchMemberDetails(id).subscribe(
+      this.peopleService.fetchDetails(id, 'members/member', '').subscribe(
         (res) => {
           this._loading_ = false;
           const { data } = res;
@@ -156,13 +155,15 @@ export class MembersComponent implements OnInit {
         members_id: this.selectedMembers,
       };
     }
-    this.peopleService.moveToTrash(payload).subscribe(({ message }) => {
-      this.isBusy = false;
-      this.toastr.success(message, 'Success');
-      this.router.navigate(['/portal/people/members/trash']);
-      this.closebtn._elementRef.nativeElement.click();
-      this.getMembers();
-    });
+    this.peopleService
+      .moveToTrash(payload, 'members')
+      .subscribe(({ message }) => {
+        this.isBusy = false;
+        this.toastr.success(message, 'Success');
+        this.router.navigate(['/portal/people/members/trash']);
+        this.closebtn._elementRef.nativeElement.click();
+        this.getMembers();
+      });
   }
   exportToExcel(): void {
     const edata: Array<any> = [];

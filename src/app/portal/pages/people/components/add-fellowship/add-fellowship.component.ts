@@ -132,7 +132,7 @@ export class AddFellowshipComponent implements OnInit {
   getMembers() {
     this._memberList = [];
     this.peopleServ
-      .fetchAllMembers(this.currentPage + 1, this.pageSize)
+      .fetchAll('members', this.currentPage + 1, this.pageSize)
       .subscribe(
         (res: any) => {
           const { data } = res;
@@ -160,7 +160,7 @@ export class AddFellowshipComponent implements OnInit {
   getFellowshipDetails() {
     if (this._fellowshipId !== undefined) {
       this.peopleServ
-        .fetchFellowshipDetails(this._fellowshipId)
+        .fetchDetails(this._fellowshipId, 'fellowships', 'show')
         .pipe(
           catchError((err: any): ObservableInput<any> => {
             return throwError(err);
