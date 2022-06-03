@@ -144,8 +144,8 @@
               >
                 <mat-select-trigger>
                   {{ _memberList ? stripedObjValue : "" }}
-                  <span class="more" *ngIf="memberItems.length > 10">
-                    +{{ memberItems.length - 10 }} other item
+                  <span class="more" *ngIf="memberItems.length > 5">
+                    +{{ memberItems.length - 5 }} other item
                   </span>
                 </mat-select-trigger>
                 <mat-option
@@ -342,8 +342,8 @@
                 >
                   <mat-select-trigger>
                     {{ _memberList ? stripedObjValue : "" }}
-                    <span class="more" *ngIf="memberItems.length > 10">
-                      +{{ memberItems.length - 10 }} other item
+                    <span class="more" *ngIf="memberItems.length > 5">
+                      +{{ memberItems.length - 5 }} other item
                     </span>
                   </mat-select-trigger>
                   <mat-option

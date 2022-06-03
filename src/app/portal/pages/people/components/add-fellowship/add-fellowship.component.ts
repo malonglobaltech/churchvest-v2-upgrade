@@ -81,18 +81,15 @@ export class AddFellowshipComponent implements OnInit {
     this._location.back();
   }
 
-  get cellInfoValue(): any {
+  get fellowshipFormValue(): any {
     return this.fellowshipForm.getRawValue();
   }
   get updatedFormValue(): any {
     return this.updatefellowshipForm.getRawValue();
   }
   get stripedObjValue() {
-    if (this._memberList.length !== 0 && this.queryString !== 'edit') {
-      return this.memberItems.slice(0, 10).map((x: any) => x.user.first_name);
-    }
-    if (this._memberList.length !== 0 && this.queryString == 'edit') {
-      return this.memberItems.slice(0, 10).map((x: any) => x.user.first_name);
+    if (this._memberList.length !== 0) {
+      return this.memberItems.slice(0, 5).map((x: any) => x.user.first_name);
     }
   }
   toggleAllSelection() {
@@ -215,7 +212,7 @@ export class AddFellowshipComponent implements OnInit {
     }
     if (this.fellowshipForm.valid) {
       //Make api call here...
-      this.peopleServ.addFellowship(this.cellInfoValue).subscribe(
+      this.peopleServ.addFellowship(this.fellowshipFormValue).subscribe(
         ({ message, data }) => {
           this._fellowshipId = data.id;
           this.toastr.success(message, 'Message');
