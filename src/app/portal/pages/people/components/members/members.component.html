@@ -1,7 +1,7 @@
 <section>
   <div class="header d-flex align-items-center justify-content-between mb-4">
     <div class="title">All Members</div>
-    <button mat-stroked-button routerLink="/portal/people/add-member">
+    <button mat-stroked-button routerLink="/portal/people/members/add-new">
       <mat-icon class="me-2">add</mat-icon> Add New Member
     </button>
   </div>
@@ -106,7 +106,7 @@
           <div>
             <button
               mat-button
-              routerLink="/portal/people/trashed-members"
+              routerLink="/portal/people/members/trash"
               class="btn--primary"
             >
               <mat-icon>restore_from_trash</mat-icon> View Trash
@@ -163,7 +163,7 @@
                     </button>
                     <button
                       mat-menu-item
-                      [routerLink]="['/portal/people/add-member']"
+                      [routerLink]="['/portal/people/members/update']"
                       [queryParams]="{
                         query: 'edit',
                         id: element.id

@@ -21,11 +21,7 @@ export const numberCheck = (args: any) => {
   }
 };
 export const compareObjects = (obj1: any, obj2: any) => {
-  if (
-    obj1?.payElementName == obj2?.payElementName &&
-    obj1?.payElementId == obj2?.payElementId
-  )
-    return true;
+  if (obj1?.first_name == obj2?.first_name && obj1?.id == obj2?.id) return true;
   else return false;
 };
 export const formatDate = (dt: any) => {
@@ -130,4 +126,16 @@ export const getMonthList = () => {
     'December',
   ];
   return mlist;
+};
+export const getDays = () => {
+  let days = [
+    'monday',
+    'tuesday',
+    'wednesday',
+    'thursday',
+    'friday',
+    'satuday',
+    'sunday',
+  ];
+  return days;
 };

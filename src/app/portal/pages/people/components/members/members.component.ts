@@ -159,7 +159,7 @@ export class MembersComponent implements OnInit {
     this.peopleService.moveToTrash(payload).subscribe(({ message }) => {
       this.isBusy = false;
       this.toastr.success(message, 'Success');
-      this.router.navigate(['/portal/people/trashed-members']);
+      this.router.navigate(['/portal/people/members/trash']);
       this.closebtn._elementRef.nativeElement.click();
       this.getMembers();
     });

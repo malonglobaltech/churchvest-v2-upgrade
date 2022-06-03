@@ -156,7 +156,7 @@ export class AddMembersComponent implements OnInit {
         this.getMemberDetails();
       });
     if (this.queryString === '') {
-      this.router.navigate(['/portal/jackpot-game']);
+      this.router.navigate(['/portal/people/members']);
     }
   }
   getMemberDetails() {

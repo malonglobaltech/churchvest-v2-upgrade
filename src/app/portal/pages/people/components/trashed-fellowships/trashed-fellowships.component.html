@@ -10,7 +10,7 @@
   </div>
   <div
     class="d-flex justify-content-center align-items-center my-3 empty-state"
-    *ngIf="!_loading && (!memberList || memberList.length === 0)"
+    *ngIf="!_loading && (!fellowshipList || fellowshipList.length === 0)"
   >
     <span class="txt-grey txt-md">No trashed record at this moment!</span>
   </div>
@@ -19,10 +19,10 @@
   </ng-container>
   <div
     class="overflow--wrap _visible"
-    [ngClass]="{ hide: memberList.length == 0 }"
+    [ngClass]="{ hide: fellowshipList.length == 0 }"
   >
     <div class="table-wrapper tbl-wrap">
-      <ng-container *ngIf="memberList.length !== 0">
+      <ng-container *ngIf="fellowshipList.length !== 0">
         <div class="toolbar mb-5 adjust-wrap">
           <div
             class="d-flex align-items-center justify-content-start adjust-flex"
@@ -49,12 +49,12 @@
                 data-bs-target="#restore-member"
                 (click)="
                   _isAllSelected = true;
-                  getSelectedMemberItem(selection.selected)
+                  getSelectedFellowship(selection.selected)
                 "
               >
                 Restore
                 {{
-                  selection.selected.length == memberList.length
+                  selection.selected.length == fellowshipList.length
                     ? "All"
                     : selection.selected.length > 0
                     ? selection.selected.length
@@ -67,16 +67,16 @@
                 mat-stroked-button
                 class="text-danger"
                 data-bs-toggle="modal"
-                data-bs-target="#delete-member"
+                data-bs-target="#delete"
                 [disabled]="selection.selected.length == 0"
                 (click)="
                   _isAllSelected = true;
-                  getSelectedMemberItem(selection.selected)
+                  getSelectedFellowship(selection.selected)
                 "
               >
                 Delete
                 {{
-                  selection.selected.length == memberList.length
+                  selection.selected.length == fellowshipList.length
                     ? "All"
                     : selection.selected.length > 0
                     ? selection.selected.length
@@ -112,7 +112,7 @@
                   (change)="$event ? selection.toggle(element) : null"
                   [checked]="selection.isSelected(element)"
                 >
-                  <span>{{ element["user"].first_name }}</span>
+                  <span>{{ element.name }}</span>
                 </mat-checkbox>
               </td>
             </ng-container>
@@ -131,21 +131,20 @@
                       data-bs-target="#restore-member"
                       (click)="
                         _isSingleSelected = true;
-                        getMemberDetails(element['user'].id)
+                        getFellowshipDetails(element.id)
                       "
                     >
-                      Restore member
+                      Restore fellowship
                     </button>
                     <button
                       type="button"
                       mat-menu-item
                       data-bs-toggle="modal"
-                      data-bs-target="#delete-member"
+                      data-bs-target="#delete"
                       (click)="
                         _isSingleSelected = true;
-                        getMemberDetails(element['user'].id)
+                        getFellowshipDetails(element.id)
                       "
-                      *ngIf="element['role'] == 'member'"
                     >
                       Delete permanently
                     </button>
@@ -154,23 +153,25 @@
               </td>
             </ng-container>
             <!--Table  Row Content-->
-            <ng-container *ngIf="disCol == 'last name'">
+            <!--Table  Row Content-->
+            <ng-container *ngIf="disCol == 'fellowship leader'">
               <td mat-cell *matCellDef="let element">
-                <span>{{ element["user"].last_name }}</span>
+                <span
+                  >{{ element["leader"].member.user.first_name }}
+                  {{ element["leader"].member.user.last_name }}</span
+                >
               </td>
             </ng-container>
-            <ng-container *ngIf="disCol == 'phone'">
+            <ng-container *ngIf="disCol == 'fellowship area'">
               <td mat-cell *matCellDef="let element">
-                <span>{{
-                  element["user"].phone ? element["user"].phone : "---"
-                }}</span>
+                <span>{{ element["nearest_bus_stop"] }}</span>
               </td>
             </ng-container>
-            <ng-container *ngIf="disCol == 'email'">
+            <ng-container *ngIf="disCol == 'address'">
               <td mat-cell *matCellDef="let element">
-                <span class="lowercase">{{
-                  element["user"].email ? element["user"].email : "---"
-                }}</span>
+                <span>
+                  {{ element["address"] ? element["address"] : "---" }}</span
+                >
               </td>
             </ng-container>
 
@@ -205,14 +206,14 @@
   </div>
 </section>
 
-<div class="modal fade" id="delete-member" role="dialog">
+<div class="modal fade" id="delete" role="dialog">
   <div class="modal-dialog modal-wrapper">
     <div class="modal-content-wrap">
       <div class="modal-body">
         <div
           class="header-top d-flex justify-content-between align-items-center px-4 py-3"
         >
-          <div class="title">Permanently Delete Member</div>
+          <div class="title">Permanently Delete Fellowship</div>
           <ion-icon name="close-outline" data-bs-dismiss="modal"></ion-icon>
         </div>
         <div class="container">
@@ -223,12 +224,13 @@
                 class="text-center m-0"
               >
                 Are you sure you want to delete
-                {{ selection.selected.length > 1 ? "these" : "this" }} member?
+                {{ selection.selected.length > 1 ? "these" : "this" }}
+                fellowship?
                 <br />
                 They will no longer be accessible.
               </p>
               <p *ngIf="selection.selected.length == 0" class="text-center m-0">
-                Please select one or more member
+                Please select one or more fellowship
               </p>
             </div>
           </div>
@@ -268,10 +270,11 @@
                 class="text-center m-0"
               >
                 Are you sure you want to restore
-                {{ selection.selected.length > 1 ? "these" : "this" }} member?
+                {{ selection.selected.length > 1 ? "these" : "this" }}
+                fellowship?
               </p>
               <p *ngIf="selection.selected.length == 0" class="text-center m-0">
-                Please select one or more member
+                Please select one or more fellowship
               </p>
             </div>
           </div>

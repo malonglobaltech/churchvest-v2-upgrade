@@ -12,23 +12,23 @@ import {
 import { Router } from '@angular/router';
 
 @Component({
-  selector: 'app-trashed-members',
-  templateUrl: './trashed-members.component.html',
-  styleUrls: ['./trashed-members.component.scss'],
+  selector: 'app-trashed-fellowships',
+  templateUrl: './trashed-fellowships.component.html',
+  styleUrls: ['./trashed-fellowships.component.scss'],
 })
-export class TrashedMembersComponent implements OnInit {
+export class TrashedFellowshipsComponent implements OnInit {
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild('closebtn') closebtn: any;
   @ViewChild('closebtn_') closebtn_: any;
-  memberList: any[] = [];
+  fellowshipList: any[] = [];
   pageSize: number = 20;
   currentPage = 0;
   isBusy: boolean = false;
   itemDetails: any;
   _loading: boolean = false;
   _loading_: boolean = false;
-  searchedMemberDetails: any;
-  selectedMembers: any[] = [];
+  searchedFellowshipDetails: any;
+  selectedFellowship: any[] = [];
   _isAllSelected: boolean = false;
   _isSingleSelected: boolean = false;
   _printElement = printElement;
@@ -45,14 +45,20 @@ export class TrashedMembersComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.getMembers();
+    this.getFellowships();
     this.displayedColumns = this.column;
   }
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;
   }
 
-  column = ['first name', 'last name', 'phone', 'email', 'action'];
+  column = [
+    'fellowship name',
+    'fellowship leader',
+    'fellowship area',
+    'address',
+    'action',
+  ];
 
   isAllSelected() {
     const numSelected = this.selection.selected.length;
@@ -80,24 +86,24 @@ export class TrashedMembersComponent implements OnInit {
     const filterValue = (event.target as HTMLInputElement).value;
     this.dataSource.filter = filterValue.trim().toLowerCase();
   }
-  getMembers() {
+  getFellowships() {
     this._loading = true;
-    this.memberList = [];
+    this.fellowshipList = [];
     this.peopleService
-      .fetchAllMembersFromTrash(this.currentPage + 1, this.pageSize)
+      .fetchAllFellowshipFromTrash(this.currentPage + 1, this.pageSize)
       .subscribe(
         (res: any) => {
           this._loading = false;
           const { data, meta } = res;
-          this.memberList = data;
-          this.dataSource = new MatTableDataSource(this.memberList);
+          this.fellowshipList = data;
+          this.dataSource = new MatTableDataSource(this.fellowshipList);
           this.paginator.pageIndex = this.currentPage;
           this.paginator.length = meta.total;
         },
         (errors) => {
           if (errors) {
             this._loading = false;
-            this.memberList = [];
+            this.fellowshipList = [];
           }
         }
       );
@@ -105,8 +111,8 @@ export class TrashedMembersComponent implements OnInit {
   gotoBack() {
     this._location.back();
   }
-  getMemberDetails(id: number) {
-    this.itemDetails = this.memberList.find((i) => i.user.id === id);
+  getFellowshipDetails(id: number) {
+    this.itemDetails = this.fellowshipList.find((i) => i.id === id);
     if (typeof this.itemDetails === 'undefined') {
       this.itemDetails = null;
       return this.itemDetails;
@@ -114,44 +120,35 @@ export class TrashedMembersComponent implements OnInit {
       return this.itemDetails;
     }
   }
-  getSelectedMemberItem(arr: any) {
+  getSelectedFellowship(arr: any) {
     let filter = arr.map((x: any) => x.id);
-    this.selectedMembers = filter;
+    this.selectedFellowship = filter;
   }
-  searchMember(query: string) {
-    this.peopleService.searchMember(query).subscribe((res: any) => {
-      this._loading = false;
-      const { data } = res;
-      this.searchedMemberDetails = data;
-      if (this.searchedMemberDetails.length == 0) {
-        this.toastr.error('No record found for search query', 'Message');
-      }
-    });
-  }
+
   pageChanged(event: PageEvent) {
     this.pageSize = event.pageSize;
     this.currentPage = event.pageIndex;
-    this.getMembers();
+    this.getFellowships();
   }
   confirmDelete() {
     this.isBusy = true;
     let payload: any;
     if (this._isAllSelected) {
       payload = {
-        members_id: this.selectedMembers,
+        fellowships_id: this.selectedFellowship,
       };
     }
     if (this._isSingleSelected) {
       payload = {
-        members_id: [this.itemDetails.id],
+        fellowships_id: [this.itemDetails.id],
       };
     }
-    this.peopleService.deleteMember(payload).subscribe(
+    this.peopleService.deleteFellowship(payload).subscribe(
       ({ message }) => {
         this.isBusy = false;
         this.toastr.success(message, 'Success');
         this.closebtn._elementRef.nativeElement.click();
-        this.getMembers();
+        this.getFellowships();
       },
       (msg) => {
         this.isBusy = false;
@@ -164,22 +161,22 @@ export class TrashedMembersComponent implements OnInit {
     let payload: any;
     if (this._isAllSelected) {
       payload = {
-        members_id: this.selectedMembers,
+        fellowships_id: this.selectedFellowship,
       };
     }
     if (this._isSingleSelected) {
       payload = {
-        members_id: [this.itemDetails.id],
+        fellowships_id: [this.itemDetails.id],
       };
     }
 
-    this.peopleService.restoreMember(payload).subscribe(
+    this.peopleService.restoreFellowship(payload).subscribe(
       ({ message }) => {
         this.isBusy = false;
         this.toastr.success(message, 'Success');
-        this.router.navigate(['/portal/people/members']);
+        this.router.navigate(['/portal/people/house-fellowship']);
         this.closebtn_._elementRef.nativeElement.click();
-        this.getMembers();
+        this.getFellowships();
       },
       (msg) => {
         this.isBusy = false;

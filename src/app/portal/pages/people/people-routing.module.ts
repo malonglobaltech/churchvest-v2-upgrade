@@ -11,6 +11,7 @@ import { FirstTimersComponent } from './components/first-timers/first-timers.com
 import { MembersComponent } from './components/members/members.component';
 import { NewConvertsComponent } from './components/new-converts/new-converts.component';
 import { SummaryComponent } from './components/summary/summary.component';
+import { TrashedFellowshipsComponent } from './components/trashed-fellowships/trashed-fellowships.component';
 import { TrashedMembersComponent } from './components/trashed-members/trashed-members.component';
 import { PeopleComponent } from './people.component';
 
@@ -20,36 +21,17 @@ const routes: Routes = [
     component: PeopleComponent,
     children: [
       {
-        path: 'add-member',
-        component: AddMembersComponent,
-      },
-      {
-        path: 'add-evangelism',
-        component: AddEvangelismComponent,
-      },
-      {
-        path: 'add-fellowship',
-        component: AddFellowshipComponent,
-      },
-      {
-        path: 'add-new-converts',
-        component: AddNewConvertsComponent,
-      },
-      {
-        path: 'add-first-timers',
-        component: AddFirstTimersComponent,
-      },
-      {
         path: 'evangelism',
         component: EvangelismComponent,
       },
       {
-        path: 'house-fellowship',
-        component: FellowshipComponent,
-      },
-      {
         path: 'first-timers',
         component: FirstTimersComponent,
+      },
+      {
+        path: 'house-fellowship',
+        component: FellowshipComponent,
+        pathMatch: 'full',
       },
       {
         path: 'new-convert',
@@ -64,8 +46,32 @@ const routes: Routes = [
         component: SummaryComponent,
       },
       {
-        path: 'trashed-members',
+        path: 'house-fellowship/trash',
+        component: TrashedFellowshipsComponent,
+      },
+      {
+        path: 'members/trash',
         component: TrashedMembersComponent,
+      },
+      {
+        path: 'evangelism/:query',
+        component: AddEvangelismComponent,
+      },
+      {
+        path: 'first-timers/:query',
+        component: AddFirstTimersComponent,
+      },
+      {
+        path: 'house-fellowship/:query',
+        component: AddFellowshipComponent,
+      },
+      {
+        path: 'members/:query',
+        component: AddMembersComponent,
+      },
+      {
+        path: 'new-convert/:query',
+        component: AddNewConvertsComponent,
       },
       {
         path: '**',

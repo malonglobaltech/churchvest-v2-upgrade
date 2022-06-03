@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import { handleError } from 'src/app/services/apiErrorHandler';
 import { AuthService } from 'src/app/services/auth.service';
-import { IPersonalInfo } from 'src/app/shared/model';
+import { IFellowship, IPersonalInfo } from 'src/app/shared/model';
 import { environment } from 'src/environments/environment';
 
 @Injectable({
@@ -22,6 +22,19 @@ export class PeopleService {
         ` ${
           environment.managementbaseUrl
         }/${this.authService.getChurchSlug()}/people/members/personal`,
+        model
+      )
+      .pipe(
+        map((status) => status),
+        catchError(handleError)
+      );
+  }
+  addFellowship(model: IFellowship): Observable<any> {
+    return this.http
+      .post<IFellowship>(
+        ` ${
+          environment.managementbaseUrl
+        }/${this.authService.getChurchSlug()}/people/fellowships`,
         model
       )
       .pipe(
@@ -52,12 +65,47 @@ export class PeopleService {
         catchError(handleError)
       );
   }
+  deleteFromTrash(model: any, type: string): Observable<any> {
+    return this.http
+      .post<any>(
+        ` ${
+          environment.managementbaseUrl
+        }/${this.authService.getChurchSlug()}/people/${type}/trash/delete`,
+        model
+      )
+      .pipe(
+        map((status) => status),
+        catchError(handleError)
+      );
+  }
+  deleteFellowship(model: any): Observable<any> {
+    return this.http
+      .post<any>(
+        ` ${
+          environment.managementbaseUrl
+        }/${this.authService.getChurchSlug()}/people/fellowships/trash/delete`,
+        model
+      )
+      .pipe(
+        map((status) => status),
+        catchError(handleError)
+      );
+  }
   fetchAllMembers(pageNumber?: number, pageSize?: number): Observable<any> {
     return this.http
       .get<any>(
         `${
           environment.managementbaseUrl
         }/${this.authService.getChurchSlug()}/people/members/?page=${pageNumber}&size=${pageSize}`
+      )
+      .pipe(catchError(handleError));
+  }
+  fetchAllFellowships(pageNumber?: number, pageSize?: number): Observable<any> {
+    return this.http
+      .get<any>(
+        `${
+          environment.managementbaseUrl
+        }/${this.authService.getChurchSlug()}/people/fellowships/?page=${pageNumber}&size=${pageSize}`
       )
       .pipe(catchError(handleError));
   }
@@ -69,6 +117,14 @@ export class PeopleService {
       )
       .pipe(catchError(handleError));
   }
+  fetchFellowshipDetails(id: any): Observable<any> {
+    return this.http
+      .get<any>(
+        environment.managementbaseUrl +
+          `/${this.authService.getChurchSlug()}/people/fellowships/${id}/show`
+      )
+      .pipe(catchError(handleError));
+  }
   fetchTrashedMember(id: any): Observable<any> {
     return this.http
       .get<any>(
@@ -77,6 +133,7 @@ export class PeopleService {
       )
       .pipe(catchError(handleError));
   }
+
   fetchAllMembersFromTrash(
     pageNumber?: number,
     pageSize?: number
@@ -86,6 +143,18 @@ export class PeopleService {
         `${
           environment.managementbaseUrl
         }/${this.authService.getChurchSlug()}/people/members/trash/?page=${pageNumber}&size=${pageSize}`
+      )
+      .pipe(catchError(handleError));
+  }
+  fetchAllFellowshipFromTrash(
+    pageNumber?: number,
+    pageSize?: number
+  ): Observable<any> {
+    return this.http
+      .get<any>(
+        `${
+          environment.managementbaseUrl
+        }/${this.authService.getChurchSlug()}/people/fellowships/trash/?page=${pageNumber}&size=${pageSize}`
       )
       .pipe(catchError(handleError));
   }
@@ -147,12 +216,38 @@ export class PeopleService {
         catchError(handleError)
       );
   }
+  moveFellowshipToTrash(model: any): Observable<any> {
+    return this.http
+      .post<any>(
+        ` ${
+          environment.managementbaseUrl
+        }/${this.authService.getChurchSlug()}/people/fellowships/delete`,
+        model
+      )
+      .pipe(
+        map((status) => status),
+        catchError(handleError)
+      );
+  }
   restoreMember(model: any): Observable<any> {
     return this.http
       .post<any>(
         ` ${
           environment.managementbaseUrl
         }/${this.authService.getChurchSlug()}/people/members/trash/restore`,
+        model
+      )
+      .pipe(
+        map((status) => status),
+        catchError(handleError)
+      );
+  }
+  restoreFellowship(model: any): Observable<any> {
+    return this.http
+      .post<any>(
+        ` ${
+          environment.managementbaseUrl
+        }/${this.authService.getChurchSlug()}/people/fellowship/trash/restore`,
         model
       )
       .pipe(
@@ -201,6 +296,19 @@ export class PeopleService {
         ` ${
           environment.managementbaseUrl
         }/${this.authService.getChurchSlug()}/people/members/other`,
+        model
+      )
+      .pipe(
+        map((status) => status),
+        catchError(handleError)
+      );
+  }
+  updateFellowship(model: any, id: number): Observable<any> {
+    return this.http
+      .post<any>(
+        ` ${
+          environment.managementbaseUrl
+        }/${this.authService.getChurchSlug()}/people/fellowships/${id}/update`,
         model
       )
       .pipe(
