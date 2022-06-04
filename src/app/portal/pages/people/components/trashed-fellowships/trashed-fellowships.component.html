@@ -46,7 +46,7 @@
                 mat-stroked-button
                 [disabled]="selection.selected.length == 0"
                 data-bs-toggle="modal"
-                data-bs-target="#restore-member"
+                data-bs-target="#restore-item"
                 (click)="
                   _isAllSelected = true;
                   getSelectedFellowship(selection.selected)
@@ -128,7 +128,7 @@
                       type="button"
                       mat-menu-item
                       data-bs-toggle="modal"
-                      data-bs-target="#restore-member"
+                      data-bs-target="#restore-item"
                       (click)="
                         _isSingleSelected = true;
                         getFellowshipDetails(element.id)
@@ -225,7 +225,7 @@
               >
                 Are you sure you want to delete
                 {{ selection.selected.length > 1 ? "these" : "this" }}
-                fellowship?
+                item?
                 <br />
                 They will no longer be accessible.
               </p>
@@ -252,14 +252,14 @@
     </div>
   </div>
 </div>
-<div class="modal fade" id="restore-member" role="dialog">
+<div class="modal fade" id="restore-item" role="dialog">
   <div class="modal-dialog modal-wrapper">
     <div class="modal-content-wrap">
       <div class="modal-body">
         <div
           class="header-top d-flex justify-content-between align-items-center px-4 py-3"
         >
-          <div class="title">Restore Member</div>
+          <div class="title">Restore Item</div>
           <ion-icon name="close-outline" data-bs-dismiss="modal"></ion-icon>
         </div>
         <div class="container">
@@ -271,7 +271,7 @@
               >
                 Are you sure you want to restore
                 {{ selection.selected.length > 1 ? "these" : "this" }}
-                fellowship?
+                item?
               </p>
               <p *ngIf="selection.selected.length == 0" class="text-center m-0">
                 Please select one or more fellowship

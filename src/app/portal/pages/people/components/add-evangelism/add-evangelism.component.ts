@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, Renderer2, ViewChild } from '@angular/core';
 import { Location } from '@angular/common';
 import { environment } from 'src/environments/environment';
 import {
@@ -27,6 +27,7 @@ import { ObservableInput, throwError } from 'rxjs';
 export class AddEvangelismComponent implements OnInit {
   @ViewChild('allSelected') allSelected: any;
   @ViewChild('matSelect') select: any;
+  @ViewChild('txtDate') txtDate: any;
   queryString: string;
   isBusy: boolean = false;
   screen: number = 1;
@@ -40,7 +41,7 @@ export class AddEvangelismComponent implements OnInit {
   fileData: any;
   pageSize: number = 50;
   currentPage = 0;
-
+  validate: boolean = false;
   _pathStatus = getCompletedStatus;
   compareFunc = compareObjects;
   _formateDate = formatDate;
@@ -54,7 +55,8 @@ export class AddEvangelismComponent implements OnInit {
     private _location: Location,
     private route: ActivatedRoute,
     private router: Router,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private renderer: Renderer2
   ) {
     this.evangelismForm = this.fb.group({
       name: [null, Validators.required],
@@ -71,9 +73,10 @@ export class AddEvangelismComponent implements OnInit {
 
   ngOnInit(): void {
     this.getRoutes();
+    this.getMembers();
   }
   ngAfterViewInit() {
-    this.getMembers();
+    this.setDateFunc();
   }
   gotoBack() {
     this._location.back();
@@ -90,6 +93,19 @@ export class AddEvangelismComponent implements OnInit {
       return this.memberItems.slice(0, 5).map((x: any) => x.user.first_name);
     }
   }
+  get startDateVal() {
+    if (this.queryString !== 'edit') {
+      return this.evangelismForm.get('start_date').value;
+    }
+    return this.updateEvangelismForm.get('start_date').value;
+  }
+  get endDateVal() {
+    if (this.queryString !== 'edit') {
+      return this.evangelismForm.get('end_date').value;
+    }
+    return this.updateEvangelismForm.get('end_date').value;
+  }
+
   toggleAllSelection() {
     if (this.allSelected.selected) {
       this.select.options._results.map((item) => {
@@ -114,7 +130,15 @@ export class AddEvangelismComponent implements OnInit {
       this.allSelected.select();
     }
   }
-
+  onDateChange() {
+    var endDate = new Date(this.endDateVal);
+    var startDate = new Date(this.startDateVal);
+    if (endDate.getTime() < startDate.getTime()) {
+      this.validate = true;
+    } else {
+      this.validate = false;
+    }
+  }
   getMembers() {
     this._memberList = [];
     this.peopleServ
@@ -259,6 +283,18 @@ export class AddEvangelismComponent implements OnInit {
             this.evangelismForm.reset();
           }
         );
+    }
+  }
+  setDateFunc() {
+    var dtToday = new Date();
+    var month: any = dtToday.getMonth() + 1;
+    var day: any = dtToday.getDate();
+    var year = dtToday.getFullYear();
+    if (month < 10) month = '0' + month.toString();
+    if (day < 10) day = '0' + day.toString();
+    var maxDate = year + '-' + month + '-' + day;
+    if (this.queryString !== 'edit') {
+      this.renderer.setAttribute(this.txtDate.nativeElement, 'min', maxDate);
     }
   }
 }

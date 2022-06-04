@@ -46,6 +46,8 @@
                 type="date"
                 formControlName="start_date"
                 placeholder="Enter start date"
+                (change)="onDateChange()"
+                #txtDate
               />
             </div>
             <div class="input">
@@ -54,7 +56,11 @@
                 type="date"
                 formControlName="end_date"
                 placeholder="Enter end date"
+                (change)="onDateChange()"
               />
+              <small class="text-danger" *ngIf="validate"
+                >End date must be greater than start date</small
+              >
             </div>
           </div>
           <div class="grid grid--1fr--1fr grid-gap-15 mb-3">
@@ -187,6 +193,7 @@
                   type="date"
                   formControlName="start_date"
                   placeholder="Enter start date"
+                  (change)="onDateChange()"
                 />
               </div>
               <div class="input">
@@ -195,7 +202,11 @@
                   type="date"
                   formControlName="end_date"
                   placeholder="Enter end date"
+                  (change)="onDateChange()"
                 />
+                <small class="text-danger" *ngIf="validate"
+                  >End date must be greater than start date</small
+                >
               </div>
             </div>
             <div class="grid grid--1fr--1fr grid-gap-15 mb-3">

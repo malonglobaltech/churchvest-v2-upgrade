@@ -1,1 +1,300 @@
-<p>trashed-evangelism works!</p>
+<section>
+  <div class="header d-flex align-items-center mb-4">
+    <div class="d-flex align-items-center cursor me-3" (click)="gotoBack()">
+      <button mat-icon-button class="me-2 return-link-wrap">
+        <mat-icon>west</mat-icon>
+      </button>
+      <div class="title-sm">Back</div>
+    </div>
+    <div class="title">Trash</div>
+  </div>
+  <div
+    class="d-flex justify-content-center align-items-center my-3 empty-state"
+    *ngIf="!_loading && (!evangelismList || evangelismList.length === 0)"
+  >
+    <span class="txt-grey txt-md">No trashed record at this moment!</span>
+  </div>
+  <ng-container *ngIf="_loading">
+    <app-loading-roller></app-loading-roller>
+  </ng-container>
+  <div
+    class="overflow--wrap _visible"
+    [ngClass]="{ hide: evangelismList.length == 0 }"
+  >
+    <div class="table-wrapper tbl-wrap">
+      <ng-container *ngIf="evangelismList.length !== 0">
+        <div class="toolbar mb-5 adjust-wrap">
+          <div
+            class="d-flex align-items-center justify-content-start adjust-flex"
+          >
+            <div
+              class="d-flex align-items-center mr-1"
+              style="width: fit-content"
+            >
+              <!-- Master Checkbox-->
+              <mat-checkbox
+                (change)="$event ? masterToggle() : null"
+                [checked]="selection.hasValue() && isAllSelected()"
+                [indeterminate]="selection.hasValue() && !isAllSelected()"
+                [aria-label]="checkboxLabel()"
+              >
+                Select all
+              </mat-checkbox>
+            </div>
+            <div class="mr-1 animate animate__bounceIn">
+              <button
+                mat-stroked-button
+                [disabled]="selection.selected.length == 0"
+                data-bs-toggle="modal"
+                data-bs-target="#restore-item"
+                (click)="
+                  _isAllSelected = true;
+                  getSelectedEvangelism(selection.selected)
+                "
+              >
+                Restore
+                {{
+                  selection.selected.length == evangelismList.length
+                    ? "All"
+                    : selection.selected.length > 0
+                    ? selection.selected.length
+                    : null
+                }}
+              </button>
+            </div>
+            <div class="animate animate__bounceIn">
+              <button
+                mat-stroked-button
+                class="text-danger"
+                data-bs-toggle="modal"
+                data-bs-target="#delete"
+                [disabled]="selection.selected.length == 0"
+                (click)="
+                  _isAllSelected = true;
+                  getSelectedEvangelism(selection.selected)
+                "
+              >
+                Delete
+                {{
+                  selection.selected.length == evangelismList.length
+                    ? "All"
+                    : selection.selected.length > 0
+                    ? selection.selected.length
+                    : null
+                }}
+              </button>
+            </div>
+          </div>
+        </div>
+        <table
+          mat-table
+          [dataSource]="dataSource"
+          class="table custom-table w--100"
+          style="width: 100%"
+          id="print-section"
+        >
+          <ng-container
+            *ngFor="
+              let disCol of displayedColumns;
+              let colIndex = index;
+              let last = last
+            "
+            [matColumnDef]="disCol"
+          >
+            <th mat-header-cell *matHeaderCellDef>
+              {{ disCol }}
+            </th>
+            <ng-container *ngIf="colIndex === 0">
+              <td *matCellDef="let element">
+                <mat-checkbox
+                  [value]="element"
+                  (click)="$event.stopPropagation()"
+                  (change)="$event ? selection.toggle(element) : null"
+                  [checked]="selection.isSelected(element)"
+                >
+                  <span>{{ element.name }}</span>
+                </mat-checkbox>
+              </td>
+            </ng-container>
+            <!--Action Column-->
+            <ng-container *ngIf="last">
+              <td mat-cell *matCellDef="let element">
+                <div [matMenuTriggerFor]="menu">
+                  <span class="cursor">
+                    <mat-icon>more_horiz</mat-icon>
+                  </span>
+                  <mat-menu #menu="matMenu">
+                    <button
+                      type="button"
+                      mat-menu-item
+                      data-bs-toggle="modal"
+                      data-bs-target="#restore-item"
+                      (click)="
+                        _isSingleSelected = true;
+                        getEvangelismDetails(element.id)
+                      "
+                    >
+                      Restore fellowship
+                    </button>
+                    <button
+                      type="button"
+                      mat-menu-item
+                      data-bs-toggle="modal"
+                      data-bs-target="#delete"
+                      (click)="
+                        _isSingleSelected = true;
+                        getEvangelismDetails(element.id)
+                      "
+                    >
+                      Delete permanently
+                    </button>
+                  </mat-menu>
+                </div>
+              </td>
+            </ng-container>
+            <!--Table  Row Content-->
+            <!--Table  Row Content-->
+            <ng-container *ngIf="disCol == 'start date'">
+              <td mat-cell *matCellDef="let element">
+                <span>{{ element["start_date"] | date: "mediumDate" }}</span>
+              </td>
+            </ng-container>
+            <ng-container *ngIf="disCol == 'end date'">
+              <td mat-cell *matCellDef="let element">
+                <span>{{ element["end_date"] | date: "mediumDate" }}</span>
+              </td>
+            </ng-container>
+            <ng-container *ngIf="disCol == 'organizer'">
+              <td mat-cell *matCellDef="let element">
+                <span> {{ element["organizer"] }}</span>
+              </td>
+            </ng-container>
+            <ng-container *ngIf="disCol == 'address'">
+              <td mat-cell *matCellDef="let element">
+                <span>
+                  {{ element["address"] ? element["address"] : "---" }}</span
+                >
+              </td>
+            </ng-container>
+
+            <td mat-cell *matCellDef="let element">
+              <span> {{ element[_concatColumnString(disCol)] }}</span>
+            </td>
+          </ng-container>
+          <!--Mat-table  configurations-->
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr
+            mat-row
+            *matRowDef="let row; columns: displayedColumns"
+            [ngClass]="{
+              'bg-wrap': selection.isSelected(row)
+            }"
+          ></tr>
+          <!-- Row shown when there is no matching data. -->
+          <tr class="mat-row" *matNoDataRow>
+            <td class="mat-cell" colspan="4">
+              No data matching the search item: "{{ input.value }}"
+            </td>
+          </tr>
+        </table>
+      </ng-container>
+      <mat-paginator
+        showFirstLastButton
+        [pageIndex]="currentPage"
+        [pageSize]="pageSize"
+        (page)="pageChanged($event)"
+      ></mat-paginator>
+    </div>
+  </div>
+</section>
+
+<div class="modal fade" id="delete" role="dialog">
+  <div class="modal-dialog modal-wrapper">
+    <div class="modal-content-wrap">
+      <div class="modal-body">
+        <div
+          class="header-top d-flex justify-content-between align-items-center px-4 py-3"
+        >
+          <div class="title">Permanently Delete Evangelism</div>
+          <ion-icon name="close-outline" data-bs-dismiss="modal"></ion-icon>
+        </div>
+        <div class="container">
+          <div class="pb-3">
+            <div class="center">
+              <p
+                *ngIf="selection.selected.length !== 0"
+                class="text-center m-0"
+              >
+                Are you sure you want to delete
+                {{ selection.selected.length > 1 ? "these" : "this" }}
+                item?
+                <br />
+                They will no longer be accessible.
+              </p>
+              <p *ngIf="selection.selected.length == 0" class="text-center m-0">
+                Please select one or more evangelism
+              </p>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer d-flex justify-content-end align-items-center">
+          <button
+            mat-button
+            class="text-danger me-3"
+            [disabled]="selection.selected.length == 0"
+            (click)="confirmDelete()"
+          >
+            Delete <mat-spinner *ngIf="isBusy"> </mat-spinner>
+          </button>
+          <button mat-stroked-button data-bs-dismiss="modal" #closebtn>
+            Cancel
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal fade" id="restore-item" role="dialog">
+  <div class="modal-dialog modal-wrapper">
+    <div class="modal-content-wrap">
+      <div class="modal-body">
+        <div
+          class="header-top d-flex justify-content-between align-items-center px-4 py-3"
+        >
+          <div class="title">Restore Evangelism</div>
+          <ion-icon name="close-outline" data-bs-dismiss="modal"></ion-icon>
+        </div>
+        <div class="container">
+          <div class="pb-3">
+            <div class="center">
+              <p
+                *ngIf="selection.selected.length !== 0"
+                class="text-center m-0"
+              >
+                Are you sure you want to restore
+                {{ selection.selected.length > 1 ? "these" : "this" }}
+                item?
+              </p>
+              <p *ngIf="selection.selected.length == 0" class="text-center m-0">
+                Please select one or more evangelism
+              </p>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer d-flex justify-content-end align-items-center">
+          <button
+            mat-flat-button
+            class="me-3"
+            [disabled]="selection.selected.length == 0"
+            (click)="confirmRestore()"
+          >
+            Restore <mat-spinner *ngIf="isBusy"> </mat-spinner>
+          </button>
+          <button mat-stroked-button data-bs-dismiss="modal" #closebtn_>
+            Cancel
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
