@@ -45,7 +45,7 @@ export class AddFellowshipComponent implements OnInit {
   compareFunc = compareObjects;
   _formateDate = formatDate;
   _daysOfWeek = getDays;
-  date = new Date();
+
   public fellowshipForm: FormGroup = new FormGroup({});
   public updatefellowshipForm: FormGroup = new FormGroup({});
   constructor(

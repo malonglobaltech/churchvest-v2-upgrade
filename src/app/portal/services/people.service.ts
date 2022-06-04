@@ -43,6 +43,19 @@ export class PeopleService {
         catchError(handleError)
       );
   }
+  addEvangelism(model: any): Observable<any> {
+    return this.http
+      .post<any>(
+        ` ${
+          environment.managementbaseUrl
+        }/${this.authService.getChurchSlug()}/people/evangelism`,
+        model
+      )
+      .pipe(
+        map((status) => status),
+        catchError(handleError)
+      );
+  }
   assignMemberRole(model: any, id?: number): Observable<any> {
     return this.http
       .post<any>(
@@ -158,6 +171,19 @@ export class PeopleService {
         ` ${
           environment.managementbaseUrl
         }/${this.authService.getChurchSlug()}/people/members/${type}`,
+        model
+      )
+      .pipe(
+        map((status) => status),
+        catchError(handleError)
+      );
+  }
+  updateEvangelism(model: any, id: number): Observable<any> {
+    return this.http
+      .post<any>(
+        ` ${
+          environment.managementbaseUrl
+        }/${this.authService.getChurchSlug()}/people/evangelism/${id}/update`,
         model
       )
       .pipe(

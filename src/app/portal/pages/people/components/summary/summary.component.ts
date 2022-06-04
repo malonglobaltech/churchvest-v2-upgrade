@@ -6,7 +6,7 @@ import {
   setDateQuery,
   truncateString,
 } from 'src/app/shared/_helperFunctions';
-
+import Swal from 'sweetalert2';
 @Component({
   selector: 'app-summary',
   templateUrl: './summary.component.html',
@@ -64,45 +64,69 @@ export class SummaryComponent implements OnInit {
     let date = this._setDateQuery(query);
     switch (service) {
       case (service = 1):
-        return this.peopleService
-          .getSummary('members', date)
-          .subscribe((res) => {
+        return this.peopleService.getSummary('members', date).subscribe(
+          (res) => {
             this._loading = false;
             const { data } = res;
             this.memberSummary = data;
-          });
+          },
+          (error) => {
+            this._loading = false;
+            Swal.fire('Server error', error, 'error');
+          }
+        );
       case (service = 2):
-        return this.peopleService
-          .getSummary('fellowships', date)
-          .subscribe((res) => {
+        return this.peopleService.getSummary('fellowships', date).subscribe(
+          (res) => {
             this._loading = false;
             const { data } = res;
             this.fellowshipSummary = data;
-          });
+          },
+          (error) => {
+            this._loading = false;
+            Swal.fire('Server error', error, 'error');
+          }
+        );
       case (service = 3):
-        return this.peopleService
-          .getSummary('evangelism', date)
-          .subscribe((res) => {
+        return this.peopleService.getSummary('evangelism', date).subscribe(
+          (res) => {
             this._loading = false;
             const { data } = res;
             this.evangelismSummary = data;
-          });
+          },
+          (error) => {
+            this._loading = false;
+            Swal.fire('Server error', error, 'error');
+          }
+        );
       case (service = 4):
         return this.peopleService
           .getSummary('members/converts', date)
-          .subscribe((res) => {
-            this._loading = false;
-            const { data } = res;
-            this.convertSummary = data;
-          });
+          .subscribe(
+            (res) => {
+              this._loading = false;
+              const { data } = res;
+              this.convertSummary = data;
+            },
+            (error) => {
+              this._loading = false;
+              Swal.fire('Server error', error, 'error');
+            }
+          );
       case (service = 5):
         return this.peopleService
           .getSummary('members/first_timers', date)
-          .subscribe((res) => {
-            this._loading = false;
-            const { data } = res;
-            this.firstTimerSummary = data;
-          });
+          .subscribe(
+            (res) => {
+              this._loading = false;
+              const { data } = res;
+              this.firstTimerSummary = data;
+            },
+            (error) => {
+              this._loading = false;
+              Swal.fire('Server error', error, 'error');
+            }
+          );
       default:
         return null;
     }

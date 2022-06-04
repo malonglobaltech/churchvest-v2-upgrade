@@ -22,6 +22,7 @@ import { AddNewConvertsComponent } from './components/add-new-converts/add-new-c
 import { FirstTimersComponent } from './components/first-timers/first-timers.component';
 import { AddFirstTimersComponent } from './components/add-first-timers/add-first-timers.component';
 import { TrashedFellowshipsComponent } from './components/trashed-fellowships/trashed-fellowships.component';
+import { TrashedEvangelismComponent } from './components/trashed-evangelism/trashed-evangelism.component';
 @NgModule({
   declarations: [
     PeopleComponent,
@@ -38,6 +39,7 @@ import { TrashedFellowshipsComponent } from './components/trashed-fellowships/tr
     FirstTimersComponent,
     AddFirstTimersComponent,
     TrashedFellowshipsComponent,
+    TrashedEvangelismComponent,
   ],
   imports: [
     CommonModule,

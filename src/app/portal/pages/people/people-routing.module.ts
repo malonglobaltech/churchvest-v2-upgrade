@@ -11,6 +11,7 @@ import { FirstTimersComponent } from './components/first-timers/first-timers.com
 import { MembersComponent } from './components/members/members.component';
 import { NewConvertsComponent } from './components/new-converts/new-converts.component';
 import { SummaryComponent } from './components/summary/summary.component';
+import { TrashedEvangelismComponent } from './components/trashed-evangelism/trashed-evangelism.component';
 import { TrashedFellowshipsComponent } from './components/trashed-fellowships/trashed-fellowships.component';
 import { TrashedMembersComponent } from './components/trashed-members/trashed-members.component';
 import { PeopleComponent } from './people.component';
@@ -44,6 +45,10 @@ const routes: Routes = [
       {
         path: 'summary',
         component: SummaryComponent,
+      },
+      {
+        path: 'evangelism/trash',
+        component: TrashedEvangelismComponent,
       },
       {
         path: 'house-fellowship/trash',
