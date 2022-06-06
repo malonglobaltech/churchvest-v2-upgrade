@@ -17,6 +17,13 @@ const routes: Routes = [
           ),
       },
       {
+        path: 'department',
+        loadChildren: () => 
+          import ('../pages/department/department.module').then(
+            (m) => m.DepartmentModule
+          )
+      },
+      {
         path: 'people',
         loadChildren: () =>
           import('../pages/people/people.module').then((m) => m.PeopleModule),
