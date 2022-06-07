@@ -27,7 +27,6 @@ import { ObservableInput, throwError } from 'rxjs';
 export class AddEvangelismComponent implements OnInit {
   @ViewChild('allSelected') allSelected: any;
   @ViewChild('matSelect') select: any;
-  @ViewChild('txtDate') txtDate: any;
   queryString: string;
   isBusy: boolean = false;
   screen: number = 1;
@@ -75,9 +74,7 @@ export class AddEvangelismComponent implements OnInit {
     this.getRoutes();
     this.getMembers();
   }
-  ngAfterViewInit() {
-    this.setDateFunc();
-  }
+
   gotoBack() {
     this._location.back();
   }
@@ -269,7 +266,7 @@ export class AddEvangelismComponent implements OnInit {
           ({ message, data }) => {
             this.toastr.success(message, 'Message');
             this.isBusy = false;
-            this.evangelismForm.reset();
+            this.updateEvangelismForm.reset();
             this.router.navigate(['/portal/people/evangelism']);
           },
           (error) => {
@@ -280,21 +277,9 @@ export class AddEvangelismComponent implements OnInit {
           },
           () => {
             this.isBusy = false;
-            this.evangelismForm.reset();
+            this.updateEvangelismForm.reset();
           }
         );
-    }
-  }
-  setDateFunc() {
-    var dtToday = new Date();
-    var month: any = dtToday.getMonth() + 1;
-    var day: any = dtToday.getDate();
-    var year = dtToday.getFullYear();
-    if (month < 10) month = '0' + month.toString();
-    if (day < 10) day = '0' + day.toString();
-    var maxDate = year + '-' + month + '-' + day;
-    if (this.queryString !== 'edit') {
-      this.renderer.setAttribute(this.txtDate.nativeElement, 'min', maxDate);
     }
   }
 }

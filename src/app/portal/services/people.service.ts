@@ -30,6 +30,19 @@ export class PeopleService {
         catchError(handleError)
       );
   }
+  addConvert(model: any): Observable<any> {
+    return this.http
+      .post<any>(
+        ` ${
+          environment.managementbaseUrl
+        }/${this.authService.getChurchSlug()}/people/members/converts`,
+        model
+      )
+      .pipe(
+        map((status) => status),
+        catchError(handleError)
+      );
+  }
   addFellowship(model: IFellowship): Observable<any> {
     return this.http
       .post<IFellowship>(
@@ -82,13 +95,14 @@ export class PeopleService {
   fetchAll(
     type: string,
     pageNumber?: number,
-    pageSize?: number
+    pageSize?: number,
+    optional?: string
   ): Observable<any> {
     return this.http
       .get<any>(
         `${
           environment.managementbaseUrl
-        }/${this.authService.getChurchSlug()}/people/${type}/?page=${pageNumber}&size=${pageSize}`
+        }/${this.authService.getChurchSlug()}/people/${type}/?page=${pageNumber}&size=${pageSize}?status=${optional}`
       )
       .pipe(catchError(handleError));
   }
@@ -184,6 +198,19 @@ export class PeopleService {
         ` ${
           environment.managementbaseUrl
         }/${this.authService.getChurchSlug()}/people/evangelism/${id}/update`,
+        model
+      )
+      .pipe(
+        map((status) => status),
+        catchError(handleError)
+      );
+  }
+  updateConvert(model: any, id: number): Observable<any> {
+    return this.http
+      .post<any>(
+        ` ${
+          environment.managementbaseUrl
+        }/${this.authService.getChurchSlug()}/people/members/converts/${id}/update`,
         model
       )
       .pipe(

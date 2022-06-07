@@ -1,1 +1,263 @@
-<p>add-new-converts works!</p>
+<div class="d-flex align-items-center mb-4 cursor" (click)="gotoBack()">
+  <button mat-icon-button class="me-2 return-link-wrap">
+    <mat-icon>west</mat-icon>
+  </button>
+  <div class="title-sm">Back</div>
+</div>
+<ng-container>
+  <section class="stepper-wrapper full">
+    <aside *ngIf="queryString !== 'edit'">
+      <form [formGroup]="convertForm" (ngSubmit)="onSubmit()">
+        <div class="form-wrap">
+          <div class="title mb-2">New Converts</div>
+          <mat-divider></mat-divider>
+          <div class="grid grid--1fr--1fr grid-gap-15 mt-4 mb-3">
+            <div class="input">
+              <label>Name of convert</label>
+              <input
+                type="text"
+                placeholder="Enter name of convert"
+                formControlName="name"
+                [ngClass]="{
+                  'is-invalid':
+                    convertForm.controls['name'].hasError('required') &&
+                    convertForm.controls['name'].touched
+                }"
+              />
+            </div>
+            <div class="input">
+              <label>Email address </label>
+              <input
+                type="text"
+                placeholder="Enter email address"
+                formControlName="email"
+              />
+            </div>
+          </div>
+          <div class="grid grid--1fr--1fr grid-gap-15 mt-4 mb-3">
+            <div class="input">
+              <label>Phone number</label>
+              <input
+                type="text"
+                formControlName="phone"
+                placeholder="Enter phone number"
+              />
+            </div>
+            <div class="input">
+              <label>Service day</label>
+              <input
+                type="date"
+                formControlName="service_day"
+                placeholder="Enter service day"
+              />
+            </div>
+          </div>
+          <div class="grid grid--1fr--1fr grid-gap-15 mb-3">
+            <div class="input">
+              <div class="d-flex flex-column">
+                <label>Is convert a member</label>
+                <mat-radio-group
+                  style="line-height: 34px"
+                  formControlName="is_member"
+                  [ngClass]="{
+                    'is-invalid':
+                      convertForm.controls['is_member'].hasError('required') &&
+                      convertForm.controls['is_member'].touched
+                  }"
+                >
+                  <mat-radio-button [value]="!_val" class="me-4"
+                    >Yes</mat-radio-button
+                  >
+                  <mat-radio-button [value]="_val">No</mat-radio-button>
+                </mat-radio-group>
+              </div>
+            </div>
+            <div class="input">
+              <div class="d-flex flex-column">
+                <label>Is this a redication </label>
+                <mat-radio-group
+                  style="line-height: 34px"
+                  formControlName="is_rededication"
+                  [ngClass]="{
+                    'is-invalid':
+                      convertForm.controls['is_rededication'].hasError(
+                        'required'
+                      ) && convertForm.controls['is_rededication'].touched
+                  }"
+                >
+                  <mat-radio-button [value]="!_val" class="me-4"
+                    >Yes</mat-radio-button
+                  >
+                  <mat-radio-button [value]="_val">No</mat-radio-button>
+                </mat-radio-group>
+              </div>
+            </div>
+          </div>
+          <div class="grid grid--1fr--1fr grid-gap-15 mb-3">
+            <div class="input">
+              <label>Follow up team</label>
+              <mat-select
+                placeholder="Select follow up members"
+                class="select"
+                multiple
+                #matSelect
+                formControlName="follow_up_team"
+                (selectionChange)="handleMembersChange($event)"
+              >
+                <mat-select-trigger>
+                  {{ _memberList ? stripedObjValue : "" }}
+                  <span class="more" *ngIf="memberItems.length > 5">
+                    +{{ memberItems.length - 5 }} other item
+                  </span>
+                </mat-select-trigger>
+                <mat-option
+                  #allSelected
+                  (click)="toggleAllSelection()"
+                  [value]="0"
+                  >All</mat-option
+                >
+                <mat-option
+                  *ngFor="let item of _memberList"
+                  [value]="item"
+                  (click)="toggleOne()"
+                >
+                  {{ item.user.first_name }} {{ item.user.last_name }}
+                </mat-option>
+              </mat-select>
+            </div>
+            <div class="input">
+              <label>Member</label>
+              <mat-select
+                placeholder="Select members"
+                class="select"
+                formControlName="members_id"
+              >
+                <mat-option *ngFor="let item of _memberList" [value]="item.id">
+                  {{ item.user.first_name }} {{ item.user.last_name }}
+                </mat-option>
+              </mat-select>
+            </div>
+          </div>
+          <ng-container *ngIf="_prayers.length !== 0">
+            <div class="panel-list">
+              <div *ngFor="let item of _prayers; let i = index">
+                <div>
+                  <label class="f12 txt-grey">Prayer request {{ i + 1 }}</label>
+                  <div
+                    class="d-flex justify-content-between align-items-center"
+                  >
+                    <span>{{ item }}</span>
+                    <button
+                      type="button"
+                      mat-icon-button
+                      (click)="removeItem(item)"
+                    >
+                      <mat-icon>cancel</mat-icon>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </ng-container>
+          <div class="grid mb-3">
+            <div class="input">
+              <label>Prayer requests</label>
+              <textarea
+                cols="30"
+                rows="10"
+                placeholder="Write a prayer request"
+                formControlName="prayer_requests"
+                (input)="onPrayerChange($event)"
+              ></textarea>
+              <div class="mt-2">
+                <button
+                  type="button"
+                  mat-button
+                  [disabled]="_prayer == ''"
+                  (click)="onAddPrayer()"
+                >
+                  <mat-icon class="me-2">add</mat-icon> Add Prayer Request
+                </button>
+              </div>
+            </div>
+          </div>
+          <div class="d-flex align-items-center">
+            <button
+              type="submit"
+              mat-flat-button
+              class="me-4"
+              [disabled]="!convertForm.valid"
+            >
+              Save <mat-spinner *ngIf="isBusy"> </mat-spinner>
+            </button>
+          </div>
+        </div>
+      </form>
+    </aside>
+    <ng-container *ngIf="queryString == 'edit' && !itemDetails">
+      <app-loading-roller></app-loading-roller>
+    </ng-container>
+    <ng-container *ngIf="queryString == 'edit' && itemDetails">
+      <aside>
+        <form [formGroup]="updateConvertForm" (ngSubmit)="onUpdate()">
+          <div class="form-wrap">
+            <div class="title mb-2">Update Converts</div>
+            <mat-divider></mat-divider>
+            <div class="grid grid--1fr--1fr grid-gap-15 mt-4 mb-3">
+              <div class="input">
+                <label>Name of convert</label>
+                <input
+                  type="text"
+                  placeholder="Enter name of convert"
+                  formControlName="name"
+                  [ngClass]="{
+                    'is-invalid':
+                      updateConvertForm.controls['name'].hasError('required') &&
+                      updateConvertForm.controls['name'].touched
+                  }"
+                />
+              </div>
+              <div class="input">
+                <label>Email address </label>
+                <input
+                  type="text"
+                  placeholder="Enter email address"
+                  formControlName="email"
+                />
+              </div>
+            </div>
+            <div class="grid grid--1fr--1fr grid-gap-15 mt-4 mb-3">
+              <div class="input">
+                <label>Phone number</label>
+                <input
+                  type="text"
+                  formControlName="phone"
+                  placeholder="Enter phone number"
+                />
+              </div>
+              <div class="input">
+                <label>Service day</label>
+                <input
+                  type="date"
+                  formControlName="service_day"
+                  placeholder="Enter service day"
+                />
+              </div>
+            </div>
+
+            <div class="d-flex align-items-center">
+              <button
+                type="submit"
+                mat-flat-button
+                class="me-4"
+                [disabled]="!updateConvertForm.valid"
+              >
+                Update <mat-spinner *ngIf="isBusy"> </mat-spinner>
+              </button>
+            </div>
+          </div>
+        </form>
+      </aside>
+    </ng-container>
+  </section>
+</ng-container>

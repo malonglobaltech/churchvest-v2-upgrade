@@ -153,12 +153,12 @@ export class TrashedEvangelismComponent implements OnInit {
     let payload: any;
     if (this._isAllSelected) {
       payload = {
-        fellowships_id: this.selectedEvangelism,
+        evangelism_id: this.selectedEvangelism,
       };
     }
     if (this._isSingleSelected) {
       payload = {
-        fellowships_id: [this.itemDetails.id],
+        evangelism_id: [this.itemDetails.id],
       };
     }
 
