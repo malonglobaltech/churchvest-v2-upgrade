@@ -27,7 +27,7 @@ export class NewConvertsComponent implements OnInit {
   itemDetails: any;
   _loading: boolean = false;
   _loading_: boolean = false;
-  file_name = 'evangelism_data';
+  file_name = 'new_converts_data';
   filterValue: string;
   _id: number;
   selectedConvert: any[] = [];
