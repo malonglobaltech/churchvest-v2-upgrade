@@ -1,1 +1,101 @@
-<p>department works!</p>
+<section>
+    <div class="header d-flex align-items-center justify-content-between mb-4">
+        <div class="title">Department</div>
+        <button
+          mat-stroked-button
+          routerLink="/portal/department"
+        >
+            <mat-icon>add</mat-icon> Add Department
+        </button>
+    </div>
+    <div
+      *ngIf="!_loading && (!departmentList || departmentList.length === 0)"
+      class="d-flex justify-content-center align-items-center my-3 empty-state"
+    >
+        <span class="txt-grey txt-md">
+            No department found! Please create a department
+        </span>
+    </div>
+    <ng-container *ngIf="_loading">
+        <app-loading-roller></app-loading-roller>
+    </ng-container>
+    <div
+      class="overflow--wrap _visible"
+      [ngClass]="{hide: departmentList.length === 0}"
+    >
+        <div class="table-wrapper tbl-wrap">
+            <ng-container *ngIf="departmentList.length !== 0">
+                <div class="toolbar mb-5 adjust-wrap d-flex justify-content-between align-items-center">
+                    <div class="d-flex align-items-center justify-content-start adjust-flex">
+                        <div 
+                          class="d-flex align-items-center mr-1"
+                          style="width: fit-content"
+                        >
+                            <!--Master Checkbox  -->
+                            <mat-checkbox
+                              (change)="$event ? masterToggle() : null"
+                              [checked]="selection.hasValue() && !isAllSelected()"
+                              [indeterminate]="selection.hasValue() && !isAllSelected()"
+                            ></mat-checkbox>
+                        </div>
+                        <div class="search-input w-400 m-0">
+                            <span><mat-icon>search</mat-icon></span>
+                            <input
+                             type="text"
+                             placeholder="Search"
+                             #input
+                             class="w-400"
+                            />
+                        </div>
+                        <!-- Export as  -->
+                        <div class="ms-3">
+                            <button
+                              mat-stroked-button
+                              class="mat-stroked-secondary mr-1"
+                            >
+                                Export as
+                            </button>
+                            <mat-menu #xportAs="matMenu">
+                                <button mat-menu-item >
+                                    Download as Excel
+                                </button>
+                            </mat-menu>
+                        </div>
+                        <!-- Print -->
+                        <div>
+                            <button
+                              mat-button
+                              class="print ms-1"
+                            >
+                            <mat-icon class="me-2">print</mat-icon> Print
+                        </button>
+                        </div>
+                    </div>
+                    <div
+                      class="animate animate_bounceIn"
+                      *ngIf="selection.selected.length !== 0"
+                    >
+                        <button
+                          mat-stroked-button
+                          class="text-danger"
+                          data-bs-target="modal"
+                          data-bs-target="#move-department"
+                        >
+                            Trash
+                        </button>
+                    </div>
+                    <div>
+                        <button
+                          mat-button
+                          class="btn--primary"
+                        >
+                            <mat-icon>restore_from_trash</mat-icon> View Trash
+                        </button>
+                    </div>
+                </div>
+            </ng-container>
+        </div>
+    </div>
+</section>
+
+
