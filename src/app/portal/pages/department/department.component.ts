@@ -2,6 +2,7 @@ import { SelectionModel } from '@angular/cdk/collections';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
+import { concatColumnString } from 'src/app/shared';
 import { DepartmentService } from '../../services/department.service';
 
 @Component({
@@ -21,6 +22,7 @@ export class DepartmentComponent implements OnInit {
   public dataSource: MatTableDataSource<any> = new MatTableDataSource();
   public selection = new SelectionModel(true, []);
   public displayedColumns: string[];
+  _concatColumnString = concatColumnString;
 
 
   constructor(private deptService: DepartmentService) { }
