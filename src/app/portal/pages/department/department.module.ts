@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { DepartmentRoutingModule } from './department-routing.module';
@@ -14,6 +14,8 @@ import { AngularMaterialModule } from 'src/app/shared/angular-material.module';
     CommonModule,
     DepartmentRoutingModule,
     AngularMaterialModule,
-  ]
+  ],
+  exports: [DepartmentComponent],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
 export class DepartmentModule { }

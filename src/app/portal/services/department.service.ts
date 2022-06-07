@@ -15,12 +15,15 @@ export class DepartmentService {
     this.authService.getChurchSlug();
   }
 
-  getAllDepartment(): Observable<any> {
+  getAllDepartment(
+    pageNumber?: number,
+    pageSize?: number
+  ): Observable<any> {
     return this.http
       .get<any>(
         `${
           environment.managementbaseUrl
-        }/${this.authService.getChurchSlug()}/departments`
+        }/${this.authService.getChurchSlug()}/departments?page=${pageNumber}&size=${pageSize}`
       )
       .pipe(catchError(handleError))
   }
