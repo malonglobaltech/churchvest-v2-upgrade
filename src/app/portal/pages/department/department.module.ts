@@ -6,11 +6,17 @@ import { DepartmentComponent } from './department.component';
 import { AngularMaterialModule } from 'src/app/shared/angular-material.module';
 import { LoadingRollerModule } from '../../components/loading-roller/loading-roller.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { AddDepartmentComponent } from './components/add-department/add-department.component';
+import { TrashedDepartmentsComponent } from './components/trashed-departments/trashed-departments.component';
+import { OverviewComponent } from './components/overview/overview.component';
 
 
 @NgModule({
   declarations: [
-    DepartmentComponent
+    DepartmentComponent,
+    AddDepartmentComponent,
+    TrashedDepartmentsComponent,
+    OverviewComponent
   ],
   imports: [
     CommonModule,
