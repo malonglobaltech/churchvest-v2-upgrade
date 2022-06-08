@@ -57,7 +57,14 @@ export class FirstTimersComponent implements OnInit {
     this.dataSource.paginator = this.paginator;
   }
 
-  column = ['first name', 'last name', 'membership info', 'status', 'action'];
+  column = [
+    'first name',
+    'last name',
+    'phone',
+    'email',
+    'membership info',
+    'action',
+  ];
 
   isAllSelected() {
     const numSelected = this.selection.selected.length;
@@ -87,25 +94,23 @@ export class FirstTimersComponent implements OnInit {
   getFirstTimer() {
     this._loading = true;
     this.firstTimerList = [];
-    this.peopleService
-      .fetchAll('members', this.currentPage + 1, this.pageSize, 'first_timer')
-      .subscribe(
-        (res: any) => {
-          this._loading = false;
-          const { data, meta } = res;
+    this.peopleService.fetchByStatus('members', 'first_timer').subscribe(
+      (res: any) => {
+        this._loading = false;
+        const { data, meta } = res;
 
-          this.firstTimerList = data.filter((x: any) => x.details.convert);
-          this.dataSource = new MatTableDataSource(this.firstTimerList);
-          this.paginator.pageIndex = this.currentPage;
-          this.paginator.length = this.firstTimerList.length;
-        },
-        (errors) => {
-          if (errors) {
-            this._loading = false;
-            this.firstTimerList = [];
-          }
+        this.firstTimerList = data.filter((x: any) => x.details.convert);
+        this.dataSource = new MatTableDataSource(this.firstTimerList);
+        this.paginator.pageIndex = this.currentPage;
+        this.paginator.length = this.firstTimerList.length;
+      },
+      (errors) => {
+        if (errors) {
+          this._loading = false;
+          this.firstTimerList = [];
         }
-      );
+      }
+    );
   }
 
   getFirstTimerDetails(id: any) {

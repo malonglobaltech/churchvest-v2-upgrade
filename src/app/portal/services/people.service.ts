@@ -43,6 +43,19 @@ export class PeopleService {
         catchError(handleError)
       );
   }
+  addFirstTimer(model: any): Observable<any> {
+    return this.http
+      .post<any>(
+        ` ${
+          environment.managementbaseUrl
+        }/${this.authService.getChurchSlug()}/people/members/first_timers`,
+        model
+      )
+      .pipe(
+        map((status) => status),
+        catchError(handleError)
+      );
+  }
   addFellowship(model: IFellowship): Observable<any> {
     return this.http
       .post<IFellowship>(
@@ -95,14 +108,22 @@ export class PeopleService {
   fetchAll(
     type: string,
     pageNumber?: number,
-    pageSize?: number,
-    optional?: string
+    pageSize?: number
   ): Observable<any> {
     return this.http
       .get<any>(
         `${
           environment.managementbaseUrl
-        }/${this.authService.getChurchSlug()}/people/${type}/?page=${pageNumber}&size=${pageSize}?status=${optional}`
+        }/${this.authService.getChurchSlug()}/people/${type}/?page=${pageNumber}&size=${pageSize}`
+      )
+      .pipe(catchError(handleError));
+  }
+  fetchByStatus(type: string, optional?: string): Observable<any> {
+    return this.http
+      .get<any>(
+        `${
+          environment.managementbaseUrl
+        }/${this.authService.getChurchSlug()}/people/${type}?status=${optional}`
       )
       .pipe(catchError(handleError));
   }
@@ -211,6 +232,19 @@ export class PeopleService {
         ` ${
           environment.managementbaseUrl
         }/${this.authService.getChurchSlug()}/people/members/converts/${id}/update`,
+        model
+      )
+      .pipe(
+        map((status) => status),
+        catchError(handleError)
+      );
+  }
+  updateFirstTimer(model: any, id: number): Observable<any> {
+    return this.http
+      .post<any>(
+        ` ${
+          environment.managementbaseUrl
+        }/${this.authService.getChurchSlug()}/people/members/first-first_timers/${id}/update`,
         model
       )
       .pipe(

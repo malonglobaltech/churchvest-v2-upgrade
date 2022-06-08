@@ -60,6 +60,8 @@ export class NewConvertsComponent implements OnInit {
   column = [
     'first name',
     'last name',
+    'phone',
+    'email',
     'membership info',
     'convert status',
     'action',
@@ -93,25 +95,23 @@ export class NewConvertsComponent implements OnInit {
   getConverts() {
     this._loading = true;
     this.convertList = [];
-    this.peopleService
-      .fetchAll('members', this.currentPage + 1, this.pageSize, 'convert')
-      .subscribe(
-        (res: any) => {
-          this._loading = false;
-          const { data, meta } = res;
+    this.peopleService.fetchByStatus('members', 'convert').subscribe(
+      (res: any) => {
+        this._loading = false;
+        const { data, meta } = res;
 
-          this.convertList = data.filter((x: any) => x.details.convert);
-          this.dataSource = new MatTableDataSource(this.convertList);
-          this.paginator.pageIndex = this.currentPage;
-          this.paginator.length = this.convertList.length;
-        },
-        (errors) => {
-          if (errors) {
-            this._loading = false;
-            this.convertList = [];
-          }
+        this.convertList = data.filter((x: any) => x.details.convert);
+        this.dataSource = new MatTableDataSource(this.convertList);
+        this.paginator.pageIndex = this.currentPage;
+        this.paginator.length = this.convertList.length;
+      },
+      (errors) => {
+        if (errors) {
+          this._loading = false;
+          this.convertList = [];
         }
-      );
+      }
+    );
   }
   getselectedConvert(arr: any) {
     let filter = arr.map((x: any) => x.id);
