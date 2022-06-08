@@ -17,11 +17,11 @@
         </span>
     </div>
     <ng-container *ngIf="_loading">
-        <app-loading-roller></app-loading-roller>
+      <app-loading-roller></app-loading-roller>
     </ng-container>
     <div
       class="overflow--wrap _visible"
-      [ngClass]="{hide: departmentList.length === 0}"
+      [ngClass]="{hide: departmentList.length == 0 }"
     >
         <div class="table-wrapper tbl-wrap">
             <ng-container *ngIf="departmentList.length !== 0">
@@ -34,7 +34,7 @@
                             <!--Master Checkbox  -->
                             <mat-checkbox
                               (change)="$event ? masterToggle() : null"
-                              [checked]="selection.hasValue() && !isAllSelected()"
+                              [checked]="selection.hasValue() && isAllSelected()"
                               [indeterminate]="selection.hasValue() && !isAllSelected()"
                               [aria-label]="checkboxLabel()"
                             ></mat-checkbox>
@@ -196,12 +196,12 @@
                 <ng-container *ngIf="disCol == 'meeting days'">
                     <td mat-cell *matCellDef="let element">
                         <span
-                          >{{ element["meeting_days"] }}</span
+                          >{{ element["meeting_days"] }} {{ !element["meeting_days"] && '-' }}</span
                         >
                     </td>
                 </ng-container>
                 <ng-container *ngIf="disCol == 'meeting time'">
-                    <td mat-cell *matCellDef="element">
+                    <td mat-cell *matCellDef="let element">
                         <span>
                             {{ element?.["start_time"] }} - {{ element?.["end_time"] }}
                         </span>
@@ -249,26 +249,59 @@
                     <ng-container *ngIf="_loading_">
                         <app-loading-roller></app-loading-roller>
                     </ng-container>
-                    <ng-container *ngIf="!_loading_ ">
+                    <ng-container *ngIf="!_loading_ && itemDetails">
                         <div class="details-panel">
                             <mat-divider></mat-divider>
                             <div class="details-wrap-list">
                                 <div class="grid grid--1fr--1fr mb-3">
                                     <label
-                                      >Meeting day(s) <span class="capitalize"> meetdays</span></label
+                                      >Department Name <span class="capitalize"> 
+                                          {{ itemDetails?.name}}
+                                      </span></label
                                     >
                                     <label
-                                      >Meeting time <span class=""> meettime</span></label
+                                      >Description <span class=""> 
+                                          {{ itemDetails?.description }}
+                                      </span></label
                                     >
                                 </div>
                                 <div class="grid grid--1fr--1fr mb-3">
                                     <label
-                                      >Comment <span style="width: 200px"> commenthere</span></label
+                                      >Leader <span class="capitalize"> 
+                                          {{ itemDetails?.roles?.leader.member?.user.first_name }}
+                                          {{ itemDetails?.roles?.leader.member?.user.last_name }}
+                                      </span></label
                                     >
+                                    <label
+                                      >Assitant <span class=""> 
+                                        {{ itemDetails?.roles?.assistant?.member?.user?.first_name }}
+                                        {{ itemDetails?.roles?.assistant.member?.user?.last_name }}
+                                      </span></label
+                                    >
+                                </div>
+                                <div class="grid grid--1fr--1fr mb-3">
+                                    <label
+                                      >Meeting day(s) <span class="capitalize"> 
+                                          {{ itemDetails?.meeting_days}}
+                                          {{ !itemDetails?.meeting_days && 'no meetings'}}
+                                      </span></label
+                                    >
+                                    <label
+                                      >Meeting time <span class=""> 
+                                          {{ itemDetails?.start_time }} - {{ itemDetails?.end_time }}
+                                      </span></label
+                                    >
+                                </div>
+                                <div class="grid grid--1fr--1fr mb-3">
                                     <label
                                      >Date Formed <span>
                                          dateFormed
                                      </span> </label
+                                    >
+                                    <label
+                                      >Comment <span style="width: 200px"> 
+                                        {{ itemDetails?.comment }}
+                                      </span></label
                                     >
                                 </div>
                                 <div class="grid grid--1fr--1fr grid-row-gap-15">
@@ -303,10 +336,13 @@
                         <ng-container *ngIf="_loading_">
                             <app-loading-roller></app-loading-roller>
                         </ng-container>
-                        <div class="center">
+                        <div
+                          class="center"
+                          *ngIf="itemDetails && !_loading_ && _isSingleSelected"
+                        >
                             <p>
                                 Are you sure you want to move this department 
-                                <span>departmentName </span> 
+                                <span>{{ itemDetails.name }} </span> 
                                 to trash? This will be temporarily deleted, and can be recovered
                                 from trash
                             </p>
@@ -328,7 +364,7 @@
                     <button mat-flat-button class="me-3" (click)="confirmDelete()">
                         Move <mat-spinner *ngIf="isBusy"></mat-spinner>
                     </button>
-                    <button mat-stroked-button data-bs-dismiss="modal #closebtn">
+                    <button mat-stroked-button data-bs-dismiss="modal" #closebtn>
                         Cancel
                     </button>
                 </div>

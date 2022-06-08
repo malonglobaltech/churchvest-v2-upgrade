@@ -115,7 +115,20 @@ export class DepartmentComponent implements OnInit, AfterViewInit  {
     this.selectedDepartment = filter;
   }
   getDepartmentDetails(id: any) {
-    // 
+    this._loading_ = true;
+    this.memberId = id;
+    if (this.memberId !== undefined) {
+      this.deptService.fetchDepartmentDetails(id).subscribe(
+        (res) => {
+          this._loading_ = false;
+          const { data } = res;
+          this.itemDetails = data;
+        },
+        (msg)=> {
+          this._loading_ = false;
+        }
+      )
+    }
   }
   pageChanged(event: PageEvent) {
     this.pageSize = event.pageSize;

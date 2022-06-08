@@ -15,6 +15,13 @@ export class DepartmentService {
     this.authService.getChurchSlug();
   }
 
+  fetchDepartmentDetails(id: any, optional?: string): Observable<any> {
+    return this.http
+      .get<any>(
+        environment.managementbaseUrl + 
+        `/${this.authService.getChurchSlug()}/departments/${id}`
+      ).pipe(catchError(handleError));
+  }
   getAllDepartment(
     pageNumber?: number,
     pageSize?: number
