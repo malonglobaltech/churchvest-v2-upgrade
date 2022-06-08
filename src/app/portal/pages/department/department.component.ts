@@ -2,6 +2,8 @@ import { SelectionModel } from '@angular/cdk/collections';
 import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
+import { Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
 import { 
   concatColumnString,
   printElement 
@@ -40,7 +42,9 @@ export class DepartmentComponent implements OnInit, AfterViewInit  {
 
   constructor(
     private deptService: DepartmentService,
-    private exportService: ExportServiceService
+    private exportService: ExportServiceService,
+    private toastr: ToastrService,
+    private router: Router,
   ) { }
 
   ngOnInit(): void {
@@ -136,7 +140,27 @@ export class DepartmentComponent implements OnInit, AfterViewInit  {
     this._getAllDepartments();
   }
   confirmDelete() {
-    // 
+    this.isBusy = true;
+    let payload: any;
+    if (this._isSingleSelected) {
+      payload = {
+        departments_id: [this.itemDetails.id],
+      }
+    }
+    if (this._isAllSelected) {
+      payload = {
+        departments_id: this.selectedDepartment,
+      };
+    }
+    this.deptService
+      .moveToTrash(payload)
+      .subscribe(({ message }) => {
+        this.isBusy = false;
+        this.toastr.success(message, 'Success');
+        this.router.navigate(['/portal/department/trash']);
+        this.closebtn._elementRef.nativeElement.click();
+        this._getAllDepartments();
+      })
   }
   exportToExcel(): void {
     const edata: Array<any> = [];
