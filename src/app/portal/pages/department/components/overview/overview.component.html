@@ -159,7 +159,7 @@
                                 </button>
                                 <button
                                   mat-menu-item
-                                  [routerLink]="['/portal/department/update']"
+                                  [routerLink]="['/portal/department/all/update']"
                                   [queryParams]="{
                                       query: 'edit',
                                       id: element.id
@@ -188,8 +188,8 @@
                 <ng-container *ngIf="disCol == 'department leader'">
                     <td mat-cell *matCellDef="let element">
                         <span
-                        >{{ element["roles"].leader.member.user.first_name }}
-                         {{ element["roles"].leader.member.user.last_name }}</span
+                        >{{ element["roles"]?.leader?.member?.user.first_name }}
+                         {{ element["roles"]?.leader?.member?.user.last_name }}</span
                         >
                     </td>
                 </ng-container>
@@ -225,6 +225,7 @@
                 </td>
             </tr>
             </table>
+            </ng-container>
             <mat-paginator
               showFirstLastButton
               [pageIndex]="currentPage"
@@ -233,7 +234,6 @@
               class="visibility"
               [ngClass]="{hidden: departmentList.length == 0}"
             ></mat-paginator>
-            </ng-container>
         </div>
     </div>
 </section>

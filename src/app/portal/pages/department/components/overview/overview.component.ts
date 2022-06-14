@@ -101,9 +101,8 @@ export class OverviewComponent implements OnInit {
           const { data, meta } = res;
           this.departmentList = data;
           this.dataSource = new MatTableDataSource(this.departmentList);
-          // this.paginator.pageIndex = this.currentPage;
-          // this.paginator.length = meta.total;
-          console.log('this.dataSource', this.dataSource)
+          this.paginator.pageIndex = this.currentPage;
+          this.paginator.length = meta.total;
         },
         (errors) => {
           if (errors) {
