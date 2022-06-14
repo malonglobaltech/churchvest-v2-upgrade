@@ -18,13 +18,40 @@ export class DepartmentService {
   addDepartment(model: any): Observable<any> {
     return this.http
       .post<any>(
-        ``,
+        ` ${
+          environment.managementbaseUrl
+        }/${this.authService.getChurchSlug()}/departments`,
         model
       )
       .pipe(
         map((status) => status),
         catchError(handleError)
       )
+  }
+  deleteFromTrash(model: any): Observable<any> {
+    return this.http
+      .post<any>(
+        ` ${
+          environment.managementbaseUrl
+        }/${this.authService.getChurchSlug()}/departments/trash/delete`,
+        model
+      )
+      .pipe(
+        map((status) => status),
+        catchError(handleError)
+      );
+  }
+  fetchAllFromTrash(
+    pageNumber?: number,
+    pageSize?: number
+  ): Observable<any> {
+    return this.http
+      .get<any>(
+        `${
+          environment.managementbaseUrl
+        }/${this.authService.getChurchSlug()}/departments/trash/?page=${pageNumber}&size=${pageSize}`
+      )
+      .pipe(catchError(handleError));
   }
   fetchDepartmentDetails(id: any, optional?: string): Observable<any> {
     return this.http
@@ -41,7 +68,7 @@ export class DepartmentService {
       .get<any>(
         `${
           environment.managementbaseUrl
-        }/${this.authService.getChurchSlug()}/department/trash/?page=${pageNumber}&size=${pageSize}`
+        }/${this.authService.getChurchSlug()}/departments/trash/?page=${pageNumber}&size=${pageSize}`
       )
       .pipe(catchError(handleError))
   }
@@ -61,7 +88,7 @@ export class DepartmentService {
       .get<any>(
         `${
           environment.managementbaseUrl
-        }/${this.authService.getChurchSlug()}/departments?page=${pageNumber}&size=${pageSize}`
+        }/${this.authService.getChurchSlug()}/departments/?page=${pageNumber}&size=${pageSize}`
       )
       .pipe(catchError(handleError))
   }
@@ -80,6 +107,19 @@ export class DepartmentService {
         `${
           environment.managementbaseUrl
         }/${this.authService.getChurchSlug()}/departments/trash/restore`,
+        model
+      )
+      .pipe(
+        map((status) => status),
+        catchError(handleError)
+      );
+  }
+  updateDepartment(model: any, id: number): Observable<any> {
+    return this.http
+      .post<any>(
+        ` ${
+          environment.managementbaseUrl
+        }/${this.authService.getChurchSlug()}/departments/${id}/update`,
         model
       )
       .pipe(
