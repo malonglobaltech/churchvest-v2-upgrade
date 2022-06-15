@@ -154,12 +154,12 @@ export class TrashedDepartmentsComponent implements OnInit {
     let payload: any;
     if (this._isAllSelected) {
       payload = {
-        fellowships_id: this.selectedDepartment,
+        departments_id: this.selectedDepartment,
       };
     }
     if (this._isSingleSelected) {
       payload = {
-        fellowships_id: [this.itemDetails.id],
+        departments_id: [this.itemDetails.id],
       };
     }
 
@@ -167,7 +167,7 @@ export class TrashedDepartmentsComponent implements OnInit {
       ({ message }) => {
         this.isBusy = false;
         this.toastr.success(message, 'Success');
-        this.router.navigate(['/portal/people/evangelism']);
+        this.router.navigate(['/portal/department/all']);
         this.closebtn_._elementRef.nativeElement.click();
         this.getDepartment();
       },
