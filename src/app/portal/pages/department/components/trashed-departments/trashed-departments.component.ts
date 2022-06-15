@@ -3,7 +3,6 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { ToastrService } from 'ngx-toastr';
-import { PeopleService } from 'src/app/portal/services/people.service';
 import { Location } from '@angular/common';
 import {
   concatColumnString,

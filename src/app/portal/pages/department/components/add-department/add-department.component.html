@@ -52,6 +52,7 @@
                 type="time"
                 formControlName="start_time"
                 #txtDate
+                step="2"
               />
             </div>
             <div class="input">
@@ -59,6 +60,7 @@
               <input
                 type="time"
                 formControlName="end_time"
+                step="2"
               />
               <small class="text-danger" *ngIf="validate"
                 >End date must be greater than start date</small
@@ -186,7 +188,7 @@
               </mat-select>
             </div>
           </div>
-          <!-- <div class="grid grid--1fr--1fr grid-gap-15 mb-3">
+          <div class="grid grid--1fr--1fr grid-gap-15 mb-3">
             <div formGroupName="roles" class="input">
               <label>Name of Assistant</label>
               <mat-select
@@ -219,7 +221,7 @@
                 >
               </mat-select>
             </div>
-          </div> -->
+          </div>
           <div class="grid mb-3">
             <div class="input">
               <label>Description</label>
@@ -274,6 +276,7 @@
                 placeholder="Select meeting days"
                 formControlName="meeting_days"
                 multiple
+                required
               >
                 <mat-option disabled="" selected="" value=""
                   >Select meeting days</mat-option
@@ -294,6 +297,7 @@
                 type="time"
                 formControlName="start_time"
                 #txtDate
+                step="2"
               />
             </div>
             <div class="input">
@@ -301,6 +305,7 @@
               <input
                 type="time"
                 formControlName="end_time"
+                step="2"
               />
               <small class="text-danger" *ngIf="validate"
                 >End date must be greater than start date</small
@@ -360,6 +365,7 @@
                 class="select"
                 placeholder="Select channel"
                 formControlName="notify_channel"
+                required
               >
                 <mat-option disabled="" selected="" value=""
                   >Select Notification Channel</mat-option
@@ -379,6 +385,7 @@
                 placeholder="Select channel"
                 formControlName="notify_periods"
                 multiple
+                required
               >
                 <mat-option disabled="" selected="" value=""
                   >Select Notification Period</mat-option
@@ -399,6 +406,7 @@
                 class="select"
                 placeholder="Select channel"
                 formControlName="notify_unit"
+                required
               >
                 <mat-option disabled="" selected="" value=""
                   >Select Notification Unit</mat-option
@@ -417,9 +425,44 @@
                 class="select"
                 placeholder="Select leader"
                 formControlName="leader"
+                required
               >
                 <mat-option disabled="" selected="" value=""
                   >Select leader</mat-option
+                >
+                <mat-option *ngFor="let item of _memberList" [value]="item.id"
+                  >{{ item.user.first_name }}
+                  {{ item.user.last_name }}</mat-option
+                >
+              </mat-select>
+            </div>
+          </div>
+          <div class="grid grid--1fr--1fr grid-gap-15 mb-3">
+            <div formGroupName="roles" class="input">
+              <label>Name of Assistant</label>
+              <mat-select
+                class="select"
+                placeholder="Select Assistant"
+                formControlName="assistant"
+              >
+                <mat-option disabled="" selected="" value=""
+                  >Select Assistant</mat-option
+                >
+                <mat-option *ngFor="let item of _memberList" [value]="item.id"
+                  >{{ item.user.first_name }}
+                  {{ item.user.last_name }}</mat-option
+                >
+              </mat-select>
+            </div>
+            <div formGroupName="roles" class="input">
+              <label>Name of Department Secreatary</label>
+              <mat-select
+                class="select"
+                placeholder="Select Secretary"
+                formControlName="secretary"
+              >
+                <mat-option disabled="" selected="" value=""
+                  >Select Secretary</mat-option
                 >
                 <mat-option *ngFor="let item of _memberList" [value]="item.id"
                   >{{ item.user.first_name }}

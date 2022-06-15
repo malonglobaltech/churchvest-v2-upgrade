@@ -49,7 +49,7 @@ export class AddDepartmentComponent implements OnInit {
   _daysOfWeek = getDays;
   notificationChannel: string[] = ['email', 'phone'];
   notificationUnit: string[] = ['seconds', 'minutes', 'hours', 'week'];
-  notificationPeriod: string[] = ['10', '20'];
+  notificationPeriod: number[] = [10, 20];
   
 
   public departmentForm: FormGroup = new FormGroup({});
@@ -191,7 +191,6 @@ export class AddDepartmentComponent implements OnInit {
         .subscribe((res) => {
           const { data } = res;
           this.itemDetails = data;
-          console.log('itemDetails', data)
           // if (this.itemDetails.members.member !== undefined) {
           //   this.filteredMembers = this.itemDetails.members.map(
           //     (x: any) => x.member
@@ -213,6 +212,8 @@ export class AddDepartmentComponent implements OnInit {
         end_time: [this.itemDetails.end_time],
         roles: this.fb.group({
           leader: [this.itemDetails.leader],
+          assistant: [this.itemDetails.assistant],
+          secretary: [this.itemDetails.secretary],
         }),
         meeting_days: [this.itemDetails.meeting_days],
         notify_periods: [this.itemDetails.notify_periods],
@@ -267,7 +268,6 @@ export class AddDepartmentComponent implements OnInit {
     }
   }
   onUpdate() {
-    console.log('this.updateDepartmentForm', this.updateDepartmentForm)
     this.isBusy = true;
     let ids: any;
     // if (this.updateDepartmentForm.controls['members'] !== null) {
