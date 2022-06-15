@@ -28,7 +28,7 @@ export class TrashedDepartmentsComponent implements OnInit {
   itemDetails: any;
   _loading: boolean = false;
   _loading_: boolean = false;
-  selectedEvangelism: any[] = [];
+  selectedDepartment: any[] = [];
   _isAllSelected: boolean = false;
   _isSingleSelected: boolean = false;
   _printElement = printElement;
@@ -52,7 +52,7 @@ export class TrashedDepartmentsComponent implements OnInit {
     this.dataSource.paginator = this.paginator;
   }
 
-  column = ['name', 'start date', 'end date', 'organizer', 'address', 'action'];
+  column = ['name', 'department leader', 'meeting Days', 'meeting time', 'action'];
 
   isAllSelected() {
     const numSelected = this.selection.selected.length;
@@ -116,7 +116,7 @@ export class TrashedDepartmentsComponent implements OnInit {
   }
   getSelectedDepartment(arr: any) {
     let filter = arr.map((x: any) => x.id);
-    this.selectedEvangelism = filter;
+    this.selectedDepartment = filter;
   }
   pageChanged(event: PageEvent) {
     this.pageSize = event.pageSize;
@@ -128,12 +128,12 @@ export class TrashedDepartmentsComponent implements OnInit {
     let payload: any;
     if (this._isAllSelected) {
       payload = {
-        evangelism_id: this.selectedEvangelism,
+        department_id: this.selectedDepartment,
       };
     }
     if (this._isSingleSelected) {
       payload = {
-        evangelism_id: [this.itemDetails.id],
+        department_id: [this.itemDetails.id],
       };
     }
     this.deptService.deleteFromTrash(payload).subscribe(
@@ -154,7 +154,7 @@ export class TrashedDepartmentsComponent implements OnInit {
     let payload: any;
     if (this._isAllSelected) {
       payload = {
-        fellowships_id: this.selectedEvangelism,
+        fellowships_id: this.selectedDepartment,
       };
     }
     if (this._isSingleSelected) {

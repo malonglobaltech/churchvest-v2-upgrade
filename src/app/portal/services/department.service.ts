@@ -49,7 +49,7 @@ export class DepartmentService {
       .get<any>(
         `${
           environment.managementbaseUrl
-        }/${this.authService.getChurchSlug()}/departments/trash/?page=${pageNumber}&size=${pageSize}`
+        }/${this.authService.getChurchSlug()}/departments/trash/departments_trashed/?page=${pageNumber}&size=${pageSize}`
       )
       .pipe(catchError(handleError));
   }
