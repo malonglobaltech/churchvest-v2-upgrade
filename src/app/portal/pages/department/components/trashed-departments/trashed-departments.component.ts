@@ -128,12 +128,12 @@ export class TrashedDepartmentsComponent implements OnInit {
     let payload: any;
     if (this._isAllSelected) {
       payload = {
-        department_id: this.selectedDepartment,
+        departments_id: this.selectedDepartment,
       };
     }
     if (this._isSingleSelected) {
       payload = {
-        department_id: [this.itemDetails.id],
+        departments_id: [this.itemDetails.id],
       };
     }
     this.deptService.deleteFromTrash(payload).subscribe(
