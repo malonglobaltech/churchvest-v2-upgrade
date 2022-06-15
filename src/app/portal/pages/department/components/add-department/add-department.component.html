@@ -136,6 +136,7 @@
                 class="select"
                 placeholder="Select channel"
                 formControlName="notify_periods"
+                multiple
               >
                 <mat-option disabled="" selected="" value=""
                   >Select Notification Period</mat-option
@@ -252,30 +253,181 @@
           <div class="form-wrap">
             <div class="title mb-2">Update Department</div>
             <mat-divider></mat-divider>
-            <div class="grid grid--1fr--1fr grid-gap-15 mt-4 mb-3">
-              <div class="input">
-                <label>Name of Department</label>
-                <input
-                  type="text"
-                  placeholder="Enter Department name"
-                  formControlName="name"
-                />
-              </div>
-              <!-- <div class="input">
-                <label>Organizer </label>
-                <input
-                  type="text"
-                  placeholder="Enter organizer name"
-                  formControlName="organizer"
-                  [ngClass]="{
-                    'is-invalid':
-                      updateEvangelismForm.controls['organizer'].hasError(
-                        'required'
-                      ) && updateEvangelismForm.controls['organizer'].touched
-                  }"
-                />
-              </div> -->
+          <div class="grid grid--1fr--1fr grid-gap-15 mt-4 mb-3">
+            <div class="input">
+              <label>Name of Department</label>
+              <input
+                type="text"
+                placeholder="Enter department name"
+                formControlName="name"
+                [ngClass]="{
+                  'is-invalid':
+                    departmentForm.controls['name'].hasError('required') &&
+                    departmentForm.controls['name'].touched
+                }"
+              />
             </div>
+            <div class="input">
+              <label>Meetings day </label>
+              <mat-select
+                class="select"
+                placeholder="Select meeting days"
+                formControlName="meeting_days"
+                multiple
+              >
+                <mat-option disabled="" selected="" value=""
+                  >Select meeting days</mat-option
+                >
+                <mat-option
+                  *ngFor="let item of _daysOfWeek()"
+                  [value]="item"
+                  class="capitalize"
+                  >{{ item }}</mat-option
+                >
+              </mat-select>
+            </div>
+          </div>
+          <div class="grid grid--1fr--1fr grid-gap-15 mt-4 mb-3">
+            <div class="input">
+              <label>Start Time</label>
+              <input
+                type="time"
+                formControlName="start_time"
+                #txtDate
+              />
+            </div>
+            <div class="input">
+              <label>End Time</label>
+              <input
+                type="time"
+                formControlName="end_time"
+              />
+              <small class="text-danger" *ngIf="validate"
+                >End date must be greater than start date</small
+              >
+            </div>
+          </div>
+          <div class="grid grid--1fr--1fr grid-gap-15 mb-3">
+            <div class="input">
+              <label>Date Formed</label>
+              <input
+                type="date"
+                formControlName="date_formed"
+                [ngClass]="{
+                  'is-invalid':
+                    departmentForm.controls['date_formed'].hasError('required') &&
+                    departmentForm.controls['date_formed'].touched
+                }"
+              />
+            </div>
+            <div class="input">
+              <label>Members</label>
+              <mat-select
+                placeholder="Select members"
+                class="select"
+                multiple
+                #matSelect
+                [compareWith]="compareFunc"
+                formControlName="members_id"
+                (selectionChange)="handleMembersChange($event)"
+              >
+                <mat-select-trigger>
+                  {{ _memberList ? stripedObjValue : "" }}
+                  <span class="more" *ngIf="memberItems.length > 5">
+                    +{{ memberItems.length - 5 }} other item
+                  </span>
+                </mat-select-trigger>
+                <mat-option
+                  #allSelected
+                  (click)="toggleAllSelection()"
+                  [value]="0"
+                  >All</mat-option
+                >
+                <mat-option
+                  *ngFor="let item of _memberList"
+                  [value]="item"
+                  (click)="toggleOne()"
+                >
+                  {{ item.user.first_name }} {{ item.user.last_name }}
+                </mat-option>
+              </mat-select>
+            </div>
+          </div>
+          <div class="grid grid--1fr--1fr grid-gap-15 mb-3">
+            <div class="input">
+              <label>Notify Channel </label>
+              <mat-select
+                class="select"
+                placeholder="Select channel"
+                formControlName="notify_channel"
+              >
+                <mat-option disabled="" selected="" value=""
+                  >Select Notification Channel</mat-option
+                >
+                <mat-option
+                  *ngFor="let item of notificationChannel"
+                  [value]="item"
+                  class="capitalize"
+                  >{{ item }}</mat-option
+                >
+              </mat-select>
+            </div>
+            <div class="input">
+              <label>Notify Periods </label>
+              <mat-select
+                class="select"
+                placeholder="Select channel"
+                formControlName="notify_periods"
+                multiple
+              >
+                <mat-option disabled="" selected="" value=""
+                  >Select Notification Period</mat-option
+                >
+                <mat-option
+                  *ngFor="let item of notificationPeriod"
+                  [value]="item"
+                  class="capitalize"
+                  >{{ item }}</mat-option
+                >
+              </mat-select>
+            </div>
+          </div>
+          <div class="grid grid--1fr--1fr grid-gap-15 mb-3">
+            <div class="input">
+              <label>Notification Unit </label>
+              <mat-select
+                class="select"
+                placeholder="Select channel"
+                formControlName="notify_unit"
+              >
+                <mat-option disabled="" selected="" value=""
+                  >Select Notification Unit</mat-option
+                >
+                <mat-option
+                  *ngFor="let item of notificationUnit"
+                  [value]="item"
+                  class="capitalize"
+                  >{{ item }}</mat-option
+                >
+              </mat-select>
+            </div>
+            <div formGroupName="roles" class="input">
+              <label>Name of Department Leader</label>
+              <mat-select
+                class="select"
+                placeholder="Select leader"
+                formControlName="leader"
+              >
+                <mat-option disabled="" selected="" value=""
+                  >Select leader</mat-option
+                >
+                <mat-option *ngFor="let item of _memberList" [value]="item.id"
+                  >{{ item.user.first_name }}
+                  {{ item.user.last_name }}</mat-option
+                >
+              </mat-select>
+            </div>
+          </div>
             <!-- <div class="grid grid--1fr--1fr grid-gap-15 mt-4 mb-3">
               <div class="input">
                 <label>Start date</label>
@@ -359,23 +511,23 @@
                 </mat-select>
               </div>
             </div> -->
-            <!-- <div class="grid mb-3">
+            <div class="grid mb-3">
               <div class="input">
-                <label>Comment</label>
+                <label>Description</label>
                 <textarea
                   cols="30"
                   rows="10"
-                  placeholder="Comment"
-                  formControlName="comment"
+                  placeholder="Description"
+                  formControlName="description"
                 ></textarea>
               </div>
-            </div> -->
+            </div>
             <div class="d-flex align-items-center">
               <button
                 type="submit"
                 mat-flat-button
                 class="me-4"
-                [disabled]="!updateEvangelismForm.valid"
+                [disabled]="!updateDepartmentForm.valid"
               >
                 Save <mat-spinner *ngIf="isBusy"> </mat-spinner>
               </button>

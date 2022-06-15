@@ -191,14 +191,15 @@ export class AddDepartmentComponent implements OnInit {
         .subscribe((res) => {
           const { data } = res;
           this.itemDetails = data;
-          if (this.itemDetails.members.member !== undefined) {
-            this.filteredMembers = this.itemDetails.members.map(
-              (x: any) => x.member
-            );
-            this.memberItems = this.filteredMembers;
-          } else {
-            this.memberItems = this._memberList;
-          }
+          console.log('itemDetails', data)
+          // if (this.itemDetails.members.member !== undefined) {
+          //   this.filteredMembers = this.itemDetails.members.map(
+          //     (x: any) => x.member
+          //   );
+          //   this.memberItems = this.filteredMembers;
+          // } else {
+          //   this.memberItems = this._memberList;
+          // }
 
           this.setFormControlElement();
         });
@@ -210,9 +211,12 @@ export class AddDepartmentComponent implements OnInit {
         name: [this.itemDetails.name, Validators.required],
         start_time: [this.itemDetails.start_time],
         end_time: [this.itemDetails.end_time],
-        leader: [this.itemDetails.leader],
+        roles: this.fb.group({
+          leader: [this.itemDetails.leader],
+        }),
         meeting_days: [this.itemDetails.meeting_days],
         notify_periods: [this.itemDetails.notify_periods],
+        notify_unit: [this.itemDetails.notify_unit],
         notify_channel: [this.itemDetails.notify_channel],
         date_formed: [this.itemDetails.date_formed],
         description: [this.itemDetails.description],
@@ -223,15 +227,15 @@ export class AddDepartmentComponent implements OnInit {
   onSubmit() {
     this.isBusy = true;
     let ids: any;
-    // if (this.departmentForm.controls['members_id'].value !== null) {
-    //   ids = this.departmentForm.controls['members_id'].value
-    //     .filter((x: any) => x !== 0)
-    //     .map((a: any) => a.id);
-    // }
-    // this.departmentForm.patchValue({
-    //   members_id: ids,
-    // });
-    // 
+    if (this.departmentForm.controls['members_id'].value !== null) {
+      ids = this.departmentForm.controls['members_id'].value
+        .filter((x: any) => x !== 0)
+        .map((a: any) => a.id);
+    }
+    this.departmentForm.patchValue({
+      members_id: ids,
+    });
+    
     if (this.departmentForm.controls['start_time'].value) {
     }
 
@@ -266,11 +270,11 @@ export class AddDepartmentComponent implements OnInit {
     console.log('this.updateDepartmentForm', this.updateDepartmentForm)
     this.isBusy = true;
     let ids: any;
-    if (this.updateDepartmentForm.controls['members_id'].value !== null) {
-      ids = this.updateDepartmentForm.controls['members_id'].value
-        .filter((x: any) => x !== 0)
-        .map((a: any) => a.id);
-    }
+    // if (this.updateDepartmentForm.controls['members'] !== null) {
+    //   ids = this.updateDepartmentForm.controls['members']
+    //     .filter((x: any) => x !== 0)
+    //     .map((a: any) => a.id);
+    // }
     this.updateDepartmentForm.patchValue({
       members_id: ids,
     });
@@ -280,8 +284,8 @@ export class AddDepartmentComponent implements OnInit {
     }
     if (this.updateDepartmentForm.valid) {
       //Make api call here...
-      this.peopleServ
-        .updateEvangelism(this.updatedFormValue, this._departmentId)
+      this.deptService
+        .updateDepartment(this.updatedFormValue, this._departmentId)
         .subscribe(
           ({ message, data }) => {
             this.toastr.success(message, 'Message');
