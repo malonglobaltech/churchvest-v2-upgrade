@@ -101,32 +101,37 @@ export class LoginComponent implements OnInit {
   }
   onSubmit() {
     this.isBusy = true;
+    if (this.recordData == null) {
+      return;
+    }
     if (this.form.valid) {
       this.authServ.login(this.value).subscribe(
         (res) => {
-          const { data } = res;
-          if (res.status === 'success') {
-            this.recordFound = false;
-            this.toastr.success('Login successful', 'Message');
-            this.form.reset();
-            localStorage.setItem('token', res.access_token);
+          const { data, status, access_token } = res;
+          if (status === 'success') {
+            localStorage.setItem('token', access_token);
             localStorage.setItem('user_details', JSON.stringify(data));
-            localStorage.setItem('isLoggedIn', 'true');
-            if (this.selectedChurch) {
+            if (data.memberships.length !== 0 && !this.selectedChurch) {
+              this.toastr.info('Please select a church', 'Message');
+              this.isBusy = false;
+              return;
+            }
+            if (data.memberships.length !== 0) {
+              this.recordFound = false;
+              this.form.reset();
+              this.toastr.success('Login successful', 'Message');
+              localStorage.setItem('isLoggedIn', 'true');
               localStorage.setItem(
                 'user_church',
                 JSON.stringify(this.selectedChurch)
               );
               this.router.navigate(['/portal/activity']);
             }
-            if (
-              res.data.email_verified_at === null ||
-              !res.data.email_verified_at
-            ) {
-              this.navigate(res.data.email);
+            if (data.email_verified_at === null || !data.email_verified_at) {
+              this.navigate(data.email);
             }
-            if (res.data.email_verified_at !== null && !this.selectedChurch) {
-              this.router.navigateByUrl('get-started/pricing');
+            if (data.email_verified_at !== null && !this.selectedChurch) {
+              this.router.navigateByUrl('/onboarding/church-setup');
             }
           }
         },
@@ -136,7 +141,6 @@ export class LoginComponent implements OnInit {
         },
         () => {
           this.isBusy = false;
-          this.form.reset();
         }
       );
     }

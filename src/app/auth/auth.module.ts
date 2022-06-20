@@ -12,6 +12,7 @@ import { ToastrModule, ToastrService } from 'ngx-toastr';
 import { ForgotPasswordComponent } from './components/forgot-password/forgot-password.component';
 import { BottomSheetComponent } from './components/bottom-sheet/bottom-sheet.component';
 import { AccountVerifyComponent } from './components/account-verify/account-verify.component';
+import { ChurchSetupComponent } from './components/church-setup/church-setup.component';
 
 @NgModule({
   declarations: [
@@ -22,6 +23,7 @@ import { AccountVerifyComponent } from './components/account-verify/account-veri
     ForgotPasswordComponent,
     BottomSheetComponent,
     AccountVerifyComponent,
+    ChurchSetupComponent,
   ],
   imports: [
     CommonModule,

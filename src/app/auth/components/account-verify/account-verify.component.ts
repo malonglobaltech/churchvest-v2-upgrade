@@ -89,16 +89,15 @@ export class AccountVerifyComponent implements OnInit {
 
         if (res.status === 'success') {
           this.toastr.success('Email Verification Successful', 'Message');
-          localStorage.setItem('user_details', JSON.stringify(res.data));
-          localStorage.setItem('isLoggedIn', 'true');
           let current_user = JSON.parse(localStorage.getItem('user_details'));
           if (current_user.memberships.length === 0) {
-            // this.router.navigateByUrl('get-started/pricing');
+            this.router.navigateByUrl('/onboarding/church-setup');
           } else {
             let churches = current_user.memberships.filter(
               (church: any) => church.role === 'admin'
             );
             if (churches.length === 1) {
+              localStorage.setItem('isLoggedIn', 'true');
               localStorage.setItem('user_details', JSON.stringify(res.data));
               localStorage.setItem('user_church', JSON.stringify(churches[0]));
               this.router.navigate(['/portal/activity']);

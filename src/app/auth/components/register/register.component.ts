@@ -134,13 +134,7 @@ export class RegisterComponent implements OnInit {
           this.toastr.success('Registration successful', 'Message');
           this.form.reset();
           localStorage.setItem('token', res.access_token);
-          localStorage.setItem('user_details', JSON.stringify(data));
-          localStorage.setItem('isLoggedIn', 'true');
-          localStorage.setItem(
-            'user_church',
-            JSON.stringify(this.selectedChurch)
-          );
-          this.navigate(res.data.email);
+          this.navigate(data.email);
         },
         (err) => {
           this.toastr.error(err, 'Message');

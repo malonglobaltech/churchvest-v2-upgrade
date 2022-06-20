@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { LoggedInAuthGuard } from '../services/login-auth-guard.guard';
 import { AuthComponent } from './auth.component';
 import { AccountVerifyComponent } from './components/account-verify/account-verify.component';
+import { ChurchSetupComponent } from './components/church-setup/church-setup.component';
 import { ForgotPasswordComponent } from './components/forgot-password/forgot-password.component';
 import { LoginComponent } from './components/login/login.component';
 import { RegisterComponent } from './components/register/register.component';
@@ -19,6 +20,13 @@ const routes: Routes = [
         component: AccountVerifyComponent,
         data: {
           title: 'ChurchVest - Account Verification',
+        },
+      },
+      {
+        path: 'church-setup',
+        component: ChurchSetupComponent,
+        data: {
+          title: 'ChurchVest - Church Setup',
         },
       },
       {

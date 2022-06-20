@@ -69,7 +69,11 @@ export class AuthService {
       .post<any>(`${environment.mainUrl}/reset-password`, payload)
       .pipe(catchError(handleError));
   }
-
+  setupChurch(payload: any): Observable<any> {
+    return this.http
+      .post<any>(`${environment.mainUrl}/management/church/addChurch`, payload)
+      .pipe(catchError(handleError));
+  }
   verify(link: string): Observable<any> {
     return this.http.get<any>(link).pipe(catchError(handleError));
   }
