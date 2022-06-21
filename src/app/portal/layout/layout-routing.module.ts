@@ -24,6 +24,13 @@ const routes: Routes = [
           )
       },
       {
+        path: 'events',
+        loadChildren: () => 
+          import ('../pages/main-events/main-events.module').then(
+            (m) => m.MainEventsModule
+          )
+      },
+      {
         path: 'people',
         loadChildren: () =>
           import('../pages/people/people.module').then((m) => m.PeopleModule),
