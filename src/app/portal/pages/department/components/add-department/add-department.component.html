@@ -49,7 +49,7 @@
             <div class="input">
               <label>Start Time</label>
               <input
-                matInput 
+                matInput
                 type="time"
                 formControlName="start_time"
                 #txtDate
@@ -58,11 +58,7 @@
             </div>
             <div class="input">
               <label>End Time</label>
-              <input
-                type="time"
-                formControlName="end_time"
-                step="2"
-              />
+              <input type="time" formControlName="end_time" step="2" />
               <small class="text-danger" *ngIf="validate"
                 >End date must be greater than start date</small
               >
@@ -76,8 +72,9 @@
                 formControlName="date_formed"
                 [ngClass]="{
                   'is-invalid':
-                    departmentForm.controls['date_formed'].hasError('required') &&
-                    departmentForm.controls['date_formed'].touched
+                    departmentForm.controls['date_formed'].hasError(
+                      'required'
+                    ) && departmentForm.controls['date_formed'].touched
                 }"
               />
             </div>
@@ -87,8 +84,7 @@
                 placeholder="Select members"
                 class="select"
                 multiple
-                #matSelect
-                [compareWith]="compareFunc"
+                #membersSelect
                 formControlName="members_id"
                 (selectionChange)="handleMembersChange($event)"
               >
@@ -99,15 +95,15 @@
                   </span>
                 </mat-select-trigger>
                 <mat-option
-                  #allSelected
-                  (click)="toggleAllSelection()"
+                  #membersAll
+                  (click)="toggleAllSelection(membersAll, membersSelect)"
                   [value]="0"
                   >All</mat-option
                 >
                 <mat-option
                   *ngFor="let item of _memberList"
                   [value]="item"
-                  (click)="toggleOne()"
+                  (click)="toggleOne(membersAll, membersSelect)"
                 >
                   {{ item.user.first_name }} {{ item.user.last_name }}
                 </mat-option>
@@ -137,7 +133,7 @@
               <label>Notify Periods </label>
               <mat-select
                 class="select"
-                placeholder="Select channel"
+                placeholder="Select period"
                 formControlName="notify_periods"
                 multiple
               >
@@ -256,270 +252,71 @@
           <div class="form-wrap">
             <div class="title mb-2">Update Department</div>
             <mat-divider></mat-divider>
-          <div class="grid grid--1fr--1fr grid-gap-15 mt-4 mb-3">
-            <div class="input">
-              <label>Name of Department</label>
-              <input
-                type="text"
-                placeholder="Enter department name"
-                formControlName="name"
-                [ngClass]="{
-                  'is-invalid':
-                    departmentForm.controls['name'].hasError('required') &&
-                    departmentForm.controls['name'].touched
-                }"
-              />
-            </div>
-            <div class="input">
-              <label>Meetings day </label>
-              <mat-select
-                class="select"
-                placeholder="Select meeting days"
-                formControlName="meeting_days"
-                multiple
-                required
-              >
-                <mat-option disabled="" selected="" value=""
-                  >Select meeting days</mat-option
-                >
-                <mat-option
-                  *ngFor="let item of _daysOfWeek()"
-                  [value]="item"
-                  class="capitalize"
-                  >{{ item }}</mat-option
-                >
-              </mat-select>
-            </div>
-          </div>
-          <div class="grid grid--1fr--1fr grid-gap-15 mt-4 mb-3">
-            <div class="input">
-              <label>Start Time</label>
-              <input
-                type="time"
-                formControlName="start_time"
-                #txtDate
-                step="2"
-              />
-            </div>
-            <div class="input">
-              <label>End Time</label>
-              <input
-                type="time"
-                formControlName="end_time"
-                step="2"
-              />
-              <small class="text-danger" *ngIf="validate"
-                >End date must be greater than start date</small
-              >
-            </div>
-          </div>
-          <div class="grid grid--1fr--1fr grid-gap-15 mb-3">
-            <div class="input">
-              <label>Date Formed</label>
-              <input
-                type="date"
-                formControlName="date_formed"
-                [ngClass]="{
-                  'is-invalid':
-                    departmentForm.controls['date_formed'].hasError('required') &&
-                    departmentForm.controls['date_formed'].touched
-                }"
-              />
-            </div>
-            <div class="input">
-              <label>Members</label>
-              <mat-select
-                placeholder="Select members"
-                class="select"
-                multiple
-                #matSelect
-                [compareWith]="compareFunc"
-                formControlName="members_id"
-                (selectionChange)="handleMembersChange($event)"
-              >
-                <mat-select-trigger>
-                  {{ _memberList ? stripedObjValue : "" }}
-                  <span class="more" *ngIf="memberItems.length > 5">
-                    +{{ memberItems.length - 5 }} other item
-                  </span>
-                </mat-select-trigger>
-                <mat-option
-                  #allSelected
-                  (click)="toggleAllSelection()"
-                  [value]="0"
-                  >All</mat-option
-                >
-                <mat-option
-                  *ngFor="let item of _memberList"
-                  [value]="item"
-                  (click)="toggleOne()"
-                >
-                  {{ item.user.first_name }} {{ item.user.last_name }}
-                </mat-option>
-              </mat-select>
-            </div>
-          </div>
-          <div class="grid grid--1fr--1fr grid-gap-15 mb-3">
-            <div class="input">
-              <label>Notify Channel </label>
-              <mat-select
-                class="select"
-                placeholder="Select channel"
-                formControlName="notify_channel"
-                required
-              >
-                <mat-option disabled="" selected="" value=""
-                  >Select Notification Channel</mat-option
-                >
-                <mat-option
-                  *ngFor="let item of notificationChannel"
-                  [value]="item"
-                  class="capitalize"
-                  >{{ item }}</mat-option
-                >
-              </mat-select>
-            </div>
-            <div class="input">
-              <label>Notify Periods </label>
-              <mat-select
-                class="select"
-                placeholder="Select channel"
-                formControlName="notify_periods"
-                multiple
-                required
-              >
-                <mat-option disabled="" selected="" value=""
-                  >Select Notification Period</mat-option
-                >
-                <mat-option
-                  *ngFor="let item of notificationPeriod"
-                  [value]="item"
-                  class="capitalize"
-                  >{{ item }}</mat-option
-                >
-              </mat-select>
-            </div>
-          </div>
-          <div class="grid grid--1fr--1fr grid-gap-15 mb-3">
-            <div class="input">
-              <label>Notification Unit </label>
-              <mat-select
-                class="select"
-                placeholder="Select channel"
-                formControlName="notify_unit"
-                required
-              >
-                <mat-option disabled="" selected="" value=""
-                  >Select Notification Unit</mat-option
-                >
-                <mat-option
-                  *ngFor="let item of notificationUnit"
-                  [value]="item"
-                  class="capitalize"
-                  >{{ item }}</mat-option
-                >
-              </mat-select>
-            </div>
-            <div formGroupName="roles" class="input">
-              <label>Name of Department Leader</label>
-              <mat-select
-                class="select"
-                placeholder="Select leader"
-                formControlName="leader"
-                required
-              >
-                <mat-option disabled="" selected="" value=""
-                  >Select leader</mat-option
-                >
-                <mat-option *ngFor="let item of _memberList" [value]="item.id"
-                  >{{ item.user.first_name }}
-                  {{ item.user.last_name }}</mat-option
-                >
-              </mat-select>
-            </div>
-          </div>
-          <div class="grid grid--1fr--1fr grid-gap-15 mb-3">
-            <div formGroupName="roles" class="input">
-              <label>Name of Assistant</label>
-              <mat-select
-                class="select"
-                placeholder="Select Assistant"
-                formControlName="assistant"
-              >
-                <mat-option disabled="" selected="" value=""
-                  >Select Assistant</mat-option
-                >
-                <mat-option *ngFor="let item of _memberList" [value]="item.id"
-                  >{{ item.user.first_name }}
-                  {{ item.user.last_name }}</mat-option
-                >
-              </mat-select>
-            </div>
-            <div formGroupName="roles" class="input">
-              <label>Name of Department Secreatary</label>
-              <mat-select
-                class="select"
-                placeholder="Select Secretary"
-                formControlName="secretary"
-              >
-                <mat-option disabled="" selected="" value=""
-                  >Select Secretary</mat-option
-                >
-                <mat-option *ngFor="let item of _memberList" [value]="item.id"
-                  >{{ item.user.first_name }}
-                  {{ item.user.last_name }}</mat-option
-                >
-              </mat-select>
-            </div>
-          </div>
-            <!-- <div class="grid grid--1fr--1fr grid-gap-15 mt-4 mb-3">
+            <div class="grid grid--1fr--1fr grid-gap-15 mt-4 mb-3">
               <div class="input">
-                <label>Start date</label>
+                <label>Name of Department</label>
                 <input
-                  type="date"
-                  formControlName="start_date"
-                  placeholder="Enter start date"
-                  (change)="onDateChange()"
+                  type="text"
+                  placeholder="Enter department name"
+                  formControlName="name"
+                  [ngClass]="{
+                    'is-invalid':
+                      departmentForm.controls['name'].hasError('required') &&
+                      departmentForm.controls['name'].touched
+                  }"
                 />
               </div>
               <div class="input">
-                <label>End date</label>
+                <label>Meetings day </label>
+                <mat-select
+                  class="select"
+                  placeholder="Select meeting days"
+                  formControlName="meeting_days"
+                  multiple
+                  required
+                >
+                  <mat-option disabled="" selected="" value=""
+                    >Select meeting days</mat-option
+                  >
+                  <mat-option
+                    *ngFor="let item of _daysOfWeek()"
+                    [value]="item"
+                    class="capitalize"
+                    >{{ item }}</mat-option
+                  >
+                </mat-select>
+              </div>
+            </div>
+            <div class="grid grid--1fr--1fr grid-gap-15 mt-4 mb-3">
+              <div class="input">
+                <label>Start Time</label>
                 <input
-                  type="date"
-                  formControlName="end_date"
-                  placeholder="Enter end date"
-                  (change)="onDateChange()"
+                  type="time"
+                  formControlName="start_time"
+                  #txtDate
+                  step="2"
                 />
+              </div>
+              <div class="input">
+                <label>End Time</label>
+                <input type="time" formControlName="end_time" step="2" />
                 <small class="text-danger" *ngIf="validate"
                   >End date must be greater than start date</small
                 >
               </div>
-            </div> -->
-            <!-- <div class="grid grid--1fr--1fr grid-gap-15 mb-3">
+            </div>
+            <div class="grid grid--1fr--1fr grid-gap-15 mb-3">
               <div class="input">
-                <label>Location</label>
+                <label>Date Formed</label>
                 <input
-                  type="text"
-                  placeholder="Enter location"
-                  formControlName="location"
-                />
-              </div>
-              <div class="input">
-                <label>Address </label>
-                <input
-                  type="text"
-                  placeholder="Enter address"
-                  formControlName="address"
-                />
-              </div>
-            </div> -->
-            <!-- <div class="grid grid--1fr--1fr grid-gap-15 mb-3">
-              <div class="input">
-                <label>Name of city</label>
-                <input
-                  type="text"
-                  placeholder="Enter city"
-                  formControlName="city"
+                  type="date"
+                  formControlName="date_formed"
+                  [ngClass]="{
+                    'is-invalid':
+                      departmentForm.controls['date_formed'].hasError(
+                        'required'
+                      ) && departmentForm.controls['date_formed'].touched
+                  }"
                 />
               </div>
               <div class="input">
@@ -528,7 +325,7 @@
                   placeholder="Select members"
                   class="select"
                   multiple
-                  #matSelect
+                  #membersSelect_
                   [compareWith]="compareFunc"
                   formControlName="members_id"
                   (selectionChange)="handleMembersChange($event)"
@@ -540,21 +337,132 @@
                     </span>
                   </mat-select-trigger>
                   <mat-option
-                    #allSelected
-                    (click)="toggleAllSelection()"
+                    #membersAll_
+                    (click)="toggleAllSelection(membersAll_, membersSelect_)"
                     [value]="0"
                     >All</mat-option
                   >
                   <mat-option
                     *ngFor="let item of _memberList"
                     [value]="item"
-                    (click)="toggleOne()"
+                    (click)="toggleOne(membersAll_, membersSelect_)"
                   >
                     {{ item.user.first_name }} {{ item.user.last_name }}
                   </mat-option>
                 </mat-select>
               </div>
-            </div> -->
+            </div>
+            <div class="grid grid--1fr--1fr grid-gap-15 mb-3">
+              <div class="input">
+                <label>Notify Channel </label>
+                <mat-select
+                  class="select"
+                  placeholder="Select channel"
+                  formControlName="notify_channel"
+                  required
+                >
+                  <mat-option disabled="" selected="" value=""
+                    >Select Notification Channel</mat-option
+                  >
+                  <mat-option
+                    *ngFor="let item of notificationChannel"
+                    [value]="item"
+                    class="capitalize"
+                    >{{ item }}</mat-option
+                  >
+                </mat-select>
+              </div>
+              <div class="input">
+                <label>Notify Periods </label>
+                <mat-select
+                  class="select"
+                  placeholder="Select period"
+                  formControlName="notify_periods"
+                  multiple
+                >
+                  <mat-option disabled="" selected="" value=""
+                    >Select Notification Period</mat-option
+                  >
+                  <mat-option
+                    *ngFor="let item of notificationPeriod"
+                    [value]="item"
+                    class="capitalize"
+                    >{{ item }}</mat-option
+                  >
+                </mat-select>
+              </div>
+            </div>
+            <div class="grid grid--1fr--1fr grid-gap-15 mb-3">
+              <div class="input">
+                <label>Notification Unit </label>
+                <mat-select
+                  class="select"
+                  placeholder="Select channel"
+                  formControlName="notify_unit"
+                >
+                  <mat-option disabled="" selected="" value=""
+                    >Select Notification Unit</mat-option
+                  >
+                  <mat-option
+                    *ngFor="let item of notificationUnit"
+                    [value]="item"
+                    class="capitalize"
+                    >{{ item }}</mat-option
+                  >
+                </mat-select>
+              </div>
+              <div formGroupName="roles" class="input">
+                <label>Name of Department Leader</label>
+                <mat-select
+                  class="select"
+                  placeholder="Select leader"
+                  formControlName="leader"
+                  required
+                >
+                  <mat-option disabled="" selected="" value=""
+                    >Select leader</mat-option
+                  >
+                  <mat-option *ngFor="let item of _memberList" [value]="item.id"
+                    >{{ item.user.first_name }}
+                    {{ item.user.last_name }}</mat-option
+                  >
+                </mat-select>
+              </div>
+            </div>
+            <div class="grid grid--1fr--1fr grid-gap-15 mb-3">
+              <div formGroupName="roles" class="input">
+                <label>Name of Assistant</label>
+                <mat-select
+                  class="select"
+                  placeholder="Select Assistant"
+                  formControlName="assistant"
+                >
+                  <mat-option disabled="" selected="" value=""
+                    >Select Assistant</mat-option
+                  >
+                  <mat-option *ngFor="let item of _memberList" [value]="item.id"
+                    >{{ item.user.first_name }}
+                    {{ item.user.last_name }}</mat-option
+                  >
+                </mat-select>
+              </div>
+              <div formGroupName="roles" class="input">
+                <label>Name of Department Secreatary</label>
+                <mat-select
+                  class="select"
+                  placeholder="Select Secretary"
+                  formControlName="secretary"
+                >
+                  <mat-option disabled="" selected="" value=""
+                    >Select Secretary</mat-option
+                  >
+                  <mat-option *ngFor="let item of _memberList" [value]="item.id"
+                    >{{ item.user.first_name }}
+                    {{ item.user.last_name }}</mat-option
+                  >
+                </mat-select>
+              </div>
+            </div>
             <div class="grid mb-3">
               <div class="input">
                 <label>Description</label>

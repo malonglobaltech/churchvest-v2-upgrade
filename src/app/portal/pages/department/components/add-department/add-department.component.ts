@@ -23,11 +23,13 @@ import { DepartmentService } from 'src/app/portal/services/department.service';
 @Component({
   selector: 'app-add-departments',
   templateUrl: './add-department.component.html',
-  styleUrls: ['./add-department.component.scss']
+  styleUrls: ['./add-department.component.scss'],
 })
 export class AddDepartmentComponent implements OnInit {
-  @ViewChild('allSelected') allSelected: any;
-  @ViewChild('matSelect') select: any;
+  @ViewChild('membersAll') membersAll: any;
+  @ViewChild('membersAll_') membersAll_: any;
+  @ViewChild('membersSelect') membersSelect: any;
+  @ViewChild('membersSelect_') membersSelect_: any;
   @ViewChild('txtDate') txtDate: any;
   queryString: string;
   isBusy: boolean = false;
@@ -50,7 +52,6 @@ export class AddDepartmentComponent implements OnInit {
   notificationChannel: string[] = ['email', 'phone'];
   notificationUnit: string[] = ['seconds', 'minutes', 'hours', 'week'];
   notificationPeriod: number[] = [10, 20];
-  
 
   public departmentForm: FormGroup = new FormGroup({});
   public updateDepartmentForm: FormGroup = new FormGroup({});
@@ -75,7 +76,7 @@ export class AddDepartmentComponent implements OnInit {
       }),
       meeting_days: [[]],
       notify_periods: [[], Validators.required],
-      notify_unit: [null, ],
+      notify_unit: [null],
       notify_channel: [null, Validators.required],
       date_formed: [null, Validators.required],
       description: [null],
@@ -87,9 +88,7 @@ export class AddDepartmentComponent implements OnInit {
     this.getRoutes();
     this.getMembers();
   }
-  ngAfterViewInit() {
-    this.setDateFunc();
-  }
+  ngAfterViewInit() {}
   gotoBack() {
     this._location.back();
   }
@@ -117,30 +116,39 @@ export class AddDepartmentComponent implements OnInit {
     }
     return this.updateDepartmentForm.get('end_time').value;
   }
-
-  toggleAllSelection() {
-    if (this.allSelected.selected) {
-      this.select.options._results.map((item) => {
+  toggleAllSelection(allSlc: any, slc: any) {
+    if (allSlc.selected) {
+      slc.options._results.map((item) => {
         item.select();
       });
     } else {
-      this.select.options._results.map((item) => {
+      slc.options._results.map((item) => {
         item.deselect();
       });
     }
   }
+  toggleOne(allSlc: any, slc: any) {
+    if (allSlc.selected) {
+      allSlc.deselect();
+      return false;
+    }
+    if (
+      slc == this.membersSelect &&
+      slc.value.length == this._memberList.length
+    ) {
+      allSlc.select();
+    }
+    if (
+      slc == this.membersSelect_ &&
+      slc.value.length == this._memberList.length
+    ) {
+      allSlc.select();
+    }
+  }
+
   handleMembersChange(event: any) {
     let result = event.source._value.filter((t) => t);
     this.memberItems = result;
-  }
-  toggleOne() {
-    if (this.allSelected.selected) {
-      this.allSelected.deselect();
-      return false;
-    }
-    if (this.select.value.length == this._memberList.length) {
-      this.allSelected.select();
-    }
   }
   onDateChange() {
     var endDate = new Date(this.endDateVal);
@@ -182,7 +190,7 @@ export class AddDepartmentComponent implements OnInit {
   getDepartmentDetails() {
     if (this._departmentId !== undefined) {
       this.deptService
-        .fetchDepartmentDetails(this._departmentId,  'show')
+        .fetchAllDepartment()
         .pipe(
           catchError((err: any): ObservableInput<any> => {
             return throwError(err);
@@ -190,15 +198,15 @@ export class AddDepartmentComponent implements OnInit {
         )
         .subscribe((res) => {
           const { data } = res;
-          this.itemDetails = data;
-          // if (this.itemDetails.members.member !== undefined) {
-          //   this.filteredMembers = this.itemDetails.members.map(
-          //     (x: any) => x.member
-          //   );
-          //   this.memberItems = this.filteredMembers;
-          // } else {
-          //   this.memberItems = this._memberList;
-          // }
+          this.itemDetails = data.filter((x) => x.id == this._departmentId);
+          if (this.itemDetails[0].members.length !== 0) {
+            this.filteredMembers = this.itemDetails[0].members.map(
+              (x: any) => x.member
+            );
+            this.memberItems = this.filteredMembers;
+          } else {
+            this.memberItems = this._memberList;
+          }
 
           this.setFormControlElement();
         });
@@ -207,20 +215,20 @@ export class AddDepartmentComponent implements OnInit {
   setFormControlElement() {
     if (this.queryString == 'edit' && this._departmentId !== undefined) {
       this.updateDepartmentForm = this.fb.group({
-        name: [this.itemDetails.name, Validators.required],
-        start_time: [this.itemDetails.start_time],
-        end_time: [this.itemDetails.end_time],
+        name: [this.itemDetails[0].name, Validators.required],
+        start_time: [this.itemDetails[0]?.start_time],
+        end_time: [this.itemDetails[0]?.end_time],
         roles: this.fb.group({
-          leader: [this.itemDetails.leader],
-          assistant: [this.itemDetails.assistant],
-          secretary: [this.itemDetails.secretary],
+          leader: [this.itemDetails[0].roles?.leader?.member?.id],
+          assistant: [this.itemDetails[0].roles?.assistant?.member?.id],
+          secretary: [this.itemDetails[0].roles?.secretary?.member?.id],
         }),
-        meeting_days: [this.itemDetails.meeting_days],
-        notify_periods: [this.itemDetails.notify_periods],
-        notify_unit: [this.itemDetails.notify_unit],
-        notify_channel: [this.itemDetails.notify_channel],
-        date_formed: [this.itemDetails.date_formed],
-        description: [this.itemDetails.description],
+        meeting_days: [this.itemDetails[0]?.meeting_days],
+        notify_periods: [this.itemDetails[0]?.notify_periods],
+        notify_unit: [this.itemDetails[0]?.notify_unit],
+        notify_channel: [this.itemDetails[0]?.notify_channel],
+        date_formed: [this.itemDetails[0]?.date_formed],
+        description: [this.itemDetails[0]?.description],
         members_id: [this.filteredMembers],
       });
     }
@@ -236,7 +244,7 @@ export class AddDepartmentComponent implements OnInit {
     this.departmentForm.patchValue({
       members_id: ids,
     });
-    
+
     if (this.departmentForm.controls['start_time'].value) {
     }
 
@@ -270,11 +278,6 @@ export class AddDepartmentComponent implements OnInit {
   onUpdate() {
     this.isBusy = true;
     let ids: any;
-    // if (this.updateDepartmentForm.controls['members'] !== null) {
-    //   ids = this.updateDepartmentForm.controls['members']
-    //     .filter((x: any) => x !== 0)
-    //     .map((a: any) => a.id);
-    // }
     this.updateDepartmentForm.patchValue({
       members_id: ids,
     });
@@ -304,18 +307,6 @@ export class AddDepartmentComponent implements OnInit {
             this.departmentForm.reset();
           }
         );
-    }
-  }
-  setDateFunc() {
-    var dtToday = new Date();
-    var month: any = dtToday.getMonth() + 1;
-    var day: any = dtToday.getDate();
-    var year = dtToday.getFullYear();
-    if (month < 10) month = '0' + month.toString();
-    if (day < 10) day = '0' + day.toString();
-    var maxDate = year + '-' + month + '-' + day;
-    if (this.queryString !== 'edit') {
-      this.renderer.setAttribute(this.txtDate.nativeElement, 'min', maxDate);
     }
   }
 }

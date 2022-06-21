@@ -7,10 +7,9 @@ import { AuthService } from 'src/app/services/auth.service';
 import { environment } from 'src/environments/environment';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class DepartmentService {
-
   constructor(private http: HttpClient, private authService: AuthService) {
     this.authService.getChurchSlug();
   }
@@ -26,7 +25,7 @@ export class DepartmentService {
       .pipe(
         map((status) => status),
         catchError(handleError)
-      )
+      );
   }
   deleteFromTrash(model: any): Observable<any> {
     return this.http
@@ -41,10 +40,16 @@ export class DepartmentService {
         catchError(handleError)
       );
   }
-  fetchAllFromTrash(
-    pageNumber?: number,
-    pageSize?: number
-  ): Observable<any> {
+  fetchAllDepartment(): Observable<any> {
+    return this.http
+      .get<any>(
+        `${
+          environment.managementbaseUrl
+        }/${this.authService.getChurchSlug()}/departments`
+      )
+      .pipe(catchError(handleError));
+  }
+  fetchAllFromTrash(pageNumber?: number, pageSize?: number): Observable<any> {
     return this.http
       .get<any>(
         `${
@@ -56,50 +61,44 @@ export class DepartmentService {
   fetchDepartmentDetails(id: any, optional?: string): Observable<any> {
     return this.http
       .get<any>(
-        environment.managementbaseUrl + 
-        `/${this.authService.getChurchSlug()}/departments/${id}`
-      ).pipe(catchError(handleError));
+        environment.managementbaseUrl +
+          `/${this.authService.getChurchSlug()}/departments/${id}`
+      )
+      .pipe(catchError(handleError));
   }
-  fetchDeptFromTrash(
-    pageNumber?: number,
-    pageSize?: number
-  ): Observable<any> {
+  fetchDeptFromTrash(pageNumber?: number, pageSize?: number): Observable<any> {
     return this.http
       .get<any>(
         `${
           environment.managementbaseUrl
         }/${this.authService.getChurchSlug()}/departments/trash/?page=${pageNumber}&size=${pageSize}`
       )
-      .pipe(catchError(handleError))
+      .pipe(catchError(handleError));
   }
   fetchTrashedDept(id: any): Observable<any> {
     return this.http
       .get<any>(
-        environment.managementbaseUrl + 
-        `${this.authService.getChurchSlug()}/departments/trash/${id}`
+        environment.managementbaseUrl +
+          `${this.authService.getChurchSlug()}/departments/trash/${id}`
       )
-      .pipe(catchError(handleError))
+      .pipe(catchError(handleError));
   }
-  getAllDepartment(
-    pageNumber?: number,
-    pageSize?: number
-  ): Observable<any> {
+  getAllDepartment(pageNumber?: number, pageSize?: number): Observable<any> {
     return this.http
       .get<any>(
         `${
           environment.managementbaseUrl
         }/${this.authService.getChurchSlug()}/departments/?page=${pageNumber}&size=${pageSize}`
       )
-      .pipe(catchError(handleError))
+      .pipe(catchError(handleError));
   }
   moveToTrash(model: any): Observable<any> {
-    return this.http
-      .post<any>(
-        `${
-          environment.managementbaseUrl
-        }/${this.authService.getChurchSlug()}/departments/delete`,
-        model
-      )
+    return this.http.post<any>(
+      `${
+        environment.managementbaseUrl
+      }/${this.authService.getChurchSlug()}/departments/delete`,
+      model
+    );
   }
   restore(model: any): Observable<any> {
     return this.http
