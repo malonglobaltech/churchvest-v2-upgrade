@@ -245,9 +245,6 @@ export class AddDepartmentComponent implements OnInit {
       members_id: ids,
     });
 
-    if (this.departmentForm.controls['start_time'].value) {
-    }
-
     if (this.departmentForm.invalid) {
       this.isBusy = false;
       return;
@@ -278,6 +275,11 @@ export class AddDepartmentComponent implements OnInit {
   onUpdate() {
     this.isBusy = true;
     let ids: any;
+    if (this.updateDepartmentForm.controls['members_id'].value !== null) {
+      ids = this.updateDepartmentForm.controls['members_id'].value
+        .filter((x: any) => x !== 0)
+        .map((a: any) => a.id);
+    }
     this.updateDepartmentForm.patchValue({
       members_id: ids,
     });
