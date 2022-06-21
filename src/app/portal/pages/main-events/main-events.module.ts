@@ -1,21 +1,31 @@
-import { NgModule } from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { MainEventsRoutingModule } from './main-events-routing.module';
 import { MainEventsComponent } from './main-events.component';
 import { EventOverviewComponent } from './components/event-overview/event-overview.component';
 import { AddEventwComponent } from './components/add-eventw/add-eventw.component';
+import { AngularMaterialModule } from 'src/app/shared/angular-material.module';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { LoadingRollerModule } from '../../components/loading-roller/loading-roller.module';
 
 
 @NgModule({
   declarations: [
-    MainEventsComponent,
+    AddEventwComponent,
     EventOverviewComponent,
-    AddEventwComponent
+    MainEventsComponent,
+
   ],
   imports: [
     CommonModule,
-    MainEventsRoutingModule
-  ]
+    AngularMaterialModule,
+    MainEventsRoutingModule,
+    FormsModule,
+    LoadingRollerModule,
+    ReactiveFormsModule
+  ],
+  exports: [MainEventsComponent],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class MainEventsModule { }
