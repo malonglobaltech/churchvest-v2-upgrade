@@ -195,7 +195,7 @@ export class SidenavComponent implements OnInit {
     },
     {
       title: 'More',
-      url: 'people',
+      url: 'more',
       icon: 'assets/img/svg/more-icon.svg',
       hasChildren: true,
       hasSelector: false,

@@ -18,10 +18,15 @@ const routes: Routes = [
       },
       {
         path: 'department',
-        loadChildren: () => 
-          import ('../pages/department/department.module').then(
+        loadChildren: () =>
+          import('../pages/department/department.module').then(
             (m) => m.DepartmentModule
-          )
+          ),
+      },
+      {
+        path: 'more',
+        loadChildren: () =>
+          import('../pages/more/more.module').then((m) => m.MoreModule),
       },
       {
         path: 'people',
