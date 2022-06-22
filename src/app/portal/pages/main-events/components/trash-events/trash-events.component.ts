@@ -127,12 +127,12 @@ export class TrashEventsComponent implements OnInit {
     let payload: any;
     if (this._isAllSelected) {
       payload = {
-        departments_id: this.selectedEvent,
+        events_id: this.selectedEvent,
       };
     }
     if (this._isSingleSelected) {
       payload = {
-        departments_id: [this.itemDetails.id],
+        events_id: [this.itemDetails.id],
       };
     }
     this.evtsService.deleteFromTrash(payload).subscribe(
