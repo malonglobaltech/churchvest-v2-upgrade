@@ -27,6 +27,19 @@ export class EventsService {
         catchError(handleError)
       );
   }
+  deleteFromTrash(model: any): Observable<any> {
+    return this.http
+      .post<any>(
+        ` ${
+          environment.managementbaseUrl
+        }/${this.authService.getChurchSlug()}/events/trash/delete`,
+        model
+      )
+      .pipe(
+        map((status) => status),
+        catchError(handleError)
+      );
+  }
   fetchAllEvents(pageNumber?: number, pageSize?: number): Observable<any> {
     return this.http
       .get<any>(
@@ -35,6 +48,15 @@ export class EventsService {
         }/${this.authService.getChurchSlug()}/events/?page=${pageNumber}&size=${pageSize}`
       )
       .pipe(catchError(handleError))
+  }
+  fetchAllFromTrash(pageNumber?: number, pageSize?: number): Observable<any> {
+    return this.http
+      .get<any>(
+        `${
+          environment.managementbaseUrl
+        }/${this.authService.getChurchSlug()}/events/trash/departments_trashed/?page=${pageNumber}&size=${pageSize}`
+      )
+      .pipe(catchError(handleError));
   }
   fetchAnEvents(id?: number, pageSize?: number): Observable<any> {
     return this.http
@@ -52,6 +74,19 @@ export class EventsService {
       }/${this.authService.getChurchSlug()}/events/delete`,
       model
     );
+  }
+  restore(model: any): Observable<any> {
+    return this.http
+      .post<any>(
+        `${
+          environment.managementbaseUrl
+        }/${this.authService.getChurchSlug()}/events/trash/restore`,
+        model
+      )
+      .pipe(
+        map((status) => status),
+        catchError(handleError)
+      );
   }
   updateEvent(model: any, id: number): Observable<any> {
     return this.http

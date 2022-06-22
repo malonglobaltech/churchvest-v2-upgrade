@@ -9,6 +9,7 @@ import { AngularMaterialModule } from 'src/app/shared/angular-material.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { LoadingRollerModule } from '../../components/loading-roller/loading-roller.module';
 import { ImageuploadModule } from '../../components/imageupload/imageupload.module';
+import { TrashEventsComponent } from './components/trash-events/trash-events.component';
 
 
 @NgModule({
@@ -16,6 +17,7 @@ import { ImageuploadModule } from '../../components/imageupload/imageupload.modu
     AddEventwComponent,
     EventOverviewComponent,
     MainEventsComponent,
+    TrashEventsComponent,
 
   ],
   imports: [
