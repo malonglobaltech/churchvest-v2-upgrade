@@ -54,7 +54,7 @@ export class EventsService {
       .get<any>(
         `${
           environment.managementbaseUrl
-        }/${this.authService.getChurchSlug()}/events/trash/departments_trashed/?page=${pageNumber}&size=${pageSize}`
+        }/${this.authService.getChurchSlug()}/events/trash/events/?page=${pageNumber}&size=${pageSize}`
       )
       .pipe(catchError(handleError));
   }
@@ -71,7 +71,7 @@ export class EventsService {
     return this.http.post<any>(
       `${
         environment.managementbaseUrl
-      }/${this.authService.getChurchSlug()}/events/delete`,
+      }/${this.authService.getChurchSlug()}/events/delete_event`,
       model
     );
   }
