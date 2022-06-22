@@ -8,6 +8,7 @@ import { AddEventwComponent } from './components/add-eventw/add-eventw.component
 import { AngularMaterialModule } from 'src/app/shared/angular-material.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { LoadingRollerModule } from '../../components/loading-roller/loading-roller.module';
+import { ImageuploadModule } from '../../components/imageupload/imageupload.module';
 
 
 @NgModule({
@@ -20,6 +21,7 @@ import { LoadingRollerModule } from '../../components/loading-roller/loading-rol
   imports: [
     CommonModule,
     AngularMaterialModule,
+    ImageuploadModule,
     MainEventsRoutingModule,
     FormsModule,
     LoadingRollerModule,

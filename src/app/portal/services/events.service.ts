@@ -45,18 +45,13 @@ export class EventsService {
       )
       .pipe(catchError(handleError))
   }
-  moveToTrash(model: any ): Observable<any> {
-    return this.http
-      .delete<any>(
-        ` ${
-          environment.managementbaseUrl
-        }/${this.authService.getChurchSlug()}/events/${model}/delete`
-        
-      )
-      .pipe(
-        map((status) => status),
-        catchError(handleError)
-      );
+  moveToTrash(model: any): Observable<any> {
+    return this.http.post<any>(
+      `${
+        environment.managementbaseUrl
+      }/${this.authService.getChurchSlug()}/events/delete`,
+      model
+    );
   }
   updateEvent(model: any, id: number): Observable<any> {
     return this.http

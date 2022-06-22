@@ -234,13 +234,30 @@ export class AddEventwComponent implements OnInit {
       );
     }
   }
+  getChildValue(val?: any, _query?: any) {
+    this.addToFormControl(val, _query);
+  }
+  addToFormControl(val: any, identifier?: any) {
+    switch (val !== null && identifier) {
+      case (identifier = 'fileUpdate'):
+        var imgUrl = this.updateEventForm.get('image') as FormControl;
+
+        return imgUrl.setValue(val);
+
+      default:
+        return;
+    }
+  }
   onUpdate() {
     this.isBusy = true;
+    // const formData = new FormData();
+    // formData.append('image', this.updateEventForm.get('image').value);
     if (this.updateEventForm.invalid) {
       this.isBusy = false;
       return;
     }
     if (this.updateEventForm.valid) {
+      console.log('updatedFormValue', this.updatedFormValue);
       //Make api call here...
       this.evtsService
         .updateEvent(this.updatedFormValue, this._eventId)

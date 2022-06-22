@@ -313,11 +313,10 @@
                 </div>
                 <div class="input">
                 <label>Event Banner</label>
-                <input
-                    type="file"
-                    formControlName="image"
-                    accept="image/*"
-                />
+                <app-imageupload
+                  [setImageFile]="itemDetails.image"
+                  (outToParent)="getChildValue($event, 'fileUpdate')"
+                ></app-imageupload>
                 </div>
             </div>
             <div class="grid mb-3">

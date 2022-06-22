@@ -97,8 +97,8 @@ export class EventOverviewComponent implements OnInit {
           const { data, meta } = res;
           this.eventList = data;
           this.dataSource = new MatTableDataSource(this.eventList);
-          // this.paginator.pageIndex = this.currentPage;
-          // this.paginator.length = meta.total;
+          this.paginator.pageIndex = this.currentPage;
+          this.paginator.length = meta.total;
         },
         (errors) => {
           if (errors) {
@@ -138,12 +138,12 @@ export class EventOverviewComponent implements OnInit {
     let payload: any;
     if (this._isSingleSelected) {
       payload = {
-        event_id: [this.itemDetails.id],
+        events_ids: [this.itemDetails.id],
       };
     }
     if (this._isAllSelected) {
       payload = {
-        event_id: this.selectedEvent,
+        events_ids: this.selectedEvent,
       };
     }
     this.eventsService
@@ -151,7 +151,7 @@ export class EventOverviewComponent implements OnInit {
       .subscribe(({ message }) => {
         this.isBusy = false;
         this.toastr.success(message, 'Success');
-        this.router.navigate(['/portal/events']);
+        this.router.navigate(['/portal/events/trash']);
         this.closebtn._elementRef.nativeElement.click();
         this.getEvent();
       });
