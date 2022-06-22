@@ -138,12 +138,12 @@ export class EventOverviewComponent implements OnInit {
     let payload: any;
     if (this._isSingleSelected) {
       payload = {
-        events_ids: [this.itemDetails.id],
+        events_id: [this.itemDetails.id],
       };
     }
     if (this._isAllSelected) {
       payload = {
-        events_ids: this.selectedEvent,
+        events_id: this.selectedEvent,
       };
     }
     this.eventsService

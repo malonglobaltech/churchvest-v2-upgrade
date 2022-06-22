@@ -67,6 +67,14 @@ export class EventsService {
       )
       .pipe(catchError(handleError))
   }
+  fetchTrashedEvent(id: any): Observable<any> {
+    return this.http
+      .get<any>(
+        environment.managementbaseUrl +
+          `${this.authService.getChurchSlug()}/departments/trash/${id}`
+      )
+      .pipe(catchError(handleError));
+  }
   moveToTrash(model: any): Observable<any> {
     return this.http.post<any>(
       `${
