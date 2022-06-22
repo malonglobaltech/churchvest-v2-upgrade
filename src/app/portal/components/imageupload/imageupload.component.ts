@@ -7,9 +7,7 @@ import {
   Renderer2,
   ViewChild,
 } from '@angular/core';
-import * as S3 from 'aws-sdk/clients/s3';
 import { ToastrService } from 'ngx-toastr';
-import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-imageupload',
@@ -35,10 +33,9 @@ export class ImageuploadComponent implements OnInit {
       var reader = new FileReader();
       reader.onloadend = (e) => {
         this.isLoading = true;
-        this._filesize = event.target.files[0].size;
 
-        if (this._filesize / 1024 / 1024 > 1) {
-          this.toastr.info('File size should be less than 1MB', 'Message');
+        if (event.target.files[0].size / 1024 / 1024 > 5) {
+          this.toastr.info('File size should be less than 5MB', 'Message');
           return;
         }
         if (
@@ -50,7 +47,7 @@ export class ImageuploadComponent implements OnInit {
             'background',
             `url(${e.target.result})`
           );
-          this._filesize = Math.round(this._filesize / 1000);
+          this._filesize = Math.round(event.target.files[0].size / 1000);
           this._filename = this.fileImage.name;
           this.outToParent.emit(this.fileImage);
           this.toastr.success('File successfully added', 'Message');

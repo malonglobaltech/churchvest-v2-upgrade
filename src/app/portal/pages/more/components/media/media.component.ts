@@ -96,8 +96,6 @@ export class MediaComponent implements OnInit {
       (res: any) => {
         this._loading = false;
         const { data } = res;
-        console.log(data);
-
         this.mediaList = data;
         this.dataSource = new MatTableDataSource(this.mediaList);
         this.paginator.pageIndex = this.currentPage;

@@ -12,9 +12,18 @@ import { ImageuploadModule } from '../../components/imageupload/imageupload.modu
 import { EmptyStateModule } from '../../components/empty-state/empty-state.module';
 import { AddMediaComponent } from './components/add-media/add-media.component';
 import { TrashComponent } from './components/trash/trash.component';
+import { MultifileUploadModule } from '../../components/multifile-upload/multifile-upload.module';
+import { MediaUploadModule } from '../../components/media-upload/media-upload.module';
+import { DocumentUploadModule } from '../../components/document-upload/document-upload.module';
 
 @NgModule({
-  declarations: [MoreComponent, MediaComponent, MessagesComponent, AddMediaComponent, TrashComponent],
+  declarations: [
+    MoreComponent,
+    MediaComponent,
+    MessagesComponent,
+    AddMediaComponent,
+    TrashComponent,
+  ],
   imports: [
     CommonModule,
     MoreRoutingModule,
@@ -23,6 +32,9 @@ import { TrashComponent } from './components/trash/trash.component';
     FormsModule,
     LoadingRollerModule,
     ImageuploadModule,
+    MultifileUploadModule,
+    MediaUploadModule,
+    DocumentUploadModule,
     EmptyStateModule,
   ],
   exports: [MoreComponent],
