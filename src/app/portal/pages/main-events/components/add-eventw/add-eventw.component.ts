@@ -46,7 +46,7 @@ export class AddEventwComponent implements OnInit {
   compareFunc = compareObjects;
   _formateDate = formatDate;
   _daysOfWeek = getDays;
-  repeatMode: string[] = ['weekly', 'monthly', 'yearly', 'do not repeat'];
+  repeatMode: string[] = ['weekly', 'monthly', 'annually', 'once'];
   typeOfEvent: string[] = ['vigil', 'praise', 'conference', 'convention', 'others'];
 
   public eventForm: FormGroup = new FormGroup({});
@@ -194,11 +194,14 @@ export class AddEventwComponent implements OnInit {
         start_date: [this.itemDetails.start_date],
         end_date: [this.itemDetails.end_date],
         organizer: [this.itemDetails.organizer],
-        location: [this.itemDetails.location],
+        location_name: [this.itemDetails.location_name],
+        location_address: [this.itemDetails.location_address],
         address: [this.itemDetails.address],
-        city: [this.itemDetails.city],
+        participant_size: [this.itemDetails.participant_size],
+        repeat: [this.itemDetails.repeat],
+        image: [this.itemDetails.image],
         comment: [this.itemDetails.comment],
-        members_id: [this.filteredMembers],
+        type: [this.itemDetails.type],
       });
     }
   }
@@ -233,29 +236,20 @@ export class AddEventwComponent implements OnInit {
   }
   onUpdate() {
     this.isBusy = true;
-    let ids: any;
-    if (this.updateEventForm.controls['members_id'].value !== null) {
-      ids = this.updateEventForm.controls['members_id'].value
-        .filter((x: any) => x !== 0)
-        .map((a: any) => a.id);
-    }
-    this.updateEventForm.patchValue({
-      members_id: ids,
-    });
     if (this.updateEventForm.invalid) {
       this.isBusy = false;
       return;
     }
     if (this.updateEventForm.valid) {
       //Make api call here...
-      this.peopleServ
-        .updateEvangelism(this.updatedFormValue, this._eventId)
+      this.evtsService
+        .updateEvent(this.updatedFormValue, this._eventId)
         .subscribe(
           ({ message, data }) => {
             this.toastr.success(message, 'Message');
             this.isBusy = false;
             this.updateEventForm.reset();
-            this.router.navigate(['/portal/people/evangelism']);
+            this.router.navigate(['/portal/events']);
           },
           (error) => {
             this.isBusy = false;

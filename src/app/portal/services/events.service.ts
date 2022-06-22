@@ -58,4 +58,17 @@ export class EventsService {
         catchError(handleError)
       );
   }
+  updateEvent(model: any, id: number): Observable<any> {
+    return this.http
+      .post<any>(
+        ` ${
+          environment.managementbaseUrl
+        }/${this.authService.getChurchSlug()}/events/${id}/update`,
+        model
+      )
+      .pipe(
+        map((status) => status),
+        catchError(handleError)
+      );
+  }
 }
