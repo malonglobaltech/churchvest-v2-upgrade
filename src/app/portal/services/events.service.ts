@@ -36,4 +36,26 @@ export class EventsService {
       )
       .pipe(catchError(handleError))
   }
+  fetchAnEvents(id?: number, pageSize?: number): Observable<any> {
+    return this.http
+      .get<any>(
+        `${
+          environment.managementbaseUrl
+        }/${this.authService.getChurchSlug()}/events/${id}`
+      )
+      .pipe(catchError(handleError))
+  }
+  moveToTrash(model: any ): Observable<any> {
+    return this.http
+      .delete<any>(
+        ` ${
+          environment.managementbaseUrl
+        }/${this.authService.getChurchSlug()}/events/${model}/delete`
+        
+      )
+      .pipe(
+        map((status) => status),
+        catchError(handleError)
+      );
+  }
 }

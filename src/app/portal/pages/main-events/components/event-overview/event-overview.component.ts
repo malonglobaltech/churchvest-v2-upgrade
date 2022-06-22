@@ -116,7 +116,7 @@ export class EventOverviewComponent implements OnInit {
     this._loading_ = true;
     this._id = id;
     if (this._id !== undefined) {
-      this.peopleService.fetchDetails(id, 'evangelism', 'show').subscribe(
+      this.eventsService.fetchAnEvents(id).subscribe(
         (res) => {
           this._loading_ = false;
           const { data } = res;
@@ -146,8 +146,8 @@ export class EventOverviewComponent implements OnInit {
         event_id: this.selectedEvent,
       };
     }
-    this.peopleService
-      .moveToTrash(payload, 'evangelism')
+    this.eventsService
+      .moveToTrash(payload)
       .subscribe(({ message }) => {
         this.isBusy = false;
         this.toastr.success(message, 'Success');

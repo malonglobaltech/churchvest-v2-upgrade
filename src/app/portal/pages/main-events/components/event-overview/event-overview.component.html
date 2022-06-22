@@ -246,7 +246,7 @@
         <div
           class="header-top d-flex justify-content-between align-items-center px-4 py-3"
         >
-          <div class="title">Evangelism Details</div>
+          <div class="title">Event Details</div>
           <mat-icon data-bs-dismiss="modal" class="cursor">close</mat-icon>
         </div>
         <div class="container px-0">
@@ -269,24 +269,58 @@
                 </div>
                 <div class="grid grid--1fr--1fr mb-3">
                   <label
-                    >City<span style="width: 200px">{{
-                      itemDetails?.city
+                    >Location Name <span style="width: 200px">{{
+                      itemDetails?.location_name
                     }}</span></label
                   >
                   <label
-                    >Address<span style="width: 250px">{{
-                      itemDetails.address
+                    >Location Address<span style="width: 250px">{{
+                      itemDetails?.location_address
+                    }}</span></label
+                  >
+                </div>
+                <div class="grid grid--1fr--1fr mb-3">
+                  <label
+                    >State Date<span style="width: 200px">{{
+                      itemDetails?.start_date
+                    }}</span></label
+                  >
+                  <label
+                    >End Date<span style="width: 250px">{{
+                      itemDetails?.end_date
+                    }}</span></label
+                  >
+                </div>
+                <div class="grid grid--1fr--1fr mb-3">
+                  <label
+                    >Event Type <span style="width: 200px">{{
+                      itemDetails?.type
+                    }}</span></label
+                  >
+                  <label
+                    >Event Repeat<span style="width: 250px">{{
+                      itemDetails?.repeat
+                    }}</span></label
+                  >
+                </div>
+                <div class="grid grid--1fr--1fr mb-3">
+                  <label
+                    >Participant size <span style="width: 200px">{{
+                      itemDetails?.participant_size
+                    }}</span></label
+                  >
+                  <label
+                    >Comment<span style="width: 250px">{{
+                      itemDetails?.comment
                     }}</span></label
                   >
                 </div>
                 <div class="grid grid--1fr--1fr grid-row-gap-15">
-                  <label *ngFor="let item of itemDetails.members">
-                    Member
-                    <span style="width: 250px">
-                      {{ item.member?.user?.first_name }}
-                      {{ item.member?.user?.last_name }}</span
-                    >
-                  </label>
+                  <label
+                    ><div>Banner</div><img style="width: 250px" [src]="
+                      itemDetails?.image
+                      "/></label
+                  >
                 </div>
               </div>
             </div>
@@ -331,8 +365,8 @@
               <p>
                 Are you sure you want to move
                 <span>
-                  {{ selectedEvangelism.length }}
-                  {{ selectedEvangelism.length == 1 ? "item" : "items" }}
+                  {{ selectedEvent.length }}
+                  {{ selectedEvent.length == 1 ? "item" : "items" }}
                 </span>
                 to trash? This will be temporarily deleted, and can be recovered
                 from trash

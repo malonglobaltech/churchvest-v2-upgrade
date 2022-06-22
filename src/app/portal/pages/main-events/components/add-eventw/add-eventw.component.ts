@@ -172,8 +172,8 @@ export class AddEventwComponent implements OnInit {
   }
   getEventDetails() {
     if (this._eventId !== undefined) {
-      this.peopleServ
-        .fetchDetails(this._eventId, 'evangelism', 'show')
+      this.evtsService
+        .fetchAnEvents(this._eventId)
         .pipe(
           catchError((err: any): ObservableInput<any> => {
             return throwError(err);
@@ -182,14 +182,6 @@ export class AddEventwComponent implements OnInit {
         .subscribe((res) => {
           const { data } = res;
           this.itemDetails = data;
-          if (this.itemDetails.members.member !== undefined) {
-            this.filteredMembers = this.itemDetails.members.map(
-              (x: any) => x.member
-            );
-            this.memberItems = this.filteredMembers;
-          } else {
-            this.memberItems = this._memberList;
-          }
 
           this.setFormControlElement();
         });
@@ -221,7 +213,6 @@ export class AddEventwComponent implements OnInit {
       //Make api call here...
       this.evtsService.addEvent(this.eventFormValue).subscribe(
         ({ message, data }) => {
-          this._eventId = data.id;
           this.toastr.success(message, 'Message');
           this.router.navigate(['/portal/events']);
           this.eventForm.reset();
