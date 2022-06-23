@@ -1,8 +1,28 @@
 <section>
   <div class="header d-flex align-items-center justify-content-between mb-4">
     <div class="title">All Messages</div>
-    <button mat-stroked-button>
-      <mat-icon class="me-2">add</mat-icon> Send New Message
+    <button mat-stroked-button [matMenuTriggerFor]="menu">
+      Send Message Via
+      <mat-menu #menu="matMenu">
+        <button
+          mat-menu-item
+          [routerLink]="['/portal/more/messages/send-message']"
+          [queryParams]="{
+            query: 'email'
+          }"
+        >
+          <mat-icon class="me-0">outgoing_mail</mat-icon> Email
+        </button>
+        <button
+          mat-menu-item
+          [routerLink]="['/portal/more/messages/send-message']"
+          [queryParams]="{
+            query: 'sms'
+          }"
+        >
+          <mat-icon class="me-0">sms</mat-icon> SMS
+        </button>
+      </mat-menu>
     </button>
   </div>
   <div

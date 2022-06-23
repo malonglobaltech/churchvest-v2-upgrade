@@ -15,6 +15,7 @@ import { TrashComponent } from './components/trash/trash.component';
 import { MultifileUploadModule } from '../../components/multifile-upload/multifile-upload.module';
 import { MediaUploadModule } from '../../components/media-upload/media-upload.module';
 import { DocumentUploadModule } from '../../components/document-upload/document-upload.module';
+import { SendMessageComponent } from './components/send-message/send-message.component';
 
 @NgModule({
   declarations: [
@@ -23,6 +24,7 @@ import { DocumentUploadModule } from '../../components/document-upload/document-
     MessagesComponent,
     AddMediaComponent,
     TrashComponent,
+    SendMessageComponent,
   ],
   imports: [
     CommonModule,
