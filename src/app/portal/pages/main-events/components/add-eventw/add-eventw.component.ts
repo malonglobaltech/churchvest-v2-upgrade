@@ -281,17 +281,26 @@ export class AddEventwComponent implements OnInit {
   }
   onUpdate() {
     this.isBusy = true;
-    // const formData = new FormData();
-    // formData.append('image', this.updateEventForm.get('image').value);
     if (this.updateEventForm.invalid) {
       this.isBusy = false;
       return;
     }
-    if (this.updateEventForm.valid) {
-      console.log('updatedFormValue', this.updatedFormValue);
+
+    const updateEventFormData = new FormData();
+      updateEventFormData.append('name', this.updateEventForm.get('name').value);
+      updateEventFormData.append('start_date', this.updateEventForm.get('start_date').value);
+      updateEventFormData.append('end_date', this.updateEventForm.get('end_date').value);
+      updateEventFormData.append('organizer', this.updateEventForm.get('organizer').value);
+      updateEventFormData.append('location_name', this.updateEventForm.get('location_name').value);
+      updateEventFormData.append('location_address', this.updateEventForm.get('location_address').value);
+      updateEventFormData.append('participant_size', this.updateEventForm.get('participant_size').value);
+      updateEventFormData.append('repeat', this.updateEventForm.get('repeat').value);
+      updateEventFormData.append('image', this.updateEventForm.get('image').value);
+      updateEventFormData.append('type', this.updateEventForm.get('type').value);
+      updateEventFormData.append('comment', this.updateEventForm.get('comment').value);
       //Make api call here...
       this.evtsService
-        .updateEvent(this.updatedFormValue, this._eventId)
+        .updateEvent(updateEventFormData, this._eventId)
         .subscribe(
           ({ message, data }) => {
             this.toastr.success(message, 'Message');
@@ -310,7 +319,6 @@ export class AddEventwComponent implements OnInit {
             this.updateEventForm.reset();
           }
         );
-    }
   }
 
 }
