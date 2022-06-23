@@ -1,4 +1,12 @@
-import { Component, OnInit, Renderer2, ViewChild } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  OnInit,
+  QueryList,
+  Renderer2,
+  ViewChild,
+  ViewChildren,
+} from '@angular/core';
 import { Location } from '@angular/common';
 import { environment } from 'src/environments/environment';
 import {
@@ -44,6 +52,7 @@ export class SendMessageComponent implements OnInit {
   @ViewChild('firstTimerSelect') firstTimerSelect: any;
   @ViewChild('deptSelect') deptSelect: any;
   @ViewChild('groupSelect') groupSelect: any;
+  @ViewChildren('_memsSelect') _memsSelect: QueryList<ElementRef>;
 
   pageSize: number = 50;
   currentPage = 0;
@@ -134,6 +143,13 @@ export class SendMessageComponent implements OnInit {
       return this.departmentItems.slice(0, 4).map((x: any) => x.name);
     }
   }
+  get stripedDeptMembersValue() {
+    if (this.departmentItems.length !== 0 && this.departmentItems !== null) {
+      return this.departmentItems.map((x: any) =>
+        x.members.map((y) => y.member.user.phone)
+      );
+    }
+  }
   get stripedEvangelismValue() {
     if (this._evangelismList.length !== 0 && this._evangelismList !== null) {
       return this.evangelismItems.slice(0, 4).map((x: any) => x.name);
@@ -217,14 +233,15 @@ export class SendMessageComponent implements OnInit {
   handleCategoryChange(event: any) {
     this._categoryItems = event.value;
   }
-  handleMembersChange(event: any, source?: string) {
+  handleSelectionChange(event: any, source?: string) {
     switch (event.source._value !== null && source) {
       case (source = 'reg_member'):
         return (this.memberItems = event.source._value.filter((t) => t));
       case (source = 'first_timer'):
         return (this.firstTimerItems = event.source._value.filter((t) => t));
       case (source = 'department'):
-        return (this.departmentItems = event.source._value.filter((t) => t));
+        let res = (this.departmentItems = event.source._value.filter((t) => t));
+        return res;
       case (source = 'evangelism'):
         return (this.evangelismItems = event.source._value.filter((t) => t));
       case (source = 'fellowship'):
@@ -329,7 +346,6 @@ export class SendMessageComponent implements OnInit {
       }
     );
   }
-
   getChildValue(val?: any, _query?: any) {
     this.addToFormControl(val, _query);
   }

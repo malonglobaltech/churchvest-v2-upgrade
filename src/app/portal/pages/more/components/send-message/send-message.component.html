@@ -78,7 +78,7 @@
                     #membersSelect
                     formControlName="regular_members"
                     (selectionChange)="
-                      handleMembersChange($event, 'reg_member')
+                      handleSelectionChange($event, 'reg_member')
                     "
                   >
                     <mat-select-trigger>
@@ -115,7 +115,7 @@
                     #firstTimerSelect
                     formControlName="first_timer"
                     (selectionChange)="
-                      handleMembersChange($event, 'first_timer')
+                      handleSelectionChange($event, 'first_timer')
                     "
                   >
                     <mat-select-trigger>
@@ -154,7 +154,7 @@
                     #deptSelect
                     formControlName="department"
                     (selectionChange)="
-                      handleMembersChange($event, 'department')
+                      handleSelectionChange($event, 'department')
                     "
                   >
                     <mat-select-trigger>
@@ -180,6 +180,7 @@
                 </div>
               </div>
             </ng-container>
+
             <ng-container *ngIf="_categoryItems.includes('New Convert')">
               <div class="grid mb-3">
                 <div class="input">
@@ -191,7 +192,7 @@
                     #convertSelect
                     formControlName="new_convert"
                     (selectionChange)="
-                      handleMembersChange($event, 'new_convert')
+                      handleSelectionChange($event, 'new_convert')
                     "
                   >
                     <mat-select-trigger>
@@ -228,7 +229,7 @@
                     #fellowshipSelect
                     formControlName="fellowship"
                     (selectionChange)="
-                      handleMembersChange($event, 'fellowship')
+                      handleSelectionChange($event, 'fellowship')
                     "
                   >
                     <mat-select-trigger>
@@ -267,7 +268,7 @@
                     #evangelismSelect
                     formControlName="evangelism"
                     (selectionChange)="
-                      handleMembersChange($event, 'evangelism')
+                      handleSelectionChange($event, 'evangelism')
                     "
                   >
                     <mat-select-trigger>
@@ -305,7 +306,7 @@
                     multiple
                     #groupSelect
                     formControlName="group"
-                    (selectionChange)="handleMembersChange($event, 'group')"
+                    (selectionChange)="handleSelectionChange($event, 'group')"
                   >
                     <mat-select-trigger>
                       {{ _groupList ? stripedGroupValue : "" }}

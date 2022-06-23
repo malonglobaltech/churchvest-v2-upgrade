@@ -52,7 +52,7 @@ export class MultifileUploadComponent implements OnInit {
             this._filename = this.file[i].name;
             this.mediaList.push(this.file[i]);
             this.outToParent.emit(
-              new File([this.file[i]], this._filename, { type: 'mp3' })
+              new File([this.file[i]], this._filename, { type: 'audio/mpeg' })
             );
             this.renderer.setStyle(
               this._marker2.nativeElement,
