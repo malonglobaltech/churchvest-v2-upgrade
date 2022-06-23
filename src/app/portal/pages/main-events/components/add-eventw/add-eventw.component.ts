@@ -212,9 +212,20 @@ export class AddEventwComponent implements OnInit {
       this.isBusy = false;
       return;
     }
-    if (this.eventForm.valid) {
+    const eventFormData = new FormData();
+      eventFormData.append('name', this.eventForm.get('name').value);
+      eventFormData.append('start_date', this.eventForm.get('start_date').value);
+      eventFormData.append('end_date', this.eventForm.get('end_date').value);
+      eventFormData.append('organizer', this.eventForm.get('organizer').value);
+      eventFormData.append('location_name', this.eventForm.get('location_name').value);
+      eventFormData.append('location_address', this.eventForm.get('location_address').value);
+      eventFormData.append('participant_size', this.eventForm.get('participant_size').value);
+      eventFormData.append('repeat', this.eventForm.get('repeat').value);
+      eventFormData.append('image', this.eventForm.get('image').value);
+      eventFormData.append('type', this.eventForm.get('type').value);
+      eventFormData.append('comment', this.eventForm.get('comment').value);
       //Make api call here...
-      this.evtsService.addEvent(this.eventFormValue).subscribe(
+      this.evtsService.addEvent(eventFormData).subscribe(
         ({ message, data }) => {
           this.toastr.success(message, 'Message');
           this.router.navigate(['/portal/events']);
@@ -232,16 +243,36 @@ export class AddEventwComponent implements OnInit {
           this.eventForm.reset();
         }
       );
+  }
+  imageDisplay
+  onImageUpload(event) {
+    const file = event.target.files[0];
+    if (file) {
+      this.eventForm.patchValue({ image: file });
+      this.eventForm.get('image').updateValueAndValidity();
+      const fileReader = new FileReader();
+      fileReader.onload = () => {
+        this.imageDisplay = fileReader.result;
+      };
+      fileReader.readAsDataURL(file);
     }
   }
-  getChildValue(val?: any, _query?: any) {
+
+  getChildValue(val?: any, _query?: any, formType?: any) {
     this.addToFormControl(val, _query);
+    console.log(val, _query)
   }
-  addToFormControl(val: any, identifier?: any) {
+  addToFormControl(val: any, identifier?: any, create?: any) {
+    console.log(val, identifier)
     switch (val !== null && identifier) {
       case (identifier = 'fileUpdate'):
-        var imgUrl = this.updateEventForm.get('image') as FormControl;
+        var imgUrl;
 
+        if (create && create == 'create') {
+          imgUrl = this.eventForm.get('image') as FormControl
+        } else {
+          imgUrl = this.updateEventForm.get('image') as FormControl
+        }
         return imgUrl.setValue(val);
 
       default:
