@@ -27,7 +27,7 @@ export class MultifileUploadComponent implements OnInit {
   fileImage: any;
   _filename: string;
   _filesize: number;
-  isLoading: boolean = false;
+
   mediaList: any = [];
   constructor(private toastr: ToastrService, private renderer: Renderer2) {}
 
@@ -41,7 +41,6 @@ export class MultifileUploadComponent implements OnInit {
       for (let i = 0; i < this.file.length; i++) {
         var reader = new FileReader();
         reader.onloadend = () => {
-          this.isLoading = true;
           this._filesize = event.target.files[0].size;
 
           if (this._filesize / 1024 / 1024 > 15) {
@@ -50,7 +49,7 @@ export class MultifileUploadComponent implements OnInit {
           }
 
           if (this.file[i].type == 'audio/mpeg') {
-            this.isLoading = false;
+            this._filename = this.file[i].name;
             this.mediaList.push(this.file[i]);
             this.outToParent.emit(
               new File([this.file[i]], this._filename, { type: 'mp3' })
@@ -68,7 +67,6 @@ export class MultifileUploadComponent implements OnInit {
                 </div>`
             );
           } else {
-            this.isLoading = false;
             this.toastr.error(
               'File type not supported, only mp3 file is allowed',
               'Message'

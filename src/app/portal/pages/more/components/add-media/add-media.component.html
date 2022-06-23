@@ -37,10 +37,10 @@
               </mat-select>
             </div>
             <div class="input">
-              <label>Media title </label>
+              <label>{{ _fieldLabel.title }} </label>
               <input
                 type="text"
-                placeholder="Enter title"
+                [placeholder]="'Enter ' + _fieldLabel.title"
                 formControlName="title"
                 [ngClass]="{
                   'is-invalid':
@@ -52,10 +52,10 @@
           </div>
           <div class="grid mb-3">
             <div class="input">
-              <label>Media Owner</label>
+              <label>{{ _fieldLabel.name }}</label>
               <input
                 type="text"
-                formControlName="owner_name"
+                [placeholder]="'Enter ' + _fieldLabel.name"
                 placeholder="Enter name"
               />
             </div>

@@ -38,6 +38,10 @@ export class AddMediaComponent implements OnInit {
   _files: any[] = [];
   fileData: any;
   _val: boolean = false;
+  _fieldLabel = {
+    title: 'Message Title',
+    name: 'Preacher Name',
+  };
   _selectedMediaType: string = 'message';
 
   compareFunc = compareObjects;
@@ -60,7 +64,7 @@ export class AddMediaComponent implements OnInit {
       resources: this.fb.array([]),
       upload: [null],
       track: [null],
-      tracks: [[]],
+      tracks: this.fb.array([]),
       price: [null],
       account_id: [null],
       display_web: ['1'],
@@ -72,7 +76,9 @@ export class AddMediaComponent implements OnInit {
   ngOnInit(): void {
     this.getRoutes();
   }
-  ngAfterViewInit() {}
+  ngAfterViewInit() {
+    this.getFieldLabel();
+  }
   gotoBack() {
     this._location.back();
   }
@@ -84,10 +90,55 @@ export class AddMediaComponent implements OnInit {
     return this.updateConvertForm.getRawValue();
   }
   get resourceValues(): FormArray {
-    return this.mediaForm.get('resources') as FormArray;
+    return this.selectedControl();
+  }
+  selectedControl() {
+    let response: any;
+    if (this._selectedMediaType == 'message') {
+      response = this.mediaForm.get('resources') as FormArray;
+    }
+    if (this._selectedMediaType == 'album') {
+      response = this.mediaForm.get('tracks') as FormArray;
+    }
+    if (this._selectedMediaType == 'track') {
+      response = this.mediaForm.get('resources') as FormArray;
+    }
+    return response;
   }
   handleMediaTypeChange(val: any) {
     this._selectedMediaType = val.value;
+    this.getFieldLabel(this._selectedMediaType);
+  }
+
+  getFieldLabel(val?: string) {
+    switch (val) {
+      case (val = 'message'):
+        this._fieldLabel = {
+          title: 'Message Title',
+          name: 'Preacher Name',
+        };
+        return this._fieldLabel;
+      case (val = 'track'):
+        this._fieldLabel = {
+          title: 'Track Title',
+          name: 'Artist Name',
+        };
+        return this._fieldLabel;
+      case (val = 'book'):
+        this._fieldLabel = {
+          title: 'Book Title',
+          name: 'Author Name',
+        };
+        return this._fieldLabel;
+      case (val = 'album'):
+        this._fieldLabel = {
+          title: 'Album Title',
+          name: 'Artist Name',
+        };
+        return this._fieldLabel;
+      default:
+        return;
+    }
   }
   getChildValue(val?: any, _query?: any) {
     this.addToFormControl(val, _query);
@@ -129,7 +180,6 @@ export class AddMediaComponent implements OnInit {
         .subscribe((res) => {
           const { data } = res;
           this.itemDetails = data;
-
           this.setFormControlElement();
         });
     }
@@ -166,6 +216,10 @@ export class AddMediaComponent implements OnInit {
     formData.append('owner_name', this.mediaForm.get('owner_name').value);
     for (let file of this.mediaForm.get('resources').value) {
       formData.append('resources[]', file);
+    }
+
+    for (let file of this.mediaForm.get('tracks').value) {
+      formData.append('tracks[]', file);
     }
     formData.append('upload', this.mediaForm.get('upload').value);
     formData.append('display_web', this.mediaForm.get('display_web').value);
