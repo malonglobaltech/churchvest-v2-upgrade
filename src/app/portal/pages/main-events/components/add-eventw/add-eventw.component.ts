@@ -1,6 +1,5 @@
 import { Component, OnInit, Renderer2, ViewChild } from '@angular/core';
 import { Location } from '@angular/common';
-import { environment } from 'src/environments/environment';
 import {
   FormBuilder,
   FormControl,
@@ -46,8 +45,8 @@ export class AddEventwComponent implements OnInit {
   compareFunc = compareObjects;
   _formateDate = formatDate;
   _daysOfWeek = getDays;
-  repeatMode: string[] = ['weekly', 'monthly', 'annually', 'once'];
-  typeOfEvent: string[] = ['vigil', 'praise', 'conference', 'convention', 'others'];
+  repeatMode: string[] = ['weekly', 'monthly', 'annually'];
+  typeOfEvent: string[] = ['vigil', 'praise', 'conference', 'convention', 'wedding', 'others'];
 
   public eventForm: FormGroup = new FormGroup({});
   public updateEventForm: FormGroup = new FormGroup({});
@@ -250,11 +249,6 @@ export class AddEventwComponent implements OnInit {
     if (file) {
       this.eventForm.patchValue({ image: file });
       this.eventForm.get('image').updateValueAndValidity();
-      const fileReader = new FileReader();
-      fileReader.onload = () => {
-        this.imageDisplay = fileReader.result;
-      };
-      fileReader.readAsDataURL(file);
     }
   }
 

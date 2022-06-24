@@ -101,21 +101,10 @@
             </div>
                 <div class="input">
                 <label>Event Banner</label>
-                
-              <input
-                type="file"
-                class="p-inputtext"
-                accept="image/*"
-                (change)="onImageUpload($event)"
-              />
-              <div class="p-col-2 p-mt-2 p-pl-0">
-                <img style="width: 100%" [src]="imageDisplay" alt="" />
-              </div>
-
-                <!-- <app-imageupload
+                <app-imageupload
                   [setImageFile]="image"
-                  (outToParent)="getChildValue($event, 'fileUpdate', 'create')"
-                ></app-imageupload> -->
+                  (change)="onImageUpload($event)"
+                ></app-imageupload>
                 </div>
           </div>
           <div class="grid grid--1fr--1fr grid-gap-15 mb-3">
