@@ -14,7 +14,7 @@ import { DepartmentService } from 'src/app/portal/services/department.service';
 @Component({
   selector: 'app-trashed-departments',
   templateUrl: './trashed-departments.component.html',
-  styleUrls: ['./trashed-departments.component.scss']
+  styleUrls: ['./trashed-departments.component.scss'],
 })
 export class TrashedDepartmentsComponent implements OnInit {
   @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -51,7 +51,13 @@ export class TrashedDepartmentsComponent implements OnInit {
     this.dataSource.paginator = this.paginator;
   }
 
-  column = ['name', 'department leader', 'meeting Days', 'meeting time', 'action'];
+  column = [
+    'name',
+    'department leader',
+    'meeting days',
+    'meeting time',
+    'action',
+  ];
 
   isAllSelected() {
     const numSelected = this.selection.selected.length;
@@ -138,6 +144,7 @@ export class TrashedDepartmentsComponent implements OnInit {
     this.deptService.deleteFromTrash(payload).subscribe(
       ({ message }) => {
         this.isBusy = false;
+
         this.toastr.success(message, 'Success');
         this.closebtn._elementRef.nativeElement.click();
         this.getDepartment();
@@ -176,5 +183,4 @@ export class TrashedDepartmentsComponent implements OnInit {
       }
     );
   }
-
 }

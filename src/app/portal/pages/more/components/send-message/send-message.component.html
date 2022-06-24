@@ -19,11 +19,17 @@
                   type="text"
                   placeholder="Message type"
                   formControlName="type"
+                  class="capitalize"
                 />
               </div>
               <div class="input">
                 <label>From </label>
-                <input type="text" placeholder="From" formControlName="from" />
+                <input
+                  type="text"
+                  placeholder="From"
+                  formControlName="from"
+                  class="capitalize"
+                />
               </div>
             </div>
             <div class="grid grid--1fr--1fr grid-gap-15 mb-3">
@@ -61,7 +67,11 @@
                   <mat-option disabled="" selected="" value=""
                     >Select category</mat-option
                   >
-                  <mat-option *ngFor="let item of _categoryList" [value]="item">
+                  <mat-option
+                    *ngFor="let item of _categoryList"
+                    [value]="item"
+                    [disabled]="checkStringsList(item) && !_isRegularSelected"
+                  >
                     {{ item }}
                   </mat-option>
                 </mat-select>
@@ -180,7 +190,6 @@
                 </div>
               </div>
             </ng-container>
-
             <ng-container *ngIf="_categoryItems.includes('New Convert')">
               <div class="grid mb-3">
                 <div class="input">
@@ -382,6 +391,7 @@
                   type="text"
                   placeholder="Message type"
                   formControlName="type"
+                  class="capitalize"
                 />
               </div>
               <div class="input">

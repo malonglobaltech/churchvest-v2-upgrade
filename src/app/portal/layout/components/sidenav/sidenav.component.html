@@ -50,10 +50,15 @@
               <ul>
                 <li *ngFor="let sub of item.children; let subIndex = index">
                   <a
-                    [routerLink]="item.url + '/' + sub.url"
-                    routerLinkActive="active"
-                    ><small>{{ sub.title }}</small></a
+                    [routerLinkActive]="sub.disabled ? '' : 'active'"
+                    [routerLink]="
+                      sub.disabled ? null : item.url + '/' + sub.url
+                    "
+                    [ngClass]="{ spaced: sub.disabled }"
                   >
+                    <small>{{ sub.title }}</small>
+                    <mat-icon *ngIf="sub.disabled">lock</mat-icon>
+                  </a>
                 </li>
               </ul>
             </div>
