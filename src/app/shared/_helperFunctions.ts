@@ -132,7 +132,7 @@ export const getDays = () => {
     'wednesday',
     'thursday',
     'friday',
-    'satuday',
+    'saturday',
     'sunday',
   ];
   return days;

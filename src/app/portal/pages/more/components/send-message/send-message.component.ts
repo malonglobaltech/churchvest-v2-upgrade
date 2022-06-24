@@ -326,8 +326,12 @@ export class SendMessageComponent implements OnInit {
     this.peopleServ.fetchByStatus('members', query).subscribe(
       (res: any) => {
         const { data } = res;
-        this._firstTimerList = data.filter((x: any) => x.details.convert);
-        this._convertList = data.filter((x: any) => x.details.convert);
+        if (query == 'first_timer') {
+          this._firstTimerList = data.filter((x: any) => x.details.convert);
+        }
+        if (query == 'convert') {
+          this._convertList = data.filter((x: any) => x.details.convert);
+        }
       },
       (errors) => {
         if (errors) {
