@@ -157,22 +157,45 @@ export class MessagesComponent implements OnInit {
     this.isBusy = true;
     let payload: any;
     if (this._isSingleSelected) {
+      payload = [this.itemDetails[0].id];
+    }
+    if (this._isAllSelected) {
+      payload = this.selectedMessage;
+    }
+    this.messageService.deleteMessage(payload).subscribe(({ message }) => {
+      this.isBusy = false;
+      this.toastr.success(message, 'Success');
+      // this.router.navigate(['/portal/more/media/trash']);
+      this.closebtn._elementRef.nativeElement.click();
+      this.getAllMessages();
+    });
+  }
+  trash() {
+    this.isBusy = true;
+    let payload: any;
+    if (this._isSingleSelected) {
       payload = {
-        media_id: [this.itemDetails[0].id],
+        id: [this.itemDetails[0].id],
       };
     }
     if (this._isAllSelected) {
       payload = {
-        media_id: this.selectedMessage,
+        id: this.selectedMessage,
       };
     }
-    this.messageService.moveToTrash(payload).subscribe(({ message }) => {
-      this.isBusy = false;
-      this.toastr.success(message, 'Success');
-      this.router.navigate(['/portal/more/media/trash']);
-      this.closebtn._elementRef.nativeElement.click();
-      this.getAllMessages();
-    });
+    this.messageService.moveToTrash(payload).subscribe(
+      ({ message }) => {
+        this.isBusy = false;
+        this.toastr.success(message, 'Success');
+        this.router.navigate(['/portal/more/messages/trash']);
+        this.closebtn._elementRef.nativeElement.click();
+        this.getAllMessages();
+      },
+      ({ error }) => {
+        this.isBusy = false;
+        this.toastr.error(error.message, 'Message');
+      }
+    );
   }
   exportToExcel(): void {
     const edata: Array<any> = [];

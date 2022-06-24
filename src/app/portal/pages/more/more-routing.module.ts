@@ -4,7 +4,8 @@ import { AddMediaComponent } from './components/add-media/add-media.component';
 import { MediaComponent } from './components/media/media.component';
 import { MessagesComponent } from './components/messages/messages.component';
 import { SendMessageComponent } from './components/send-message/send-message.component';
-import { TrashComponent } from './components/trash/trash.component';
+import { TrashMediaComponent } from './components/trash-media/trash-media.component';
+import { TrashMessagesComponent } from './components/trash-messages/trash-messages.component';
 import { MoreComponent } from './more.component';
 
 const routes: Routes = [
@@ -22,7 +23,11 @@ const routes: Routes = [
       },
       {
         path: 'media/trash',
-        component: TrashComponent,
+        component: TrashMediaComponent,
+      },
+      {
+        path: 'messages/trash',
+        component: TrashMessagesComponent,
       },
       {
         path: 'media/:query',

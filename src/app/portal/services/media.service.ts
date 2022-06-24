@@ -32,7 +32,7 @@ export class MediaService {
       .post<any>(
         ` ${
           environment.managementbaseUrl
-        }/${this.authService.getChurchSlug()}/departments/trash/delete`,
+        }/${this.authService.getChurchSlug()}/media/trash/delete`,
         model
       )
       .pipe(
@@ -40,7 +40,16 @@ export class MediaService {
         catchError(handleError)
       );
   }
-  fetchAllMedia(type?: string): Observable<any> {
+  fetchAllMedia(): Observable<any> {
+    return this.http
+      .get<any>(
+        `${
+          environment.managementbaseUrl
+        }/${this.authService.getChurchSlug()}/media/all`
+      )
+      .pipe(catchError(handleError));
+  }
+  queryMediaWithType(type?: string): Observable<any> {
     return this.http
       .get<any>(
         `${
@@ -49,12 +58,12 @@ export class MediaService {
       )
       .pipe(catchError(handleError));
   }
-  fetchAllFromTrash(type?: string): Observable<any> {
+  fetchAllFromTrash(query?: string): Observable<any> {
     return this.http
       .get<any>(
         `${
           environment.managementbaseUrl
-        }/${this.authService.getChurchSlug()}/media/trash/${type}`
+        }/${this.authService.getChurchSlug()}/media/trash/${query}`
       )
       .pipe(catchError(handleError));
   }

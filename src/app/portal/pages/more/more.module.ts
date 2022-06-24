@@ -11,11 +11,12 @@ import { LoadingRollerModule } from '../../components/loading-roller/loading-rol
 import { ImageuploadModule } from '../../components/imageupload/imageupload.module';
 import { EmptyStateModule } from '../../components/empty-state/empty-state.module';
 import { AddMediaComponent } from './components/add-media/add-media.component';
-import { TrashComponent } from './components/trash/trash.component';
 import { MultifileUploadModule } from '../../components/multifile-upload/multifile-upload.module';
 import { MediaUploadModule } from '../../components/media-upload/media-upload.module';
 import { DocumentUploadModule } from '../../components/document-upload/document-upload.module';
 import { SendMessageComponent } from './components/send-message/send-message.component';
+import { TrashMessagesComponent } from './components/trash-messages/trash-messages.component';
+import { TrashMediaComponent } from './components/trash-media/trash-media.component';
 
 @NgModule({
   declarations: [
@@ -23,8 +24,9 @@ import { SendMessageComponent } from './components/send-message/send-message.com
     MediaComponent,
     MessagesComponent,
     AddMediaComponent,
-    TrashComponent,
     SendMessageComponent,
+    TrashMessagesComponent,
+    TrashMediaComponent,
   ],
   imports: [
     CommonModule,

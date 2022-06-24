@@ -56,7 +56,7 @@ export class MediaComponent implements OnInit {
   }
 
   column = ['media title', 'media owner', 'type', 'date created', 'action'];
-  mediaTypeList = ['book', 'message', 'track'];
+  mediaTypeList = ['all', 'book', 'message', 'track'];
   isAllSelected() {
     let filtered = this.dataSource.data.filter((x) => x.role !== 'admin');
     const numSelected = this.selection.selected.length;
@@ -72,7 +72,7 @@ export class MediaComponent implements OnInit {
     this.selection.select(...filtered);
   }
   handleFilterChange(val: any) {
-    this.getAllMedia(val.value);
+    this.queryAllMedia(val.value);
   }
   checkboxLabel(row?: any): string {
     if (!row) {
@@ -92,7 +92,30 @@ export class MediaComponent implements OnInit {
     }
     this._loading = true;
     this.mediaList = [];
-    this.mediaService.fetchAllMedia(this.mediaType).subscribe(
+    this.mediaService.fetchAllMedia().subscribe(
+      (res: any) => {
+        this._loading = false;
+        const { data } = res;
+        this.mediaList = data;
+        this.dataSource = new MatTableDataSource(this.mediaList);
+        this.paginator.pageIndex = this.currentPage;
+        this.paginator.length = this.mediaList.length;
+      },
+      (errors) => {
+        if (errors) {
+          this._loading = false;
+          this.mediaList = [];
+        }
+      }
+    );
+  }
+  queryAllMedia(query?: string) {
+    if (query) {
+      this.mediaType = query;
+    }
+    this._loading = true;
+    this.mediaList = [];
+    this.mediaService.queryMediaWithType(query).subscribe(
       (res: any) => {
         this._loading = false;
         const { data } = res;
@@ -118,11 +141,11 @@ export class MediaComponent implements OnInit {
     this._loading_ = true;
     this.mediaId = id;
     if (this.mediaId !== undefined) {
-      this.mediaService.fetchAllMedia(this.mediaType).subscribe(
+      this.mediaService.fetchAllMedia().subscribe(
         (res) => {
           this._loading_ = false;
           const { data } = res;
-          this.itemDetails = data.filter((x) => x.id == id);
+          this.itemDetails = data.filter((x) => x.id == this.mediaId);
         },
         (msg) => {
           this._loading_ = false;

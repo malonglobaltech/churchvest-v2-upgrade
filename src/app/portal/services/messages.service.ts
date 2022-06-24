@@ -13,14 +13,26 @@ export class MessagesService {
   constructor(private http: HttpClient, private authService: AuthService) {
     this.authService.getChurchSlug();
   }
-
   deleteFromTrash(model: any): Observable<any> {
     return this.http
       .post<any>(
         ` ${
           environment.managementbaseUrl
-        }/${this.authService.getChurchSlug()}/departments/trash/delete`,
+        }/${this.authService.getChurchSlug()}/messages/trash/delete`,
         model
+      )
+      .pipe(
+        map((status) => status),
+        catchError(handleError)
+      );
+  }
+  deleteMessage(id: any): Observable<any> {
+    return this.http
+      .post<any>(
+        ` ${
+          environment.managementbaseUrl
+        }/${this.authService.getChurchSlug()}/messages/${id}/delete`,
+        null
       )
       .pipe(
         map((status) => status),
@@ -36,12 +48,12 @@ export class MessagesService {
       )
       .pipe(catchError(handleError));
   }
-  fetchAllFromTrash(type?: string): Observable<any> {
+  fetchAllFromTrash(): Observable<any> {
     return this.http
       .get<any>(
         `${
           environment.managementbaseUrl
-        }/${this.authService.getChurchSlug()}/messages/trash/${type}`
+        }/${this.authService.getChurchSlug()}/messages/trash`
       )
       .pipe(catchError(handleError));
   }
@@ -55,7 +67,7 @@ export class MessagesService {
   }
 
   moveToTrash(model: any): Observable<any> {
-    return this.http.post<any>(
+    return this.http.get<any>(
       `${
         environment.managementbaseUrl
       }/${this.authService.getChurchSlug()}/messages/delete`,
