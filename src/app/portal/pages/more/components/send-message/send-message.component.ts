@@ -79,11 +79,11 @@ export class SendMessageComponent implements OnInit {
   _id: number;
   _files: any[] = [];
   fileData: any;
-
+  _isRegularSelected: boolean = true;
   compareFunc = compareObjects;
 
   public smsForm: FormGroup = new FormGroup({});
-  public updateConvertForm: FormGroup = new FormGroup({});
+  public emailForm: FormGroup = new FormGroup({});
   constructor(
     private mediaService: MediaService,
     private peopleServ: PeopleService,
@@ -94,12 +94,25 @@ export class SendMessageComponent implements OnInit {
     private _location: Location,
     private route: ActivatedRoute,
     private router: Router,
-    private fb: FormBuilder,
-    private renderer: Renderer2
+    private fb: FormBuilder
   ) {
     this.smsForm = this.fb.group({
       type: new FormControl({ value: 'sms', disabled: true }),
       from: new FormControl({ value: 'churchvest', disabled: true }),
+      subject: [null],
+      regular_members: [[]],
+      first_timer: [[]],
+      department: [[]],
+      new_convert: [[]],
+      fellowship: [[]],
+      evangelism: [[]],
+      group: [[]],
+      message: [null],
+    });
+    this.emailForm = this.fb.group({
+      type: new FormControl({ value: 'email', disabled: true }),
+      from: [null, [Validators.required, Validators.email]],
+      to: [[], [Validators.required]],
       subject: [null],
       regular_members: [[]],
       first_timer: [[]],
@@ -187,6 +200,20 @@ export class SendMessageComponent implements OnInit {
       return this._categoryItems.slice(0, 2).map((x: any) => x);
     }
   }
+  checkStringsList(item: any) {
+    switch (item) {
+      case (item = 'Departments'):
+        return true;
+      case (item = 'Evangelism'):
+        return true;
+      case (item = 'Fellowship'):
+        return true;
+      case (item = 'Groups'):
+        return true;
+      default:
+        return;
+    }
+  }
   toggleAllSelection(allSlc: any, slc: any) {
     if (allSlc.selected) {
       slc.options._results.map((item) => {
@@ -231,7 +258,17 @@ export class SendMessageComponent implements OnInit {
   }
 
   handleCategoryChange(event: any) {
+    let check = ['Regular Members', 'First Timers', 'New Convert'];
     this._categoryItems = event.value;
+    if (
+      this._categoryItems.includes('Regular Members') ||
+      this._categoryItems.includes('First Timers') ||
+      this._categoryItems.includes('New Convert')
+    ) {
+      this._isRegularSelected = false;
+    } else {
+      this._isRegularSelected = true;
+    }
   }
   handleSelectionChange(event: any, source?: string) {
     switch (event.source._value !== null && source) {
@@ -387,9 +424,7 @@ export class SendMessageComponent implements OnInit {
         });
     }
   }
-  setFormControlElement() {
-    this.updateConvertForm = this.fb.group({});
-  }
+  setFormControlElement() {}
   getCell(identifier) {
     let res: any;
     switch (identifier) {
@@ -405,6 +440,26 @@ export class SendMessageComponent implements OnInit {
         return (res = this.smsForm.controls['new_convert'].value
           .filter((x: any) => x !== 0)
           .map((a: any) => parseInt(a.user.phone)));
+
+      default:
+        return;
+    }
+  }
+  getEmail(identifier) {
+    let res: any;
+    switch (identifier) {
+      case (identifier = 'reg_member'):
+        return (res = this.emailForm.controls['regular_members'].value
+          .filter((x: any) => x !== 0)
+          .map((a: any) => a.user.email));
+      case (identifier = 'first_timer'):
+        return (res = this.emailForm.controls['first_timer'].value
+          .filter((x: any) => x !== 0)
+          .map((a: any) => a.user.email));
+      case (identifier = 'new_convert'):
+        return (res = this.emailForm.controls['new_convert'].value
+          .filter((x: any) => x !== 0)
+          .map((a: any) => a.user.email));
 
       default:
         return;
@@ -455,6 +510,55 @@ export class SendMessageComponent implements OnInit {
         () => {
           this.isBusy = false;
           this.smsForm.reset();
+        }
+      );
+    }
+  }
+  onSend() {
+    this.isBusy = true;
+
+    if (this.emailForm.invalid) {
+      this.isBusy = false;
+      return;
+    }
+    this.emailForm.patchValue({
+      regular_members: this.getEmail('reg_member'),
+      first_timer: this.getEmail('first_timer'),
+      new_convert: this.getEmail('new_convert'),
+    });
+    const formData = new FormData();
+    formData.append('type', this.emailForm.get('type').value);
+    formData.append('from', this.emailForm.get('from').value);
+    formData.append('subject', this.emailForm.get('subject').value);
+    formData.append('message', this.emailForm.get('message').value);
+    for (let item of this.emailForm.get('regular_members').value) {
+      formData.append('to[]', item);
+    }
+    for (let item of this.emailForm.get('first_timer').value) {
+      formData.append('to[]', item);
+    }
+    for (let item of this.emailForm.get('new_convert').value) {
+      formData.append('to[]', item);
+    }
+
+    if (this.emailForm.valid) {
+      //Make api call here...
+      this.messageService.sendMessage(formData).subscribe(
+        ({ message, data }) => {
+          this.toastr.success(message, 'Message');
+          this.router.navigate(['/portal/more/messages']);
+          this.emailForm.reset();
+          this.isBusy = false;
+        },
+        (error) => {
+          this.isBusy = false;
+          this.toastr.error(error, 'Message', {
+            timeOut: 3000,
+          });
+        },
+        () => {
+          this.isBusy = false;
+          this.emailForm.reset();
         }
       );
     }

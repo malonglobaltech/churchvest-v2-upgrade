@@ -27,7 +27,7 @@ export class TrashMessagesComponent implements OnInit {
   currentPage = 0;
   isBusy: boolean = false;
   itemDetails: any;
-  mediaType: string = 'sms';
+  messageType: string = 'sms';
   _loading: boolean = false;
   _loading_: boolean = false;
   selectedMessage: any[] = [];
@@ -79,7 +79,7 @@ export class TrashMessagesComponent implements OnInit {
     this.selection.select(...this.dataSource.data);
   }
   handleFilterChange(val: any) {
-    this.queryAllMedia(val.value);
+    this.queryAllMessage(val.value);
   }
   checkboxLabel(row?: any): string {
     if (!row) {
@@ -118,7 +118,7 @@ export class TrashMessagesComponent implements OnInit {
   gotoBack() {
     this._location.back();
   }
-  getMediaDetails(id: any) {
+  getMessageDetails(id: any) {
     if (id !== undefined) {
       this.messageService.fetchAllFromTrash().subscribe((res) => {
         const { data } = res;
@@ -127,9 +127,9 @@ export class TrashMessagesComponent implements OnInit {
       });
     }
   }
-  queryAllMedia(query?: string) {
+  queryAllMessage(query?: string) {
     if (query) {
-      this.mediaType = query;
+      this.messageType = query;
     }
     this._loading = true;
     this.messageList = [];
@@ -191,12 +191,12 @@ export class TrashMessagesComponent implements OnInit {
     let payload: any;
     if (this._isAllSelected) {
       payload = {
-        media_id: this.selectedMessage,
+        id: this.selectedMessage,
       };
     }
     if (this._isSingleSelected) {
       payload = {
-        media_id: [this.itemDetails[0].id],
+        id: [this.itemDetails[0].id],
       };
     }
 
@@ -204,7 +204,7 @@ export class TrashMessagesComponent implements OnInit {
       ({ message }) => {
         this.isBusy = false;
         this.toastr.success(message, 'Success');
-        this.router.navigate(['/portal/more/media']);
+        this.router.navigate(['/portal/more/messages']);
         this.closebtn_._elementRef.nativeElement.click();
         this.getMessages();
       },

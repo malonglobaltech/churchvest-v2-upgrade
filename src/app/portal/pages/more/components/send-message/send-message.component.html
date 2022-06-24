@@ -361,3 +361,382 @@
     </section>
   </ng-container>
 </ng-container>
+<ng-container *ngIf="channel == 'email'">
+  <div class="d-flex align-items-center mb-4 cursor" (click)="gotoBack()">
+    <button mat-icon-button class="me-2 return-link-wrap">
+      <mat-icon>west</mat-icon>
+    </button>
+    <div class="title-sm">Back</div>
+  </div>
+  <ng-container>
+    <section class="stepper-wrapper full">
+      <aside *ngIf="queryString !== 'edit'">
+        <form [formGroup]="emailForm" (ngSubmit)="onSend()">
+          <div class="form-wrap">
+            <div class="title mb-2">New Email</div>
+            <mat-divider></mat-divider>
+            <div class="grid grid--1fr--1fr grid-gap-15 mt-4 mb-3">
+              <div class="input">
+                <label>Message Type </label>
+                <input
+                  type="text"
+                  placeholder="Message type"
+                  formControlName="type"
+                />
+              </div>
+              <div class="input">
+                <label>From </label>
+                <input
+                  type="email"
+                  placeholder="From"
+                  formControlName="from"
+                  [ngClass]="{
+                    'is-invalid':
+                      emailForm.controls['from'].hasError('required') &&
+                      !emailForm.controls['from'].valid &&
+                      emailForm.controls['from'].touched
+                  }"
+                />
+              </div>
+            </div>
+            <div class="grid grid--1fr--1fr grid-gap-15 mb-3">
+              <div class="input">
+                <label
+                  >Message Subject
+                  <span class="f12 txt-grey">(Optional)</span></label
+                >
+                <input
+                  type="text"
+                  placeholder="Message subject"
+                  formControlName="subject"
+                />
+              </div>
+              <div class="input">
+                <label
+                  >To
+                  <span class="12 txt-grey"
+                    >(You can send to all members, groups, fellowship and
+                    more)</span
+                  ></label
+                >
+                <mat-select
+                  placeholder="Select category"
+                  class="select"
+                  multiple
+                  name="category"
+                  required
+                  (selectionChange)="handleCategoryChange($event)"
+                  formControlName="to"
+                >
+                  <mat-select-trigger>
+                    {{ _categoryList ? stripedCatItemsValue : "" }}
+                    <span class="more" *ngIf="_categoryItems.length > 2">
+                      +{{ _categoryItems.length - 2 }} other item
+                    </span>
+                  </mat-select-trigger>
+                  <mat-option disabled="" selected="" value=""
+                    >Select category</mat-option
+                  >
+                  <mat-option
+                    *ngFor="let item of _categoryList"
+                    [value]="item"
+                    [disabled]="checkStringsList(item) && !_isRegularSelected"
+                  >
+                    {{ item }}
+                  </mat-option>
+                </mat-select>
+              </div>
+            </div>
+            <ng-container *ngIf="_categoryItems.includes('Regular Members')">
+              <div class="grid mb-3">
+                <div class="input">
+                  <label>Members</label>
+                  <mat-select
+                    placeholder="Select members"
+                    class="select"
+                    multiple
+                    #membersSelect
+                    formControlName="regular_members"
+                    (selectionChange)="
+                      handleSelectionChange($event, 'reg_member')
+                    "
+                  >
+                    <mat-select-trigger>
+                      {{ _memberList ? stripedObjValue : "" }}
+                      <span class="more" *ngIf="memberItems.length > 10">
+                        +{{ memberItems.length - 10 }} other item
+                      </span>
+                    </mat-select-trigger>
+                    <mat-option
+                      #membersAll
+                      (click)="toggleAllSelection(membersAll, membersSelect)"
+                      [value]="0"
+                      >All</mat-option
+                    >
+                    <mat-option
+                      *ngFor="let item of _memberList"
+                      [value]="item"
+                      (click)="toggleOne(membersAll, membersSelect)"
+                    >
+                      {{ item.user.first_name }} {{ item.user.last_name }}
+                    </mat-option>
+                  </mat-select>
+                </div>
+              </div>
+            </ng-container>
+            <ng-container *ngIf="_categoryItems.includes('First Timers')">
+              <div class="grid mb-3">
+                <div class="input">
+                  <label>First Timers</label>
+                  <mat-select
+                    placeholder="Select first timer"
+                    class="select"
+                    multiple
+                    #firstTimerSelect
+                    formControlName="first_timer"
+                    (selectionChange)="
+                      handleSelectionChange($event, 'first_timer')
+                    "
+                  >
+                    <mat-select-trigger>
+                      {{ _firstTimerList ? stripedFirstTimerValue : "" }}
+                      <span class="more" *ngIf="firstTimerItems.length > 5">
+                        +{{ firstTimerItems.length - 5 }} other item
+                      </span>
+                    </mat-select-trigger>
+                    <mat-option
+                      #firstTimerAll
+                      (click)="
+                        toggleAllSelection(firstTimerAll, firstTimerSelect)
+                      "
+                      [value]="0"
+                      >All</mat-option
+                    >
+                    <mat-option
+                      *ngFor="let item of _firstTimerList"
+                      [value]="item"
+                      (click)="toggleOne(firstTimerAll, firstTimerSelect)"
+                    >
+                      {{ item.user.first_name }} {{ item.user.last_name }}
+                    </mat-option>
+                  </mat-select>
+                </div>
+              </div>
+            </ng-container>
+            <ng-container *ngIf="_categoryItems.includes('Departments')">
+              <div class="grid mb-3">
+                <div class="input">
+                  <label>Departments</label>
+                  <mat-select
+                    placeholder="Select department"
+                    class="select"
+                    multiple
+                    #deptSelect
+                    formControlName="department"
+                    (selectionChange)="
+                      handleSelectionChange($event, 'department')
+                    "
+                  >
+                    <mat-select-trigger>
+                      {{ _departmentList ? stripedDeptValue : "" }}
+                      <span class="more" *ngIf="departmentItems.length > 4">
+                        +{{ departmentItems.length - 4 }} other item
+                      </span>
+                    </mat-select-trigger>
+                    <mat-option
+                      #deptAll
+                      (click)="toggleAllSelection(deptAll, deptSelect)"
+                      [value]="0"
+                      >All</mat-option
+                    >
+                    <mat-option
+                      *ngFor="let item of _departmentList"
+                      [value]="item"
+                      (click)="toggleOne(deptAll, deptSelect)"
+                    >
+                      {{ item.name }}
+                    </mat-option>
+                  </mat-select>
+                </div>
+              </div>
+            </ng-container>
+            <ng-container *ngIf="_categoryItems.includes('New Convert')">
+              <div class="grid mb-3">
+                <div class="input">
+                  <label>New Converts</label>
+                  <mat-select
+                    placeholder="Select new convert"
+                    class="select"
+                    multiple
+                    #convertSelect
+                    formControlName="new_convert"
+                    (selectionChange)="
+                      handleSelectionChange($event, 'new_convert')
+                    "
+                  >
+                    <mat-select-trigger>
+                      {{ _convertList ? stripedConvertValue : "" }}
+                      <span class="more" *ngIf="convertItems.length > 4">
+                        +{{ convertItems.length - 4 }} other item
+                      </span>
+                    </mat-select-trigger>
+                    <mat-option
+                      #convertAll
+                      (click)="toggleAllSelection(convertAll, convertSelect)"
+                      [value]="0"
+                      >All</mat-option
+                    >
+                    <mat-option
+                      *ngFor="let item of _convertList"
+                      [value]="item"
+                      (click)="toggleOne(convertAll, convertSelect)"
+                    >
+                      {{ item.user.first_name }} {{ item.user.last_name }}
+                    </mat-option>
+                  </mat-select>
+                </div>
+              </div>
+            </ng-container>
+            <ng-container *ngIf="_categoryItems.includes('Fellowship')">
+              <div class="grid mb-3">
+                <div class="input">
+                  <label>Fellowship</label>
+                  <mat-select
+                    placeholder="Select fellowship"
+                    class="select"
+                    multiple
+                    #fellowshipSelect
+                    formControlName="fellowship"
+                    (selectionChange)="
+                      handleSelectionChange($event, 'fellowship')
+                    "
+                  >
+                    <mat-select-trigger>
+                      {{ _fellowshipList ? stripedFellowshipValue : "" }}
+                      <span class="more" *ngIf="fellowshipItems.length > 4">
+                        +{{ fellowshipItems.length - 4 }} other item
+                      </span>
+                    </mat-select-trigger>
+                    <mat-option
+                      #fellowshipAll
+                      (click)="
+                        toggleAllSelection(fellowshipAll, fellowshipSelect)
+                      "
+                      [value]="0"
+                      >All</mat-option
+                    >
+                    <mat-option
+                      *ngFor="let item of _fellowshipList"
+                      [value]="item"
+                      (click)="toggleOne(fellowshipAll, fellowshipSelect)"
+                    >
+                      {{ item.name }}
+                    </mat-option>
+                  </mat-select>
+                </div>
+              </div>
+            </ng-container>
+            <ng-container *ngIf="_categoryItems.includes('Evangelism')">
+              <div class="grid mb-3">
+                <div class="input">
+                  <label>Evangelism</label>
+                  <mat-select
+                    placeholder="Select evangelism"
+                    class="select"
+                    multiple
+                    #evangelismSelect
+                    formControlName="evangelism"
+                    (selectionChange)="
+                      handleSelectionChange($event, 'evangelism')
+                    "
+                  >
+                    <mat-select-trigger>
+                      {{ _evangelismList ? stripedEvangelismValue : "" }}
+                      <span class="more" *ngIf="evangelismItems.length > 4">
+                        +{{ evangelismItems.length - 4 }} other item
+                      </span>
+                    </mat-select-trigger>
+                    <mat-option
+                      #evangelismAll
+                      (click)="
+                        toggleAllSelection(evangelismAll, evangelismSelect)
+                      "
+                      [value]="0"
+                      >All</mat-option
+                    >
+                    <mat-option
+                      *ngFor="let item of _evangelismList"
+                      [value]="item"
+                      (click)="toggleOne(evangelismAll, evangelismSelect)"
+                    >
+                      {{ item.name }}
+                    </mat-option>
+                  </mat-select>
+                </div>
+              </div>
+            </ng-container>
+            <ng-container *ngIf="_categoryItems.includes('Groups')">
+              <div class="grid mb-3">
+                <div class="input">
+                  <label>Groups</label>
+                  <mat-select
+                    placeholder="Select group"
+                    class="select"
+                    multiple
+                    #groupSelect
+                    formControlName="group"
+                    (selectionChange)="handleSelectionChange($event, 'group')"
+                  >
+                    <mat-select-trigger>
+                      {{ _groupList ? stripedGroupValue : "" }}
+                      <span class="more" *ngIf="groupItems.length > 4">
+                        +{{ groupItems.length - 4 }} other item
+                      </span>
+                    </mat-select-trigger>
+                    <mat-option
+                      #groupAll
+                      (click)="toggleAllSelection(groupAll, groupSelect)"
+                      [value]="0"
+                      >All</mat-option
+                    >
+                    <mat-option
+                      *ngFor="let item of _groupList"
+                      [value]="item"
+                      (click)="toggleOne(groupAll, groupSelect)"
+                    >
+                      {{ item.name }}
+                    </mat-option>
+                  </mat-select>
+                </div>
+              </div>
+            </ng-container>
+            <div class="grid mb-3">
+              <div class="input">
+                <label>Message</label>
+                <textarea
+                  cols="30"
+                  rows="10"
+                  placeholder="Write a message"
+                  formControlName="message"
+                ></textarea>
+              </div>
+            </div>
+            <div class="d-flex align-items-center">
+              <button
+                type="submit"
+                mat-flat-button
+                class="me-4"
+                [disabled]="!emailForm.valid"
+              >
+                Send <mat-spinner *ngIf="isBusy"> </mat-spinner>
+              </button>
+            </div>
+          </div>
+        </form>
+      </aside>
+      <ng-container *ngIf="queryString == 'edit' && !itemDetails">
+        <app-loading-roller></app-loading-roller>
+      </ng-container>
+    </section>
+  </ng-container>
+</ng-container>
