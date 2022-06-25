@@ -435,15 +435,15 @@ export class SendMessageComponent implements OnInit {
       case (identifier = 'reg_member'):
         return (res = this.smsForm.controls['regular_members'].value
           .filter((x: any) => x !== 0)
-          .map((a: any) => parseInt(a.user.phone)));
+          .map((a: any) => parseInt(a.id)));
       case (identifier = 'first_timer'):
         return (res = this.smsForm.controls['first_timer'].value
           .filter((x: any) => x !== 0)
-          .map((a: any) => parseInt(a.user.phone)));
+          .map((a: any) => parseInt(a.id)));
       case (identifier = 'new_convert'):
         return (res = this.smsForm.controls['new_convert'].value
           .filter((x: any) => x !== 0)
-          .map((a: any) => parseInt(a.user.phone)));
+          .map((a: any) => parseInt(a.id)));
 
       default:
         return;
@@ -469,6 +469,7 @@ export class SendMessageComponent implements OnInit {
         return;
     }
   }
+  //Sending sms
   onSubmit() {
     this.isBusy = true;
 
@@ -490,7 +491,7 @@ export class SendMessageComponent implements OnInit {
       formData.append('to[regular_members][]', item);
     }
     for (let item of this.smsForm.get('first_timer').value) {
-      formData.append('to[first_timer][]', item);
+      formData.append('to[first_timers][]', item);
     }
     for (let item of this.smsForm.get('new_convert').value) {
       formData.append('to[new_convert][]', item);
@@ -518,6 +519,7 @@ export class SendMessageComponent implements OnInit {
       );
     }
   }
+  //Sending email
   onSend() {
     this.isBusy = true;
 
