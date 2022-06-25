@@ -65,6 +65,7 @@ export class MessagesComponent implements OnInit {
     'from',
     'to',
     'message',
+    'status',
     'type',
     'attachment',
     'created at',

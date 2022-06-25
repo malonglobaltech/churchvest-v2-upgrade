@@ -113,7 +113,7 @@ export class SendMessageComponent implements OnInit {
       type: new FormControl({ value: 'email', disabled: true }),
       from: [null, [Validators.required, Validators.email]],
       to: [[], [Validators.required]],
-      subject: [null],
+      subject: [null, Validators.required],
       regular_members: [[]],
       first_timer: [[]],
       department: [[]],
@@ -455,15 +455,15 @@ export class SendMessageComponent implements OnInit {
       case (identifier = 'reg_member'):
         return (res = this.emailForm.controls['regular_members'].value
           .filter((x: any) => x !== 0)
-          .map((a: any) => a.user.email));
+          .map((a: any) => a.id));
       case (identifier = 'first_timer'):
         return (res = this.emailForm.controls['first_timer'].value
           .filter((x: any) => x !== 0)
-          .map((a: any) => a.user.email));
+          .map((a: any) => a.id));
       case (identifier = 'new_convert'):
         return (res = this.emailForm.controls['new_convert'].value
           .filter((x: any) => x !== 0)
-          .map((a: any) => a.user.email));
+          .map((a: any) => a.id));
 
       default:
         return;
@@ -538,13 +538,13 @@ export class SendMessageComponent implements OnInit {
     formData.append('subject', this.emailForm.get('subject').value);
     formData.append('message', this.emailForm.get('message').value);
     for (let item of this.emailForm.get('regular_members').value) {
-      formData.append('to[]', item);
+      formData.append('to[regular_members][]', item);
     }
     for (let item of this.emailForm.get('first_timer').value) {
-      formData.append('to[]', item);
+      formData.append('to[first_timers][]', item);
     }
     for (let item of this.emailForm.get('new_convert').value) {
-      formData.append('to[]', item);
+      formData.append('to[new_convert][]', item);
     }
 
     if (this.emailForm.valid) {
