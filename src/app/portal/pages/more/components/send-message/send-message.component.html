@@ -57,6 +57,7 @@
                   class="select"
                   multiple
                   (selectionChange)="handleCategoryChange($event)"
+                  formControlName="to"
                 >
                   <mat-select-trigger>
                     {{ _categoryList ? stripedCatItemsValue : "" }}
@@ -348,6 +349,11 @@
                   rows="10"
                   placeholder="Write a message"
                   formControlName="message"
+                  [ngClass]="{
+                    'is-invalid':
+                      smsForm.controls['message'].hasError('required') &&
+                      smsForm.controls['message'].touched
+                  }"
                 ></textarea>
               </div>
             </div>
@@ -730,6 +736,11 @@
                   rows="10"
                   placeholder="Write a message"
                   formControlName="message"
+                  [ngClass]="{
+                    'is-invalid':
+                      emailForm.controls['message'].hasError('required') &&
+                      emailForm.controls['message'].touched
+                  }"
                 ></textarea>
               </div>
             </div>

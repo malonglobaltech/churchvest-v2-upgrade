@@ -48,12 +48,12 @@ export class MessagesService {
       )
       .pipe(catchError(handleError));
   }
-  fetchAllFromTrash(): Observable<any> {
+  fetchAllFromTrash(query?: string): Observable<any> {
     return this.http
       .get<any>(
         `${
           environment.managementbaseUrl
-        }/${this.authService.getChurchSlug()}/messages/trash`
+        }/${this.authService.getChurchSlug()}/messages/${query}/trash`
       )
       .pipe(catchError(handleError));
   }

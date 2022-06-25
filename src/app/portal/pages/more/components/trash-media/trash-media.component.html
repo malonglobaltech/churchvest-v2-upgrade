@@ -8,20 +8,12 @@
     </div>
     <div class="title">Trash</div>
   </div>
-  <div
-    class="d-flex justify-content-center align-items-center my-3 empty-state"
-    *ngIf="!_loading && (!mediaList || mediaList.length === 0)"
-  >
-    <span class="txt-grey txt-md">No trashed record at this moment!</span>
-  </div>
-  <ng-container *ngIf="_loading">
-    <app-loading-roller></app-loading-roller>
-  </ng-container>
-  <div class="w-500 display" [ngClass]="{ pending: mediaList.length == 0 }">
+  <div class="w-500 display" [ngClass]="{ pending: _loading }">
     <div class="input">
       <mat-select
         class="select"
         placeholder="Query media type"
+        [ngModel]="mediaType"
         (selectionChange)="handleFilterChange($event)"
       >
         <mat-option disabled="" selected="" value=""
@@ -36,6 +28,16 @@
       </mat-select>
     </div>
   </div>
+  <div
+    class="d-flex justify-content-center align-items-center my-3 empty-state"
+    *ngIf="!_loading && (!mediaList || mediaList.length === 0)"
+  >
+    <span class="txt-grey txt-md">No trashed record at this moment!</span>
+  </div>
+  <ng-container *ngIf="_loading">
+    <app-loading-roller></app-loading-roller>
+  </ng-container>
+
   <div
     class="overflow--wrap _visible"
     [ngClass]="{ hide: mediaList.length == 0 }"

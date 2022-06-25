@@ -25,7 +25,7 @@ export class TrashMediaComponent implements OnInit {
   currentPage = 0;
   isBusy: boolean = false;
   itemDetails: any;
-  mediaType: string = 'book';
+  mediaType: string = 'album';
   _loading: boolean = false;
   _loading_: boolean = false;
   searchMedia: any;
@@ -54,7 +54,7 @@ export class TrashMediaComponent implements OnInit {
   }
 
   column = ['media title', 'media owner', 'type', 'date created', 'action'];
-  mediaTypeList = ['all', 'book', 'message', 'track'];
+  mediaTypeList = ['all', 'album', 'book', 'message', 'track'];
 
   isAllSelected() {
     const numSelected = this.selection.selected.length;
@@ -109,10 +109,9 @@ export class TrashMediaComponent implements OnInit {
   }
   getMediaDetails(id: any) {
     if (id !== undefined) {
-      this.mediaService.fetchAllFromTrash().subscribe((res) => {
+      this.mediaService.fetchAllFromTrash(this.mediaType).subscribe((res) => {
         const { data } = res;
         this.itemDetails = data.filter((x) => x.id == id);
-        console.log(this.itemDetails);
       });
     }
   }

@@ -99,6 +99,7 @@ export class SendMessageComponent implements OnInit {
     this.smsForm = this.fb.group({
       type: new FormControl({ value: 'sms', disabled: true }),
       from: new FormControl({ value: 'churchvest', disabled: true }),
+      to: [[], [Validators.required]],
       subject: [null],
       regular_members: [[]],
       first_timer: [[]],
@@ -107,7 +108,7 @@ export class SendMessageComponent implements OnInit {
       fellowship: [[]],
       evangelism: [[]],
       group: [[]],
-      message: [null],
+      message: [null, Validators.required],
     });
     this.emailForm = this.fb.group({
       type: new FormControl({ value: 'email', disabled: true }),
@@ -121,7 +122,7 @@ export class SendMessageComponent implements OnInit {
       fellowship: [[]],
       evangelism: [[]],
       group: [[]],
-      message: [null],
+      message: [null, Validators.required],
     });
   }
   _categoryList = [

@@ -8,21 +8,13 @@
     </div>
     <div class="title">Trash</div>
   </div>
-  <div
-    class="d-flex justify-content-center align-items-center my-3 empty-state"
-    *ngIf="!_loading && (!messageList || messageList.length === 0)"
-  >
-    <span class="txt-grey txt-md">No trashed record at this moment!</span>
-  </div>
-  <ng-container *ngIf="_loading">
-    <app-loading-roller></app-loading-roller>
-  </ng-container>
-  <div class="w-500 display" [ngClass]="{ pending: messageList.length == 0 }">
+  <div class="w-500 display" [ngClass]="{ pending: _loading }">
     <div class="input">
       <mat-select
         class="select"
         placeholder="Query message type"
         (selectionChange)="handleFilterChange($event)"
+        [ngModel]="msgType"
       >
         <mat-option disabled="" selected="" value=""
           >Query message type</mat-option
@@ -36,6 +28,16 @@
       </mat-select>
     </div>
   </div>
+  <div
+    class="d-flex justify-content-center align-items-center my-3 empty-state"
+    *ngIf="!_loading && (!messageList || messageList.length === 0)"
+  >
+    <span class="txt-grey txt-md">No trashed record at this moment!</span>
+  </div>
+  <ng-container *ngIf="_loading">
+    <app-loading-roller></app-loading-roller>
+  </ng-container>
+
   <div
     class="overflow--wrap _visible"
     [ngClass]="{ hide: messageList.length == 0 }"

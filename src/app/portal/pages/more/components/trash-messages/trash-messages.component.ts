@@ -27,7 +27,7 @@ export class TrashMessagesComponent implements OnInit {
   currentPage = 0;
   isBusy: boolean = false;
   itemDetails: any;
-  messageType: string = 'sms';
+  msgType: string = 'sms';
   _loading: boolean = false;
   _loading_: boolean = false;
   selectedMessage: any[] = [];
@@ -96,7 +96,7 @@ export class TrashMessagesComponent implements OnInit {
   getMessages() {
     this._loading = true;
     this.messageList = [];
-    this.messageService.fetchAllFromTrash().subscribe(
+    this.messageService.fetchAllFromTrash('sms').subscribe(
       (res: any) => {
         this._loading = false;
         const { data } = res;
@@ -120,7 +120,7 @@ export class TrashMessagesComponent implements OnInit {
   }
   getMessageDetails(id: any) {
     if (id !== undefined) {
-      this.messageService.fetchAllFromTrash().subscribe((res) => {
+      this.messageService.fetchAllFromTrash(this.msgType).subscribe((res) => {
         const { data } = res;
         this.itemDetails = data.filter((x) => x.id == id);
         console.log(this.itemDetails);
@@ -129,11 +129,11 @@ export class TrashMessagesComponent implements OnInit {
   }
   queryAllMessage(query?: string) {
     if (query) {
-      this.messageType = query;
+      this.msgType = query;
     }
     this._loading = true;
     this.messageList = [];
-    this.messageService.fetchAllFromTrash().subscribe(
+    this.messageService.fetchAllFromTrash(this.msgType).subscribe(
       (res: any) => {
         this._loading = false;
         const { data } = res;
@@ -154,7 +154,6 @@ export class TrashMessagesComponent implements OnInit {
     let filter = arr.map((x: any) => x.id);
     this.selectedMessage = filter;
   }
-
   pageChanged(event: PageEvent) {
     this.pageSize = event.pageSize;
     this.currentPage = event.pageIndex;

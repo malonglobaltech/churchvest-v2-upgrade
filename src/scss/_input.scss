@@ -71,6 +71,9 @@
       outline: none;
       border: 1px solid $dark-grey;
     }
+    &.is-invalid {
+      border: 1px solid #f44336 !important;
+    }
   }
   .select {
     background: url("/assets/img/svg/dropdown-arrow.svg") 95% center no-repeat !important;
