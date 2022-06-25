@@ -10,6 +10,7 @@ import {
   concatColumnString,
   printElement,
 } from 'src/app/shared/_helperFunctions';
+import { saveAs } from 'file-saver';
 
 @Component({
   selector: 'app-media',
@@ -19,6 +20,7 @@ import {
 export class MediaComponent implements OnInit {
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild('closebtn') closebtn: any;
+  @ViewChild('closebtn_') closebtn_: any;
   mediaList: any[] = [];
   pageSize: number = 50;
   currentPage = 0;
@@ -56,7 +58,7 @@ export class MediaComponent implements OnInit {
   }
 
   column = ['media title', 'media owner', 'type', 'date created', 'action'];
-  mediaTypeList = ['all', 'book', 'message', 'track'];
+  mediaTypeList = ['all', 'album', 'book', 'message', 'track'];
   isAllSelected() {
     let filtered = this.dataSource.data.filter((x) => x.role !== 'admin');
     const numSelected = this.selection.selected.length;
@@ -147,13 +149,12 @@ export class MediaComponent implements OnInit {
           const { data } = res;
           this.itemDetails = data.filter((x) => x.id == this.mediaId);
         },
-        (msg) => {
+        () => {
           this._loading_ = false;
         }
       );
     }
   }
-
   pageChanged(event: PageEvent) {
     this.pageSize = event.pageSize;
     this.currentPage = event.pageIndex;
@@ -179,6 +180,26 @@ export class MediaComponent implements OnInit {
       this.closebtn._elementRef.nativeElement.click();
       this.getAllMedia();
     });
+  }
+  downloadMedia(id) {
+    this.isBusy = true;
+    this.mediaService.downloadMedia(id).subscribe(
+      (blob) => {
+        let FileSaver = require('file-saver');
+        let _blob = new File([blob], 'download', {
+          type: blob.type,
+        });
+        FileSaver.saveAs(_blob);
+        this.toastr.success('Media downloaded', 'Success');
+        this.isBusy = false;
+        this.closebtn_._elementRef.nativeElement.click();
+      },
+      (err) => {
+        this.isBusy = false;
+        this.toastr.info("Opps... Can't find file to download", 'Message');
+        this.toastr.error(err, 'Message');
+      }
+    );
   }
   exportToExcel(): void {
     const edata: Array<any> = [];

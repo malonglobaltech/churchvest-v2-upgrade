@@ -5,18 +5,7 @@
       <mat-icon class="me-2">add</mat-icon> Add New Media
     </button>
   </div>
-  <div
-    class="d-flex justify-content-center align-items-center my-3 empty-state"
-    *ngIf="!_loading && (!mediaList || mediaList.length === 0)"
-  >
-    <span class="txt-grey txt-md"
-      >No record found! Please create a record.</span
-    >
-  </div>
-  <ng-container *ngIf="_loading">
-    <app-loading-roller></app-loading-roller>
-  </ng-container>
-  <div class="w-500 display" [ngClass]="{ pending: mediaList.length == 0 }">
+  <div class="w-500 display" [ngClass]="{ pending: _loading }">
     <div class="input">
       <mat-select
         class="select"
@@ -35,6 +24,18 @@
       </mat-select>
     </div>
   </div>
+  <div
+    class="d-flex justify-content-center align-items-center my-3 empty-state"
+    *ngIf="!_loading && (!mediaList || mediaList.length === 0)"
+  >
+    <span class="txt-grey txt-md"
+      >No record found! Please create a record.</span
+    >
+  </div>
+  <ng-container *ngIf="_loading">
+    <app-loading-roller></app-loading-roller>
+  </ng-container>
+
   <div
     class="overflow--wrap _visible"
     [ngClass]="{ hide: mediaList.length == 0 }"
@@ -291,12 +292,25 @@
                     </span></label
                   >
                 </div>
+                <div class="mb3">
+                  <span
+                    class="d-flex justify-content-center align-items-center tag purple cursor"
+                    (click)="downloadMedia(itemDetails[0].id)"
+                    >Download {{ itemDetails[0].title }}
+                    <mat-spinner *ngIf="isBusy" class="ms-2"></mat-spinner
+                  ></span>
+                </div>
               </div>
             </div>
           </ng-container>
         </div>
         <div class="modal-footer d-flex justify-content-end px-4">
-          <button type="button" mat-stroked-button data-bs-dismiss="modal">
+          <button
+            type="button"
+            mat-stroked-button
+            data-bs-dismiss="modal"
+            #closebtn_
+          >
             Dismiss
           </button>
         </div>

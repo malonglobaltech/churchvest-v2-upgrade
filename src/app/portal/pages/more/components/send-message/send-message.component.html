@@ -411,14 +411,16 @@
             </div>
             <div class="grid grid--1fr--1fr grid-gap-15 mb-3">
               <div class="input">
-                <label
-                  >Message Subject
-                  <span class="f12 txt-grey">(Optional)</span></label
-                >
+                <label>Message Subject</label>
                 <input
                   type="text"
                   placeholder="Message subject"
                   formControlName="subject"
+                  [ngClass]="{
+                    'is-invalid':
+                      emailForm.controls['subject'].hasError('required') &&
+                      emailForm.controls['subject'].touched
+                  }"
                 />
               </div>
               <div class="input">

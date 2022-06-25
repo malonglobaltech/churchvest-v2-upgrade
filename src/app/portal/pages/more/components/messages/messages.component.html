@@ -25,18 +25,7 @@
       </mat-menu>
     </button>
   </div>
-  <div
-    class="d-flex justify-content-center align-items-center my-3 empty-state"
-    *ngIf="!_loading && (!messageList || messageList.length === 0)"
-  >
-    <span class="txt-grey txt-md"
-      >No record found! Please create a record.</span
-    >
-  </div>
-  <ng-container *ngIf="_loading">
-    <app-loading-roller></app-loading-roller>
-  </ng-container>
-  <div class="w-500 display" [ngClass]="{ pending: messageList.length == 0 }">
+  <div class="w-500 display" [ngClass]="{ pending: _loading }">
     <div class="input">
       <mat-select
         class="select"
@@ -55,6 +44,17 @@
       </mat-select>
     </div>
   </div>
+  <div
+    class="d-flex justify-content-center align-items-center my-3 empty-state"
+    *ngIf="!_loading && (!messageList || messageList.length === 0)"
+  >
+    <span class="txt-grey txt-md"
+      >No record found! Please create a record.</span
+    >
+  </div>
+  <ng-container *ngIf="_loading">
+    <app-loading-roller></app-loading-roller>
+  </ng-container>
   <div
     class="overflow--wrap _visible"
     [ngClass]="{ hide: messageList.length == 0 }"
@@ -116,7 +116,6 @@
               </button>
             </div>
           </div>
-
           <div
             class="animate animate__bounceIn"
             *ngIf="selection.selected.length !== 0"
@@ -204,7 +203,6 @@
                     >
                       View
                     </button>
-                    <button mat-menu-item>Edit</button>
                     <button
                       type="button"
                       mat-menu-item
@@ -245,7 +243,7 @@
                   </span>
                 </ng-container>
                 <ng-container *ngIf="receiverList[i].length == 0">
-                  <span class="d-flex justify-content-center">---</span>
+                  <span>---</span>
                 </ng-container>
               </td>
             </ng-container>
@@ -350,8 +348,29 @@
             <div class="details-panel">
               <mat-divider></mat-divider>
               <div class="details-wrap-list">
+                <div class="d-flex align-items-center justify-content-between">
+                  <div class="d-flex align-items-center">
+                    <span class="f12 me-2">From:</span
+                    ><span class="placeholder">{{ itemDetails[0].from }}</span>
+                  </div>
+                  <span
+                    class="tag"
+                    [ngClass]="{
+                      green: itemDetails[0].status == 1,
+                      red: itemDetails[0].status == 0,
+                      purple: itemDetails[0].status == null
+                    }"
+                    >{{
+                      itemDetails[0].status == 1
+                        ? "Delivered"
+                        : itemDetails[0].status == 0
+                        ? "Failed"
+                        : "Pending"
+                    }}</span
+                  >
+                </div>
                 <div class="d-flex align-items-center">
-                  <span>To</span>
+                  <span class="f12">To</span>
                   <button mat-icon-button [matMenuTriggerFor]="menu">
                     <mat-icon>arrow_drop_down</mat-icon>
                   </button>

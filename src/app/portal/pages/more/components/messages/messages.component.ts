@@ -198,6 +198,7 @@ export class MessagesComponent implements OnInit {
       }
     );
   }
+
   exportToExcel(): void {
     const edata: Array<any> = [];
 

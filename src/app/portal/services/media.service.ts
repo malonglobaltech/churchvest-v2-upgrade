@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
@@ -15,12 +15,18 @@ export class MediaService {
   }
 
   downloadMedia(id?: number): Observable<any> {
+    const token = localStorage.getItem('token');
     return this.http
-      .post<any>(
+      .post(
         ` ${
           environment.managementbaseUrl
         }/${this.authService.getChurchSlug()}/media/${id}/download`,
-        id
+        {
+          headers: new HttpHeaders({
+            Authorization: `Bearer ${token}`,
+          }),
+        },
+        { responseType: 'blob' }
       )
       .pipe(
         map((status) => status),
