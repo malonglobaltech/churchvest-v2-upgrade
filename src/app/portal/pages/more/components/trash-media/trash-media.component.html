@@ -11,7 +11,7 @@
   <div class="w-500 display" [ngClass]="{ pending: _loading }">
     <div class="input">
       <mat-select
-        class="select"
+        class="select capitalize"
         placeholder="Query media type"
         [ngModel]="mediaType"
         (selectionChange)="handleFilterChange($event)"

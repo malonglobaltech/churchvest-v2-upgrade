@@ -97,11 +97,11 @@ export class MediaComponent implements OnInit {
     this.mediaService.fetchAllMedia().subscribe(
       (res: any) => {
         this._loading = false;
-        const { data } = res;
+        const { data, meta } = res;
         this.mediaList = data;
         this.dataSource = new MatTableDataSource(this.mediaList);
-        this.paginator.pageIndex = this.currentPage;
-        this.paginator.length = this.mediaList.length;
+        this.paginator.pageIndex = meta.current_page - 1;
+        this.paginator.length = meta.total;
       },
       (errors) => {
         if (errors) {
