@@ -21,6 +21,7 @@ export class FellowshipComponent implements OnInit {
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild('closebtn') closebtn: any;
   fellowshipList: any[] = [];
+  trashList: any[] = [];
   pageSize: number = 50;
   currentPage = 0;
   isBusy: boolean = false;
@@ -51,6 +52,7 @@ export class FellowshipComponent implements OnInit {
 
   ngOnInit(): void {
     this.getFellowships();
+    this.getFromTrash();
 
     this.displayedColumns = this.column;
   }
@@ -113,6 +115,14 @@ export class FellowshipComponent implements OnInit {
           }
         }
       );
+  }
+  getFromTrash() {
+    this.peopleService
+      .fetchAllFromTrash('fellowships', this.currentPage + 1, this.pageSize)
+      .subscribe((res: any) => {
+        const { data } = res;
+        this.trashList = data;
+      });
   }
   getSelectedFellowship(arr: any) {
     let filter = arr.map((x: any) => x.id);

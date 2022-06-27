@@ -17,6 +17,7 @@ export class OverviewComponent implements OnInit {
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild('closebtn') closebtn: any;
   departmentList: any[] = [];
+  trashList: any[] = [];
   isBusy: boolean = false;
   _loading: boolean = false;
   _loading_: boolean = false;
@@ -45,6 +46,7 @@ export class OverviewComponent implements OnInit {
 
   ngOnInit(): void {
     this._getAllDepartments();
+    this.getFromTrash();
     this.displayedColumns = this.column;
   }
 
@@ -107,6 +109,14 @@ export class OverviewComponent implements OnInit {
           }
         }
       );
+  }
+  getFromTrash() {
+    this.deptService
+      .fetchAllFromTrash(this.currentPage + 1, this.pageSize)
+      .subscribe((res: any) => {
+        const { data } = res;
+        this.trashList = data;
+      });
   }
   getSelectedDepartment(arr: any) {
     let filter = arr.map((x: any) => x.id);

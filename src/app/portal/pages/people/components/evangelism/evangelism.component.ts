@@ -21,6 +21,7 @@ export class EvangelismComponent implements OnInit {
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild('closebtn') closebtn: any;
   evangelismList: any[] = [];
+  trashList: any[] = [];
   pageSize: number = 50;
   currentPage = 0;
   isBusy: boolean = false;
@@ -50,6 +51,7 @@ export class EvangelismComponent implements OnInit {
 
   ngOnInit(): void {
     this.getEvangelism();
+    this.getFromTrash();
 
     this.displayedColumns = this.column;
   }
@@ -105,6 +107,14 @@ export class EvangelismComponent implements OnInit {
           }
         }
       );
+  }
+  getFromTrash() {
+    this.peopleService
+      .fetchAllFromTrash('evangelism', this.currentPage + 1, this.pageSize)
+      .subscribe((res: any) => {
+        const { data } = res;
+        this.trashList = data;
+      });
   }
   getSelectedEvangelism(arr: any) {
     let filter = arr.map((x: any) => x.id);

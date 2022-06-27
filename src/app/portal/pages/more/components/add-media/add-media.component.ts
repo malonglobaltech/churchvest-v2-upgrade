@@ -89,11 +89,7 @@ export class AddMediaComponent implements OnInit {
   get updatedFormValue(): any {
     return this.updateConvertForm.getRawValue();
   }
-  // get resourceValues(): FormArray {
-  //   console.log();
 
-  //   return this.selectedControl();
-  // }
   selectedControl() {
     let response: any;
     if (this._selectedMediaType == 'message') {
@@ -210,8 +206,10 @@ export class AddMediaComponent implements OnInit {
       formData.append('resources[]', file);
     }
 
-    for (let file of this.mediaForm.get('resources').value) {
-      formData.append('tracks[]', file);
+    if (this.mediaForm.get('type').value == 'album') {
+      for (let file of this.mediaForm.get('resources').value) {
+        formData.append('tracks[]', file);
+      }
     }
     formData.append('upload', this.mediaForm.get('upload').value);
     formData.append('track', this.mediaForm.get('upload').value);

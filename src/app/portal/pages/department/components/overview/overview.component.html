@@ -10,11 +10,18 @@
   </div>
   <div
     *ngIf="!_loading && (!departmentList || departmentList.length === 0)"
-    class="d-flex justify-content-center align-items-center my-3 empty-state"
+    class="d-flex flex-column justify-content-center align-items-center my-3 empty-state"
   >
-    <span class="txt-grey txt-md">
+    <span class="txt-grey txt-md mb-2">
       No department found! Please create a department
     </span>
+    <button
+      routerLink="/portal/department/all/trash"
+      mat-stroked-button
+      *ngIf="trashList && trashList.length !== 0"
+    >
+      Recover from trash
+    </button>
   </div>
   <ng-container *ngIf="_loading">
     <app-loading-roller></app-loading-roller>
