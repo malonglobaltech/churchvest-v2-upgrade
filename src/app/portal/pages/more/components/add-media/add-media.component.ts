@@ -89,19 +89,21 @@ export class AddMediaComponent implements OnInit {
   get updatedFormValue(): any {
     return this.updateConvertForm.getRawValue();
   }
-  get resourceValues(): FormArray {
-    return this.selectedControl();
-  }
+  // get resourceValues(): FormArray {
+  //   console.log();
+
+  //   return this.selectedControl();
+  // }
   selectedControl() {
     let response: any;
     if (this._selectedMediaType == 'message') {
-      response = this.mediaForm.get('resources') as FormArray;
+      return this.mediaForm.get('resources') as FormArray;
     }
     if (this._selectedMediaType == 'album') {
-      response = this.mediaForm.get('tracks') as FormArray;
+      return this.mediaForm.get('tracks') as FormArray;
     }
     if (this._selectedMediaType == 'track') {
-      response = this.mediaForm.get('resources') as FormArray;
+      return this.mediaForm.get('resources') as FormArray;
     }
     return response;
   }
@@ -147,7 +149,10 @@ export class AddMediaComponent implements OnInit {
   addToFormControl(val: any, identifier?: any) {
     switch (val !== null && identifier) {
       case (identifier = 'file'):
-        return this.resourceValues.push(new FormControl(val));
+        var fileUpload = this.mediaForm.get('resources') as FormArray;
+
+        fileUpload.push(new FormControl(val));
+        return fileUpload;
       case (identifier = 'doc'):
         var docUpload = this.mediaForm.get('upload') as FormControl;
         return docUpload.setValue(val);
@@ -184,20 +189,7 @@ export class AddMediaComponent implements OnInit {
         });
     }
   }
-  setFormControlElement() {
-    this.updateConvertForm = this.fb.group({
-      name: [
-        `${this.itemDetails.user.first_name} ${this.itemDetails.user.last_name}`,
-        Validators.required,
-      ],
-
-      email: [this.itemDetails.user.email],
-      phone: [this.itemDetails.user.phone],
-      service_day: [this.itemDetails.details.convert?.service_day],
-
-      event_id: [],
-    });
-  }
+  setFormControlElement() {}
   onSubmit() {
     this.isBusy = true;
 
@@ -229,6 +221,8 @@ export class AddMediaComponent implements OnInit {
       this.mediaForm.get('display_mobile').value
     );
     formData.append('comment', this.mediaForm.get('comment').value);
+    console.log(this.mediaForm.value);
+
     if (this.mediaForm.valid) {
       //Make api call here...
       this.mediaService.uploadMedia(formData).subscribe(

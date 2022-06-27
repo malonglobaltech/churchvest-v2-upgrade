@@ -112,6 +112,7 @@ export class TrashMediaComponent implements OnInit {
       this.mediaService.fetchAllFromTrash(this.mediaType).subscribe((res) => {
         const { data } = res;
         this.itemDetails = data.filter((x) => x.id == id);
+        console.log(this.itemDetails);
       });
     }
   }
@@ -157,14 +158,17 @@ export class TrashMediaComponent implements OnInit {
       };
     }
     if (this._isSingleSelected) {
+      console.log('true', this.itemDetails[0].id);
+
       payload = {
-        media_id: [this.itemDetails.id],
+        media_id: [parseInt(this.itemDetails[0].id)],
       };
     }
     this.mediaService.deleteFromTrash(payload).subscribe(
       ({ message }) => {
         this.isBusy = false;
         this.toastr.success(message, 'Success');
+        this.selection.clear();
         this.closebtn._elementRef.nativeElement.click();
         this.getMedia();
       },

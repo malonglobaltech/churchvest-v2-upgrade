@@ -79,7 +79,7 @@ export class GroupsService {
     return this.http
       .get<any>(
         environment.managementbaseUrl +
-          `${this.authService.getChurchSlug()}/departments/trash/${id}`
+          `/${this.authService.getChurchSlug()}/departments/trash/${id}`
       )
       .pipe(catchError(handleError));
   }

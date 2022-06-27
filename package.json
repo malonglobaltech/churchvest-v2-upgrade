@@ -25,6 +25,7 @@
     "@ngx-loading-bar/core": "^6.0.2",
     "@ngx-loading-bar/router": "^6.0.2",
     "@popperjs/core": "^2.11.5",
+    "angular4-paystack": "^3.0.2",
     "animate.css": "^4.1.1",
     "aws-sdk": "^2.1145.0",
     "bootstrap": "^5.1.3",

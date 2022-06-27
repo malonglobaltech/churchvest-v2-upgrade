@@ -176,6 +176,7 @@ export class TrashMessagesComponent implements OnInit {
       ({ message }) => {
         this.isBusy = false;
         this.toastr.success(message, 'Success');
+        this.selection.clear();
         this.closebtn._elementRef.nativeElement.click();
         this.getMessages();
       },

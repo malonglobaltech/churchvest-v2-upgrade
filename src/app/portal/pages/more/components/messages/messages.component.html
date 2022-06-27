@@ -433,17 +433,15 @@
               *ngIf="itemDetails && !_loading_ && _isSingleSelected"
             >
               <p>
-                Are you sure you want to move this message
+                Are you sure you want to delete this message?
                 <span>{{
-                  itemDetails[0].subject ? itemDetails[0].subject : "---"
+                  itemDetails[0]?.subject ? itemDetails[0]?.subject : "---"
                 }}</span>
-                to trash? This will be temporarily deleted, and can be recovered
-                from trash
               </p>
             </div>
             <div class="center" *ngIf="_isAllSelected">
               <p>
-                Are you sure you want to move
+                Are you sure you want to delete this message
                 <span>
                   {{ selectedMessage.length }}
                   {{ selectedMessage.length == 1 ? "item" : "items" }}
@@ -455,7 +453,7 @@
           </div>
         </div>
         <div class="modal-footer d-flex justify-content-end align-items-center">
-          <button mat-flat-button class="me-3" (click)="trash()">
+          <button mat-flat-button class="me-3" (click)="confirmDelete()">
             Move <mat-spinner *ngIf="isBusy"> </mat-spinner>
           </button>
           <button mat-stroked-button data-bs-dismiss="modal" #closebtn>

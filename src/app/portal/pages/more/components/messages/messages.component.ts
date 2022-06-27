@@ -166,7 +166,7 @@ export class MessagesComponent implements OnInit {
     this.messageService.deleteMessage(payload).subscribe(({ message }) => {
       this.isBusy = false;
       this.toastr.success(message, 'Success');
-      // this.router.navigate(['/portal/more/media/trash']);
+      this.selection.clear();
       this.closebtn._elementRef.nativeElement.click();
       this.getAllMessages();
     });

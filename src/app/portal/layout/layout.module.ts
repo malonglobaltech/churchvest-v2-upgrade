@@ -7,7 +7,9 @@ import { HeaderComponent } from './components/header/header.component';
 import { SidenavComponent } from './components/sidenav/sidenav.component';
 import { AngularMaterialModule } from 'src/app/shared/angular-material.module';
 import { GuidedTourModule, GuidedTourService } from 'ngx-guided-tour';
-
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { ToastrModule, ToastrService } from 'ngx-toastr';
+import { Angular4PaystackModule } from 'angular4-paystack';
 @NgModule({
   declarations: [LayoutComponent, HeaderComponent, SidenavComponent],
   imports: [
@@ -15,9 +17,15 @@ import { GuidedTourModule, GuidedTourService } from 'ngx-guided-tour';
     LayoutRoutingModule,
     AngularMaterialModule,
     GuidedTourModule,
+    FormsModule,
+    ReactiveFormsModule,
+    ToastrModule.forRoot({
+      positionClass: 'toast-top-right',
+    }),
+    Angular4PaystackModule.forRoot('pk_test_xxxxxxxxxxxxxxxxxxxxxxxx'),
   ],
   exports: [LayoutComponent],
-  providers: [GuidedTourService],
+  providers: [GuidedTourService, { provide: ToastrService }],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
 export class LayoutModule {}

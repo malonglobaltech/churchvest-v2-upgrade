@@ -1,14 +1,25 @@
 <header>
   <div class="d-flex justify-content-between align-items-center">
     <div class="title-sm">
-      Hello, {{ profileName.first_name }} 👋
+      Hello, {{ userData.first_name }} 👋
       <label class="f12 txt-grey"
         >Today is <span>{{ currentDate | date: "fullDate" }}</span></label
       >
     </div>
     <div class="panel d-flex align-items-center justify-content-between">
-      <span class="f12 txt-grey">Available SMS Units: 0</span>
-      <button mat-flat-button class="b-flat-sm">Buy Sms</button>
+      <span class="f12 txt-grey d-flex align-items-center"
+        >Available SMS Units:
+        <mat-spinner *ngIf="_loading_"> </mat-spinner>
+        <ng-container *ngIf="!_loading_">{{ data }}</ng-container>
+      </span>
+      <button
+        mat-flat-button
+        class="b-flat-sm"
+        data-bs-toggle="modal"
+        data-bs-target="#top-up"
+      >
+        Buy Sms
+      </button>
     </div>
     &nbsp;
     <div class="d-flex align-items-center">
@@ -19,8 +30,8 @@
         <img src="assets/img/svg/notification.svg" alt="bell-icon" />
       </div>
       <div class="d-block">
-        <label class="profile-name" *ngIf="profileName"
-          >{{ profileName.first_name }} {{ profileName.last_name }}</label
+        <label class="profile-name" *ngIf="userData"
+          >{{ userData.first_name }} {{ userData.last_name }}</label
         >
       </div>
       <div class="dropdown cursor" [matMenuTriggerFor]="menu">
@@ -41,3 +52,74 @@
     </div>
   </div>
 </header>
+<div class="modal fade" id="top-up" role="dialog">
+  <div class="modal-dialog modal-wrapper">
+    <div class="modal-content-wrap">
+      <div class="modal-body">
+        <div
+          class="header-top d-flex justify-content-between align-items-center px-4 py-3"
+        >
+          <div class="title">Top Up SMS</div>
+          <mat-icon
+            class="cursor"
+            data-bs-dismiss="modal"
+            class="cursor"
+            #closebtn
+            >close</mat-icon
+          >
+        </div>
+        <div class="container">
+          <form class="pb-3">
+            <div class="form-wrap w--400">
+              <div class="grid grid--1fr--1fr grid-gap-15">
+                <div class="input">
+                  <label>Amount</label>
+                  <input
+                    type="number"
+                    placeholder="Enter amount"
+                    (input)="amountChange($event)"
+                  />
+                </div>
+                <div class="input">
+                  <label>Units</label>
+                  <input
+                    type="number"
+                    placeholder="Unit"
+                    name="unit"
+                    [ngModel]="_unit"
+                    disabled
+                  />
+                </div>
+              </div>
+              <div class="d-flex align-items-center mt-2">
+                <button
+                  angular4-paystack
+                  [key]="paystack_key"
+                  type="submit"
+                  mat-flat-button
+                  [email]="userData?.email"
+                  [amount]="_amount * 100"
+                  [disabled]="!_isValid"
+                  [ref]="reference"
+                  (paymentInit)="paymentInit()"
+                  (onClose)="paymentCancel()"
+                  (callback)="paymentDone($event)"
+                  style="width: 100%"
+                >
+                  Buy
+                  <mat-spinner *ngIf="isBusy_"></mat-spinner>
+                </button>
+              </div>
+              <div class="mt-4">
+                <p class="txt-grey" style="font-size: 12px">
+                  NB: The minimum amount you can pay is ₦500
+                  <span style="display: block">1Unit = ₦4</span>
+                </p>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
