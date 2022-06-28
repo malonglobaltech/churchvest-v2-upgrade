@@ -219,7 +219,6 @@ export class AddMediaComponent implements OnInit {
       this.mediaForm.get('display_mobile').value
     );
     formData.append('comment', this.mediaForm.get('comment').value);
-    console.log(this.mediaForm.value);
 
     if (this.mediaForm.valid) {
       //Make api call here...

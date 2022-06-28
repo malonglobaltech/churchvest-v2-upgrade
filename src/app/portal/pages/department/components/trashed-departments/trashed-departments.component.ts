@@ -144,7 +144,7 @@ export class TrashedDepartmentsComponent implements OnInit {
     this.deptService.deleteFromTrash(payload).subscribe(
       ({ message }) => {
         this.isBusy = false;
-
+        this.selection.clear();
         this.toastr.success(message, 'Success');
         this.closebtn._elementRef.nativeElement.click();
         this.getDepartment();

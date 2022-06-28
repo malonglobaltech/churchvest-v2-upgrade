@@ -145,6 +145,7 @@ export class TrashedFellowshipsComponent implements OnInit {
     this.peopleService.deleteFromTrash(payload, 'fellowships').subscribe(
       ({ message }) => {
         this.isBusy = false;
+        this.selection.clear();
         this.toastr.success(message, 'Success');
         this.closebtn._elementRef.nativeElement.click();
         this.getFellowships();

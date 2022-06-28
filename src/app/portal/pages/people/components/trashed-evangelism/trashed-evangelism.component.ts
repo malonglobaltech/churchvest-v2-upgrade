@@ -138,6 +138,7 @@ export class TrashedEvangelismComponent implements OnInit {
     this.peopleService.deleteFromTrash(payload, 'evangelism').subscribe(
       ({ message }) => {
         this.isBusy = false;
+        this.selection.clear();
         this.toastr.success(message, 'Success');
         this.closebtn._elementRef.nativeElement.click();
         this.getEvangelism();
