@@ -328,10 +328,10 @@ export class SendMessageComponent implements OnInit {
       (res: any) => {
         const { data } = res;
         if (query == 'first_timer') {
-          this._firstTimerList = data.filter((x: any) => x.details.convert);
+          this._firstTimerList = data;
         }
         if (query == 'convert') {
-          this._convertList = data.filter((x: any) => x.details.convert);
+          this._convertList = data;
         }
       },
       (errors) => {
@@ -425,11 +425,10 @@ export class SendMessageComponent implements OnInit {
         .subscribe((res) => {
           const { data } = res;
           this.itemDetails = data;
-          this.setFormControlElement();
         });
     }
   }
-  setFormControlElement() {}
+
   getCell(identifier) {
     let res: any;
     switch (identifier) {
@@ -495,7 +494,7 @@ export class SendMessageComponent implements OnInit {
       formData.append('to[first_timers][]', item);
     }
     for (let item of this.smsForm.get('new_convert').value) {
-      formData.append('to[new_convert][]', item);
+      formData.append('to[convert][]', item);
     }
 
     if (this.smsForm.valid) {

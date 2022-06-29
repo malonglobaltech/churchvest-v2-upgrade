@@ -211,6 +211,11 @@ export class AddMediaComponent implements OnInit {
         formData.append('tracks[]', file);
       }
     }
+    if (this.mediaForm.get('type').value == 'message') {
+      for (let file of this.mediaForm.get('resources').value) {
+        formData.append('messages[]', file);
+      }
+    }
     formData.append('upload', this.mediaForm.get('upload').value);
     formData.append('track', this.mediaForm.get('upload').value);
     formData.append('display_web', this.mediaForm.get('display_web').value);

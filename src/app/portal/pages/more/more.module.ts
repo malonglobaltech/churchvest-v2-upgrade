@@ -17,6 +17,8 @@ import { DocumentUploadModule } from '../../components/document-upload/document-
 import { SendMessageComponent } from './components/send-message/send-message.component';
 import { TrashMessagesComponent } from './components/trash-messages/trash-messages.component';
 import { TrashMediaComponent } from './components/trash-media/trash-media.component';
+import { OnlineGivingComponent } from './components/online-giving/online-giving.component';
+import { AddGivingComponent } from './components/add-giving/add-giving.component';
 
 @NgModule({
   declarations: [
@@ -27,6 +29,8 @@ import { TrashMediaComponent } from './components/trash-media/trash-media.compon
     SendMessageComponent,
     TrashMessagesComponent,
     TrashMediaComponent,
+    OnlineGivingComponent,
+    AddGivingComponent,
   ],
   imports: [
     CommonModule,

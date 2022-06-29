@@ -98,11 +98,10 @@ export class FirstTimersComponent implements OnInit {
       (res: any) => {
         this._loading = false;
         const { data, meta } = res;
-
-        this.firstTimerList = data.filter((x: any) => x.details.convert);
+        this.firstTimerList = data;
         this.dataSource = new MatTableDataSource(this.firstTimerList);
-        this.paginator.pageIndex = this.currentPage;
-        this.paginator.length = this.firstTimerList.length;
+        this.paginator.pageIndex = meta.currentPage - 1;
+        this.paginator.length = meta.total;
       },
       (errors) => {
         if (errors) {
