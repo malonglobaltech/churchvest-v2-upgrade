@@ -46,30 +46,30 @@ export class MediaService {
         catchError(handleError)
       );
   }
-  fetchAllMedia(): Observable<any> {
+  fetchAllMedia(page?: number): Observable<any> {
     return this.http
       .get<any>(
         `${
           environment.managementbaseUrl
-        }/${this.authService.getChurchSlug()}/media/all`
+        }/${this.authService.getChurchSlug()}/media/all?page=${page}`
       )
       .pipe(catchError(handleError));
   }
-  queryMediaWithType(type?: string): Observable<any> {
+  queryMediaWithType(type?: string, page?: number): Observable<any> {
     return this.http
       .get<any>(
         `${
           environment.managementbaseUrl
-        }/${this.authService.getChurchSlug()}/media/${type}`
+        }/${this.authService.getChurchSlug()}/media/${type}?page=${page}`
       )
       .pipe(catchError(handleError));
   }
-  fetchAllFromTrash(query?: string): Observable<any> {
+  fetchAllFromTrash(query?: string, page?: number): Observable<any> {
     return this.http
       .get<any>(
         `${
           environment.managementbaseUrl
-        }/${this.authService.getChurchSlug()}/media/trash/${query}`
+        }/${this.authService.getChurchSlug()}/media/trash/${query}?page=${page}`
       )
       .pipe(catchError(handleError));
   }

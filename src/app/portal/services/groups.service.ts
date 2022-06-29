@@ -40,12 +40,12 @@ export class GroupsService {
         catchError(handleError)
       );
   }
-  fetchAllGroups(): Observable<any> {
+  fetchAllGroups(page?: number): Observable<any> {
     return this.http
       .get<any>(
         `${
           environment.managementbaseUrl
-        }/${this.authService.getChurchSlug()}/groups`
+        }/${this.authService.getChurchSlug()}/groups?page=${page}`
       )
       .pipe(catchError(handleError));
   }

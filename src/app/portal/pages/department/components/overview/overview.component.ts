@@ -91,28 +91,26 @@ export class OverviewComponent implements OnInit {
   _getAllDepartments() {
     this._loading = true;
     this.departmentList = [];
-    this.deptService
-      .getAllDepartment(this.currentPage + 1, this.pageSize)
-      .subscribe(
-        (res: any) => {
+    this.deptService.getAllDepartment(this.currentPage + 1).subscribe(
+      (res: any) => {
+        this._loading = false;
+        const { data, meta } = res;
+        this.departmentList = data;
+        this.dataSource = new MatTableDataSource(this.departmentList);
+        this.paginator.pageIndex = this.currentPage;
+        this.paginator.length = meta.total;
+      },
+      (errors) => {
+        if (errors) {
           this._loading = false;
-          const { data, meta } = res;
-          this.departmentList = data;
-          this.dataSource = new MatTableDataSource(this.departmentList);
-          this.paginator.pageIndex = this.currentPage;
-          this.paginator.length = meta.total;
-        },
-        (errors) => {
-          if (errors) {
-            this._loading = false;
-            this.departmentList = [];
-          }
+          this.departmentList = [];
         }
-      );
+      }
+    );
   }
   getFromTrash() {
     this.deptService
-      .fetchAllFromTrash(this.currentPage + 1, this.pageSize)
+      .fetchAllFromTrash(this.currentPage + 1)
       .subscribe((res: any) => {
         const { data } = res;
         this.trashList = data;

@@ -97,7 +97,98 @@
     <ng-container *ngIf="queryString == 'edit' && !itemDetails">
       <app-loading-roller></app-loading-roller>
     </ng-container>
-    <ng-container *ngIf="queryString == 'edit' && itemDetails"> </ng-container>
+    <ng-container *ngIf="queryString == 'edit' && itemDetails">
+      <aside>
+        <form [formGroup]="updateGivingForm" (ngSubmit)="onUpdate()">
+          <div class="form-wrap">
+            <div class="title mb-2">Update Giving</div>
+            <mat-divider></mat-divider>
+            <div class="grid grid--1fr--1fr grid-gap-15 mt-4 mb-3">
+              <div class="input">
+                <label>Type of Giving</label>
+                <input
+                  type="text"
+                  placeholder="Enter giving type"
+                  formControlName="type"
+                  [ngClass]="{
+                    'is-invalid':
+                      updateGivingForm.controls['type'].hasError('required') &&
+                      updateGivingForm.controls['type'].touched
+                  }"
+                />
+              </div>
+              <div class="input">
+                <label>Currency </label>
+                <mat-select
+                  class="select"
+                  placeholder="Select currency"
+                  formControlName="currency"
+                >
+                  <mat-option disabled="" selected="" value=""
+                    >Select currency</mat-option
+                  >
+                  <mat-option value="NGN">NGN</mat-option>
+                  <mat-option value="Dollars">Dollars</mat-option>
+                </mat-select>
+              </div>
+            </div>
+            <div class="grid grid--1fr--1fr grid-gap-15 mt-4 mb-3">
+              <div class="input">
+                <label>Amount</label>
+                <input
+                  type="number"
+                  placeholder="Enter amount"
+                  formControlName="amount"
+                />
+              </div>
+              <div class="input">
+                <label>Receiving Account </label>
+                <mat-select
+                  class="select"
+                  placeholder="Select receiving account"
+                  formControlName="account_id"
+                >
+                  <mat-option disabled="" selected="" value=""
+                    >Select receiving account</mat-option
+                  >
+                  <mat-option
+                    *ngFor="let item of accountList"
+                    [value]="item.id"
+                    >{{ item.name }}</mat-option
+                  >
+                  <mat-option
+                    data-bs-toggle="modal"
+                    data-bs-target="#addAccount"
+                    >Create New</mat-option
+                  >
+                </mat-select>
+              </div>
+            </div>
+            <div class="grid grid--repeat--three grid-gap-15 mb-4">
+              <mat-checkbox formControlName="request_name"
+                >Request Giver's Fullname</mat-checkbox
+              >
+              <mat-checkbox formControlName="request_email"
+                >Request Giver's Email address</mat-checkbox
+              >
+              <mat-checkbox formControlName="request_phone"
+                >Request Giver's Phone number</mat-checkbox
+              >
+            </div>
+            <div class="d-flex align-items-center">
+              <button
+                type="submit"
+                mat-flat-button
+                class="me-4"
+                [disabled]="!updateGivingForm.valid"
+              >
+                Update <mat-spinner *ngIf="isBusy"> </mat-spinner>
+              </button>
+            </div>
+          </div>
+        </form>
+      </aside>
+    </ng-container>
   </section>
 </ng-container>
 

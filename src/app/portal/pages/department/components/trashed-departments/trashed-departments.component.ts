@@ -88,24 +88,22 @@ export class TrashedDepartmentsComponent implements OnInit {
   getDepartment() {
     this._loading = true;
     this.departmentList = [];
-    this.deptService
-      .fetchAllFromTrash(this.currentPage + 1, this.pageSize)
-      .subscribe(
-        (res: any) => {
+    this.deptService.fetchAllFromTrash(this.currentPage + 1).subscribe(
+      (res: any) => {
+        this._loading = false;
+        const { data, meta } = res;
+        this.departmentList = data;
+        this.dataSource = new MatTableDataSource(this.departmentList);
+        this.paginator.pageIndex = this.currentPage;
+        this.paginator.length = meta.total;
+      },
+      (errors) => {
+        if (errors) {
           this._loading = false;
-          const { data, meta } = res;
-          this.departmentList = data;
-          this.dataSource = new MatTableDataSource(this.departmentList);
-          this.paginator.pageIndex = this.currentPage;
-          this.paginator.length = meta.total;
-        },
-        (errors) => {
-          if (errors) {
-            this._loading = false;
-            this.departmentList = [];
-          }
+          this.departmentList = [];
         }
-      );
+      }
+    );
   }
   gotoBack() {
     this._location.back();

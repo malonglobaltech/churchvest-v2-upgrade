@@ -120,19 +120,17 @@ export class AddNewConvertsComponent implements OnInit {
 
   getMembers() {
     this._memberList = [];
-    this.peopleServ
-      .fetchAll('members', this.currentPage + 1, this.pageSize)
-      .subscribe(
-        (res: any) => {
-          const { data } = res;
-          this._memberList = data;
-        },
-        (errors) => {
-          if (errors) {
-            this._memberList = [];
-          }
+    this.peopleServ.fetchAll('members', this.currentPage + 1).subscribe(
+      (res: any) => {
+        const { data } = res;
+        this._memberList = data;
+      },
+      (errors) => {
+        if (errors) {
+          this._memberList = [];
         }
-      );
+      }
+    );
   }
   getRoutes() {
     this.route.queryParams

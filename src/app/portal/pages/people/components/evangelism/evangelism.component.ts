@@ -89,28 +89,26 @@ export class EvangelismComponent implements OnInit {
   getEvangelism() {
     this._loading = true;
     this.evangelismList = [];
-    this.peopleService
-      .fetchAll('evangelism', this.currentPage + 1, this.pageSize)
-      .subscribe(
-        (res: any) => {
+    this.peopleService.fetchAll('evangelism', this.currentPage + 1).subscribe(
+      (res: any) => {
+        this._loading = false;
+        const { data, meta } = res;
+        this.evangelismList = data;
+        this.dataSource = new MatTableDataSource(this.evangelismList);
+        this.paginator.pageIndex = this.currentPage;
+        this.paginator.length = meta.total;
+      },
+      (errors) => {
+        if (errors) {
           this._loading = false;
-          const { data, meta } = res;
-          this.evangelismList = data;
-          this.dataSource = new MatTableDataSource(this.evangelismList);
-          this.paginator.pageIndex = this.currentPage;
-          this.paginator.length = meta.total;
-        },
-        (errors) => {
-          if (errors) {
-            this._loading = false;
-            this.evangelismList = [];
-          }
+          this.evangelismList = [];
         }
-      );
+      }
+    );
   }
   getFromTrash() {
     this.peopleService
-      .fetchAllFromTrash('evangelism', this.currentPage + 1, this.pageSize)
+      .fetchAllFromTrash('evangelism', this.currentPage + 1)
       .subscribe((res: any) => {
         const { data } = res;
         this.trashList = data;

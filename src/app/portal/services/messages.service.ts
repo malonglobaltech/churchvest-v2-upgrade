@@ -39,21 +39,21 @@ export class MessagesService {
         catchError(handleError)
       );
   }
-  fetchAllMessages(type?: string): Observable<any> {
+  fetchAllMessages(type?: string, page?: number): Observable<any> {
     return this.http
       .get<any>(
         `${
           environment.managementbaseUrl
-        }/${this.authService.getChurchSlug()}/messages/${type}`
+        }/${this.authService.getChurchSlug()}/messages/${type}?page=${page}`
       )
       .pipe(catchError(handleError));
   }
-  fetchAllFromTrash(query?: string): Observable<any> {
+  fetchAllFromTrash(page?: number): Observable<any> {
     return this.http
       .get<any>(
         `${
           environment.managementbaseUrl
-        }/${this.authService.getChurchSlug()}/messages/${query}/trash`
+        }/${this.authService.getChurchSlug()}/messages/trash/messages_trashed?page=${page}`
       )
       .pipe(catchError(handleError));
   }

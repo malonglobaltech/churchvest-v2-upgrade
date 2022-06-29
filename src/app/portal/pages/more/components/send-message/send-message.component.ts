@@ -308,19 +308,17 @@ export class SendMessageComponent implements OnInit {
   }
   getRegularMembers() {
     this._memberList = [];
-    this.peopleServ
-      .fetchAll('members', this.currentPage + 1, this.pageSize)
-      .subscribe(
-        (res: any) => {
-          const { data } = res;
-          this._memberList = data;
-        },
-        (errors) => {
-          if (errors) {
-            this._memberList = [];
-          }
+    this.peopleServ.fetchAll('members', this.currentPage + 1).subscribe(
+      (res: any) => {
+        const { data } = res;
+        this._memberList = data;
+      },
+      (errors) => {
+        if (errors) {
+          this._memberList = [];
         }
-      );
+      }
+    );
   }
   getAllByStatus(query?: string) {
     this._firstTimerList = [];
@@ -344,39 +342,35 @@ export class SendMessageComponent implements OnInit {
   }
   getFellowships() {
     this._fellowshipList = [];
-    this.peopleServ
-      .fetchAll('fellowships', this.currentPage, this.pageSize)
-      .subscribe(
-        (res: any) => {
-          const { data } = res;
-          this._fellowshipList = data;
-        },
-        (errors) => {
-          if (errors) {
-            this._fellowshipList = [];
-          }
+    this.peopleServ.fetchAll('fellowships', this.currentPage + 1).subscribe(
+      (res: any) => {
+        const { data } = res;
+        this._fellowshipList = data;
+      },
+      (errors) => {
+        if (errors) {
+          this._fellowshipList = [];
         }
-      );
+      }
+    );
   }
   getEvangelism() {
     this._evangelismList = [];
-    this.peopleServ
-      .fetchAll('evangelism', this.currentPage, this.pageSize)
-      .subscribe(
-        (res: any) => {
-          const { data } = res;
-          this._evangelismList = data;
-        },
-        (errors) => {
-          if (errors) {
-            this._evangelismList = [];
-          }
+    this.peopleServ.fetchAll('evangelism', this.currentPage + 1).subscribe(
+      (res: any) => {
+        const { data } = res;
+        this._evangelismList = data;
+      },
+      (errors) => {
+        if (errors) {
+          this._evangelismList = [];
         }
-      );
+      }
+    );
   }
   getAlGroups() {
     this._groupList = [];
-    this.groupService.fetchAllGroups().subscribe(
+    this.groupService.fetchAllGroups(this.currentPage + 1).subscribe(
       (res: any) => {
         const { data } = res;
         this._groupList = data;

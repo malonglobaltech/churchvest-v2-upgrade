@@ -96,7 +96,7 @@ export class TrashMessagesComponent implements OnInit {
   getMessages() {
     this._loading = true;
     this.messageList = [];
-    this.messageService.fetchAllFromTrash('sms').subscribe(
+    this.messageService.fetchAllFromTrash(this.currentPage + 1).subscribe(
       (res: any) => {
         this._loading = false;
         const { data } = res;
@@ -120,7 +120,7 @@ export class TrashMessagesComponent implements OnInit {
   }
   getMessageDetails(id: any) {
     if (id !== undefined) {
-      this.messageService.fetchAllFromTrash(this.msgType).subscribe((res) => {
+      this.messageService.fetchAllFromTrash().subscribe((res) => {
         const { data } = res;
         this.itemDetails = data.filter((x) => x.id == id);
         console.log(this.itemDetails);
@@ -133,7 +133,7 @@ export class TrashMessagesComponent implements OnInit {
     }
     this._loading = true;
     this.messageList = [];
-    this.messageService.fetchAllFromTrash(this.msgType).subscribe(
+    this.messageService.fetchAllFromTrash(this.currentPage + 1).subscribe(
       (res: any) => {
         this._loading = false;
         const { data } = res;

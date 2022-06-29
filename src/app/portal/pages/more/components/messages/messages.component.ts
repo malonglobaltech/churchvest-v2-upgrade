@@ -108,24 +108,26 @@ export class MessagesComponent implements OnInit {
     }
     this._loading = true;
     this.messageList = [];
-    this.messageService.fetchAllMessages(this.messageType).subscribe(
-      (res: any) => {
-        this._loading = false;
-        const { data, meta } = res;
-        this.messageList = data;
-        this.dataSource = new MatTableDataSource(this.messageList);
-        this.receiverList = this.messageList.map((x) => x.to);
-        this.attachmentList = this.messageList.map((x) => x.attachments);
-        this.paginator.pageIndex = this.currentPage;
-        this.paginator.length = meta.total;
-      },
-      (errors) => {
-        if (errors) {
+    this.messageService
+      .fetchAllMessages(this.messageType, this.currentPage + 1)
+      .subscribe(
+        (res: any) => {
           this._loading = false;
-          this.messageList = [];
+          const { data, meta } = res;
+          this.messageList = data;
+          this.dataSource = new MatTableDataSource(this.messageList);
+          this.receiverList = this.messageList.map((x) => x.to);
+          this.attachmentList = this.messageList.map((x) => x.attachments);
+          this.paginator.pageIndex = this.currentPage;
+          this.paginator.length = meta.total;
+        },
+        (errors) => {
+          if (errors) {
+            this._loading = false;
+            this.messageList = [];
+          }
         }
-      }
-    );
+      );
   }
 
   getSelectedMessageItem(arr: any) {

@@ -94,7 +94,7 @@ export class MediaComponent implements OnInit {
     }
     this._loading = true;
     this.mediaList = [];
-    this.mediaService.fetchAllMedia().subscribe(
+    this.mediaService.fetchAllMedia(this.currentPage + 1).subscribe(
       (res: any) => {
         this._loading = false;
         const { data, meta } = res;
@@ -117,7 +117,7 @@ export class MediaComponent implements OnInit {
     }
     this._loading = true;
     this.mediaList = [];
-    this.mediaService.queryMediaWithType(query).subscribe(
+    this.mediaService.queryMediaWithType(query, this.currentPage + 1).subscribe(
       (res: any) => {
         this._loading = false;
         const { data } = res;

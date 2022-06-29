@@ -38,6 +38,7 @@ export class AddGivingComponent implements OnInit {
   currentPage = 0;
   accountName: string = '';
   bankObj: any;
+  _id: any;
 
   compareFunc = compareObjects;
   _maxLengthCheck = maxLengthCheck;
@@ -100,6 +101,7 @@ export class AddGivingComponent implements OnInit {
       (res: any) => {
         const { data } = res;
         this.accountList = data;
+        this.setFormControlElement();
       },
       (errors) => {
         if (errors) {
@@ -134,56 +136,36 @@ export class AddGivingComponent implements OnInit {
     }
   }
   blurHandler() {
-    let payload = {
-      bank_code: this.bankObj.code,
-      number: this.newAccountForm.get('number').value,
-    };
-    this.givingService.resolveAccount(payload).subscribe(
-      (res: any) => {
-        const { data, message } = res;
-        this.accountName = data;
-        console.log(data);
-        this.newAccountForm.controls['name'].setValue(data.account_name);
-        this.toastr.info(message, 'Message', {
-          timeOut: 3000,
-        });
-      },
-      (errors) => {
-        this.toastr.error(
-          'Could not resolve account name. Check parameters or try again.',
-          'Message',
-          {
+    let payload: any;
+    if (this.bankObj) {
+      payload = {
+        bank_code: this.bankObj.code,
+        number: this.newAccountForm.get('number').value,
+      };
+
+      this.givingService.resolveAccount(payload).subscribe(
+        (res: any) => {
+          const { data, message } = res;
+          this.accountName = data;
+          this.newAccountForm.controls['name'].setValue(data.account_name);
+          this.toastr.info(message, 'Message', {
             timeOut: 3000,
-          }
-        );
-      }
-    );
-    // try {
-    //   if (
-    //     accountData.accountNumber !== "" &&
-    //     accountData.accountNumber.length === 10 &&
-    //     bankCode !== ""
-    //   ) {
-    //     setApiLoader(true);
-    //     const response = await validateAccountNumber();
-    //     const { data } = await handleRecipient();
-    //     setRecipientCode(data.recipient_code);
-    //     setBtnEnabled(false);
-    //     setAccountResolved(true);
-    //     setBeneficiaryInfo(response.data.data);
-    //     setApiLoader(false);
-    //   }
-    //   return Promise.resolve();
-    // } catch (err) {
-    //   setBtnEnabled(true);
-    //   setAccountResolved(false);
-    //   setApiLoader(false);
-    //   return Promise.reject();
-    // }
+          });
+        },
+        (errors) => {
+          this.toastr.error(
+            'Could not resolve account name. Check parameters or try again.',
+            'Message',
+            {
+              timeOut: 3000,
+            }
+          );
+        }
+      );
+    }
   }
   addAccount() {
     this.isBusy_ = true;
-
     this.newAccountForm.patchValue({
       bank_code: this.bankObj.code,
       bank_slug: this.bankObj.slug,
@@ -214,7 +196,19 @@ export class AddGivingComponent implements OnInit {
       );
     }
   }
-  setFormControlElement() {}
+  setFormControlElement() {
+    if (this.queryString == 'edit' && this._id !== undefined) {
+      this.updateGivingForm = this.fb.group({
+        type: [this.itemDetails?.type, Validators.required],
+        account_id: [this.itemDetails?.accound_id],
+        currency: [this.itemDetails?.currency],
+        amount: [this.itemDetails?.amount],
+        request_name: [this.itemDetails?.request_name],
+        request_email: [this.itemDetails?.request_email],
+        request_phone: [this.itemDetails?.request_phone],
+      });
+    }
+  }
   onSubmit() {
     this.isBusy = true;
     if (this.givingForm.invalid) {
@@ -241,6 +235,36 @@ export class AddGivingComponent implements OnInit {
           this.givingForm.reset();
         }
       );
+    }
+  }
+  onUpdate() {
+    this.isBusy = true;
+    if (this.updateGivingForm.invalid) {
+      this.isBusy = false;
+      return;
+    }
+    if (this.updateGivingForm.valid) {
+      //Make api call here...
+      this.givingService
+        .updateGivings(this.updatedGivingValue, this._id)
+        .subscribe(
+          ({ message, data }) => {
+            this.toastr.success(message, 'Message');
+            this.isBusy = false;
+            this.updateGivingForm.reset();
+            this.router.navigate(['/portal/more/online-giving']);
+          },
+          (error) => {
+            this.isBusy = false;
+            this.toastr.error(error, 'Message', {
+              timeOut: 3000,
+            });
+          },
+          () => {
+            this.isBusy = false;
+            this.updateGivingForm.reset();
+          }
+        );
     }
   }
 }

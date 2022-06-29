@@ -84,7 +84,7 @@ export class TrashedMembersComponent implements OnInit {
     this._loading = true;
     this.memberList = [];
     this.peopleService
-      .fetchAllFromTrash('members', this.currentPage + 1, this.pageSize)
+      .fetchAllFromTrash('members', this.currentPage + 1)
       .subscribe(
         (res: any) => {
           this._loading = false;

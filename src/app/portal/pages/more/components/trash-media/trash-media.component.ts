@@ -122,22 +122,24 @@ export class TrashMediaComponent implements OnInit {
     }
     this._loading = true;
     this.mediaList = [];
-    this.mediaService.fetchAllFromTrash(this.mediaType).subscribe(
-      (res: any) => {
-        this._loading = false;
-        const { data } = res;
-        this.mediaList = data;
-        this.dataSource = new MatTableDataSource(this.mediaList);
-        this.paginator.pageIndex = this.currentPage;
-        this.paginator.length = this.mediaList.length;
-      },
-      (errors) => {
-        if (errors) {
+    this.mediaService
+      .fetchAllFromTrash(this.mediaType, this.currentPage + 1)
+      .subscribe(
+        (res: any) => {
           this._loading = false;
-          this.mediaList = [];
+          const { data } = res;
+          this.mediaList = data;
+          this.dataSource = new MatTableDataSource(this.mediaList);
+          this.paginator.pageIndex = this.currentPage;
+          this.paginator.length = this.mediaList.length;
+        },
+        (errors) => {
+          if (errors) {
+            this._loading = false;
+            this.mediaList = [];
+          }
         }
-      }
-    );
+      );
   }
   getSelectedMedia(arr: any) {
     let filter = arr.map((x: any) => x.id);

@@ -137,19 +137,17 @@ export class AddMembersComponent implements OnInit {
     }
   }
   getMembers() {
-    this.peopleServ
-      .fetchAll('members', this.currentPage + 1, this.pageSize)
-      .subscribe(
-        (res: any) => {
-          const { data, meta } = res;
-          this.memberList = data;
-        },
-        (errors) => {
-          if (errors) {
-            this.memberList = [];
-          }
+    this.peopleServ.fetchAll('members', this.currentPage + 1).subscribe(
+      (res: any) => {
+        const { data, meta } = res;
+        this.memberList = data;
+      },
+      (errors) => {
+        if (errors) {
+          this.memberList = [];
         }
-      );
+      }
+    );
   }
   getRoutes() {
     this.route.queryParams

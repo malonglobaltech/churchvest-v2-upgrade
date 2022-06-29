@@ -87,24 +87,22 @@ export class MembersComponent implements OnInit {
   getMembers() {
     this._loading = true;
     this.memberList = [];
-    this.peopleService
-      .fetchAll('members', this.currentPage + 1, this.pageSize)
-      .subscribe(
-        (res: any) => {
+    this.peopleService.fetchAll('members', this.currentPage + 1).subscribe(
+      (res: any) => {
+        this._loading = false;
+        const { data, meta } = res;
+        this.memberList = data;
+        this.dataSource = new MatTableDataSource(this.memberList);
+        this.paginator.pageIndex = this.currentPage;
+        this.paginator.length = meta.total;
+      },
+      (errors) => {
+        if (errors) {
           this._loading = false;
-          const { data, meta } = res;
-          this.memberList = data;
-          this.dataSource = new MatTableDataSource(this.memberList);
-          this.paginator.pageIndex = this.currentPage;
-          this.paginator.length = meta.total;
-        },
-        (errors) => {
-          if (errors) {
-            this._loading = false;
-            this.memberList = [];
-          }
+          this.memberList = [];
         }
-      );
+      }
+    );
   }
   getSelectedMemberItem(arr: any) {
     let filter = arr.map((x: any) => x.id);
