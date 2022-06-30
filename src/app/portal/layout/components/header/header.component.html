@@ -38,7 +38,11 @@
         <div class="d-flex align-items-center">
           <div
             class="avatar"
-            style="background: url('assets/img/png/avatar.png')"
+            [ngStyle]="{
+              background: profileImg[0]?.profile
+                ? 'url(' + profileImg[0]?.profile + ')'
+                : 'url(' + 'assets/img/png/avatar.png' + ')'
+            }"
           ></div>
           <mat-icon>expand_more</mat-icon>
         </div>

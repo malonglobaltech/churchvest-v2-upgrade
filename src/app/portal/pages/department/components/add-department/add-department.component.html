@@ -260,8 +260,9 @@
                   formControlName="name"
                   [ngClass]="{
                     'is-invalid':
-                      departmentForm.controls['name'].hasError('required') &&
-                      departmentForm.controls['name'].touched
+                      updateDepartmentForm.controls['name'].hasError(
+                        'required'
+                      ) && updateDepartmentForm.controls['name'].touched
                   }"
                 />
               </div>
@@ -289,16 +290,11 @@
             <div class="grid grid--1fr--1fr grid-gap-15 mt-4 mb-3">
               <div class="input">
                 <label>Start Time</label>
-                <input
-                  type="time"
-                  formControlName="start_time"
-                  #txtDate
-                  step="2"
-                />
+                <input type="time" formControlName="start_time" #txtDate />
               </div>
               <div class="input">
                 <label>End Time</label>
-                <input type="time" formControlName="end_time" step="2" />
+                <input type="time" formControlName="end_time" />
                 <small class="text-danger" *ngIf="validate"
                   >End date must be greater than start date</small
                 >
@@ -312,9 +308,9 @@
                   formControlName="date_formed"
                   [ngClass]="{
                     'is-invalid':
-                      departmentForm.controls['date_formed'].hasError(
+                      updateDepartmentForm.controls['date_formed'].hasError(
                         'required'
-                      ) && departmentForm.controls['date_formed'].touched
+                      ) && updateDepartmentForm.controls['date_formed'].touched
                   }"
                 />
               </div>

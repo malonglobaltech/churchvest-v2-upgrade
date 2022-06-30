@@ -239,31 +239,32 @@ export class AddFirstTimersComponent implements OnInit {
   }
   onUpdate() {
     this.isBusy = true;
-
     if (this.updateForm.invalid) {
       this.isBusy = false;
       return;
     }
     if (this.updateForm.valid) {
       //Make api call here...
-      this.peopleServ.addPersonalInfo(this.updatedFormValue).subscribe(
-        ({ message, data }) => {
-          this.toastr.success(message, 'Message');
-          this.isBusy = false;
-          this.updateForm.reset();
-          this.router.navigate(['/portal/people/first-timers']);
-        },
-        (error) => {
-          this.isBusy = false;
-          this.toastr.error(error, 'Message', {
-            timeOut: 3000,
-          });
-        },
-        () => {
-          this.isBusy = false;
-          this.updateForm.reset();
-        }
-      );
+      this.peopleServ
+        .updateFirstTimer(this.updatedFormValue, this._id)
+        .subscribe(
+          ({ message, data }) => {
+            this.toastr.success(message, 'Message');
+            this.isBusy = false;
+            this.updateForm.reset();
+            this.router.navigate(['/portal/people/first-timers']);
+          },
+          (error) => {
+            this.isBusy = false;
+            this.toastr.error(error, 'Message', {
+              timeOut: 3000,
+            });
+          },
+          () => {
+            this.isBusy = false;
+            this.updateForm.reset();
+          }
+        );
     }
   }
 }

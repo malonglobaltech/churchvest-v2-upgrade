@@ -236,7 +236,7 @@ export class PeopleService {
       .post<any>(
         ` ${
           environment.managementbaseUrl
-        }/${this.authService.getChurchSlug()}/people/members/first-first_timers/${id}/update`,
+        }/${this.authService.getChurchSlug()}/people/members/first_timers/${id}/update`,
         model
       )
       .pipe(

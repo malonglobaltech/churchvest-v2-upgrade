@@ -21,6 +21,7 @@ export class HeaderComponent implements OnInit {
   _isValid: boolean = false;
   reference: any;
   paystack_key: any;
+  profileImg: any;
 
   constructor(
     private authService: AuthService,
@@ -32,6 +33,9 @@ export class HeaderComponent implements OnInit {
   ngOnInit(): void {
     this.paystack_key = environment.paystack;
     this.userData = this.authService.getUserData();
+    this.profileImg = this.userData.memberships.filter(
+      (x) => x.id == this.userData.id
+    );
     this.getSmsBalance();
   }
   amountChange(event: any) {

@@ -97,7 +97,7 @@ export class AddDepartmentComponent implements OnInit {
   }
   get stripedObjValue() {
     if (this._memberList.length !== 0 && this._memberList !== null) {
-      return this.memberItems.slice(0, 5).map((x: any) => x.user.first_name);
+      return this.memberItems.slice(0, 5).map((x: any) => x?.user?.first_name);
     }
   }
   get startDateVal() {
@@ -187,8 +187,9 @@ export class AddDepartmentComponent implements OnInit {
         .subscribe((res) => {
           const { data } = res;
           this.itemDetails = data.filter((x) => x.id == this._departmentId);
-          if (this.itemDetails[0].members.length !== 0) {
-            this.filteredMembers = this.itemDetails[0].members.map(
+
+          if (this.itemDetails[0]?.members.length !== 0) {
+            this.filteredMembers = this.itemDetails[0]?.members.map(
               (x: any) => x.member
             );
             this.memberItems = this.filteredMembers;
@@ -201,25 +202,23 @@ export class AddDepartmentComponent implements OnInit {
     }
   }
   setFormControlElement() {
-    if (this.queryString == 'edit' && this._departmentId !== undefined) {
-      this.updateDepartmentForm = this.fb.group({
-        name: [this.itemDetails[0].name, Validators.required],
-        start_time: [this.itemDetails[0]?.start_time],
-        end_time: [this.itemDetails[0]?.end_time],
-        roles: this.fb.group({
-          leader: [this.itemDetails[0].roles?.leader?.member?.id],
-          assistant: [this.itemDetails[0].roles?.assistant?.member?.id],
-          secretary: [this.itemDetails[0].roles?.secretary?.member?.id],
-        }),
-        meeting_days: [this.itemDetails[0]?.meeting_days],
-        notify_periods: [this.itemDetails[0]?.notify_periods],
-        notify_unit: [this.itemDetails[0]?.notify_unit],
-        notify_channel: [this.itemDetails[0]?.notify_channel],
-        date_formed: [this.itemDetails[0]?.date_formed],
-        description: [this.itemDetails[0]?.description],
-        members_id: [this.filteredMembers],
-      });
-    }
+    this.updateDepartmentForm = this.fb.group({
+      name: [this.itemDetails[0]?.name, Validators.required],
+      start_time: [this.itemDetails[0]?.start_time],
+      end_time: [this.itemDetails[0]?.end_time],
+      roles: this.fb.group({
+        leader: [this.itemDetails[0]?.roles?.leader?.member?.id],
+        assistant: [this.itemDetails[0]?.roles?.assistant?.member?.id],
+        secretary: [this.itemDetails[0]?.roles?.secretary?.member?.id],
+      }),
+      meeting_days: [this.itemDetails[0]?.meeting_days],
+      notify_periods: [this.itemDetails[0]?.notify_periods],
+      notify_unit: [this.itemDetails[0]?.notify_unit],
+      notify_channel: [this.itemDetails[0]?.notify_channel],
+      date_formed: [this.itemDetails[0]?.date_formed],
+      description: [this.itemDetails[0]?.description],
+      members_id: [this.filteredMembers],
+    });
   }
   onSubmit() {
     this.isBusy = true;
