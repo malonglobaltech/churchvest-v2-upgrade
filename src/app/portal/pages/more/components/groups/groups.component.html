@@ -1,11 +1,8 @@
 <section>
   <div class="header d-flex align-items-center justify-content-between mb-4">
-    <div class="title">Online Giving</div>
-    <button
-      mat-stroked-button
-      routerLink="/portal/more/online-giving/add-giving"
-    >
-      <mat-icon>add</mat-icon> Add Giving
+    <div class="title">Groups</div>
+    <button mat-stroked-button routerLink="/portal/more/group/add-group">
+      <mat-icon>add</mat-icon> Add Group
     </button>
   </div>
   <div
@@ -16,7 +13,7 @@
       No record found! Please create a record
     </span>
     <button
-      routerLink="/portal/online-giving/all/trash"
+      routerLink="/portal/more/group/trash"
       mat-stroked-button
       *ngIf="trashList && trashList.length !== 0"
     >
@@ -93,12 +90,12 @@
             <button
               mat-stroked-button
               class="text-danger"
-              data-bs-target="modal"
-              data-bs-target="#move"
+              data-bs-toggle="modal"
+              data-bs-target="#move-item"
               (click)="
                 _isAllSelected = true;
                 _isSingleSelected = false;
-                getSelectedDepartment(selection.selected)
+                getSelectedItem(selection.selected)
               "
             >
               Trash
@@ -114,7 +111,7 @@
           <div>
             <button
               mat-button
-              routerLink="/portal/more/online-giving/trash"
+              routerLink="/portal/more/group/trash"
               class="btn--primary"
             >
               <mat-icon>restore_from_trash</mat-icon> View Trash
@@ -147,7 +144,7 @@
                   (change)="$event ? selection.toggle(element) : null"
                   [checked]="selection.isSelected(element)"
                 >
-                  <span>{{ element.type }}</span>
+                  <span>{{ element.name }}</span>
                 </mat-checkbox>
               </td>
             </ng-container>
@@ -164,13 +161,13 @@
                       mat-menu-item
                       data-bs-toggle="modal"
                       data-bs-target="#view-details"
-                      (click)="getDepartmentDetails(element.id)"
+                      (click)="getDetails(element.id)"
                     >
                       View
                     </button>
                     <button
                       mat-menu-item
-                      [routerLink]="['/portal/department/all/update']"
+                      [routerLink]="['/portal/more/group/update']"
                       [queryParams]="{
                         query: 'edit',
                         id: element.id
@@ -182,11 +179,11 @@
                       type="button"
                       mat-menu-item
                       data-bs-toggle="modal"
-                      data-bs-target="#move"
+                      data-bs-target="#move-item"
                       (click)="
                         _isSingleSelected = true;
                         _isAllSelected = false;
-                        getDepartmentDetails(element.id)
+                        getDetails(element.id)
                       "
                     >
                       Move to trash
@@ -196,17 +193,17 @@
               </td>
             </ng-container>
             <!-- Table Row Content -->
-            <ng-container *ngIf="disCol == 'currency'">
-              <td mat-cell *matCellDef="let element">
-                <span>{{ element.currency ? element.currency : "---" }} </span>
-              </td>
-            </ng-container>
-            <ng-container *ngIf="disCol == 'receiving account'">
+            <ng-container *ngIf="disCol == 'description'">
               <td mat-cell *matCellDef="let element">
                 <span
-                  >{{
-                    element["account"].name ? element["account"].name : "---"
-                  }}
+                  >{{ element.description ? element.description : "---" }}
+                </span>
+              </td>
+            </ng-container>
+            <ng-container *ngIf="disCol == 'member count'">
+              <td mat-cell *matCellDef="let element">
+                <span
+                  >{{ element.members ? element.members.length : "---" }}
                 </span>
               </td>
             </ng-container>
@@ -247,7 +244,7 @@
         <div
           class="header-top d-flex justify-content-between align-items-center px-4 py-3"
         >
-          <div class="title">Giving Details</div>
+          <div class="title">Group Details</div>
           <mat-icon data-bs-dismiss="modal" class="cursor">close</mat-icon>
         </div>
         <div class="container px-0">
@@ -260,67 +257,49 @@
               <div class="details-wrap-list">
                 <div class="grid grid--1fr--1fr mb-3">
                   <label
-                    >Name
+                    >Group Name
                     <span class="capitalize">
-                      {{ itemDetails?.name }}
+                      {{ itemDetails[0]?.name ? itemDetails[0]?.name : "---" }}
                     </span></label
                   >
                   <label
                     >Description
-                    <span class="">
-                      {{ itemDetails?.description }}
-                    </span></label
-                  >
-                </div>
-                <div class="grid grid--1fr--1fr mb-3">
-                  <label
-                    >Leader
-                    <span class="capitalize">
-                      {{ itemDetails?.roles?.leader?.member?.user?.first_name }}
-                      {{ itemDetails?.roles?.leader?.member?.user?.last_name }}
-                    </span></label
-                  >
-                  <label
-                    >Assitant
-                    <span class="">
+                    <span style="width: 250px">
                       {{
-                        itemDetails?.roles?.assistant?.member?.user?.first_name
-                      }}
-                      {{
-                        itemDetails?.roles?.assistant?.member?.user?.last_name
+                        itemDetails[0]?.description
+                          ? itemDetails[0]?.description
+                          : "---"
                       }}
                     </span></label
                   >
                 </div>
-                <div class="grid grid--1fr--1fr mb-3">
+                <div class="grid mb-3">
                   <label
-                    >Meeting day(s)
+                    >Group Leader
                     <span class="capitalize">
-                      {{ itemDetails?.meeting_days }}
-                      {{ !itemDetails?.meeting_days && "no meetings" }}
-                    </span></label
-                  >
-                  <label
-                    >Meeting time
-                    <span class="">
-                      {{ itemDetails?.start_time }} -
-                      {{ itemDetails?.end_time }}
-                    </span></label
-                  >
-                </div>
-                <div class="grid grid--1fr--1fr mb-3">
-                  <label>Date Formed <span> dateFormed </span> </label>
-                  <label
-                    >Comment
-                    <span style="width: 200px">
-                      {{ itemDetails?.comment }}
+                      {{
+                        itemDetails[0]?.roles?.leader
+                          ? itemDetails[0]?.roles.leader?.member?.user
+                              ?.first_name
+                          : "---"
+                      }}
+                      {{
+                        itemDetails[0]?.roles?.leader
+                          ? itemDetails[0]?.roles?.leader?.member.user
+                              ?.last_name
+                          : "---"
+                      }}
                     </span></label
                   >
                 </div>
+                <div class="title sm mb-2">Group Members</div>
                 <div class="grid grid--1fr--1fr grid-row-gap-15">
-                  <label *ngFor="">
+                  <label *ngFor="let item of itemDetails[0]?.members">
                     Member
-                    <span style="width: 250px"></span>
+                    <span style="width: 250px"
+                      >{{ item.member.user.first_name }}
+                      {{ item.member.user.last_name }}</span
+                    >
                   </label>
                 </div>
               </div>
@@ -336,7 +315,7 @@
     </div>
   </div>
 </div>
-<div class="modal fade" id="move" role="dialog">
+<div class="modal fade" id="move-item" role="dialog">
   <div class="modal-dialog modal-wrapper">
     <div class="modal-content-wrap">
       <div class="modal-body">
@@ -356,8 +335,8 @@
               *ngIf="itemDetails && !_loading_ && _isSingleSelected"
             >
               <p>
-                Are you sure you want to move this department
-                <span>{{ itemDetails.name }} </span>
+                Are you sure you want to move this group
+                <span>{{ itemDetails[0]?.name }} </span>
                 to trash? This will be temporarily deleted, and can be recovered
                 from trash
               </p>
@@ -365,7 +344,10 @@
             <div class="center" *ngIf="_isAllSelected">
               <p>
                 Are you sure you want to move
-                <span> ajnflkf nskdnksd </span>
+                <span>
+                  {{ selection.selected.length }}
+                  {{ selection.selected.length == 1 ? "item" : "items" }}
+                </span>
                 to trash? This will be temporarily deleted, and can be recovered
                 from trash
               </p>

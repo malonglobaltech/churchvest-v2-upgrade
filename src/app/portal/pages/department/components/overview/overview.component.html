@@ -93,7 +93,7 @@
             <button
               mat-stroked-button
               class="text-danger"
-              data-bs-target="modal"
+              data-bs-toggle="modal"
               data-bs-target="#move-department"
               (click)="
                 _isAllSelected = true;
@@ -405,7 +405,10 @@
             <div class="center" *ngIf="_isAllSelected">
               <p>
                 Are you sure you want to move
-                <span> ajnflkf nskdnksd </span>
+                <span>
+                  {{ selection.selected.length }}
+                  {{ selection.selected.length == 1 ? "item" : "items" }}</span
+                >
                 to trash? This will be temporarily deleted, and can be recovered
                 from trash
               </p>

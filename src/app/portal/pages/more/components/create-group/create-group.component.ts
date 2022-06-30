@@ -7,25 +7,20 @@ import {
   FormGroup,
   Validators,
 } from '@angular/forms';
-import {
-  compareObjects,
-  formatDate,
-  getCompletedStatus,
-  getDays,
-} from 'src/app/shared/_helperFunctions';
+import { compareObjects } from 'src/app/shared/_helperFunctions';
 import { PeopleService } from 'src/app/portal/services/people.service';
 import { ToastrService } from 'ngx-toastr';
 import { ActivatedRoute, Router } from '@angular/router';
 import { catchError, filter } from 'rxjs/operators';
 import { ObservableInput, throwError } from 'rxjs';
-import { DepartmentService } from 'src/app/portal/services/department.service';
+import { GroupsService } from 'src/app/portal/services/groups.service';
 
 @Component({
-  selector: 'app-add-departments',
-  templateUrl: './add-department.component.html',
-  styleUrls: ['./add-department.component.scss'],
+  selector: 'app-create-group',
+  templateUrl: './create-group.component.html',
+  styleUrls: ['./create-group.component.scss'],
 })
-export class AddDepartmentComponent implements OnInit {
+export class CreateGroupComponent implements OnInit {
   @ViewChild('membersAll') membersAll: any;
   @ViewChild('membersSelect') membersSelect: any;
   @ViewChild('txtDate') txtDate: any;
@@ -33,27 +28,21 @@ export class AddDepartmentComponent implements OnInit {
   isBusy: boolean = false;
   screen: number = 1;
   itemDetails: any;
-  evangelismList: any[] = [];
   _memberList: any[] = [];
   memberItems: any[] = [];
   filteredMembers: any[] = [];
-  _departmentId: any;
-  _files: any[] = [];
+  _groupId: any;
   fileData: any;
   pageSize: number = 50;
   currentPage = 0;
   validate: boolean = false;
   compareFunc = compareObjects;
-  _daysOfWeek = getDays;
-  notificationChannel: string[] = ['email', 'phone'];
-  notificationUnit: string[] = ['seconds', 'minutes', 'hours', 'week'];
-  notificationPeriod: number[] = [10, 20];
 
-  public departmentForm: FormGroup = new FormGroup({});
-  public updateDepartmentForm: FormGroup = new FormGroup({});
+  public groupForm: FormGroup = new FormGroup({});
+  public groupFormUpdate: FormGroup = new FormGroup({});
   constructor(
-    private peopleServ: PeopleService,
-    private deptService: DepartmentService,
+    private groupService: GroupsService,
+    private peopleService: PeopleService,
     private toastr: ToastrService,
     private _location: Location,
     private route: ActivatedRoute,
@@ -61,21 +50,15 @@ export class AddDepartmentComponent implements OnInit {
     private fb: FormBuilder,
     private renderer: Renderer2
   ) {
-    this.departmentForm = this.fb.group({
+    this.groupForm = this.fb.group({
       name: [null, Validators.required],
-      start_time: [null],
-      end_time: [null],
+      date_created: [null],
+      date_dissolved: [null],
       roles: this.fb.group({
         leader: [null, Validators.required],
-        assistant: [null],
-        secretary: [null],
       }),
-      meeting_days: [[]],
-      notify_periods: [[], Validators.required],
-      notify_unit: [null],
-      notify_channel: [null, Validators.required],
-      date_formed: [null, Validators.required],
       description: [null],
+      comment: [null],
       members_id: [[]],
     });
   }
@@ -89,29 +72,24 @@ export class AddDepartmentComponent implements OnInit {
     this._location.back();
   }
 
-  get departmentFormValue(): any {
-    return this.departmentForm.getRawValue();
+  get groupFormValue(): any {
+    return this.groupForm.getRawValue();
   }
   get updatedFormValue(): any {
-    return this.updateDepartmentForm.getRawValue();
+    return this.groupFormUpdate.getRawValue();
   }
   get stripedObjValue() {
     if (this._memberList.length !== 0 && this._memberList !== null) {
       return this.memberItems.slice(0, 5).map((x: any) => x.user.first_name);
     }
   }
-  get startDateVal() {
+  get dateCreatedValue() {
     if (this.queryString !== 'edit') {
-      return this.departmentForm.get('start_time').value;
+      return this.groupForm.get('date_created').value;
     }
-    return this.updateDepartmentForm.get('start_time').value;
+    return this.groupFormUpdate.get('date_created').value;
   }
-  get endDateVal() {
-    if (this.queryString !== 'edit') {
-      return this.departmentForm.get('end_time').value;
-    }
-    return this.updateDepartmentForm.get('end_time').value;
-  }
+
   toggleAllSelection(allSlc: any, slc: any) {
     if (allSlc.selected) {
       slc.options._results.map((item) => {
@@ -140,18 +118,10 @@ export class AddDepartmentComponent implements OnInit {
     let result = event.source._value.filter((t) => t);
     this.memberItems = result;
   }
-  onDateChange() {
-    var endDate = new Date(this.endDateVal);
-    var startDate = new Date(this.startDateVal);
-    if (endDate.getTime() < startDate.getTime()) {
-      this.validate = true;
-    } else {
-      this.validate = false;
-    }
-  }
+
   getMembers() {
     this._memberList = [];
-    this.peopleServ.fetchAll('members', this.currentPage + 1).subscribe(
+    this.peopleService.fetchAll('members', this.currentPage + 1).subscribe(
       (res: any) => {
         const { data } = res;
         this._memberList = data;
@@ -168,17 +138,17 @@ export class AddDepartmentComponent implements OnInit {
       .pipe(filter((params) => params.query))
       .subscribe((params) => {
         this.queryString = params.query;
-        this._departmentId = params.id;
-        this.getDepartmentDetails();
+        this._groupId = params.id;
+        this.getDetails();
       });
     if (this.queryString === '') {
-      this.router.navigate(['/portal/department/all']);
+      this.router.navigate(['/portal/more/group']);
     }
   }
-  getDepartmentDetails() {
-    if (this._departmentId !== undefined) {
-      this.deptService
-        .fetchAllDepartment()
+  getDetails() {
+    if (this._groupId !== undefined) {
+      this.groupService
+        .fetchAllGroups(this.currentPage + 1)
         .pipe(
           catchError((err: any): ObservableInput<any> => {
             return throwError(err);
@@ -186,7 +156,7 @@ export class AddDepartmentComponent implements OnInit {
         )
         .subscribe((res) => {
           const { data } = res;
-          this.itemDetails = data.filter((x) => x.id == this._departmentId);
+          this.itemDetails = data.filter((x) => x.id == this._groupId);
           if (this.itemDetails[0].members.length !== 0) {
             this.filteredMembers = this.itemDetails[0].members.map(
               (x: any) => x.member
@@ -201,22 +171,16 @@ export class AddDepartmentComponent implements OnInit {
     }
   }
   setFormControlElement() {
-    if (this.queryString == 'edit' && this._departmentId !== undefined) {
-      this.updateDepartmentForm = this.fb.group({
-        name: [this.itemDetails[0].name, Validators.required],
-        start_time: [this.itemDetails[0]?.start_time],
-        end_time: [this.itemDetails[0]?.end_time],
+    if (this.queryString == 'edit' && this._groupId !== undefined) {
+      this.groupFormUpdate = this.fb.group({
+        name: [this.itemDetails[0]?.name, Validators.required],
+        date_created: [this.itemDetails[0]?.date_created, Validators.required],
+        date_dissolved: [this.itemDetails[0]?.date_created],
         roles: this.fb.group({
           leader: [this.itemDetails[0].roles?.leader?.member?.id],
-          assistant: [this.itemDetails[0].roles?.assistant?.member?.id],
-          secretary: [this.itemDetails[0].roles?.secretary?.member?.id],
         }),
-        meeting_days: [this.itemDetails[0]?.meeting_days],
-        notify_periods: [this.itemDetails[0]?.notify_periods],
-        notify_unit: [this.itemDetails[0]?.notify_unit],
-        notify_channel: [this.itemDetails[0]?.notify_channel],
-        date_formed: [this.itemDetails[0]?.date_formed],
         description: [this.itemDetails[0]?.description],
+        comment: [this.itemDetails[0]?.comment],
         members_id: [this.filteredMembers],
       });
     }
@@ -224,27 +188,26 @@ export class AddDepartmentComponent implements OnInit {
   onSubmit() {
     this.isBusy = true;
     let ids: any;
-    if (this.departmentForm.controls['members_id'].value !== null) {
-      ids = this.departmentForm.controls['members_id'].value
+    if (this.groupForm.controls['members_id'].value !== null) {
+      ids = this.groupForm.controls['members_id'].value
         .filter((x: any) => x !== 0)
         .map((a: any) => a.id);
     }
-    this.departmentForm.patchValue({
+    this.groupForm.patchValue({
       members_id: ids,
     });
 
-    if (this.departmentForm.invalid) {
+    if (this.groupForm.invalid) {
       this.isBusy = false;
       return;
     }
-    if (this.departmentForm.valid) {
+    if (this.groupForm.valid) {
       //Make api call here...
-      this.deptService.addDepartment(this.departmentFormValue).subscribe(
+      this.groupService.addGroup(this.groupFormValue).subscribe(
         ({ message, data }) => {
-          this._departmentId = data.id;
           this.toastr.success(message, 'Message');
-          this.router.navigate(['/portal/department/all']);
-          this.departmentForm.reset();
+          this.router.navigate(['/portal/more/group']);
+          this.groupForm.reset();
           this.isBusy = false;
         },
         (error) => {
@@ -255,7 +218,7 @@ export class AddDepartmentComponent implements OnInit {
         },
         () => {
           this.isBusy = false;
-          this.departmentForm.reset();
+          this.groupForm.reset();
         }
       );
     }
@@ -263,28 +226,28 @@ export class AddDepartmentComponent implements OnInit {
   onUpdate() {
     this.isBusy = true;
     let ids: any;
-    if (this.updateDepartmentForm.controls['members_id'].value !== null) {
-      ids = this.updateDepartmentForm.controls['members_id'].value
+    if (this.groupFormUpdate.controls['members_id'].value !== null) {
+      ids = this.groupFormUpdate.controls['members_id'].value
         .filter((x: any) => x !== 0)
         .map((a: any) => a.id);
     }
-    this.updateDepartmentForm.patchValue({
+    this.groupFormUpdate.patchValue({
       members_id: ids,
     });
-    if (this.updateDepartmentForm.invalid) {
+    if (this.groupFormUpdate.invalid) {
       this.isBusy = false;
       return;
     }
-    if (this.updateDepartmentForm.valid) {
+    if (this.groupFormUpdate.valid) {
       //Make api call here...
-      this.deptService
-        .updateDepartment(this.updatedFormValue, this._departmentId)
+      this.groupService
+        .updateGroup(this.updatedFormValue, this._groupId)
         .subscribe(
           ({ message, data }) => {
             this.toastr.success(message, 'Message');
             this.isBusy = false;
-            this.departmentForm.reset();
-            this.router.navigate(['/portal/department/all']);
+            this.groupFormUpdate.reset();
+            this.router.navigate(['/portal/more/group']);
           },
           (error) => {
             this.isBusy = false;
@@ -294,7 +257,7 @@ export class AddDepartmentComponent implements OnInit {
           },
           () => {
             this.isBusy = false;
-            this.departmentForm.reset();
+            this.groupFormUpdate.reset();
           }
         );
     }

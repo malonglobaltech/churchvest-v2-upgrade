@@ -9,27 +9,25 @@ import {
   printElement,
 } from 'src/app/shared/_helperFunctions';
 import { Router } from '@angular/router';
-import { MediaService } from 'src/app/portal/services/media.service';
+import { GroupsService } from 'src/app/portal/services/groups.service';
 
 @Component({
-  selector: 'app-trash-media',
-  templateUrl: './trash-media.component.html',
-  styleUrls: ['./trash-media.component.scss'],
+  selector: 'app-trashed-group',
+  templateUrl: './trashed-group.component.html',
+  styleUrls: ['./trashed-group.component.scss'],
 })
-export class TrashMediaComponent implements OnInit {
+export class TrashedGroupComponent implements OnInit {
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild('closebtn') closebtn: any;
   @ViewChild('closebtn_') closebtn_: any;
-  mediaList: any[] = [];
+  itemList: any[] = [];
   pageSize: number = 20;
   currentPage = 0;
   isBusy: boolean = false;
   itemDetails: any;
-  mediaType: string = 'album';
   _loading: boolean = false;
   _loading_: boolean = false;
-  searchMedia: any;
-  selectedMedia: any[] = [];
+  selectedItem: any[] = [];
   _isAllSelected: boolean = false;
   _isSingleSelected: boolean = false;
   _printElement = printElement;
@@ -39,22 +37,21 @@ export class TrashMediaComponent implements OnInit {
   public displayedColumns: string[];
 
   constructor(
-    private mediaService: MediaService,
+    private groupService: GroupsService,
     private toastr: ToastrService,
     private router: Router,
     private _location: Location
   ) {}
 
   ngOnInit(): void {
-    this.getMedia();
+    this.getDepartment();
     this.displayedColumns = this.column;
   }
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;
   }
 
-  column = ['media title', 'media owner', 'type', 'date created', 'action'];
-  mediaTypeList = ['all', 'album', 'book', 'message', 'track'];
+  column = ['group name', 'description', 'member count', 'action'];
 
   isAllSelected() {
     const numSelected = this.selection.selected.length;
@@ -69,9 +66,7 @@ export class TrashMediaComponent implements OnInit {
 
     this.selection.select(...this.dataSource.data);
   }
-  handleFilterChange(val: any) {
-    this.queryAllMedia(val.value);
-  }
+
   checkboxLabel(row?: any): string {
     if (!row) {
       return `${this.isAllSelected() ? 'deselect' : 'select'} all`;
@@ -84,97 +79,73 @@ export class TrashMediaComponent implements OnInit {
     const filterValue = (event.target as HTMLInputElement).value;
     this.dataSource.filter = filterValue.trim().toLowerCase();
   }
-  getMedia() {
+  getDepartment() {
     this._loading = true;
-    this.mediaList = [];
-    this.mediaService
-      .fetchAllFromTrash(this.mediaType, this.currentPage + 1)
-      .subscribe(
-        (res: any) => {
+    this.itemList = [];
+    this.groupService.fetchAllFromTrash(this.currentPage + 1).subscribe(
+      (res: any) => {
+        this._loading = false;
+        const { data, meta } = res;
+        this.itemList = data;
+        this.dataSource = new MatTableDataSource(this.itemList);
+        this.paginator.pageIndex = this.currentPage;
+        this.paginator.length = this.itemList.length;
+      },
+      (errors) => {
+        if (errors) {
           this._loading = false;
-          const { data } = res;
-          this.mediaList = data;
-          this.dataSource = new MatTableDataSource(this.mediaList);
-          this.paginator.pageIndex = this.currentPage;
-          this.paginator.length = this.mediaList.length;
-        },
-        (errors) => {
-          if (errors) {
-            this._loading = false;
-            this.mediaList = [];
-          }
+          this.itemList = [];
         }
-      );
+      }
+    );
   }
   gotoBack() {
     this._location.back();
   }
-  getMediaDetails(id: any) {
+  getDetails(id: any) {
+    this._loading_ = true;
     if (id !== undefined) {
-      this.mediaService.fetchAllFromTrash(this.mediaType).subscribe((res) => {
-        const { data } = res;
-        this.itemDetails = data.filter((x) => x.id == id);
-        console.log(this.itemDetails);
-      });
-    }
-  }
-  queryAllMedia(query?: string) {
-    if (query) {
-      this.mediaType = query;
-    }
-    this._loading = true;
-    this.mediaList = [];
-    this.mediaService
-      .fetchAllFromTrash(this.mediaType, this.currentPage + 1)
-      .subscribe(
-        (res: any) => {
-          this._loading = false;
+      this.groupService.fetchAllGroups(this.currentPage + 1).subscribe(
+        (res) => {
+          this._loading_ = false;
           const { data } = res;
-          this.mediaList = data;
-          this.dataSource = new MatTableDataSource(this.mediaList);
-          this.paginator.pageIndex = this.currentPage;
-          this.paginator.length = this.mediaList.length;
+          this.itemDetails = data.filter((x) => x.id == id);
         },
-        (errors) => {
-          if (errors) {
-            this._loading = false;
-            this.mediaList = [];
-          }
+        (msg) => {
+          this._loading_ = false;
         }
       );
+    }
   }
-  getSelectedMedia(arr: any) {
+  getSelectedItem(arr: any) {
     let filter = arr.map((x: any) => x.id);
-    this.selectedMedia = filter;
+    this.selectedItem = filter;
   }
-
   pageChanged(event: PageEvent) {
     this.pageSize = event.pageSize;
     this.currentPage = event.pageIndex;
-    this.getMedia();
+    this.getDepartment();
   }
   confirmDelete() {
     this.isBusy = true;
     let payload: any;
     if (this._isAllSelected) {
       payload = {
-        media_id: this.selectedMedia,
+        groups_id: this.selectedItem,
       };
     }
     if (this._isSingleSelected) {
-      console.log('true', this.itemDetails[0].id);
-
       payload = {
-        media_id: [parseInt(this.itemDetails[0].id)],
+        groups_id: [this.itemDetails[0].id],
       };
     }
-    this.mediaService.deleteFromTrash(payload).subscribe(
+    this.groupService.deleteFromTrash(payload).subscribe(
       ({ message }) => {
         this.isBusy = false;
-        this.toastr.success(message, 'Success');
         this.selection.clear();
+        this.toastr.success(message, 'Success');
         this.closebtn._elementRef.nativeElement.click();
-        this.getMedia();
+        this.getDepartment();
       },
       (msg) => {
         this.isBusy = false;
@@ -187,22 +158,22 @@ export class TrashMediaComponent implements OnInit {
     let payload: any;
     if (this._isAllSelected) {
       payload = {
-        media_id: this.selectedMedia,
+        groups_id: this.selectedItem,
       };
     }
     if (this._isSingleSelected) {
       payload = {
-        media_id: [this.itemDetails[0].id],
+        groups_id: [this.itemDetails[0].id],
       };
     }
 
-    this.mediaService.restore(payload).subscribe(
+    this.groupService.restore(payload).subscribe(
       ({ message }) => {
         this.isBusy = false;
         this.toastr.success(message, 'Success');
-        this.router.navigate(['/portal/more/media']);
+        this.router.navigate(['/portal/more/group']);
         this.closebtn_._elementRef.nativeElement.click();
-        this.getMedia();
+        this.getDepartment();
       },
       (msg) => {
         this.isBusy = false;

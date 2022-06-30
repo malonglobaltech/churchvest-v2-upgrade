@@ -49,12 +49,12 @@ export class GroupsService {
       )
       .pipe(catchError(handleError));
   }
-  fetchAllFromTrash(pageNumber?: number, pageSize?: number): Observable<any> {
+  fetchAllFromTrash(pageNumber?: number): Observable<any> {
     return this.http
       .get<any>(
         `${
           environment.managementbaseUrl
-        }/${this.authService.getChurchSlug()}/departments/trash/departments_trashed/?page=${pageNumber}&size=${pageSize}`
+        }/${this.authService.getChurchSlug()}/groups/trash?page=${pageNumber}`
       )
       .pipe(catchError(handleError));
   }
