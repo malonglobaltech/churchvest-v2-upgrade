@@ -7,6 +7,7 @@ import { Location } from '@angular/common';
 import {
   concatColumnString,
   printElement,
+  truncateString,
 } from 'src/app/shared/_helperFunctions';
 import { Router } from '@angular/router';
 import { MessagesService } from 'src/app/portal/services/messages.service';
@@ -23,7 +24,7 @@ export class TrashMessagesComponent implements OnInit {
   messageList: any[] = [];
   receiverList: any[] = [];
   attachmentList: any[] = [];
-  pageSize: number = 20;
+  pageSize: number = 50;
   currentPage = 0;
   isBusy: boolean = false;
   itemDetails: any;
@@ -35,6 +36,7 @@ export class TrashMessagesComponent implements OnInit {
   _isSingleSelected: boolean = false;
   _printElement = printElement;
   _concatColumnString = concatColumnString;
+  _truncateString = truncateString;
   public dataSource: MatTableDataSource<any> = new MatTableDataSource();
   public selection = new SelectionModel(true, []);
   public displayedColumns: string[];
@@ -78,9 +80,7 @@ export class TrashMessagesComponent implements OnInit {
 
     this.selection.select(...this.dataSource.data);
   }
-  handleFilterChange(val: any) {
-    this.queryAllMessage(val.value);
-  }
+
   checkboxLabel(row?: any): string {
     if (!row) {
       return `${this.isAllSelected() ? 'deselect' : 'select'} all`;
@@ -102,8 +102,8 @@ export class TrashMessagesComponent implements OnInit {
         const { data } = res;
         this.messageList = data;
         this.dataSource = new MatTableDataSource(this.messageList);
-        this.receiverList = this.messageList.map((x) => x.to);
-        this.attachmentList = this.messageList.map((x) => x.attachments);
+        this.receiverList = this.messageList.map((x) => x?.to);
+        this.attachmentList = this.messageList.map((x) => x?.attachments);
         this.paginator.pageIndex = this.currentPage;
         this.paginator.length = this.messageList.length;
       },
@@ -123,34 +123,11 @@ export class TrashMessagesComponent implements OnInit {
       this.messageService.fetchAllFromTrash().subscribe((res) => {
         const { data } = res;
         this.itemDetails = data.filter((x) => x.id == id);
-        console.log(this.itemDetails);
       });
     }
   }
-  queryAllMessage(query?: string) {
-    if (query) {
-      this.msgType = query;
-    }
-    this._loading = true;
-    this.messageList = [];
-    this.messageService.fetchAllFromTrash(this.currentPage + 1).subscribe(
-      (res: any) => {
-        this._loading = false;
-        const { data } = res;
-        this.messageList = data;
-        this.dataSource = new MatTableDataSource(this.messageList);
-        this.paginator.pageIndex = this.currentPage;
-        this.paginator.length = this.messageList.length;
-      },
-      (errors) => {
-        if (errors) {
-          this._loading = false;
-          this.messageList = [];
-        }
-      }
-    );
-  }
-  getselectedMessage(arr: any) {
+
+  getSelectedMessage(arr: any) {
     let filter = arr.map((x: any) => x.id);
     this.selectedMessage = filter;
   }
@@ -164,12 +141,12 @@ export class TrashMessagesComponent implements OnInit {
     let payload: any;
     if (this._isAllSelected) {
       payload = {
-        media_id: this.selectedMessage,
+        messages_id: this.selectedMessage,
       };
     }
     if (this._isSingleSelected) {
       payload = {
-        media_id: [this.itemDetails.id],
+        messages_id: [this.itemDetails.id],
       };
     }
     this.messageService.deleteFromTrash(payload).subscribe(
@@ -191,12 +168,12 @@ export class TrashMessagesComponent implements OnInit {
     let payload: any;
     if (this._isAllSelected) {
       payload = {
-        id: this.selectedMessage,
+        messages_id: this.selectedMessage,
       };
     }
     if (this._isSingleSelected) {
       payload = {
-        id: [this.itemDetails[0].id],
+        messages_id: [this.itemDetails[0].id],
       };
     }
 

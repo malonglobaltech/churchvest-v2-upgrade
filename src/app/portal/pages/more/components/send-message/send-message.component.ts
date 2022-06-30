@@ -259,7 +259,6 @@ export class SendMessageComponent implements OnInit {
   }
 
   handleCategoryChange(event: any) {
-    let check = ['Regular Members', 'First Timers', 'New Convert'];
     this._categoryItems = event.value;
     if (
       this._categoryItems.includes('Regular Members') ||
@@ -458,6 +457,10 @@ export class SendMessageComponent implements OnInit {
         return (res = this.emailForm.controls['new_convert'].value
           .filter((x: any) => x !== 0)
           .map((a: any) => a.id));
+      case (identifier = 'department'):
+        return (res = this.emailForm.controls['department'].value
+          .filter((x: any) => x !== 0)
+          .map((a: any) => a.id));
 
       default:
         return;
@@ -525,6 +528,7 @@ export class SendMessageComponent implements OnInit {
       regular_members: this.getEmail('reg_member'),
       first_timer: this.getEmail('first_timer'),
       new_convert: this.getEmail('new_convert'),
+      department: this.getEmail('department'),
     });
     const formData = new FormData();
     formData.append('type', this.emailForm.get('type').value);
@@ -534,11 +538,14 @@ export class SendMessageComponent implements OnInit {
     for (let item of this.emailForm.get('regular_members').value) {
       formData.append('to[regular_members][]', item);
     }
+    for (let item of this.emailForm.get('department').value) {
+      formData.append('to[departments][]', item);
+    }
     for (let item of this.emailForm.get('first_timer').value) {
       formData.append('to[first_timers][]', item);
     }
     for (let item of this.emailForm.get('new_convert').value) {
-      formData.append('to[new_convert][]', item);
+      formData.append('to[new_converts][]', item);
     }
 
     if (this.emailForm.valid) {

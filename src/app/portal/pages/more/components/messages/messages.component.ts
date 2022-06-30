@@ -178,12 +178,12 @@ export class MessagesComponent implements OnInit {
     let payload: any;
     if (this._isSingleSelected) {
       payload = {
-        id: [this.itemDetails[0].id],
+        messages_id: [this.itemDetails[0].id],
       };
     }
     if (this._isAllSelected) {
       payload = {
-        id: this.selectedMessage,
+        messages_id: this.selectedMessage,
       };
     }
     this.messageService.moveToTrash(payload).subscribe(

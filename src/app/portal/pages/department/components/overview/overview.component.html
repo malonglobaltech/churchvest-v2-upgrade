@@ -285,7 +285,7 @@
                   >
                   <label
                     >Description
-                    <span class="">
+                    <span style="width: 200px">
                       {{ itemDetails?.description }}
                     </span></label
                   >
@@ -294,13 +294,21 @@
                   <label
                     >Leader
                     <span class="capitalize">
-                      {{ itemDetails?.roles?.leader?.member?.user?.first_name }}
-                      {{ itemDetails?.roles?.leader?.member?.user?.last_name }}
+                      {{
+                        itemDetails?.roles?.leader
+                          ? itemDetails?.roles?.leader?.member?.user?.first_name
+                          : "---"
+                      }}
+                      {{
+                        itemDetails?.roles?.leader
+                          ? itemDetails?.roles?.leader?.member?.user?.last_name
+                          : "---"
+                      }}
                     </span></label
                   >
                   <label
                     >Assitant
-                    <span class="">
+                    <span>
                       {{
                         itemDetails?.roles?.assistant?.member?.user?.first_name
                       }}
@@ -314,8 +322,11 @@
                   <label
                     >Meeting day(s)
                     <span class="capitalize">
-                      {{ itemDetails?.meeting_days }}
-                      {{ !itemDetails?.meeting_days && "no meetings" }}
+                      {{
+                        itemDetails?.meeting_days
+                          ? itemDetails?.meeting_days
+                          : "---"
+                      }}
                     </span></label
                   >
                   <label
@@ -327,18 +338,29 @@
                   >
                 </div>
                 <div class="grid grid--1fr--1fr mb-3">
-                  <label>Date Formed <span> dateFormed </span> </label>
+                  <label
+                    >Date Formed
+                    <span
+                      >{{
+                        itemDetails?.date_formed
+                          ? (itemDetails.date_formed | date: "mediumDate")
+                          : "---"
+                      }}
+                    </span>
+                  </label>
                   <label
                     >Comment
                     <span style="width: 200px">
-                      {{ itemDetails?.comment }}
+                      {{ itemDetails?.comment ? itemDetails?.comment : "---" }}
                     </span></label
                   >
                 </div>
                 <div class="grid grid--1fr--1fr grid-row-gap-15">
-                  <label *ngFor="">
+                  <label *ngFor="let item of itemDetails?.members">
                     Member
-                    <span style="width: 250px"></span>
+                    <span style="width: 250px">{{
+                      item.member.user.first_name
+                    }}</span>
                   </label>
                 </div>
               </div>

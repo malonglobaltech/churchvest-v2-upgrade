@@ -67,7 +67,7 @@ export class MessagesService {
   }
 
   moveToTrash(model: any): Observable<any> {
-    return this.http.get<any>(
+    return this.http.post<any>(
       `${
         environment.managementbaseUrl
       }/${this.authService.getChurchSlug()}/messages/delete`,
