@@ -34,6 +34,7 @@
     "jquery": "^3.6.0",
     "ngx-dropzone": "^3.1.0",
     "ngx-guided-tour": "^2.0.1",
+    "ngx-material-timepicker": "^5.5.3",
     "ngx-print": "^1.2.1",
     "ngx-toastr": "^14.3.0",
     "popper.js": "^1.16.1",

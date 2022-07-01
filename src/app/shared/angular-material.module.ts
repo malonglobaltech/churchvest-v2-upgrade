@@ -29,6 +29,7 @@ import {
   MatBottomSheetRef,
   MAT_BOTTOM_SHEET_DATA,
 } from '@angular/material/bottom-sheet';
+import { NgxMaterialTimepickerModule } from 'ngx-material-timepicker';
 @NgModule({
   imports: [
     CommonModule,
@@ -56,6 +57,7 @@ import {
     MatTooltipModule,
     MatBottomSheetModule,
     MatDialogModule,
+    NgxMaterialTimepickerModule,
   ],
   exports: [
     MatButtonModule,
@@ -82,6 +84,7 @@ import {
     MatTooltipModule,
     MatBottomSheetModule,
     MatDialogModule,
+    NgxMaterialTimepickerModule,
   ],
   providers: [
     { provide: MatBottomSheetRef, useValue: {} },

@@ -49,18 +49,20 @@
             <div class="input">
               <label>Start Time</label>
               <input
-                type="time"
+                name="ngxTimepicker"
+                [ngxTimepicker]="picker"
                 formControlName="start_time"
-                #txtDate
-                step="2"
               />
+              <ngx-material-timepicker #picker></ngx-material-timepicker>
             </div>
             <div class="input">
               <label>End Time</label>
-              <input type="time" formControlName="end_time" step="2" />
-              <small class="text-danger" *ngIf="validate"
-                >End date must be greater than start date</small
-              >
+              <input
+                name="ngxTimepicker"
+                [ngxTimepicker]="picker2"
+                formControlName="end_time"
+              />
+              <ngx-material-timepicker #picker2></ngx-material-timepicker>
             </div>
           </div>
           <div class="grid grid--1fr--1fr grid-gap-15 mb-3">
@@ -290,14 +292,21 @@
             <div class="grid grid--1fr--1fr grid-gap-15 mt-4 mb-3">
               <div class="input">
                 <label>Start Time</label>
-                <input type="time" formControlName="start_time" #txtDate />
+                <input
+                  name="ngxTimepicker"
+                  [ngxTimepicker]="picker"
+                  formControlName="start_time"
+                />
+                <ngx-material-timepicker #picker></ngx-material-timepicker>
               </div>
               <div class="input">
                 <label>End Time</label>
-                <input type="time" formControlName="end_time" />
-                <small class="text-danger" *ngIf="validate"
-                  >End date must be greater than start date</small
-                >
+                <input
+                  name="ngxTimepicker"
+                  [ngxTimepicker]="picker2"
+                  formControlName="end_time"
+                />
+                <ngx-material-timepicker #picker2></ngx-material-timepicker>
               </div>
             </div>
             <div class="grid grid--1fr--1fr grid-gap-15 mb-3">
