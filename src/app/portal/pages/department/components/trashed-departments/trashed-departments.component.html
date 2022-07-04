@@ -153,30 +153,36 @@
               </td>
             </ng-container>
             <!--Table  Row Content-->
-            <!--Table  Row Content-->
-              <ng-container *ngIf="disCol == 'department leader'">
-                  <td mat-cell *matCellDef="let element">
-                      <span
-                      >{{ element["roles"]?.leader?.member?.user?.first_name }}
-                        {{ element["roles"]?.leader?.member?.user?.last_name }}</span
-                      >
-                  </td>
-              </ng-container>
-              <ng-container *ngIf="disCol == 'meeting days'">
-                  <td mat-cell *matCellDef="let element">
-                      <span
-                        >{{ element["meeting_days"] }} {{ !element["meeting_days"] && '-' }}</span
-                      >
-                  </td>
-              </ng-container>
-              <ng-container *ngIf="disCol == 'meeting time'">
-                  <td mat-cell *matCellDef="let element">
-                      <span>
-                          {{ element?.["start_time"] }} - {{ element?.["end_time"] }}
-                      </span>
-                  </td>
-              </ng-container>
-
+            <ng-container *ngIf="disCol == 'department leader'">
+              <td mat-cell *matCellDef="let element">
+                <span
+                  >{{
+                    element["roles"]?.leader?.member
+                      ? element["roles"]?.leader?.member?.user?.first_name
+                      : "---"
+                  }}
+                  {{
+                    element["roles"]?.leader?.member
+                      ? element["roles"]?.leader?.member?.user?.last_name
+                      : "---"
+                  }}</span
+                >
+              </td>
+            </ng-container>
+            <ng-container *ngIf="disCol == 'meeting days'">
+              <td mat-cell *matCellDef="let element">
+                <span
+                  >{{ element.meeting_days ? element.meeting_days : "---" }}
+                </span>
+              </td>
+            </ng-container>
+            <ng-container *ngIf="disCol == 'meeting time'">
+              <td mat-cell *matCellDef="let element">
+                <span>
+                  {{ element?.["start_time"] }} - {{ element?.["end_time"] }}
+                </span>
+              </td>
+            </ng-container>
             <td mat-cell *matCellDef="let element">
               <span> {{ element[_concatColumnString(disCol)] }}</span>
             </td>

@@ -89,7 +89,7 @@ export class AddFellowshipComponent implements OnInit {
   }
   get stripedObjValue() {
     if (this._memberList.length !== 0) {
-      return this.memberItems.slice(0, 5).map((x: any) => x.user.first_name);
+      return this.memberItems.slice(0, 5).map((x: any) => x?.user?.first_name);
     }
   }
   toggleAllSelection() {
@@ -131,19 +131,17 @@ export class AddFellowshipComponent implements OnInit {
   }
   getMembers() {
     this._memberList = [];
-    this.peopleServ
-      .fetchAll('members', this.currentPage + 1, this.pageSize)
-      .subscribe(
-        (res: any) => {
-          const { data } = res;
-          this._memberList = data;
-        },
-        (errors) => {
-          if (errors) {
-            this._memberList = [];
-          }
+    this.peopleServ.fetchAll('members', this.currentPage + 1).subscribe(
+      (res: any) => {
+        const { data } = res;
+        this._memberList = data;
+      },
+      (errors) => {
+        if (errors) {
+          this._memberList = [];
         }
-      );
+      }
+    );
   }
   getRoutes() {
     this.route.queryParams
@@ -181,16 +179,16 @@ export class AddFellowshipComponent implements OnInit {
     if (this.queryString == 'edit' && this._fellowshipId !== undefined) {
       this.updatefellowshipForm = this.fb.group({
         name: [this.itemDetails.name, Validators.required],
-        meeting_day: [this.itemDetails.meeting_day],
-        address: [this.itemDetails.address],
-        nearest_bus_stop: [this.itemDetails.nearest_bus_stop],
-        leader_id: [this.itemDetails.leader.member.id],
-        assistant_id: [this.itemDetails.assistant.member.id],
-        secretary_id: [this.itemDetails.secretary.member.id],
-        treasurer_id: [this.itemDetails.treasurer.member.id],
-        comment: [this.itemDetails.comment],
+        meeting_day: [this.itemDetails?.meeting_day],
+        address: [this.itemDetails?.address],
+        nearest_bus_stop: [this.itemDetails?.nearest_bus_stop],
+        leader_id: [this.itemDetails?.leader?.member?.id],
+        assistant_id: [this.itemDetails?.assistant?.member?.id],
+        secretary_id: [this.itemDetails?.secretary?.member?.id],
+        treasurer_id: [this.itemDetails?.treasurer?.member?.id],
+        comment: [this.itemDetails?.comment],
         members_id: [this.filteredMembers],
-        date_of_creation: [this.itemDetails.date_of_creation],
+        date_of_creation: [this.itemDetails?.date_of_creation],
       });
     }
   }

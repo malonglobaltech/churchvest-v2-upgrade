@@ -1,0 +1,45 @@
+<ng-container>
+  <div class="f12 mb-2">{{ _fileTitle }}</div>
+  <figure class="pad-0">
+    <div class="dashed-border bg-white">
+      <div
+        class="d-flex flex-column align-items-center justify-content-center py-3"
+      >
+        <input
+          type="file"
+          accept="application/pdf,application/docx"
+          hidden=""
+          (change)="changedocListener($event)"
+          #triggerDocFile
+        />
+        <div class="my-2 cursor" #_marker2 (click)="addDoc()">
+          <div class="d-flex justify-content-center">
+            <img src="assets/img/svg/pdf.svg" alt="pdf-icon" />
+          </div>
+          <div class="block mt-2" *ngIf="!_filename">
+            <p>
+              Drop your file here, or <span>browse</span>
+              <small>Only PDF, DOCX files are allowed for upload</small>
+            </p>
+          </div>
+        </div>
+        <div>
+          <div class="d-flex align-items-center flex-column">
+            <div class="d-flex align-items-center">
+              <span
+                title="Change document"
+                data-bs-toggle="tooltip"
+                class="d-flex file-name align-items-center cursor"
+                (click)="addDoc()"
+                *ngIf="_isUploaded"
+              >
+                {{ getFileName }} ({{ getFileSize }})
+                <span class="ms-2"><mat-icon>edit</mat-icon></span>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </figure>
+</ng-container>

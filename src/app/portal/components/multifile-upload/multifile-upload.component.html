@@ -1,0 +1,52 @@
+<ng-container>
+  <div class="f12 mb-2">{{ _fileTitle }}</div>
+  <div class="divider"></div>
+  <figure class="pad-0">
+    <div class="dashed-border bg-white">
+      <div
+        class="d-flex flex-column align-items-center justify-content-center py-3"
+      >
+        <input
+          type="file"
+          multiple
+          hidden=""
+          accept=".mp3"
+          (change)="changeUploadListener($event)"
+          #triggerFile
+        />
+        <div class="my-2 cursor" #_marker2 (click)="addFile()">
+          <div class="d-flex justify-content-center">
+            <img src="assets/img/svg/mp3.svg" alt="mp3-icon" />
+          </div>
+          <div class="block mt-2">
+            <p>
+              Drop your file(s) here, or <span>browse</span>
+              <small>Only MP3 files are allowed for upload</small>
+            </p>
+          </div>
+        </div>
+        <div *ngIf="mediaList.length !== 0">
+          <div
+            class="d-flex align-items-center flex-column"
+            *ngFor="let file of mediaList; let i = index"
+          >
+            <div class="mb-2 d-flex align-items-center">
+              <span class="d-flex file-name">{{ file.name }}</span>
+              <button
+                type="button"
+                mat-icon-button
+                class="ms-2"
+                (click)="removeFile(i, 'mp3')"
+              >
+                <mat-icon>cancel</mat-icon>
+              </button>
+            </div>
+          </div>
+        </div>
+        <ng-container>
+          <div #_marker1 (click)="addFile()"></div>
+        </ng-container>
+      </div>
+    </div>
+  </figure>
+</ng-container>

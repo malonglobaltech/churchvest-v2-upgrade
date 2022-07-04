@@ -100,10 +100,10 @@ export class NewConvertsComponent implements OnInit {
         this._loading = false;
         const { data, meta } = res;
 
-        this.convertList = data.filter((x: any) => x.details.convert);
+        this.convertList = data;
         this.dataSource = new MatTableDataSource(this.convertList);
-        this.paginator.pageIndex = this.currentPage;
-        this.paginator.length = this.convertList.length;
+        this.paginator.pageIndex = meta.currentPage - 1;
+        this.paginator.length = meta.total;
       },
       (errors) => {
         if (errors) {

@@ -21,6 +21,7 @@ export class FellowshipComponent implements OnInit {
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild('closebtn') closebtn: any;
   fellowshipList: any[] = [];
+  trashList: any[] = [];
   pageSize: number = 50;
   currentPage = 0;
   isBusy: boolean = false;
@@ -51,6 +52,7 @@ export class FellowshipComponent implements OnInit {
 
   ngOnInit(): void {
     this.getFellowships();
+    this.getFromTrash();
 
     this.displayedColumns = this.column;
   }
@@ -95,24 +97,30 @@ export class FellowshipComponent implements OnInit {
   getFellowships() {
     this._loading = true;
     this.fellowshipList = [];
-    this.peopleService
-      .fetchAll('fellowships', this.currentPage + 1, this.pageSize)
-      .subscribe(
-        (res: any) => {
+    this.peopleService.fetchAll('fellowships', this.currentPage + 1).subscribe(
+      (res: any) => {
+        this._loading = false;
+        const { data, meta } = res;
+        this.fellowshipList = data;
+        this.dataSource = new MatTableDataSource(this.fellowshipList);
+        this.paginator.pageIndex = this.currentPage;
+        this.paginator.length = meta.total;
+      },
+      (errors) => {
+        if (errors) {
           this._loading = false;
-          const { data, meta } = res;
-          this.fellowshipList = data;
-          this.dataSource = new MatTableDataSource(this.fellowshipList);
-          this.paginator.pageIndex = this.currentPage;
-          this.paginator.length = meta.total;
-        },
-        (errors) => {
-          if (errors) {
-            this._loading = false;
-            this.fellowshipList = [];
-          }
+          this.fellowshipList = [];
         }
-      );
+      }
+    );
+  }
+  getFromTrash() {
+    this.peopleService
+      .fetchAllFromTrash('fellowships', this.currentPage + 1)
+      .subscribe((res: any) => {
+        const { data } = res;
+        this.trashList = data;
+      });
   }
   getSelectedFellowship(arr: any) {
     let filter = arr.map((x: any) => x.id);

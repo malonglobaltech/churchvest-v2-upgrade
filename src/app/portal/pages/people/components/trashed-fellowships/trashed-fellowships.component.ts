@@ -90,7 +90,7 @@ export class TrashedFellowshipsComponent implements OnInit {
     this._loading = true;
     this.fellowshipList = [];
     this.peopleService
-      .fetchAllFromTrash('fellowships', this.currentPage + 1, this.pageSize)
+      .fetchAllFromTrash('fellowships', this.currentPage + 1)
       .subscribe(
         (res: any) => {
           this._loading = false;
@@ -145,6 +145,7 @@ export class TrashedFellowshipsComponent implements OnInit {
     this.peopleService.deleteFromTrash(payload, 'fellowships').subscribe(
       ({ message }) => {
         this.isBusy = false;
+        this.selection.clear();
         this.toastr.success(message, 'Success');
         this.closebtn._elementRef.nativeElement.click();
         this.getFellowships();

@@ -1,0 +1,378 @@
+<section>
+  <div class="header d-flex align-items-center mb-4">
+    <div class="d-flex align-items-center cursor me-3" (click)="gotoBack()">
+      <button mat-icon-button class="me-2 return-link-wrap">
+        <mat-icon>west</mat-icon>
+      </button>
+      <div class="title-sm">Back</div>
+    </div>
+    <div class="title">Trash</div>
+  </div>
+  <div
+    class="d-flex justify-content-center align-items-center my-3 empty-state"
+    *ngIf="!_loading && (!messageList || messageList.length === 0)"
+  >
+    <span class="txt-grey txt-md">No trashed record at this moment!</span>
+  </div>
+  <ng-container *ngIf="_loading">
+    <app-loading-roller></app-loading-roller>
+  </ng-container>
+
+  <div
+    class="overflow--wrap _visible"
+    [ngClass]="{ hide: messageList.length == 0 }"
+  >
+    <div class="table-wrapper tbl-wrap">
+      <ng-container *ngIf="messageList.length !== 0">
+        <div class="toolbar mb-5 adjust-wrap">
+          <div
+            class="d-flex align-items-center justify-content-start adjust-flex"
+          >
+            <div
+              class="d-flex align-items-center mr-1"
+              style="width: fit-content"
+            >
+              <!-- Master Checkbox-->
+              <mat-checkbox
+                (change)="$event ? masterToggle() : null"
+                [checked]="selection.hasValue() && isAllSelected()"
+                [indeterminate]="selection.hasValue() && !isAllSelected()"
+                [aria-label]="checkboxLabel()"
+              >
+                Select all
+              </mat-checkbox>
+            </div>
+            <div class="mr-1 animate animate__bounceIn">
+              <button
+                mat-stroked-button
+                [disabled]="selection.selected.length == 0"
+                data-bs-toggle="modal"
+                data-bs-target="#restore-message"
+                (click)="
+                  _isAllSelected = true; getSelectedMessage(selection.selected)
+                "
+              >
+                Restore
+                {{
+                  selection.selected.length == messageList.length
+                    ? "All"
+                    : selection.selected.length > 0
+                    ? selection.selected.length
+                    : null
+                }}
+              </button>
+            </div>
+            <div class="animate animate__bounceIn">
+              <button
+                mat-stroked-button
+                class="text-danger"
+                data-bs-toggle="modal"
+                data-bs-target="#delete-message"
+                [disabled]="selection.selected.length == 0"
+                (click)="
+                  _isAllSelected = true; getSelectedMessage(selection.selected)
+                "
+              >
+                Delete
+                {{
+                  selection.selected.length == messageList.length
+                    ? "All"
+                    : selection.selected.length > 0
+                    ? selection.selected.length
+                    : null
+                }}
+              </button>
+            </div>
+          </div>
+        </div>
+        <table
+          mat-table
+          [dataSource]="dataSource"
+          class="table custom-table w--100"
+          style="width: 100%"
+          id="print-section"
+        >
+          <ng-container
+            *ngFor="
+              let disCol of displayedColumns;
+              let colIndex = index;
+              let last = last
+            "
+            [matColumnDef]="disCol"
+          >
+            <th mat-header-cell *matHeaderCellDef>
+              {{ disCol }}
+            </th>
+            <ng-container *ngIf="colIndex === 0">
+              <td *matCellDef="let element">
+                <mat-checkbox
+                  [value]="element"
+                  (click)="$event.stopPropagation()"
+                  (change)="$event ? selection.toggle(element) : null"
+                  [checked]="selection.isSelected(element)"
+                >
+                  <span *ngIf="element.type !== 'email'">{{
+                    element.from
+                  }}</span>
+                  <span class="f12 lowercase" *ngIf="element.type == 'email'">{{
+                    element.from
+                  }}</span>
+                </mat-checkbox>
+              </td>
+            </ng-container>
+            <!--Action Column-->
+            <ng-container *ngIf="last">
+              <td mat-cell *matCellDef="let element">
+                <div [matMenuTriggerFor]="menu">
+                  <span class="cursor">
+                    <mat-icon>more_horiz</mat-icon>
+                  </span>
+                  <mat-menu #menu="matMenu">
+                    <button
+                      type="button"
+                      mat-menu-item
+                      data-bs-toggle="modal"
+                      data-bs-target="#restore-message"
+                      (click)="
+                        _isSingleSelected = true; getMessageDetails(element.id)
+                      "
+                    >
+                      Restore message
+                    </button>
+                    <button
+                      type="button"
+                      mat-menu-item
+                      data-bs-toggle="modal"
+                      data-bs-target="#delete-message"
+                      (click)="
+                        _isSingleSelected = true; getMessageDetails(element.id)
+                      "
+                    >
+                      Delete permanently
+                    </button>
+                  </mat-menu>
+                </div>
+              </td>
+            </ng-container>
+            <!--Table  Row Content-->
+            <ng-container *ngIf="disCol == 'to'">
+              <td mat-cell *matCellDef="let element; let i = index">
+                <ng-container
+                  *ngIf="
+                    receiverList.length !== 0 && receiverList[i].length > 3
+                  "
+                >
+                  <span
+                    class="f12 txt-grey lowercase"
+                    *ngFor="let item of receiverList[i].slice(0, 2)"
+                  >
+                    {{ item }},
+                  </span>
+                  <span
+                    class="f12"
+                    *ngIf="
+                      receiverList.length !== 0 && receiverList[i].length > 2
+                    "
+                  >
+                    +{{ receiverList[i].length - 2 }} others
+                  </span>
+                </ng-container>
+                <ng-container
+                  *ngIf="
+                    receiverList.length !== 0 && receiverList[i].length < 4
+                  "
+                >
+                  <span
+                    class="f12 txt-grey lowercase"
+                    *ngFor="let item of receiverList[i]"
+                  >
+                    {{ item }},
+                  </span>
+                </ng-container>
+                <ng-container
+                  *ngIf="
+                    receiverList.length !== 0 && receiverList[i].length == 0
+                  "
+                >
+                  <span class="d-flex">---</span>
+                </ng-container>
+              </td>
+            </ng-container>
+            <ng-container *ngIf="disCol == 'message'">
+              <td mat-cell *matCellDef="let element">
+                <span>{{ _truncateString(element.message, 40) }}</span>
+              </td>
+            </ng-container>
+            <ng-container *ngIf="disCol == 'type'">
+              <td mat-cell *matCellDef="let element">
+                <span class="tag purple">{{ element.type }}</span>
+              </td>
+            </ng-container>
+            <ng-container *ngIf="disCol == 'attachment'">
+              <td mat-cell *matCellDef="let element; let i = index">
+                <ng-container
+                  *ngIf="
+                    attachmentList.length !== 0 && attachmentList[i].length > 3
+                  "
+                >
+                  <span
+                    class="f12 txt-grey lowercase"
+                    *ngFor="let item of attachmentList[i].slice(0, 2)"
+                  >
+                    <a [href]="item.path" target="_blank"
+                      ><mat-icon>attachment</mat-icon></a
+                    >
+                  </span>
+                  <span
+                    class="f12"
+                    *ngIf="
+                      attachmentList.length !== 0 &&
+                      attachmentList[i].length > 2
+                    "
+                  >
+                    +{{ attachmentList[i].length - 2 }} others
+                  </span>
+                </ng-container>
+                <ng-container
+                  *ngIf="
+                    attachmentList.length !== 0 && attachmentList[i].length < 4
+                  "
+                >
+                  <span *ngFor="let item of attachmentList[i]">
+                    <a [href]="item.path" target="_blank"
+                      ><mat-icon>attachment</mat-icon></a
+                    >
+                  </span>
+                </ng-container>
+                <ng-container
+                  *ngIf="attachmentList && attachmentList[i].length == 0"
+                >
+                  <span class="d-flex">---</span>
+                </ng-container>
+              </td>
+            </ng-container>
+            <ng-container *ngIf="disCol == 'created at'">
+              <td mat-cell *matCellDef="let element">
+                <span>{{ element.created_at | date: "mediumDate" }}</span>
+              </td>
+            </ng-container>
+            <td mat-cell *matCellDef="let element">
+              <span> {{ element[_concatColumnString(disCol)] }}</span>
+            </td>
+          </ng-container>
+
+          <!--Mat-table  configurations-->
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr
+            mat-row
+            *matRowDef="let row; columns: displayedColumns"
+            [ngClass]="{
+              'bg-wrap': selection.isSelected(row)
+            }"
+          ></tr>
+          <!-- Row shown when there is no matching data. -->
+          <tr class="mat-row" *matNoDataRow>
+            <td class="mat-cell" colspan="4">
+              No data matching the search item: "{{ input.value }}"
+            </td>
+          </tr>
+        </table>
+      </ng-container>
+      <mat-paginator
+        showFirstLastButton
+        [pageIndex]="currentPage"
+        [pageSize]="pageSize"
+        (page)="pageChanged($event)"
+      ></mat-paginator>
+    </div>
+  </div>
+</section>
+
+<div class="modal fade" id="delete-message" role="dialog">
+  <div class="modal-dialog modal-wrapper">
+    <div class="modal-content-wrap">
+      <div class="modal-body">
+        <div
+          class="header-top d-flex justify-content-between align-items-center px-4 py-3"
+        >
+          <div class="title">Permanently Delete Message</div>
+          <ion-icon name="close-outline" data-bs-dismiss="modal"></ion-icon>
+        </div>
+        <div class="container">
+          <div class="pb-3">
+            <div class="center">
+              <p
+                *ngIf="selection.selected.length !== 0"
+                class="text-center m-0"
+              >
+                Are you sure you want to delete
+                {{ selection.selected.length > 1 ? "these" : "this" }} message?
+                <br />
+                They will no longer be accessible.
+              </p>
+              <p *ngIf="selection.selected.length == 0" class="text-center m-0">
+                Please select one or more item
+              </p>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer d-flex justify-content-end align-items-center">
+          <button
+            mat-button
+            class="text-danger me-3"
+            [disabled]="selection.selected.length == 0"
+            (click)="confirmDelete()"
+          >
+            Delete <mat-spinner *ngIf="isBusy"> </mat-spinner>
+          </button>
+          <button mat-stroked-button data-bs-dismiss="modal" #closebtn>
+            Cancel
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal fade" id="restore-message" role="dialog">
+  <div class="modal-dialog modal-wrapper">
+    <div class="modal-content-wrap">
+      <div class="modal-body">
+        <div
+          class="header-top d-flex justify-content-between align-items-center px-4 py-3"
+        >
+          <div class="title">Restore Message</div>
+          <ion-icon name="close-outline" data-bs-dismiss="modal"></ion-icon>
+        </div>
+        <div class="container">
+          <div class="pb-3">
+            <div class="center">
+              <p
+                *ngIf="selection.selected.length !== 0"
+                class="text-center m-0"
+              >
+                Are you sure you want to restore
+                {{ selection.selected.length > 1 ? "these" : "this" }} message?
+              </p>
+              <p *ngIf="selection.selected.length == 0" class="text-center m-0">
+                Please select one or more item
+              </p>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer d-flex justify-content-end align-items-center">
+          <button
+            mat-flat-button
+            class="me-3"
+            [disabled]="selection.selected.length == 0"
+            (click)="confirmRestore()"
+          >
+            Restore <mat-spinner *ngIf="isBusy"> </mat-spinner>
+          </button>
+          <button mat-stroked-button data-bs-dismiss="modal" #closebtn_>
+            Cancel
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -132,8 +132,14 @@ export const getDays = () => {
     'wednesday',
     'thursday',
     'friday',
-    'satuday',
+    'saturday',
     'sunday',
   ];
   return days;
+};
+
+export const maxLengthCheck = (event) => {
+  if (event.target.value.length > event.target.maxLength) {
+    event.target.value = event.target.value.slice(0, event.target.maxLength);
+  }
 };

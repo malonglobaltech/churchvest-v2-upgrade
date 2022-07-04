@@ -8,8 +8,6 @@ import {
 } from '@angular/forms';
 import { NavigationExtras, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
-import { ObservableInput, throwError } from 'rxjs';
-import { catchError } from 'rxjs/operators';
 import { AuthService } from 'src/app/services/auth.service';
 import { IAuth } from 'src/app/shared/model';
 

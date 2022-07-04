@@ -1,7 +1,7 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { catchError } from 'rxjs/operators';
+import { catchError, map } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 import { IAuth } from '../shared/model';
 import { handleError } from './apiErrorHandler';
@@ -76,5 +76,16 @@ export class AuthService {
   }
   verify(link: string): Observable<any> {
     return this.http.get<any>(link).pipe(catchError(handleError));
+  }
+  updateProfile(model: any): Observable<any> {
+    return this.http
+      .post<any>(
+        ` ${environment.managementbaseUrl}/${this.getChurchSlug()}/user/update`,
+        model
+      )
+      .pipe(
+        map((status) => status),
+        catchError(handleError)
+      );
   }
 }

@@ -49,12 +49,12 @@ export class DepartmentService {
       )
       .pipe(catchError(handleError));
   }
-  fetchAllFromTrash(pageNumber?: number, pageSize?: number): Observable<any> {
+  fetchAllFromTrash(pageNumber?: number): Observable<any> {
     return this.http
       .get<any>(
         `${
           environment.managementbaseUrl
-        }/${this.authService.getChurchSlug()}/departments/trash/departments_trashed/?page=${pageNumber}&size=${pageSize}`
+        }/${this.authService.getChurchSlug()}/departments/trash/departments_trashed?page=${pageNumber}`
       )
       .pipe(catchError(handleError));
   }
@@ -66,12 +66,12 @@ export class DepartmentService {
       )
       .pipe(catchError(handleError));
   }
-  fetchDeptFromTrash(pageNumber?: number, pageSize?: number): Observable<any> {
+  fetchDeptFromTrash(pageNumber?: number): Observable<any> {
     return this.http
       .get<any>(
         `${
           environment.managementbaseUrl
-        }/${this.authService.getChurchSlug()}/departments/trash/?page=${pageNumber}&size=${pageSize}`
+        }/${this.authService.getChurchSlug()}/departments/trash?page=${pageNumber}`
       )
       .pipe(catchError(handleError));
   }
@@ -83,12 +83,12 @@ export class DepartmentService {
       )
       .pipe(catchError(handleError));
   }
-  getAllDepartment(pageNumber?: number, pageSize?: number): Observable<any> {
+  getAllDepartment(pageNumber?: number): Observable<any> {
     return this.http
       .get<any>(
         `${
           environment.managementbaseUrl
-        }/${this.authService.getChurchSlug()}/departments/?page=${pageNumber}&size=${pageSize}`
+        }/${this.authService.getChurchSlug()}/departments?page=${pageNumber}`
       )
       .pipe(catchError(handleError));
   }

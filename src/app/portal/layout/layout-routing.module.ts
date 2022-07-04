@@ -18,10 +18,15 @@ const routes: Routes = [
       },
       {
         path: 'department',
-        loadChildren: () => 
-          import ('../pages/department/department.module').then(
+        loadChildren: () =>
+          import('../pages/department/department.module').then(
             (m) => m.DepartmentModule
-          )
+          ),
+      },
+      {
+        path: 'more',
+        loadChildren: () =>
+          import('../pages/more/more.module').then((m) => m.MoreModule),
       },
       {
         path: 'events',
@@ -34,6 +39,13 @@ const routes: Routes = [
         path: 'people',
         loadChildren: () =>
           import('../pages/people/people.module').then((m) => m.PeopleModule),
+      },
+      {
+        path: 'settings',
+        loadChildren: () =>
+          import('../pages/settings/settings.module').then(
+            (m) => m.SettingsModule
+          ),
       },
       {
         path: '',

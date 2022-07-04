@@ -105,16 +105,12 @@ export class PeopleService {
         catchError(handleError)
       );
   }
-  fetchAll(
-    type: string,
-    pageNumber?: number,
-    pageSize?: number
-  ): Observable<any> {
+  fetchAll(type: string, pageNumber?: number): Observable<any> {
     return this.http
       .get<any>(
         `${
           environment.managementbaseUrl
-        }/${this.authService.getChurchSlug()}/people/${type}/?page=${pageNumber}&size=${pageSize}`
+        }/${this.authService.getChurchSlug()}/people/${type}?page=${pageNumber}`
       )
       .pipe(catchError(handleError));
   }
@@ -123,7 +119,7 @@ export class PeopleService {
       .get<any>(
         `${
           environment.managementbaseUrl
-        }/${this.authService.getChurchSlug()}/people/${type}?status=${optional}`
+        }/${this.authService.getChurchSlug()}/people/${type}/?status=${optional}`
       )
       .pipe(catchError(handleError));
   }
@@ -143,16 +139,12 @@ export class PeopleService {
       )
       .pipe(catchError(handleError));
   }
-  fetchAllFromTrash(
-    type: string,
-    pageNumber?: number,
-    pageSize?: number
-  ): Observable<any> {
+  fetchAllFromTrash(type: string, pageNumber?: number): Observable<any> {
     return this.http
       .get<any>(
         `${
           environment.managementbaseUrl
-        }/${this.authService.getChurchSlug()}/people/${type}/trash/?page=${pageNumber}&size=${pageSize}`
+        }/${this.authService.getChurchSlug()}/people/${type}/trash?page=${pageNumber}`
       )
       .pipe(catchError(handleError));
   }
@@ -239,12 +231,12 @@ export class PeopleService {
         catchError(handleError)
       );
   }
-  updateFirstTimer(model: any, id: number): Observable<any> {
+  updateFirstTimer(model: any): Observable<any> {
     return this.http
       .post<any>(
         ` ${
           environment.managementbaseUrl
-        }/${this.authService.getChurchSlug()}/people/members/first-first_timers/${id}/update`,
+        }/${this.authService.getChurchSlug()}/people/members/personal`,
         model
       )
       .pipe(

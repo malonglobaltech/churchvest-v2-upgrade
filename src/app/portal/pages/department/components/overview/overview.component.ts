@@ -6,20 +6,18 @@ import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { DepartmentService } from 'src/app/portal/services/department.service';
 import { ExportServiceService } from 'src/app/portal/services/export-service.service';
-import { 
-  concatColumnString,
-  printElement 
-} from 'src/app/shared';
+import { concatColumnString, printElement } from 'src/app/shared';
 
 @Component({
   selector: 'app-overview',
   templateUrl: './overview.component.html',
-  styleUrls: ['./overview.component.scss']
+  styleUrls: ['./overview.component.scss'],
 })
 export class OverviewComponent implements OnInit {
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild('closebtn') closebtn: any;
   departmentList: any[] = [];
+  trashList: any[] = [];
   isBusy: boolean = false;
   _loading: boolean = false;
   _loading_: boolean = false;
@@ -39,16 +37,16 @@ export class OverviewComponent implements OnInit {
   public selection = new SelectionModel(true, []);
   public displayedColumns: string[];
 
-
   constructor(
     private deptService: DepartmentService,
     private exportService: ExportServiceService,
     private toastr: ToastrService,
-    private router: Router,
-  ) { }
+    private router: Router
+  ) {}
 
   ngOnInit(): void {
     this._getAllDepartments();
+    this.getFromTrash();
     this.displayedColumns = this.column;
   }
 
@@ -79,39 +77,44 @@ export class OverviewComponent implements OnInit {
 
   checkboxLabel(row?: any): string {
     if (!row) {
-      return `${this.isAllSelected() ? 'deselect' : 'select' } all`;
+      return `${this.isAllSelected() ? 'deselect' : 'select'} all`;
     }
     return `${this.selection.isSelected(row) ? 'deselect' : 'select'} row ${
       row.position + 1
-    }`
+    }`;
   }
   applyFilter(event: Event) {
     this.filterValue = (event.target as HTMLInputElement).value;
     this.dataSource.filter = this.filterValue.trim().toLowerCase();
   }
 
-  private _getAllDepartments() {
+  _getAllDepartments() {
     this._loading = true;
     this.departmentList = [];
-    this.deptService
-      .getAllDepartment(this.currentPage + 1, this.pageSize)
-      .subscribe(
-        (res: any) => {
+    this.deptService.getAllDepartment(this.currentPage + 1).subscribe(
+      (res: any) => {
+        this._loading = false;
+        const { data, meta } = res;
+        this.departmentList = data;
+        this.dataSource = new MatTableDataSource(this.departmentList);
+        this.paginator.pageIndex = this.currentPage;
+        this.paginator.length = meta.total;
+      },
+      (errors) => {
+        if (errors) {
           this._loading = false;
-          const { data, meta } = res;
-          this.departmentList = data;
-          this.dataSource = new MatTableDataSource(this.departmentList);
-          this.paginator.pageIndex = this.currentPage;
-          this.paginator.length = meta.total;
-        },
-        (errors) => {
-          if (errors) {
-            this._loading = false;
-            this.departmentList = [];
-          }
+          this.departmentList = [];
         }
-      )
-
+      }
+    );
+  }
+  getFromTrash() {
+    this.deptService
+      .fetchAllFromTrash(this.currentPage + 1)
+      .subscribe((res: any) => {
+        const { data } = res;
+        this.trashList = data;
+      });
   }
   getSelectedDepartment(arr: any) {
     let filter = arr.map((x: any) => x.id);
@@ -127,10 +130,10 @@ export class OverviewComponent implements OnInit {
           const { data } = res;
           this.itemDetails = data;
         },
-        (msg)=> {
+        (msg) => {
           this._loading_ = false;
         }
-      )
+      );
     }
   }
   pageChanged(event: PageEvent) {
@@ -144,22 +147,20 @@ export class OverviewComponent implements OnInit {
     if (this._isSingleSelected) {
       payload = {
         departments_id: [this.itemDetails.id],
-      }
+      };
     }
     if (this._isAllSelected) {
       payload = {
         departments_id: this.selectedDepartment,
       };
     }
-    this.deptService
-      .moveToTrash(payload)
-      .subscribe(({ message }) => {
-        this.isBusy = false;
-        this.toastr.success(message, 'Success');
-        this.router.navigate(['/portal/department/trash']);
-        this.closebtn._elementRef.nativeElement.click();
-        this._getAllDepartments();
-      })
+    this.deptService.moveToTrash(payload).subscribe(({ message }) => {
+      this.isBusy = false;
+      this.toastr.success(message, 'Success');
+      this.router.navigate(['/portal/department/trash']);
+      this.closebtn._elementRef.nativeElement.click();
+      this._getAllDepartments();
+    });
   }
   exportToExcel(): void {
     const edata: Array<any> = [];
@@ -185,9 +186,7 @@ export class OverviewComponent implements OnInit {
         E: data.start_time,
       });
     });
-    edata.push(udt)
+    edata.push(udt);
     this.exportService.exportTableElmToExcel(edata, this.file_name);
   }
-
-
 }

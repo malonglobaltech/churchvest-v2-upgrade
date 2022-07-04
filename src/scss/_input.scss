@@ -8,6 +8,7 @@
   input[type="password"],
   input[type="date"],
   input[type="time"],
+  input[name="ngxTimepicker"],
   select {
     width: 100%;
     height: 48px;
@@ -71,6 +72,9 @@
       outline: none;
       border: 1px solid $dark-grey;
     }
+    &.is-invalid {
+      border: 1px solid #f44336 !important;
+    }
   }
   .select {
     background: url("/assets/img/svg/dropdown-arrow.svg") 95% center no-repeat !important;
@@ -81,6 +85,11 @@
       color: #95a8b8;
       font-size: 14px;
     }
+  }
+  input[name="ngxTimepicker"] {
+    background: url("/assets/img/svg/time-icon.svg") 95% center no-repeat !important;
+    background-size: 16px !important;
+    cursor: pointer;
   }
   input[type="date"] {
     position: relative;

@@ -1,0 +1,306 @@
+<div class="d-flex align-items-center mb-4 cursor" (click)="gotoBack()">
+  <button mat-icon-button class="me-2 return-link-wrap">
+    <mat-icon>west</mat-icon>
+  </button>
+  <div class="title-sm">Back</div>
+</div>
+<ng-container>
+  <section class="stepper-wrapper full">
+    <aside *ngIf="queryString !== 'edit'">
+      <form [formGroup]="givingForm" (ngSubmit)="onSubmit()">
+        <div class="form-wrap">
+          <div class="title mb-2">Add Giving</div>
+          <mat-divider></mat-divider>
+          <div class="grid grid--1fr--1fr grid-gap-15 mt-4 mb-3">
+            <div class="input">
+              <label>Type of Giving</label>
+              <input
+                type="text"
+                placeholder="Enter giving type"
+                formControlName="type"
+                [ngClass]="{
+                  'is-invalid':
+                    givingForm.controls['type'].hasError('required') &&
+                    givingForm.controls['type'].touched
+                }"
+              />
+            </div>
+            <div class="input">
+              <label>Currency </label>
+              <mat-select
+                class="select"
+                placeholder="Select currency"
+                formControlName="currency"
+              >
+                <mat-option disabled="" selected="" value=""
+                  >Select currency</mat-option
+                >
+                <mat-option value="NGN">NGN</mat-option>
+                <mat-option value="Dollars">Dollars</mat-option>
+              </mat-select>
+            </div>
+          </div>
+          <div class="grid grid--1fr--1fr grid-gap-15 mt-4 mb-3">
+            <div class="input">
+              <label>Amount</label>
+              <input
+                type="number"
+                placeholder="Enter amount"
+                formControlName="amount"
+              />
+            </div>
+            <div class="input">
+              <label>Receiving Account </label>
+              <mat-select
+                class="select"
+                placeholder="Select receiving account"
+                formControlName="account_id"
+              >
+                <mat-option disabled="" selected="" value=""
+                  >Select receiving account</mat-option
+                >
+                <mat-option
+                  *ngFor="let item of accountList"
+                  [value]="item.id"
+                  >{{ item.name }}</mat-option
+                >
+                <mat-option data-bs-toggle="modal" data-bs-target="#addAccount"
+                  >Create New</mat-option
+                >
+              </mat-select>
+            </div>
+          </div>
+          <div class="grid grid--repeat--three grid-gap-15 mb-4">
+            <mat-checkbox formControlName="request_name"
+              >Request Giver's Fullname</mat-checkbox
+            >
+            <mat-checkbox formControlName="request_email"
+              >Request Giver's Email address</mat-checkbox
+            >
+            <mat-checkbox formControlName="request_phone"
+              >Request Giver's Phone number</mat-checkbox
+            >
+          </div>
+          <div class="d-flex align-items-center">
+            <button
+              type="submit"
+              mat-flat-button
+              class="me-4"
+              [disabled]="!givingForm.valid"
+            >
+              Save <mat-spinner *ngIf="isBusy"> </mat-spinner>
+            </button>
+          </div>
+        </div>
+      </form>
+    </aside>
+    <ng-container *ngIf="queryString == 'edit' && !itemDetails">
+      <app-loading-roller></app-loading-roller>
+    </ng-container>
+    <ng-container *ngIf="queryString == 'edit' && itemDetails">
+      <aside>
+        <form [formGroup]="updateGivingForm" (ngSubmit)="onUpdate()">
+          <div class="form-wrap">
+            <div class="title mb-2">Update Giving</div>
+            <mat-divider></mat-divider>
+            <div class="grid grid--1fr--1fr grid-gap-15 mt-4 mb-3">
+              <div class="input">
+                <label>Type of Giving</label>
+                <input
+                  type="text"
+                  placeholder="Enter giving type"
+                  formControlName="type"
+                  [ngClass]="{
+                    'is-invalid':
+                      updateGivingForm.controls['type'].hasError('required') &&
+                      updateGivingForm.controls['type'].touched
+                  }"
+                />
+              </div>
+              <div class="input">
+                <label>Currency </label>
+                <mat-select
+                  class="select"
+                  placeholder="Select currency"
+                  formControlName="currency"
+                >
+                  <mat-option disabled="" selected="" value=""
+                    >Select currency</mat-option
+                  >
+                  <mat-option value="NGN">NGN</mat-option>
+                  <mat-option value="Dollars">Dollars</mat-option>
+                </mat-select>
+              </div>
+            </div>
+            <div class="grid grid--1fr--1fr grid-gap-15 mt-4 mb-3">
+              <div class="input">
+                <label>Amount</label>
+                <input
+                  type="number"
+                  placeholder="Enter amount"
+                  formControlName="amount"
+                />
+              </div>
+              <div class="input">
+                <label>Receiving Account </label>
+                <mat-select
+                  class="select"
+                  placeholder="Select receiving account"
+                  formControlName="account_id"
+                >
+                  <mat-option disabled="" selected="" value=""
+                    >Select receiving account</mat-option
+                  >
+                  <mat-option
+                    *ngFor="let item of accountList"
+                    [value]="item.id"
+                    >{{ item.name }}</mat-option
+                  >
+                  <mat-option
+                    data-bs-toggle="modal"
+                    data-bs-target="#addAccount"
+                    >Create New</mat-option
+                  >
+                </mat-select>
+              </div>
+            </div>
+            <div class="grid grid--repeat--three grid-gap-15 mb-4">
+              <mat-checkbox formControlName="request_name"
+                >Request Giver's Fullname</mat-checkbox
+              >
+              <mat-checkbox formControlName="request_email"
+                >Request Giver's Email address</mat-checkbox
+              >
+              <mat-checkbox formControlName="request_phone"
+                >Request Giver's Phone number</mat-checkbox
+              >
+            </div>
+            <div class="d-flex align-items-center">
+              <button
+                type="submit"
+                mat-flat-button
+                class="me-4"
+                [disabled]="!updateGivingForm.valid"
+              >
+                Update <mat-spinner *ngIf="isBusy"> </mat-spinner>
+              </button>
+            </div>
+          </div>
+        </form>
+      </aside>
+    </ng-container>
+  </section>
+</ng-container>
+
+<div class="modal fade" id="addAccount" role="dialog">
+  <div class="modal-dialog modal-wrapper">
+    <div class="modal-content-wrap">
+      <div class="modal-body">
+        <div
+          class="header-top d-flex justify-content-between align-items-center px-4 py-3"
+        >
+          <div class="title">Add New Account</div>
+          <mat-icon class="cursor" data-bs-dismiss="modal" class="cursor"
+            >close</mat-icon
+          >
+        </div>
+        <div class="container">
+          <form
+            class="pb-3"
+            [formGroup]="newAccountForm"
+            (ngSubmit)="addAccount()"
+          >
+            <div class="form-wrap w--400">
+              <div class="grid grid--1fr--1fr grid-gap-15">
+                <div class="input">
+                  <label>Title of Account</label>
+                  <input
+                    type="text"
+                    placeholder="Enter account title - Mr/Mrs/Ms"
+                    formControlName="title"
+                    [ngClass]="{
+                      'is-invalid':
+                        newAccountForm.controls['title'].hasError('required') &&
+                        newAccountForm.controls['title'].touched
+                    }"
+                  />
+                </div>
+                <div class="input">
+                  <label>Bank </label>
+                  <mat-select
+                    class="select"
+                    placeholder="Select bank"
+                    formControlName="bank_slug"
+                    (selectionChange)="handleBankChange($event)"
+                    [ngClass]="{
+                      'is-invalid':
+                        newAccountForm.controls['bank_slug'].hasError(
+                          'required'
+                        ) && newAccountForm.controls['bank_slug'].touched
+                    }"
+                  >
+                    <mat-option disabled="" selected="" value=""
+                      >Select bank</mat-option
+                    >
+                    <mat-option
+                      class="capitalize"
+                      *ngFor="let item of bankList"
+                      [value]="item"
+                      >{{ item.name }}</mat-option
+                    >
+                  </mat-select>
+                </div>
+              </div>
+              <div class="grid grid--1fr--1fr grid-gap-15">
+                <div class="input">
+                  <label>Account Number</label>
+                  <input
+                    type="text"
+                    placeholder="Enter account number"
+                    formControlName="number"
+                    maxLength="10"
+                    (input)="_maxLengthCheck($event)"
+                    (blur)="blurHandler()"
+                    [ngClass]="{
+                      'is-invalid':
+                        newAccountForm.controls['number'].hasError(
+                          'required'
+                        ) && newAccountForm.controls['number'].touched
+                    }"
+                  />
+                </div>
+                <div class="input">
+                  <label>Account Name</label>
+                  <input
+                    type="text"
+                    placeholder="Enter account name"
+                    formControlName="name"
+                  />
+                </div>
+              </div>
+              <div class="d-flex align-items-center mt-3">
+                <button
+                  type="submit"
+                  mat-flat-button
+                  class="me-3"
+                  [disabled]="!newAccountForm.valid"
+                >
+                  Create
+                  <mat-spinner *ngIf="isBusy_"> </mat-spinner>
+                </button>
+                <button
+                  type="button"
+                  mat-stroked-button
+                  data-bs-dismiss="modal"
+                  #closebtn
+                >
+                  Cancel
+                </button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

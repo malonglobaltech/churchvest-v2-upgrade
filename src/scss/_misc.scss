@@ -90,6 +90,9 @@
 .capitalize {
   text-transform: capitalize;
 }
+.lowercase {
+  text-transform: lowercase;
+}
 
 .grid {
   display: grid;
@@ -492,6 +495,11 @@
               color: $purple;
               text-align: center;
             }
+            &.red {
+              background: rgba($red, 0.1);
+              color: $red;
+              text-align: center;
+            }
             &.status-approved {
               background: rgba($green, 0.1);
               color: $green;
@@ -819,6 +827,33 @@ mat-select-trigger {
       }
       .details-wrap-list {
         padding: 2em;
+        .placeholder {
+          background: rgba(93, 212, 147, 0.2);
+          color: #424242;
+          font-size: 12px;
+          padding: 7px 23px;
+        }
+        .tag {
+          padding: 7px 23px;
+          font-size: 12px;
+          font-weight: 500;
+          display: block;
+          &.green {
+            background: rgba($green, 0.2);
+            color: $green;
+            text-align: center;
+          }
+          &.red {
+            background: rgba($red, 0.1);
+            color: $red;
+            text-align: center;
+          }
+          &.purple {
+            background: rgba($purple, 0.1);
+            color: $purple;
+            text-align: center;
+          }
+        }
         .grid {
           .avatar {
             img {

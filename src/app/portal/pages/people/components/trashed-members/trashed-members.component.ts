@@ -84,7 +84,7 @@ export class TrashedMembersComponent implements OnInit {
     this._loading = true;
     this.memberList = [];
     this.peopleService
-      .fetchAllFromTrash('members', this.currentPage + 1, this.pageSize)
+      .fetchAllFromTrash('members', this.currentPage + 1)
       .subscribe(
         (res: any) => {
           this._loading = false;
@@ -149,6 +149,7 @@ export class TrashedMembersComponent implements OnInit {
     this.peopleService.deleteFromTrash(payload, 'members').subscribe(
       ({ message }) => {
         this.isBusy = false;
+        this.selection.clear();
         this.toastr.success(message, 'Success');
         this.closebtn._elementRef.nativeElement.click();
         this.getMembers();

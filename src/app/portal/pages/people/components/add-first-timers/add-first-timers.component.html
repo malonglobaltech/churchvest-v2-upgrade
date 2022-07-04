@@ -135,20 +135,23 @@
           </div>
           <div class="grid grid--1fr--1fr grid-gap-15 mb-3">
             <div class="input">
-              <label
-                >Relationship
-                <span class="f12 txt-grey">(Optional)</span></label
-              >
-              <input
-                type="text"
-                placeholder="Enter bus relationship status"
+              <label>Relationship status </label>
+              <mat-select
+                class="select"
+                placeholder="Select relationship status"
                 formControlName="relationship"
                 [ngClass]="{
                   'is-invalid':
                     form.controls['relationship'].hasError('required') &&
                     form.controls['relationship'].touched
                 }"
-              />
+              >
+                <mat-option disabled="" selected="" value=""
+                  >Select relationship</mat-option
+                >
+                <mat-option value="single">Single</mat-option>
+                <mat-option value="married">Married</mat-option>
+              </mat-select>
             </div>
             <div class="input">
               <label
@@ -360,26 +363,27 @@
             </div>
             <div class="grid grid--1fr--1fr grid-gap-15 mb-3">
               <div class="input">
-                <label
-                  >Relationship
-                  <span class="f12 txt-grey">(Optional)</span></label
-                >
-                <input
-                  type="text"
-                  placeholder="Enter bus relationship status"
+                <label>Relationship status </label>
+                <mat-select
+                  class="select"
+                  placeholder="Select relationship status"
                   formControlName="relationship"
                   [ngClass]="{
                     'is-invalid':
-                      form.controls['relationship'].hasError('required') &&
-                      form.controls['relationship'].touched
+                      updateForm.controls['relationship'].hasError(
+                        'required'
+                      ) && updateForm.controls['relationship'].touched
                   }"
-                />
+                >
+                  <mat-option disabled="" selected="" value=""
+                    >Select relationship</mat-option
+                  >
+                  <mat-option value="single">Single</mat-option>
+                  <mat-option value="married">Married</mat-option>
+                </mat-select>
               </div>
               <div class="input">
-                <label
-                  >Marriage Date
-                  <span class="f12 txt-grey">(Optional)</span></label
-                >
+                <label>Marriage Date </label>
                 <input
                   type="date"
                   placeholder="Enter date of marriage"
@@ -387,6 +391,7 @@
                 />
               </div>
             </div>
+
             <div class="d-flex align-items-center">
               <button
                 type="submit"

@@ -83,7 +83,7 @@ export class TrashedEvangelismComponent implements OnInit {
     this._loading = true;
     this.evangelismList = [];
     this.peopleService
-      .fetchAllFromTrash('evangelism', this.currentPage + 1, this.pageSize)
+      .fetchAllFromTrash('evangelism', this.currentPage + 1)
       .subscribe(
         (res: any) => {
           this._loading = false;
@@ -138,6 +138,7 @@ export class TrashedEvangelismComponent implements OnInit {
     this.peopleService.deleteFromTrash(payload, 'evangelism').subscribe(
       ({ message }) => {
         this.isBusy = false;
+        this.selection.clear();
         this.toastr.success(message, 'Success');
         this.closebtn._elementRef.nativeElement.click();
         this.getEvangelism();

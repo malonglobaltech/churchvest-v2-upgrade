@@ -175,10 +175,12 @@ export class SidenavComponent implements OnInit {
         {
           title: 'Reconciliation',
           url: 'reconciliation',
+          disabled: true,
         },
         {
           title: 'Payroll',
           url: 'payroll',
+          disabled: true,
         },
         {
           title: 'Settings',
@@ -195,7 +197,7 @@ export class SidenavComponent implements OnInit {
     },
     {
       title: 'More',
-      url: 'people',
+      url: 'more',
       icon: 'assets/img/svg/more-icon.svg',
       hasChildren: true,
       hasSelector: false,
@@ -219,6 +221,7 @@ export class SidenavComponent implements OnInit {
           title: 'Location',
           url: 'location',
           hasSelector: false,
+          disabled: true,
         },
         {
           title: 'Group',

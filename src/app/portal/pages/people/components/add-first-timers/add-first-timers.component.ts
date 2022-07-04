@@ -123,19 +123,17 @@ export class AddFirstTimersComponent implements OnInit {
 
   getMembers() {
     this._memberList = [];
-    this.peopleServ
-      .fetchAll('members', this.currentPage + 1, this.pageSize)
-      .subscribe(
-        (res: any) => {
-          const { data } = res;
-          this._memberList = data;
-        },
-        (errors) => {
-          if (errors) {
-            this._memberList = [];
-          }
+    this.peopleServ.fetchAll('members', this.currentPage + 1).subscribe(
+      (res: any) => {
+        const { data } = res;
+        this._memberList = data;
+      },
+      (errors) => {
+        if (errors) {
+          this._memberList = [];
         }
-      );
+      }
+    );
   }
   getRoutes() {
     this.route.queryParams
@@ -241,14 +239,13 @@ export class AddFirstTimersComponent implements OnInit {
   }
   onUpdate() {
     this.isBusy = true;
-
     if (this.updateForm.invalid) {
       this.isBusy = false;
       return;
     }
     if (this.updateForm.valid) {
       //Make api call here...
-      this.peopleServ.addPersonalInfo(this.updatedFormValue).subscribe(
+      this.peopleServ.updateFirstTimer(this.updatedFormValue).subscribe(
         ({ message, data }) => {
           this.toastr.success(message, 'Message');
           this.isBusy = false;

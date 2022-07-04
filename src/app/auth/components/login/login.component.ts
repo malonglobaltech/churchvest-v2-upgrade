@@ -27,6 +27,7 @@ export class LoginComponent implements OnInit {
   recordMsg: any;
   selectedChurch: any;
   isChecked: boolean = true;
+
   public form: FormGroup = new FormGroup({});
   constructor(
     private authServ: AuthService,

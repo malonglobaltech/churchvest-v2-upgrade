@@ -5,7 +5,6 @@ import {
   FormBuilder,
   FormControl,
   FormGroup,
-  FormGroupDirective,
   ValidationErrors,
   ValidatorFn,
   Validators,
@@ -13,8 +12,6 @@ import {
 import { ErrorStateMatcher } from '@angular/material/core';
 import { NavigationExtras, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
-import { ObservableInput, throwError } from 'rxjs';
-import { catchError } from 'rxjs/operators';
 import { AuthService } from 'src/app/services/auth.service';
 import { IAuth } from 'src/app/shared/model';
 import {

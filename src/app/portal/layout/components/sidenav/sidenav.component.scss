@@ -159,6 +159,15 @@
               &:hover {
                 border-radius: 10px;
               }
+              &.spaced {
+                justify-content: space-between !important;
+                mat-icon {
+                  height: 18px;
+                  width: 18px;
+                  font-size: 18px;
+                  color: rgba($light-grey, 0.7);
+                }
+              }
             }
           }
         }
