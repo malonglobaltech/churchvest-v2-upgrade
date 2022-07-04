@@ -80,7 +80,9 @@
                   <label>Amount</label>
                   <input
                     type="number"
+                    name="amount"
                     placeholder="Enter amount"
+                    [(ngModel)]="_amount"
                     (input)="amountChange($event)"
                   />
                 </div>

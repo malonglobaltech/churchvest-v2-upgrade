@@ -437,6 +437,10 @@ export class SendMessageComponent implements OnInit {
         return (res = this.smsForm.controls['new_convert'].value
           .filter((x: any) => x !== 0)
           .map((a: any) => parseInt(a.id)));
+      case (identifier = 'department'):
+        return (res = this.smsForm.controls['department'].value
+          .filter((x: any) => x !== 0)
+          .map((a: any) => a.id));
 
       default:
         return;
@@ -478,6 +482,7 @@ export class SendMessageComponent implements OnInit {
       regular_members: this.getCell('reg_member'),
       first_timer: this.getCell('first_timer'),
       new_convert: this.getCell('new_convert'),
+      department: this.getCell('department'),
     });
 
     const formData = new FormData();
@@ -492,6 +497,10 @@ export class SendMessageComponent implements OnInit {
     }
     for (let item of this.smsForm.get('new_convert').value) {
       formData.append('to[convert][]', item);
+    }
+
+    for (let item of this.smsForm.get('department').value) {
+      formData.append('to[departments][]', item);
     }
 
     if (this.smsForm.valid) {

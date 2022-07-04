@@ -75,15 +75,17 @@ export class HeaderComponent implements OnInit {
     );
   }
 
-  paymentInit() {
-    console.log('Payment initialized');
-  }
+  paymentInit() {}
 
   paymentDone(event: any) {
     //Make api call here...
-    this.sm.topSmsUnit(JSON.stringify({ ref: event.reference })).subscribe(
-      (res) => {
+    let payload = {
+      ref: event.reference,
+    };
+    this.sm.topSmsUnit(payload).subscribe(
+      () => {
         this.isBusy_ = false;
+        this._amount = null;
         this.closebtn._elementRef.nativeElement.click();
         this.getSmsBalance();
       },
@@ -99,9 +101,7 @@ export class HeaderComponent implements OnInit {
     );
   }
 
-  paymentCancel() {
-    console.log('payment failed');
-  }
+  paymentCancel() {}
   logout() {
     this.authService.logout();
     this.router.navigate(['/']);

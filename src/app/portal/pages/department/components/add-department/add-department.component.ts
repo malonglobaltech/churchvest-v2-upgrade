@@ -71,7 +71,7 @@ export class AddDepartmentComponent implements OnInit {
         secretary: [null],
       }),
       meeting_days: [[]],
-      notify_periods: [[], Validators.required],
+      notify_period: [null, Validators.required],
       notify_unit: [null],
       notify_channel: [null, Validators.required],
       date_formed: [null, Validators.required],
