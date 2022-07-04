@@ -20,11 +20,11 @@ import { ObservableInput, throwError } from 'rxjs';
 import { EventsService } from 'src/app/portal/services/events.service';
 
 @Component({
-  selector: 'app-add-eventw',
-  templateUrl: './add-eventw.component.html',
-  styleUrls: ['./add-eventw.component.scss']
+  selector: 'app-add-event',
+  templateUrl: './add-event.component.html',
+  styleUrls: ['./add-event.component.scss']
 })
-export class AddEventwComponent implements OnInit {
+export class AddEventComponent implements OnInit {
   @ViewChild('allSelected') allSelected: any;
   @ViewChild('matSelect') select: any;
   queryString: string;

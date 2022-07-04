@@ -1,7 +1,7 @@
 <section>
   <div class="header d-flex align-items-center justify-content-between mb-4">
     <div class="title">Event</div>
-    <button mat-stroked-button routerLink="/portal/events/all">
+    <button mat-stroked-button routerLink="/portal/events/add">
       <mat-icon class="me-2">add</mat-icon> Add New Event
     </button>
   </div>
@@ -161,7 +161,7 @@
                     </button>
                     <button
                       mat-menu-item
-                      [routerLink]="['/portal/events/all']"
+                      [routerLink]="['/portal/events/add']"
                       [queryParams]="{
                         query: 'edit',
                         id: element.id

@@ -12,11 +12,11 @@ import { Router } from '@angular/router';
 import { EventsService } from 'src/app/portal/services/events.service';
 
 @Component({
-  selector: 'app-trash-events',
-  templateUrl: './trash-events.component.html',
-  styleUrls: ['./trash-events.component.scss']
+  selector: 'app-trashed-events',
+  templateUrl: './trashed-events.component.html',
+  styleUrls: ['./trashed-events.component.scss']
 })
-export class TrashEventsComponent implements OnInit {
+export class TrashedEventsComponent implements OnInit {
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild('closebtn') closebtn: any;
   @ViewChild('closebtn_') closebtn_: any;

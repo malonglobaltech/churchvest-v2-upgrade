@@ -14,11 +14,11 @@ import {
 } from 'src/app/shared/_helperFunctions';
 
 @Component({
-  selector: 'app-event-overview',
-  templateUrl: './event-overview.component.html',
-  styleUrls: ['./event-overview.component.scss']
+  selector: 'app-overview',
+  templateUrl: './overview.component.html',
+  styleUrls: ['./overview.component.scss']
 })
-export class EventOverviewComponent implements OnInit {
+export class OverviewComponent implements OnInit {
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild('closebtn') closebtn: any;
   eventList: any[] = [];
@@ -94,6 +94,7 @@ export class EventOverviewComponent implements OnInit {
       .subscribe(
         (res: any) => {
           this._loading = false;
+          console.log('res', res)
           const { data, meta } = res;
           this.eventList = data;
           this.dataSource = new MatTableDataSource(this.eventList);
