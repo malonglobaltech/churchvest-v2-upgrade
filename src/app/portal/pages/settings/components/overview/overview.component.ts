@@ -35,8 +35,6 @@ export class OverviewComponent implements OnInit {
     this.profileImg = this.userData.memberships.filter(
       (x) => x.id == this.userData.id
     );
-
-    console.log(this.churchData);
   }
 }
 
