@@ -231,12 +231,12 @@ export class PeopleService {
         catchError(handleError)
       );
   }
-  updateFirstTimer(model: any, id: number): Observable<any> {
+  updateFirstTimer(model: any): Observable<any> {
     return this.http
       .post<any>(
         ` ${
           environment.managementbaseUrl
-        }/${this.authService.getChurchSlug()}/people/members/first_timers/${id}/update`,
+        }/${this.authService.getChurchSlug()}/people/members/personal`,
         model
       )
       .pipe(

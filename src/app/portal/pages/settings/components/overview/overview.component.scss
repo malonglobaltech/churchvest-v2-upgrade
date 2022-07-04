@@ -1,0 +1,60 @@
+.profile {
+  .image {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    position: relative;
+    background-repeat: no-repeat !important;
+    background-size: cover !important;
+    background-position: 50% !important;
+    span {
+      display: inline-flex;
+      justify-content: center;
+      align-items: center;
+      position: absolute;
+      right: 13px;
+      bottom: 0;
+      width: 29px;
+      height: 28px;
+      border-radius: 5px;
+      background: rgba(7, 20, 40, 0.7);
+      cursor: pointer;
+      mat-icon {
+        font-size: 20px;
+        width: 20px;
+        height: 20px;
+        color: #fff;
+      }
+    }
+  }
+  p {
+    margin: 0 0 0 1.5em;
+    font-size: 16px;
+    color: #071428;
+    span {
+      display: block;
+      font-size: 12px;
+      color: #463e79;
+    }
+  }
+  .section {
+    background: #f9f9f9;
+    padding: 2em;
+    border-radius: 5px;
+    margin-bottom: 2em;
+    .row {
+      p {
+        color: #afafaf;
+        font-size: 14px;
+        margin: 0;
+        width: fit-content;
+        &:first-child {
+          margin-right: 5em;
+        }
+      }
+      &:last-child {
+        margin-bottom: 2em;
+      }
+    }
+  }
+}

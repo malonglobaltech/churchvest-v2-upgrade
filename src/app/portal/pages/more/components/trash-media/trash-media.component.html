@@ -8,26 +8,6 @@
     </div>
     <div class="title">Trash</div>
   </div>
-  <div class="w-500 display" [ngClass]="{ pending: _loading }">
-    <div class="input">
-      <mat-select
-        class="select capitalize"
-        placeholder="Query media type"
-        [ngModel]="mediaType"
-        (selectionChange)="handleFilterChange($event)"
-      >
-        <mat-option disabled="" selected="" value=""
-          >Query media type</mat-option
-        >
-        <mat-option
-          *ngFor="let item of mediaTypeList"
-          [value]="item"
-          class="capitalize"
-          >{{ item }}</mat-option
-        >
-      </mat-select>
-    </div>
-  </div>
   <div
     class="d-flex justify-content-center align-items-center my-3 empty-state"
     *ngIf="!_loading && (!mediaList || mediaList.length === 0)"

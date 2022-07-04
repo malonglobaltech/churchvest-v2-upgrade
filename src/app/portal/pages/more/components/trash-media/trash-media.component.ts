@@ -69,9 +69,7 @@ export class TrashMediaComponent implements OnInit {
 
     this.selection.select(...this.dataSource.data);
   }
-  handleFilterChange(val: any) {
-    this.queryAllMedia(val.value);
-  }
+
   checkboxLabel(row?: any): string {
     if (!row) {
       return `${this.isAllSelected() ? 'deselect' : 'select'} all`;
@@ -114,40 +112,13 @@ export class TrashMediaComponent implements OnInit {
       this.mediaService.fetchAllFromTrash(this.mediaType).subscribe((res) => {
         const { data } = res;
         this.itemDetails = data.filter((x) => x.id == id);
-        console.log(this.itemDetails);
       });
     }
-  }
-  queryAllMedia(query?: string) {
-    if (query) {
-      this.mediaType = query;
-    }
-    this._loading = true;
-    this.mediaList = [];
-    this.mediaService
-      .fetchAllFromTrash(this.mediaType, this.currentPage + 1)
-      .subscribe(
-        (res: any) => {
-          this._loading = false;
-          const { data } = res;
-          this.mediaList = data;
-          this.dataSource = new MatTableDataSource(this.mediaList);
-          this.paginator.pageIndex = this.currentPage;
-          this.paginator.length = this.mediaList.length;
-        },
-        (errors) => {
-          if (errors) {
-            this._loading = false;
-            this.mediaList = [];
-          }
-        }
-      );
   }
   getSelectedMedia(arr: any) {
     let filter = arr.map((x: any) => x.id);
     this.selectedMedia = filter;
   }
-
   pageChanged(event: PageEvent) {
     this.pageSize = event.pageSize;
     this.currentPage = event.pageIndex;
@@ -162,8 +133,6 @@ export class TrashMediaComponent implements OnInit {
       };
     }
     if (this._isSingleSelected) {
-      console.log('true', this.itemDetails[0].id);
-
       payload = {
         media_id: [parseInt(this.itemDetails[0].id)],
       };

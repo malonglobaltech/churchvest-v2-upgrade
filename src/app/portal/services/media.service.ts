@@ -69,7 +69,7 @@ export class MediaService {
       .get<any>(
         `${
           environment.managementbaseUrl
-        }/${this.authService.getChurchSlug()}/media/trash/${query}?page=${page}`
+        }/${this.authService.getChurchSlug()}/media/trash/trashed_media?page=${page}`
       )
       .pipe(catchError(handleError));
   }

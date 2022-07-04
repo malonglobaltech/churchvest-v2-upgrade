@@ -34,6 +34,13 @@ const routes: Routes = [
           import('../pages/people/people.module').then((m) => m.PeopleModule),
       },
       {
+        path: 'settings',
+        loadChildren: () =>
+          import('../pages/settings/settings.module').then(
+            (m) => m.SettingsModule
+          ),
+      },
+      {
         path: '',
         redirectTo: 'activity',
       },
