@@ -43,7 +43,12 @@
             </button>
           </div>
           <div class="section">
-            <div class="row">
+            <div class="d-flex justify-content-end">
+              <button mat-mini-fab color="primary" (click)="toggleEdit()">
+                <mat-icon>edit</mat-icon>
+              </button>
+            </div>
+            <div class="row" *ngIf="!isEditing">
               <div class="col-lg-4">
                 <p>
                   Full Name
@@ -55,14 +60,45 @@
               <div class="col-lg-8">
                 <div class="d-flex">
                   <p>
-                    Phone number <span>{{ userData.phone }}1</span>
+                    Email address <span>{{ userData.email }}</span>
                   </p>
                   <p>
-                    Email address <span>{{ userData.email }}</span>
+                    Phone number <span>{{ userData.phone }}1</span>
                   </p>
                 </div>
               </div>
             </div>
+            <ng-container *ngIf="isEditing">
+              <div class="row">
+                <div class="col-lg-6">
+                  <div class="input">
+                    <label>Full name</label>
+                    <input
+                      type="text"
+                      name="fullname"
+                      [(ngModel)]="fullname"
+                      placeholder="Full name"
+                    />
+                  </div>
+                </div>
+                <div class="col-lg-6">
+                  <div class="input">
+                    <label>Email</label>
+                    <input
+                      type="email"
+                      name="email"
+                      placeholder="Email address"
+                      [(ngModel)]="email"
+                    />
+                  </div>
+                </div>
+              </div>
+              <div class="d-flex mt-2">
+                <button type="button" mat-flat-button (click)="onUpdate()">
+                  Update <mat-spinner *ngIf="isBusy"></mat-spinner>
+                </button>
+              </div>
+            </ng-container>
           </div>
         </section>
       </mat-tab>

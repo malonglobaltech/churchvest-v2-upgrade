@@ -22,6 +22,9 @@ export class OverviewComponent implements OnInit {
   userData: any;
   churchData: any;
   profileImg: any;
+  fullname: any;
+  email: any;
+  isEditing: boolean = false;
   isBusy: boolean = false;
   constructor(
     private authService: AuthService,
@@ -31,9 +34,44 @@ export class OverviewComponent implements OnInit {
 
   ngOnInit(): void {
     this.userData = this.authService.getUserData();
+    this.fullname = `${this.userData.first_name} ${this.userData.last_name}`;
+    this.email = `${this.userData.email}`;
     this.churchData = JSON.parse(localStorage.getItem('user_church'));
     this.profileImg = this.userData.memberships.filter(
       (x) => x.id == this.userData.id
+    );
+  }
+  toggleEdit() {
+    this.isEditing = !this.isEditing;
+  }
+  onUpdate() {
+    this.isBusy = true;
+    let payload = {
+      name: this.fullname,
+    };
+    if (payload == null) {
+      this.isBusy = false;
+      return;
+    }
+    const formData = new FormData();
+    formData.append('name', this.fullname);
+    formData.append('email', this.email);
+
+    this.authService.updateProfile(formData).subscribe(
+      ({ message, data }) => {
+        this.toastr.success(message, 'Message');
+        this.isBusy = false;
+        this.isEditing = !this.isEditing;
+      },
+      (error) => {
+        this.isBusy = false;
+        this.toastr.error(error, 'Message', {
+          timeOut: 3000,
+        });
+      },
+      () => {
+        this.isBusy = false;
+      }
     );
   }
 }
@@ -78,8 +116,14 @@ export class ImageuploadComponent implements OnInit {
       reader.readAsDataURL(this.fileImage);
     }
   }
+
   updateProfileImg() {
     this.isBusy = true;
+
+    if (this.fileImage == null) {
+      this.isBusy = false;
+      return;
+    }
     const formData = new FormData();
     formData.append('profile', this.fileImage);
 
