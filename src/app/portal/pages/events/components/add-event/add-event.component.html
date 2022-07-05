@@ -108,7 +108,7 @@
               </mat-select>
             </div>
           </div>
-          <div class="grid grid--1fr--1fr grid-gap-15 mb-3">
+          <div class="grid  grid-gap-15 mb-3">
             <div class="input">
               <label> Repeat Event</label>
               <mat-select
@@ -127,13 +127,7 @@
                 >
               </mat-select>
             </div>
-                <!-- <div class="input">
-                <label>Event Banner</label>
-                <app-imageupload
-                  [setImageFile]="image"
-                  (change)="onImageUpload($event)"
-                ></app-imageupload>
-                </div> -->
+               
                 <div class="wrapper d-flex align-items-center justify-content-between">
                   <div class="d-flex align-items-center justify-content-between">
                     <input
@@ -145,21 +139,21 @@
                       "
                       #uploadBanner
                     />
-                    <div class="image d-flex"
+                    <div class="image"
                       [ngStyle]="{
-                        background: image[0]?.image 
-                          ? 'url(' + image + ')'
-                          : 'url(' + 'assets/img/png/avatar.png' + ')'
+                        background: fileImage 
+                          ? 'url(' + fileImage + ')'
+                          : 'url(' + 'assets/img/png/image-placeholder.png' + ')'
                       }"
                       #uploadedBanner
                       >
                       <span>
                         <mat-icon (click)="imgUp.addBanner(uploadBanner)"
-                          >edit</mat-icon>
+                          >photo_camera</mat-icon>
                       </span>
+                    </div>
                     <div>
                       <p>Event Banner <span>Click image to change it</span></p>
-                    </div>
                     </div>
                   </div>
                 </div>
