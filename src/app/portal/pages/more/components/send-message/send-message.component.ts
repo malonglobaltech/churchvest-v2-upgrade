@@ -440,7 +440,19 @@ export class SendMessageComponent implements OnInit {
       case (identifier = 'department'):
         return (res = this.smsForm.controls['department'].value
           .filter((x: any) => x !== 0)
-          .map((a: any) => a.id));
+          .map((a: any) => parseInt(a.id)));
+      case (identifier = 'fellowship'):
+        return (res = this.smsForm.controls['fellowship'].value
+          .filter((x: any) => x !== 0)
+          .map((a: any) => parseInt(a.id)));
+      case (identifier = 'evangelism'):
+        return (res = this.smsForm.controls['evangelism'].value
+          .filter((x: any) => x !== 0)
+          .map((a: any) => parseInt(a.id)));
+      case (identifier = 'group'):
+        return (res = this.smsForm.controls['group'].value
+          .filter((x: any) => x !== 0)
+          .map((a: any) => parseInt(a.id)));
 
       default:
         return;
@@ -452,19 +464,31 @@ export class SendMessageComponent implements OnInit {
       case (identifier = 'reg_member'):
         return (res = this.emailForm.controls['regular_members'].value
           .filter((x: any) => x !== 0)
-          .map((a: any) => a.id));
+          .map((a: any) => parseInt(a.id)));
       case (identifier = 'first_timer'):
         return (res = this.emailForm.controls['first_timer'].value
           .filter((x: any) => x !== 0)
-          .map((a: any) => a.id));
+          .map((a: any) => parseInt(a.id)));
       case (identifier = 'new_convert'):
         return (res = this.emailForm.controls['new_convert'].value
           .filter((x: any) => x !== 0)
-          .map((a: any) => a.id));
+          .map((a: any) => parseInt(a.id)));
       case (identifier = 'department'):
         return (res = this.emailForm.controls['department'].value
           .filter((x: any) => x !== 0)
-          .map((a: any) => a.id));
+          .map((a: any) => parseInt(a.id)));
+      case (identifier = 'fellowship'):
+        return (res = this.emailForm.controls['fellowship'].value
+          .filter((x: any) => x !== 0)
+          .map((a: any) => parseInt(a.id)));
+      case (identifier = 'evangelism'):
+        return (res = this.emailForm.controls['evangelism'].value
+          .filter((x: any) => x !== 0)
+          .map((a: any) => parseInt(a.id)));
+      case (identifier = 'group'):
+        return (res = this.emailForm.controls['group'].value
+          .filter((x: any) => x !== 0)
+          .map((a: any) => parseInt(a.id)));
 
       default:
         return;
@@ -483,6 +507,9 @@ export class SendMessageComponent implements OnInit {
       first_timer: this.getCell('first_timer'),
       new_convert: this.getCell('new_convert'),
       department: this.getCell('department'),
+      group: this.getCell('group'),
+      evangelism: this.getCell('evangelism'),
+      fellowship: this.getCell('fellowship'),
     });
 
     const formData = new FormData();
@@ -501,6 +528,15 @@ export class SendMessageComponent implements OnInit {
 
     for (let item of this.smsForm.get('department').value) {
       formData.append('to[departments][]', item);
+    }
+    for (let item of this.smsForm.get('group').value) {
+      formData.append('to[group][]', item);
+    }
+    for (let item of this.smsForm.get('evangelism').value) {
+      formData.append('to[evangelism][]', item);
+    }
+    for (let item of this.smsForm.get('fellowship').value) {
+      formData.append('to[fellowship][]', item);
     }
 
     if (this.smsForm.valid) {
@@ -538,6 +574,9 @@ export class SendMessageComponent implements OnInit {
       first_timer: this.getEmail('first_timer'),
       new_convert: this.getEmail('new_convert'),
       department: this.getEmail('department'),
+      group: this.getEmail('group'),
+      evangelism: this.getEmail('evangelism'),
+      fellowship: this.getEmail('fellowship'),
     });
     const formData = new FormData();
     formData.append('type', this.emailForm.get('type').value);
@@ -550,6 +589,16 @@ export class SendMessageComponent implements OnInit {
     for (let item of this.emailForm.get('department').value) {
       formData.append('to[departments][]', item);
     }
+    for (let item of this.emailForm.get('group').value) {
+      formData.append('to[group][]', item);
+    }
+    for (let item of this.emailForm.get('evangelism').value) {
+      formData.append('to[evangelism][]', item);
+    }
+    for (let item of this.emailForm.get('fellowship').value) {
+      formData.append('to[fellowship][]', item);
+    }
+
     for (let item of this.emailForm.get('first_timer').value) {
       formData.append('to[first_timers][]', item);
     }

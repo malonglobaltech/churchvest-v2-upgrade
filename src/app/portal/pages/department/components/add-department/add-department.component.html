@@ -52,6 +52,7 @@
                 name="ngxTimepicker"
                 [ngxTimepicker]="picker"
                 formControlName="start_time"
+                step="2"
               />
               <ngx-material-timepicker #picker></ngx-material-timepicker>
             </div>
@@ -61,6 +62,7 @@
                 name="ngxTimepicker"
                 [ngxTimepicker]="picker2"
                 formControlName="end_time"
+                step="2"
               />
               <ngx-material-timepicker #picker2></ngx-material-timepicker>
             </div>
@@ -86,7 +88,7 @@
                 class="select"
                 multiple
                 #membersSelect
-                formControlName="members_id"
+                formControlName="members_to_add"
                 (selectionChange)="handleMembersChange($event)"
               >
                 <mat-select-trigger>
@@ -294,6 +296,7 @@
                   name="ngxTimepicker"
                   [ngxTimepicker]="picker"
                   formControlName="start_time"
+                  step="2"
                 />
                 <ngx-material-timepicker #picker></ngx-material-timepicker>
               </div>
@@ -303,6 +306,7 @@
                   name="ngxTimepicker"
                   [ngxTimepicker]="picker2"
                   formControlName="end_time"
+                  step="2"
                 />
                 <ngx-material-timepicker #picker2></ngx-material-timepicker>
               </div>
@@ -329,7 +333,7 @@
                   multiple
                   #membersSelect
                   [compareWith]="compareFunc"
-                  formControlName="members_id"
+                  formControlName="members_to_add"
                   (selectionChange)="handleMembersChange($event)"
                 >
                   <mat-select-trigger>

@@ -6,10 +6,16 @@ import { ActivityComponent } from './activity.component';
 import { AngularMaterialModule } from 'src/app/shared/angular-material.module';
 import { StatsOverviewComponent } from './components/stats-overview/stats-overview.component';
 import { EventsComponent } from './components/events/events.component';
+import { LoadingRollerModule } from '../../components/loading-roller/loading-roller.module';
 
 @NgModule({
   declarations: [ActivityComponent, StatsOverviewComponent, EventsComponent],
-  imports: [CommonModule, ActivityRoutingModule, AngularMaterialModule],
+  imports: [
+    CommonModule,
+    ActivityRoutingModule,
+    AngularMaterialModule,
+    LoadingRollerModule,
+  ],
   exports: [ActivityComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })

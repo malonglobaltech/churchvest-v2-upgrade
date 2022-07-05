@@ -1,4 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
+import { SummaryService } from 'src/app/portal/services/summary.service';
 
 @Component({
   selector: 'app-stats-overview',
@@ -7,9 +8,14 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 })
 export class StatsOverviewComponent implements OnInit {
   @ViewChild('scrollItems') scrollItems: any;
-  constructor() {}
+  _loading_: boolean = false;
+  data: any;
+  activitiesItems: any[] = [];
+  constructor(private summaryService: SummaryService) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.getSummary();
+  }
   scrollRight(): void {
     this.scrollItems.nativeElement.scrollTo({
       left: this.scrollItems.nativeElement.scrollLeft + 400,
@@ -22,36 +28,52 @@ export class StatsOverviewComponent implements OnInit {
       behavior: 'smooth',
     });
   }
-  activitiesItems = [
-    {
-      title: 'Regular Members',
-      url: '/portal/people/members',
-      count: '1',
-      icon: 'plus-heart',
-    },
-    {
-      title: 'New Departments',
-      url: '',
-      count: '0',
-      icon: 'square-add',
-    },
-    {
-      title: 'Income',
-      url: '',
-      count: '0',
-      icon: 'income',
-    },
-    {
-      title: 'Expense',
-      url: '',
-      count: '0',
-      icon: 'expense',
-    },
-    {
-      title: 'Reconciled',
-      url: '',
-      count: '0',
-      icon: 'reconciliation',
-    },
-  ];
+
+  getSummary() {
+    this._loading_ = true;
+    this.summaryService.fetchSummary().subscribe(
+      (res) => {
+        this._loading_ = false;
+        const { summary } = res.data;
+        this.getActivitySummary(summary);
+      },
+      () => {
+        this._loading_ = false;
+      }
+    );
+  }
+  getActivitySummary(summary: any) {
+    this.activitiesItems = [
+      {
+        title: 'Regular Members',
+        url: '/portal/people/members',
+        count: summary.regular_members,
+        icon: 'plus-heart',
+      },
+      {
+        title: 'New Departments',
+        url: '/portal/department',
+        count: summary.departments,
+        icon: 'square-add',
+      },
+      {
+        title: 'Events',
+        url: '',
+        count: summary.events,
+        icon: 'events-icon',
+      },
+      {
+        title: 'Fellowships',
+        url: '/portal/people/house-fellowship',
+        count: summary.fellowships,
+        icon: 'hand_with_love',
+      },
+      {
+        title: 'Reconciled',
+        url: '',
+        count: '0',
+        icon: 'reconciliation',
+      },
+    ];
+  }
 }

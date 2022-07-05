@@ -139,7 +139,7 @@
                 multiple
                 #matSelect
                 [compareWith]="compareFunc"
-                formControlName="members_id"
+                formControlName="members_to_add"
                 (selectionChange)="handleMembersChange($event)"
               >
                 <mat-select-trigger>
@@ -206,7 +206,7 @@
           (ngSubmit)="onUpdateFellowship()"
         >
           <div class="form-wrap">
-            <div class="title mb-2">New Fellowship</div>
+            <div class="title mb-2">Update Fellowship</div>
             <mat-divider></mat-divider>
             <div class="grid grid--1fr--1fr grid-gap-15 mt-4 mb-3">
               <div class="input">
@@ -337,7 +337,7 @@
                   multiple
                   #matSelect
                   [compareWith]="compareFunc"
-                  formControlName="members_id"
+                  formControlName="members_to_add"
                   (selectionChange)="handleMembersChange($event)"
                 >
                   <mat-select-trigger>

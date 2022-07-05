@@ -47,7 +47,13 @@
           <mat-icon>expand_more</mat-icon>
         </div>
         <mat-menu #menu="matMenu">
-          <button type="button" mat-menu-item>Profile Details</button>
+          <button
+            type="button"
+            mat-menu-item
+            routerLink="/portal/settings/profile-settings"
+          >
+            Profile Details
+          </button>
           <button type="button" mat-menu-item>Notification</button>
           <button mat-menu-item type="button">Email Support</button>
           <button type="button" mat-menu-item (click)="logout()">Logout</button>

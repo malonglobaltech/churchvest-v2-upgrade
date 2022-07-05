@@ -76,7 +76,7 @@ export class AddDepartmentComponent implements OnInit {
       notify_channel: [null, Validators.required],
       date_formed: [null, Validators.required],
       description: [null],
-      members_id: [[]],
+      members_to_add: [[]],
     });
   }
 
@@ -192,6 +192,8 @@ export class AddDepartmentComponent implements OnInit {
             this.filteredMembers = this.itemDetails[0]?.members.map(
               (x: any) => x.member
             );
+            console.log(this.filteredMembers);
+
             this.memberItems = this.filteredMembers;
           } else {
             this.memberItems = this._memberList;
@@ -217,19 +219,19 @@ export class AddDepartmentComponent implements OnInit {
       notify_channel: [this.itemDetails[0]?.notify_channel],
       date_formed: [this.itemDetails[0]?.date_formed],
       description: [this.itemDetails[0]?.description],
-      members_id: [this.filteredMembers],
+      members_to_add: [this.filteredMembers],
     });
   }
   onSubmit() {
     this.isBusy = true;
     let ids: any;
-    if (this.departmentForm.controls['members_id'].value !== null) {
-      ids = this.departmentForm.controls['members_id'].value
+    if (this.departmentForm.controls['members_to_add'].value !== null) {
+      ids = this.departmentForm.controls['members_to_add'].value
         .filter((x: any) => x !== 0)
         .map((a: any) => a.id);
     }
     this.departmentForm.patchValue({
-      members_id: ids,
+      members_to_add: ids,
     });
 
     if (this.departmentForm.invalid) {
@@ -262,14 +264,15 @@ export class AddDepartmentComponent implements OnInit {
   onUpdate() {
     this.isBusy = true;
     let ids: any;
-    if (this.updateDepartmentForm.controls['members_id'].value !== null) {
-      ids = this.updateDepartmentForm.controls['members_id'].value
+    if (this.updateDepartmentForm.controls['members_to_add'].value !== null) {
+      ids = this.updateDepartmentForm.controls['members_to_add'].value
         .filter((x: any) => x !== 0)
         .map((a: any) => a.id);
     }
     this.updateDepartmentForm.patchValue({
-      members_id: ids,
+      members_to_add: ids,
     });
+
     if (this.updateDepartmentForm.invalid) {
       this.isBusy = false;
       return;

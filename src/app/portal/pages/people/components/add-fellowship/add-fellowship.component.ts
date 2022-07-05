@@ -66,7 +66,7 @@ export class AddFellowshipComponent implements OnInit {
       secretary_id: [null],
       treasurer_id: [null],
       comment: [null],
-      members_id: [[]],
+      members_to_add: [[]],
       date_of_creation: [null],
     });
   }
@@ -187,7 +187,7 @@ export class AddFellowshipComponent implements OnInit {
         secretary_id: [this.itemDetails?.secretary?.member?.id],
         treasurer_id: [this.itemDetails?.treasurer?.member?.id],
         comment: [this.itemDetails?.comment],
-        members_id: [this.filteredMembers],
+        members_to_add: [this.filteredMembers],
         date_of_creation: [this.itemDetails?.date_of_creation],
       });
     }
@@ -195,13 +195,13 @@ export class AddFellowshipComponent implements OnInit {
   onSubmit() {
     this.isBusy = true;
     let ids: any;
-    if (this.fellowshipForm.controls['members_id'].value !== null) {
-      ids = this.fellowshipForm.controls['members_id'].value
+    if (this.fellowshipForm.controls['members_to_add'].value !== null) {
+      ids = this.fellowshipForm.controls['members_to_add'].value
         .filter((x: any) => x !== 0)
         .map((a: any) => a.id);
     }
     this.fellowshipForm.patchValue({
-      members_id: ids,
+      members_to_add: ids,
     });
 
     if (this.fellowshipForm.invalid) {
@@ -234,13 +234,13 @@ export class AddFellowshipComponent implements OnInit {
   onUpdateFellowship() {
     this.isBusy = true;
     let ids: any;
-    if (this.updatefellowshipForm.controls['members_id'].value !== null) {
-      ids = this.updatefellowshipForm.controls['members_id'].value
+    if (this.updatefellowshipForm.controls['members_to_add'].value !== null) {
+      ids = this.updatefellowshipForm.controls['members_to_add'].value
         .filter((x: any) => x !== 0)
         .map((a: any) => a.id);
     }
     this.updatefellowshipForm.patchValue({
-      members_id: ids,
+      members_to_add: ids,
     });
     if (this.updatefellowshipForm.invalid) {
       this.isBusy = false;
