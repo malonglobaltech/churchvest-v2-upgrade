@@ -8,7 +8,7 @@ import { AngularMaterialModule } from 'src/app/shared/angular-material.module';
 import { ImageuploadModule } from '../../components/imageupload/imageupload.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { LoadingRollerModule } from '../../components/loading-roller/loading-roller.module';
-import { AddEventComponent } from './components/add-event/add-event.component';
+import { AddEventComponent, ImageUploadComponent } from './components/add-event/add-event.component';
 import { TrashedEventsComponent } from './components/trashed-events/trashed-events.component';
 
 
@@ -28,6 +28,7 @@ import { TrashedEventsComponent } from './components/trashed-events/trashed-even
     LoadingRollerModule,
     ReactiveFormsModule
   ],
+  providers: [ImageUploadComponent],
   exports: [EventsComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })

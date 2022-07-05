@@ -82,33 +82,6 @@
           </div>
           <div class="grid grid--1fr--1fr grid-gap-15 mb-3">
             <div class="input">
-              <label> Repeat Event</label>
-              <mat-select
-                class="select"
-                placeholder="Select repeat period"
-                formControlName="repeat"
-              >
-                <mat-option disabled="" selected="" value=""
-                  >Repeat Event </mat-option
-                >
-                <mat-option
-                  *ngFor="let item of repeatMode"
-                  [value]="item"
-                  class="capitalize"
-                  >{{ item }}</mat-option
-                >
-              </mat-select>
-            </div>
-                <div class="input">
-                <label>Event Banner</label>
-                <app-imageupload
-                  [setImageFile]="image"
-                  (change)="onImageUpload($event)"
-                ></app-imageupload>
-                </div>
-          </div>
-          <div class="grid grid--1fr--1fr grid-gap-15 mb-3">
-            <div class="input">
               <label>Name of Participant</label>
               <input
                 type="number"
@@ -134,6 +107,62 @@
                 >
               </mat-select>
             </div>
+          </div>
+          <div class="grid grid--1fr--1fr grid-gap-15 mb-3">
+            <div class="input">
+              <label> Repeat Event</label>
+              <mat-select
+                class="select"
+                placeholder="Select repeat period"
+                formControlName="repeat"
+              >
+                <mat-option disabled="" selected="" value=""
+                  >Repeat Event </mat-option
+                >
+                <mat-option
+                  *ngFor="let item of repeatMode"
+                  [value]="item"
+                  class="capitalize"
+                  >{{ item }}</mat-option
+                >
+              </mat-select>
+            </div>
+                <!-- <div class="input">
+                <label>Event Banner</label>
+                <app-imageupload
+                  [setImageFile]="image"
+                  (change)="onImageUpload($event)"
+                ></app-imageupload>
+                </div> -->
+                <div class="wrapper d-flex align-items-center justify-content-between">
+                  <div class="d-flex align-items-center justify-content-between">
+                    <input
+                      type="file"
+                      name="file"
+                      hidden=""
+                      (change)="
+                        imgUp.changeImageUploadListener($event, uploadedBanner)
+                      "
+                      #uploadBanner
+                    />
+                    <div class="image d-flex"
+                      [ngStyle]="{
+                        background: image[0]?.image 
+                          ? 'url(' + image + ')'
+                          : 'url(' + 'assets/img/png/avatar.png' + ')'
+                      }"
+                      #uploadedBanner
+                      >
+                      <span>
+                        <mat-icon (click)="imgUp.addBanner(uploadBanner)"
+                          >edit</mat-icon>
+                      </span>
+                    <div>
+                      <p>Event Banner <span>Click image to change it</span></p>
+                    </div>
+                    </div>
+                  </div>
+                </div>
           </div>
           <div class="grid mb-3">
             <div class="input">
@@ -291,7 +320,7 @@
               </mat-select>
             </div>
           </div>
-            <div class="grid grid--1fr--1fr grid-gap-15 mb-3">
+            <div class="grid  grid-gap-15 mb-3">
                 <div class="input">
                 <label> Repeat Event</label>
                 <mat-select
@@ -310,12 +339,34 @@
                     >
                 </mat-select>
                 </div>
-                <div class="input">
-                <label>Event Banner</label>
-                <app-imageupload
-                  [setImageFile]="itemDetails.image"
-                  (outToParent)="getChildValue($event, 'fileUpdate')"
-                ></app-imageupload>
+                <div class="wrapper d-flex align-items-center justify-content-between">
+                  <div class="d-flex align-items-center justify-content-between">
+                    <input
+                      type="file"
+                      name="file"
+                      hidden=""
+                      (change)="
+                        imgUp.changeImageUploadListener($event, uploadedBanner)
+                      "
+                      #uploadBanner
+                    />
+                    <div class="image"
+                      [ngStyle]="{
+                        background: itemDetails.image 
+                          ? 'url(' + itemDetails.image + ')'
+                          : 'url(' + fileImage + ')'
+                      }"
+                      #uploadedBanner
+                      >
+                      <span>
+                        <mat-icon (click)="imgUp.addBanner(uploadBanner)"
+                          >photo_camera</mat-icon>
+                      </span>
+                    </div>
+                    <div>
+                      <p>Event Banner <span>Click image to change it</span></p>
+                    </div>
+                  </div>
                 </div>
             </div>
             <div class="grid mb-3">

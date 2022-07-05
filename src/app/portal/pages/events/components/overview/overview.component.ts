@@ -94,7 +94,6 @@ export class OverviewComponent implements OnInit {
       .subscribe(
         (res: any) => {
           this._loading = false;
-          console.log('res', res)
           const { data, meta } = res;
           this.eventList = data;
           this.dataSource = new MatTableDataSource(this.eventList);

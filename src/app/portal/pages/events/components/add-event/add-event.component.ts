@@ -1,4 +1,11 @@
-import { Component, OnInit, Renderer2, ViewChild } from '@angular/core';
+import { 
+  Component,
+  EventEmitter,
+  Input, OnInit, 
+  Output, Renderer2, 
+  TemplateRef, 
+  ViewChild 
+} from '@angular/core';
 import { Location } from '@angular/common';
 import {
   FormBuilder,
@@ -19,6 +26,65 @@ import { catchError, filter } from 'rxjs/operators';
 import { ObservableInput, throwError } from 'rxjs';
 import { EventsService } from 'src/app/portal/services/events.service';
 
+
+@Component({
+  template: '',
+})
+export class ImageUploadComponent implements OnInit {
+  @ViewChild('uploadBanner') uploadBanner;
+  @ViewChild('uploadedBanner') uploadedBanner;
+  @Output() outToParent = new EventEmitter<any>();
+  @Input() setImageFile: any;
+  fileImage: any;
+  _filename: string;
+  _filesize: number;
+  isLoading: boolean = false;
+  constructor(private toastr: ToastrService, private renderer: Renderer2) {}
+
+  ngOnInit(): void { }
+  ngAfterViewInit() {}
+  changeImageUploadListener(event: any, rf): void {
+    this.fileImage = event.target.files[0];
+    if (this.fileImage) {
+      var reader = new FileReader();
+      reader.onloadend = (e) => {
+        this.isLoading = true;
+
+        if (event.target.files[0].size / 1024 / 1024 > 5) {
+          this.toastr.info('File size should be less than 5MB', 'Message');
+          return;
+        }
+        if (
+          this.fileImage.type == 'image/jpeg' ||
+          this.fileImage.type == 'image/*'
+        ) {
+          this.renderer.setStyle(
+           rf,
+            'background',
+            `url(${e.target.result})`
+          );
+          this._filesize = Math.round(event.target.files[0].size /1000);
+          this._filename = this.fileImage.name;
+          this.toastr.success('File successfully added', 'Message');
+          this.isLoading = false;
+        } else {
+          this.isLoading = false;
+          this.toastr.error(
+            'File type not supported, only jpeg, png and gif is allowed',
+            'Message'
+          );
+        }
+      };
+      reader.readAsDataURL(this.fileImage);
+    }
+  }
+  addBanner(ref) {
+    ref.click();
+  }
+
+}
+
+
 @Component({
   selector: 'app-add-event',
   templateUrl: './add-event.component.html',
@@ -31,6 +97,9 @@ export class AddEventComponent implements OnInit {
   isBusy: boolean = false;
   screen: number = 1;
   itemDetails: any;
+  uploadBanner: TemplateRef<any>;
+  uploadedBanner: TemplateRef<any>;
+  image: any;
   evangelismList: any[] = [];
   _memberList: any[] = [];
   memberItems: any[] = [];
@@ -58,7 +127,7 @@ export class AddEventComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private fb: FormBuilder,
-    private renderer: Renderer2
+    public imgUp: ImageUploadComponent
   ) {
     this.eventForm = this.fb.group({
       name: [null, Validators.required],
@@ -144,7 +213,7 @@ export class AddEventComponent implements OnInit {
   getMembers() {
     this._memberList = [];
     this.peopleServ
-      .fetchAll('members', this.currentPage + 1, this.pageSize)
+      .fetchAll('members', this.currentPage + 1)
       .subscribe(
         (res: any) => {
           const { data } = res;
@@ -220,7 +289,7 @@ export class AddEventComponent implements OnInit {
       eventFormData.append('location_address', this.eventForm.get('location_address').value);
       eventFormData.append('participant_size', this.eventForm.get('participant_size').value);
       eventFormData.append('repeat', this.eventForm.get('repeat').value);
-      eventFormData.append('image', this.eventForm.get('image').value);
+      eventFormData.append('image', this.imgUp.fileImage);
       eventFormData.append('type', this.eventForm.get('type').value);
       eventFormData.append('comment', this.eventForm.get('comment').value);
       //Make api call here...
@@ -289,7 +358,7 @@ export class AddEventComponent implements OnInit {
       updateEventFormData.append('location_address', this.updateEventForm.get('location_address').value);
       updateEventFormData.append('participant_size', this.updateEventForm.get('participant_size').value);
       updateEventFormData.append('repeat', this.updateEventForm.get('repeat').value);
-      updateEventFormData.append('image', this.updateEventForm.get('image').value);
+      updateEventFormData.append('image', this.imgUp.fileImage);
       updateEventFormData.append('type', this.updateEventForm.get('type').value);
       updateEventFormData.append('comment', this.updateEventForm.get('comment').value);
       //Make api call here...
