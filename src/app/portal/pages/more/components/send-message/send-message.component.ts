@@ -530,13 +530,13 @@ export class SendMessageComponent implements OnInit {
       formData.append('to[departments][]', item);
     }
     for (let item of this.smsForm.get('group').value) {
-      formData.append('to[group][]', item);
+      formData.append('to[groups][]', item);
     }
     for (let item of this.smsForm.get('evangelism').value) {
-      formData.append('to[evangelism][]', item);
+      formData.append('to[evangelisms][]', item);
     }
     for (let item of this.smsForm.get('fellowship').value) {
-      formData.append('to[fellowship][]', item);
+      formData.append('to[fellowships][]', item);
     }
 
     if (this.smsForm.valid) {
@@ -586,24 +586,20 @@ export class SendMessageComponent implements OnInit {
     for (let item of this.emailForm.get('regular_members').value) {
       formData.append('to[regular_members][]', item);
     }
-    for (let item of this.emailForm.get('department').value) {
-      formData.append('to[departments][]', item);
+    for (let item of this.emailForm.get('new_convert').value) {
+      formData.append('to[new_converts][]', item);
     }
-    for (let item of this.emailForm.get('group').value) {
-      formData.append('to[group][]', item);
-    }
-    for (let item of this.emailForm.get('evangelism').value) {
-      formData.append('to[evangelism][]', item);
-    }
-    for (let item of this.emailForm.get('fellowship').value) {
-      formData.append('to[fellowship][]', item);
-    }
-
     for (let item of this.emailForm.get('first_timer').value) {
       formData.append('to[first_timers][]', item);
     }
-    for (let item of this.emailForm.get('new_convert').value) {
-      formData.append('to[new_converts][]', item);
+    for (let item of this.emailForm.get('group').value) {
+      formData.append('to[groups][]', item);
+    }
+    for (let item of this.emailForm.get('evangelism').value) {
+      formData.append('to[evangelisms][]', item);
+    }
+    for (let item of this.emailForm.get('fellowship').value) {
+      formData.append('to[fellowships][]', item);
     }
 
     if (this.emailForm.valid) {

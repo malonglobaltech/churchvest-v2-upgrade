@@ -21,7 +21,7 @@ export class AuthService {
   }
   getChurchSlug() {
     let church: any = JSON.parse(localStorage.getItem('user_church'));
-    return church.slug;
+    return church?.slug;
   }
   isAuthenticated(): any {
     const token = localStorage.getItem('token');
