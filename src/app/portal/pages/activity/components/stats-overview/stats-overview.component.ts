@@ -58,7 +58,7 @@ export class StatsOverviewComponent implements OnInit {
       },
       {
         title: 'Events',
-        url: '',
+        url: '/portal/events',
         count: summary.events,
         icon: 'events-icon',
       },

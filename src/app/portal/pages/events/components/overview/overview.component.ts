@@ -16,7 +16,7 @@ import {
 @Component({
   selector: 'app-overview',
   templateUrl: './overview.component.html',
-  styleUrls: ['./overview.component.scss']
+  styleUrls: ['./overview.component.scss'],
 })
 export class OverviewComponent implements OnInit {
   @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -59,7 +59,14 @@ export class OverviewComponent implements OnInit {
     this.dataSource.paginator = this.paginator;
   }
 
-  column = ['name of event', 'type of event', 'start date',  'organizer', 'location', 'action'];
+  column = [
+    'name of event',
+    'type of event',
+    'start date',
+    'organizer',
+    'location',
+    'action',
+  ];
 
   isAllSelected() {
     const numSelected = this.selection.selected.length;
@@ -89,24 +96,22 @@ export class OverviewComponent implements OnInit {
   getEvent() {
     this._loading = true;
     this.eventList = [];
-    this.eventsService
-      .fetchAllEvents(this.currentPage + 1, this.pageSize)
-      .subscribe(
-        (res: any) => {
+    this.eventsService.fetchAllEvents(this.currentPage + 1).subscribe(
+      (res: any) => {
+        this._loading = false;
+        const { data, meta } = res;
+        this.eventList = data;
+        this.dataSource = new MatTableDataSource(this.eventList);
+        this.paginator.pageIndex = this.currentPage;
+        this.paginator.length = meta.total;
+      },
+      (errors) => {
+        if (errors) {
           this._loading = false;
-          const { data, meta } = res;
-          this.eventList = data;
-          this.dataSource = new MatTableDataSource(this.eventList);
-          this.paginator.pageIndex = this.currentPage;
-          this.paginator.length = meta.total;
-        },
-        (errors) => {
-          if (errors) {
-            this._loading = false;
-            this.eventList = [];
-          }
+          this.eventList = [];
         }
-      );
+      }
+    );
   }
   getSelectedEvent(arr: any) {
     let filter = arr.map((x: any) => x.id);
@@ -146,15 +151,13 @@ export class OverviewComponent implements OnInit {
         events_id: this.selectedEvent,
       };
     }
-    this.eventsService
-      .moveToTrash(payload)
-      .subscribe(({ message }) => {
-        this.isBusy = false;
-        this.toastr.success(message, 'Success');
-        this.router.navigate(['/portal/events/trash']);
-        this.closebtn._elementRef.nativeElement.click();
-        this.getEvent();
-      });
+    this.eventsService.moveToTrash(payload).subscribe(({ message }) => {
+      this.isBusy = false;
+      this.toastr.success(message, 'Success');
+      this.router.navigate(['/portal/events/trash']);
+      this.closebtn._elementRef.nativeElement.click();
+      this.getEvent();
+    });
   }
   exportToExcel(): void {
     const edata: Array<any> = [];
@@ -185,5 +188,4 @@ export class OverviewComponent implements OnInit {
     edata.push(udt);
     this.exportService.exportTableElmToExcel(edata, this.file_name);
   }
-
 }

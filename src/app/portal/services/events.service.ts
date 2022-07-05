@@ -7,11 +7,10 @@ import { AuthService } from 'src/app/services/auth.service';
 import { environment } from 'src/environments/environment';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class EventsService {
-
-  constructor(private http: HttpClient, private authService: AuthService) { 
+  constructor(private http: HttpClient, private authService: AuthService) {
     this.authService.getChurchSlug();
   }
   addEvent(model: any): Observable<any> {
@@ -40,32 +39,32 @@ export class EventsService {
         catchError(handleError)
       );
   }
-  fetchAllEvents(pageNumber?: number, pageSize?: number): Observable<any> {
+  fetchAllEvents(pageNumber?: number): Observable<any> {
     return this.http
       .get<any>(
         `${
           environment.managementbaseUrl
-        }/${this.authService.getChurchSlug()}/events/?page=${pageNumber}&size=${pageSize}`
-      )
-      .pipe(catchError(handleError))
-  }
-  fetchAllFromTrash(pageNumber?: number, pageSize?: number): Observable<any> {
-    return this.http
-      .get<any>(
-        `${
-          environment.managementbaseUrl
-        }/${this.authService.getChurchSlug()}/events/trash/events/?page=${pageNumber}&size=${pageSize}`
+        }/${this.authService.getChurchSlug()}/events?page=${pageNumber}`
       )
       .pipe(catchError(handleError));
   }
-  fetchAnEvents(id?: number, pageSize?: number): Observable<any> {
+  fetchAllFromTrash(pageNumber?: number): Observable<any> {
+    return this.http
+      .get<any>(
+        `${
+          environment.managementbaseUrl
+        }/${this.authService.getChurchSlug()}/events/trash/events?page=${pageNumber}`
+      )
+      .pipe(catchError(handleError));
+  }
+  fetchAnEvents(id?: number): Observable<any> {
     return this.http
       .get<any>(
         `${
           environment.managementbaseUrl
         }/${this.authService.getChurchSlug()}/events/${id}`
       )
-      .pipe(catchError(handleError))
+      .pipe(catchError(handleError));
   }
   fetchTrashedEvent(id: any): Observable<any> {
     return this.http

@@ -14,7 +14,7 @@ import { EventsService } from 'src/app/portal/services/events.service';
 @Component({
   selector: 'app-trashed-events',
   templateUrl: './trashed-events.component.html',
-  styleUrls: ['./trashed-events.component.scss']
+  styleUrls: ['./trashed-events.component.scss'],
 })
 export class TrashedEventsComponent implements OnInit {
   @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -51,7 +51,14 @@ export class TrashedEventsComponent implements OnInit {
     this.dataSource.paginator = this.paginator;
   }
 
-  column = ['name of event', 'type of event', 'start date',  'organizer', 'location', 'action'];
+  column = [
+    'name of event',
+    'type of event',
+    'start date',
+    'organizer',
+    'location',
+    'action',
+  ];
 
   isAllSelected() {
     const numSelected = this.selection.selected.length;
@@ -82,24 +89,22 @@ export class TrashedEventsComponent implements OnInit {
   getAllTrashedEvents() {
     this._loading = true;
     this.departmentList = [];
-    this.evtsService
-      .fetchAllFromTrash(this.currentPage + 1, this.pageSize)
-      .subscribe(
-        (res: any) => {
+    this.evtsService.fetchAllFromTrash(this.currentPage + 1).subscribe(
+      (res: any) => {
+        this._loading = false;
+        const { data, meta } = res;
+        this.departmentList = data;
+        this.dataSource = new MatTableDataSource(this.departmentList);
+        this.paginator.pageIndex = this.currentPage;
+        this.paginator.length = meta.total;
+      },
+      (errors) => {
+        if (errors) {
           this._loading = false;
-          const { data, meta } = res;
-          this.departmentList = data;
-          this.dataSource = new MatTableDataSource(this.departmentList);
-          this.paginator.pageIndex = this.currentPage;
-          this.paginator.length = meta.total;
-        },
-        (errors) => {
-          if (errors) {
-            this._loading = false;
-            this.departmentList = [];
-          }
+          this.departmentList = [];
         }
-      );
+      }
+    );
   }
   gotoBack() {
     this._location.back();
@@ -138,6 +143,7 @@ export class TrashedEventsComponent implements OnInit {
     this.evtsService.deleteFromTrash(payload).subscribe(
       ({ message }) => {
         this.isBusy = false;
+        this.selection.clear();
         this.toastr.success(message, 'Success');
         this.closebtn._elementRef.nativeElement.click();
         this.getAllTrashedEvents();
@@ -176,5 +182,4 @@ export class TrashedEventsComponent implements OnInit {
       }
     );
   }
-
 }
