@@ -23,6 +23,8 @@ import { GroupsService } from 'src/app/portal/services/groups.service';
 export class CreateGroupComponent implements OnInit {
   @ViewChild('membersAll') membersAll: any;
   @ViewChild('membersSelect') membersSelect: any;
+  @ViewChild('membersAll_') membersAll_: any;
+  @ViewChild('membersSelect_') membersSelect_: any;
   @ViewChild('txtDate') txtDate: any;
   queryString: string;
   isBusy: boolean = false;
@@ -30,6 +32,7 @@ export class CreateGroupComponent implements OnInit {
   itemDetails: any;
   _memberList: any[] = [];
   memberItems: any[] = [];
+  memberItems_: any[] = [];
   filteredMembers: any[] = [];
   _groupId: any;
   fileData: any;
@@ -59,7 +62,7 @@ export class CreateGroupComponent implements OnInit {
       }),
       description: [null],
       comment: [null],
-      members_id: [[]],
+      members_to_add: [[]],
     });
   }
 
@@ -83,6 +86,11 @@ export class CreateGroupComponent implements OnInit {
       return this.memberItems.slice(0, 5).map((x: any) => x.user.first_name);
     }
   }
+  get stripedObjValue_() {
+    if (this._memberList.length !== 0 && this._memberList !== null) {
+      return this.memberItems.slice(0, 5).map((x: any) => x?.user?.first_name);
+    }
+  }
   get dateCreatedValue() {
     if (this.queryString !== 'edit') {
       return this.groupForm.get('date_created').value;
@@ -101,22 +109,31 @@ export class CreateGroupComponent implements OnInit {
       });
     }
   }
+  handleMembersChange(event: any, source: string) {
+    switch (event.source._value !== null && source) {
+      case (source = 'members_to_add'):
+        return (this.memberItems = event.source._value.filter((t) => t));
+      case (source = 'members_to_remove'):
+        return (this.memberItems_ = event.source._value.filter((t) => t));
+      default:
+        return;
+    }
+  }
   toggleOne(allSlc: any, slc: any) {
     if (allSlc.selected) {
       allSlc.deselect();
       return false;
     }
-    if (
-      slc == this.membersSelect &&
-      slc.value.length == this._memberList.length
-    ) {
-      allSlc.select();
+    switch (slc.value !== null) {
+      case slc == this.membersSelect &&
+        slc.value.length == this._memberList.length:
+        return allSlc.select();
+      case slc == this.membersSelect_ &&
+        slc.value.length == this._memberList.length:
+        return allSlc.select();
+      default:
+        return;
     }
-  }
-
-  handleMembersChange(event: any) {
-    let result = event.source._value.filter((t) => t);
-    this.memberItems = result;
   }
 
   getMembers() {
@@ -158,9 +175,9 @@ export class CreateGroupComponent implements OnInit {
           const { data } = res;
           this.itemDetails = data.filter((x) => x.id == this._groupId);
           if (this.itemDetails[0].members.length !== 0) {
-            this.filteredMembers = this.itemDetails[0].members.map(
-              (x: any) => x.member
-            );
+            this.filteredMembers = this.itemDetails[0].members
+              .filter((x: any) => x.member !== null)
+              .map((a: any) => a.member);
             this.memberItems = this.filteredMembers;
           } else {
             this.memberItems = this._memberList;
@@ -181,20 +198,21 @@ export class CreateGroupComponent implements OnInit {
         }),
         description: [this.itemDetails[0]?.description],
         comment: [this.itemDetails[0]?.comment],
-        members_id: [this.filteredMembers],
+        members_to_add: [this.filteredMembers],
+        members_to_remove: [[]],
       });
     }
   }
   onSubmit() {
     this.isBusy = true;
     let ids: any;
-    if (this.groupForm.controls['members_id'].value !== null) {
-      ids = this.groupForm.controls['members_id'].value
+    if (this.groupForm.controls['members_to_add'].value !== null) {
+      ids = this.groupForm.controls['members_to_add'].value
         .filter((x: any) => x !== 0)
         .map((a: any) => a.id);
     }
     this.groupForm.patchValue({
-      members_id: ids,
+      members_to_add: ids,
     });
 
     if (this.groupForm.invalid) {
@@ -226,13 +244,20 @@ export class CreateGroupComponent implements OnInit {
   onUpdate() {
     this.isBusy = true;
     let ids: any;
-    if (this.groupFormUpdate.controls['members_id'].value !== null) {
-      ids = this.groupFormUpdate.controls['members_id'].value
+    let ids_: any;
+    if (this.groupFormUpdate.controls['members_to_add'].value !== null) {
+      ids = this.groupFormUpdate.controls['members_to_add'].value
+        .filter((x: any) => x !== 0)
+        .map((a: any) => a.id);
+    }
+    if (this.groupFormUpdate.controls['members_to_remove'].value !== null) {
+      ids_ = this.groupFormUpdate.controls['members_to_remove'].value
         .filter((x: any) => x !== 0)
         .map((a: any) => a.id);
     }
     this.groupFormUpdate.patchValue({
-      members_id: ids,
+      members_to_add: ids,
+      members_to_remove: ids_,
     });
     if (this.groupFormUpdate.invalid) {
       this.isBusy = false;

@@ -60,8 +60,10 @@
                 class="select"
                 multiple
                 #membersSelect
-                formControlName="members_id"
-                (selectionChange)="handleMembersChange($event)"
+                formControlName="members_to_add"
+                (selectionChange)="
+                  handleMembersChange($event, 'members_to_add')
+                "
               >
                 <mat-select-trigger>
                   {{ _memberList ? stripedObjValue : "" }}
@@ -129,7 +131,7 @@
           <div class="form-wrap">
             <div class="title mb-2">Update Group</div>
             <mat-divider></mat-divider>
-            <div class="grid mt-4 mb-3">
+            <div class="grid grid--1fr--1fr grid-gap-15 mt-4 mb-3">
               <div class="input">
                 <label>Name of Group</label>
                 <input
@@ -143,8 +145,24 @@
                   }"
                 />
               </div>
+              <div formGroupName="roles" class="input">
+                <label>Group Leader</label>
+                <mat-select
+                  class="select"
+                  placeholder="Select leader"
+                  formControlName="leader"
+                >
+                  <mat-option disabled="" selected="" value=""
+                    >Select leader</mat-option
+                  >
+                  <mat-option *ngFor="let item of _memberList" [value]="item.id"
+                    >{{ item.user.first_name }}
+                    {{ item.user.last_name }}</mat-option
+                  >
+                </mat-select>
+              </div>
             </div>
-            <div class="grid grid--1fr--1fr grid-gap-15 mt-4 mb-3">
+            <div class="grid grid--1fr--1fr grid-gap-15 mb-3">
               <div class="input">
                 <label>Date Formed</label>
                 <input
@@ -163,38 +181,18 @@
               </div>
             </div>
             <div class="grid grid--1fr--1fr grid-gap-15 mb-3">
-              <div formGroupName="roles" class="input">
-                <label>Group Leader</label>
-                <mat-select
-                  class="select"
-                  placeholder="Select leader"
-                  formControlName="leader"
-                >
-                  <mat-option disabled="" selected="" value=""
-                    >Select leader</mat-option
-                  >
-                  <mat-option *ngFor="let item of _memberList" [value]="item.id"
-                    >{{ item.user.first_name }}
-                    {{ item.user.last_name }}</mat-option
-                  >
-                </mat-select>
-              </div>
               <div class="input">
-                <label>Members</label>
+                <label>Members Added</label>
                 <mat-select
                   placeholder="Select members"
                   class="select"
                   multiple
                   #membersSelect
                   [compareWith]="compareFunc"
-                  formControlName="members_id"
-                  (selectionChange)="handleMembersChange($event)"
-                  [ngClass]="{
-                    'is-invalid':
-                      groupFormUpdate.controls['members_id'].hasError(
-                        'required'
-                      ) && groupFormUpdate.controls['members_id'].touched
-                  }"
+                  formControlName="members_to_add"
+                  (selectionChange)="
+                    handleMembersChange($event, 'members_to_add')
+                  "
                 >
                   <mat-select-trigger>
                     {{ _memberList ? stripedObjValue : "" }}
@@ -212,6 +210,39 @@
                     *ngFor="let item of _memberList"
                     [value]="item"
                     (click)="toggleOne(membersAll, membersSelect)"
+                  >
+                    {{ item.user.first_name }} {{ item.user.last_name }}
+                  </mat-option>
+                </mat-select>
+              </div>
+              <div class="input">
+                <label>Members to Remove</label>
+                <mat-select
+                  placeholder="Select members"
+                  class="select"
+                  multiple
+                  #membersSelect_
+                  formControlName="members_to_remove"
+                  (selectionChange)="
+                    handleMembersChange($event, 'members_to_remove')
+                  "
+                >
+                  <mat-select-trigger>
+                    {{ _memberList ? stripedObjValue_ : "" }}
+                    <span class="more" *ngIf="memberItems_.length > 5">
+                      +{{ memberItems_.length - 5 }} other item
+                    </span>
+                  </mat-select-trigger>
+                  <mat-option
+                    #membersAll_
+                    (click)="toggleAllSelection(membersAll_, membersSelect_)"
+                    [value]="0"
+                    >All</mat-option
+                  >
+                  <mat-option
+                    *ngFor="let item of _memberList"
+                    [value]="item"
+                    (click)="toggleOne(membersAll_, membersSelect_)"
                   >
                     {{ item.user.first_name }} {{ item.user.last_name }}
                   </mat-option>
