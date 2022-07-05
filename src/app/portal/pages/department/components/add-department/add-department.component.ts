@@ -28,6 +28,8 @@ import { DepartmentService } from 'src/app/portal/services/department.service';
 export class AddDepartmentComponent implements OnInit {
   @ViewChild('membersAll') membersAll: any;
   @ViewChild('membersSelect') membersSelect: any;
+  @ViewChild('membersAll_') membersAll_: any;
+  @ViewChild('membersSelect_') membersSelect_: any;
   @ViewChild('txtDate') txtDate: any;
   queryString: string;
   isBusy: boolean = false;
@@ -36,6 +38,7 @@ export class AddDepartmentComponent implements OnInit {
   evangelismList: any[] = [];
   _memberList: any[] = [];
   memberItems: any[] = [];
+  memberItems_: any[] = [];
   filteredMembers: any[] = [];
   _departmentId: any;
   _files: any[] = [];
@@ -100,6 +103,11 @@ export class AddDepartmentComponent implements OnInit {
       return this.memberItems.slice(0, 5).map((x: any) => x?.user?.first_name);
     }
   }
+  get stripedObjValue_() {
+    if (this._memberList.length !== 0 && this._memberList !== null) {
+      return this.memberItems_.slice(0, 5).map((x: any) => x?.user?.first_name);
+    }
+  }
   get startDateVal() {
     if (this.queryString !== 'edit') {
       return this.departmentForm.get('start_time').value;
@@ -128,17 +136,27 @@ export class AddDepartmentComponent implements OnInit {
       allSlc.deselect();
       return false;
     }
-    if (
-      slc == this.membersSelect &&
-      slc.value.length == this._memberList.length
-    ) {
-      allSlc.select();
+    switch (slc.value !== null) {
+      case slc == this.membersSelect &&
+        slc.value.length == this._memberList.length:
+        return allSlc.select();
+      case slc == this.membersSelect_ &&
+        slc.value.length == this._memberList.length:
+        return allSlc.select();
+      default:
+        return;
     }
   }
 
-  handleMembersChange(event: any) {
-    let result = event.source._value.filter((t) => t);
-    this.memberItems = result;
+  handleMembersChange(event: any, source: string) {
+    switch (event.source._value !== null && source) {
+      case (source = 'members_to_add'):
+        return (this.memberItems = event.source._value.filter((t) => t));
+      case (source = 'members_to_remove'):
+        return (this.memberItems_ = event.source._value.filter((t) => t));
+      default:
+        return;
+    }
   }
   onDateChange() {
     var endDate = new Date(this.endDateVal);
@@ -192,8 +210,6 @@ export class AddDepartmentComponent implements OnInit {
             this.filteredMembers = this.itemDetails[0]?.members.map(
               (x: any) => x.member
             );
-            console.log(this.filteredMembers);
-
             this.memberItems = this.filteredMembers;
           } else {
             this.memberItems = this._memberList;
@@ -220,16 +236,19 @@ export class AddDepartmentComponent implements OnInit {
       date_formed: [this.itemDetails[0]?.date_formed],
       description: [this.itemDetails[0]?.description],
       members_to_add: [this.filteredMembers],
+      members_to_remove: [[]],
     });
   }
   onSubmit() {
     this.isBusy = true;
     let ids: any;
+
     if (this.departmentForm.controls['members_to_add'].value !== null) {
       ids = this.departmentForm.controls['members_to_add'].value
         .filter((x: any) => x !== 0)
         .map((a: any) => a.id);
     }
+
     this.departmentForm.patchValue({
       members_to_add: ids,
     });
@@ -264,13 +283,22 @@ export class AddDepartmentComponent implements OnInit {
   onUpdate() {
     this.isBusy = true;
     let ids: any;
+    let ids_: any;
     if (this.updateDepartmentForm.controls['members_to_add'].value !== null) {
       ids = this.updateDepartmentForm.controls['members_to_add'].value
         .filter((x: any) => x !== 0)
         .map((a: any) => a.id);
     }
+    if (
+      this.updateDepartmentForm.controls['members_to_remove'].value !== null
+    ) {
+      ids_ = this.updateDepartmentForm.controls['members_to_remove'].value
+        .filter((x: any) => x !== 0)
+        .map((a: any) => a.id);
+    }
     this.updateDepartmentForm.patchValue({
       members_to_add: ids,
+      members_to_remove: ids_,
     });
 
     if (this.updateDepartmentForm.invalid) {

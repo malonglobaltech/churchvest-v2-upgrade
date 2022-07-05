@@ -50,6 +50,7 @@
               <label>Start Time</label>
               <input
                 name="ngxTimepicker"
+                placeholder="Start time"
                 [ngxTimepicker]="picker"
                 formControlName="start_time"
                 step="2"
@@ -60,6 +61,7 @@
               <label>End Time</label>
               <input
                 name="ngxTimepicker"
+                placeholder="End time"
                 [ngxTimepicker]="picker2"
                 formControlName="end_time"
                 step="2"
@@ -89,7 +91,9 @@
                 multiple
                 #membersSelect
                 formControlName="members_to_add"
-                (selectionChange)="handleMembersChange($event)"
+                (selectionChange)="
+                  handleMembersChange($event, 'members_to_add')
+                "
               >
                 <mat-select-trigger>
                   {{ _memberList ? stripedObjValue : "" }}
@@ -313,20 +317,7 @@
             </div>
             <div class="grid grid--1fr--1fr grid-gap-15 mb-3">
               <div class="input">
-                <label>Date Formed</label>
-                <input
-                  type="date"
-                  formControlName="date_formed"
-                  [ngClass]="{
-                    'is-invalid':
-                      updateDepartmentForm.controls['date_formed'].hasError(
-                        'required'
-                      ) && updateDepartmentForm.controls['date_formed'].touched
-                  }"
-                />
-              </div>
-              <div class="input">
-                <label>Members</label>
+                <label>Members Added</label>
                 <mat-select
                   placeholder="Select members"
                   class="select"
@@ -334,7 +325,9 @@
                   #membersSelect
                   [compareWith]="compareFunc"
                   formControlName="members_to_add"
-                  (selectionChange)="handleMembersChange($event)"
+                  (selectionChange)="
+                    handleMembersChange($event, 'members_to_add')
+                  "
                 >
                   <mat-select-trigger>
                     {{ _memberList ? stripedObjValue : "" }}
@@ -357,9 +350,42 @@
                   </mat-option>
                 </mat-select>
               </div>
+              <div class="input">
+                <label>Members to Remove</label>
+                <mat-select
+                  placeholder="Select members"
+                  class="select"
+                  multiple
+                  #membersSelect_
+                  formControlName="members_to_remove"
+                  (selectionChange)="
+                    handleMembersChange($event, 'members_to_remove')
+                  "
+                >
+                  <mat-select-trigger>
+                    {{ _memberList ? stripedObjValue_ : "" }}
+                    <span class="more" *ngIf="memberItems_.length > 5">
+                      +{{ memberItems_.length - 5 }} other item
+                    </span>
+                  </mat-select-trigger>
+                  <mat-option
+                    #membersAll_
+                    (click)="toggleAllSelection(membersAll_, membersSelect_)"
+                    [value]="0"
+                    >All</mat-option
+                  >
+                  <mat-option
+                    *ngFor="let item of _memberList"
+                    [value]="item"
+                    (click)="toggleOne(membersAll_, membersSelect_)"
+                  >
+                    {{ item.user.first_name }} {{ item.user.last_name }}
+                  </mat-option>
+                </mat-select>
+              </div>
             </div>
             <div class="grid grid--1fr--1fr grid-gap-15 mb-3">
-              <div class="input">
+              <!-- <div class="input">
                 <label>Notify Channel </label>
                 <mat-select
                   class="select"
@@ -376,6 +402,19 @@
                     >{{ item }}</mat-option
                   >
                 </mat-select>
+              </div> -->
+              <div class="input">
+                <label>Date Formed</label>
+                <input
+                  type="date"
+                  formControlName="date_formed"
+                  [ngClass]="{
+                    'is-invalid':
+                      updateDepartmentForm.controls['date_formed'].hasError(
+                        'required'
+                      ) && updateDepartmentForm.controls['date_formed'].touched
+                  }"
+                />
               </div>
               <div class="input">
                 <label>Notify Periods </label>

@@ -2,6 +2,8 @@ import { Component } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { filter } from 'rxjs/operators';
+import { NetworkService } from './services/network.service';
+import Swal from 'sweetalert2';
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -11,10 +13,12 @@ export class AppComponent {
   constructor(
     private router: Router,
     private activatedRoute: ActivatedRoute,
-    private titleService: Title
+    private titleService: Title,
+    private networkServ: NetworkService
   ) {}
 
   ngOnInit(): void {
+    this.checkConnection();
     this.router.events
       .pipe(filter((e) => e instanceof NavigationEnd))
       .subscribe(() => {
@@ -31,5 +35,12 @@ export class AppComponent {
     } else {
       return activatedRoute;
     }
+  }
+  checkConnection() {
+    this.networkServ.checkNetworkOnline().subscribe((res) => {
+      if (!res) {
+        Swal.fire('Network problem', 'No internet connection!', 'error');
+      }
+    });
   }
 }

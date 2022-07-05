@@ -25,8 +25,10 @@ import { ObservableInput, throwError } from 'rxjs';
   styleUrls: ['./add-fellowship.component.scss'],
 })
 export class AddFellowshipComponent implements OnInit {
-  @ViewChild('allSelected') allSelected: any;
-  @ViewChild('matSelect') select: any;
+  @ViewChild('membersAll') membersAll: any;
+  @ViewChild('membersSelect') membersSelect: any;
+  @ViewChild('membersAll_') membersAll_: any;
+  @ViewChild('membersSelect_') membersSelect_: any;
   queryString: string;
   isBusy: boolean = false;
   screen: number = 1;
@@ -34,6 +36,7 @@ export class AddFellowshipComponent implements OnInit {
   fellowshipList: any[] = [];
   _memberList: any[] = [];
   memberItems: any[] = [];
+  memberItems_: any[] = [];
   filteredMembers: any[] = [];
   _fellowshipId: any;
   _files: any[] = [];
@@ -88,32 +91,50 @@ export class AddFellowshipComponent implements OnInit {
     return this.updatefellowshipForm.getRawValue();
   }
   get stripedObjValue() {
-    if (this._memberList.length !== 0) {
+    if (this._memberList.length !== 0 && this._memberList !== null) {
       return this.memberItems.slice(0, 5).map((x: any) => x?.user?.first_name);
     }
   }
-  toggleAllSelection() {
-    if (this.allSelected.selected) {
-      this.select.options._results.map((item) => {
+  get stripedObjValue_() {
+    if (this._memberList.length !== 0 && this._memberList !== null) {
+      return this.memberItems_.slice(0, 5).map((x: any) => x?.user?.first_name);
+    }
+  }
+  toggleAllSelection(allSlc: any, slc: any) {
+    if (allSlc.selected) {
+      slc.options._results.map((item) => {
         item.select();
       });
     } else {
-      this.select.options._results.map((item) => {
+      slc.options._results.map((item) => {
         item.deselect();
       });
     }
   }
-  handleMembersChange(event: any) {
-    let result = event.source._value.filter((t) => t);
-    this.memberItems = result;
+  handleMembersChange(event: any, source: string) {
+    switch (event.source._value !== null && source) {
+      case (source = 'members_to_add'):
+        return (this.memberItems = event.source._value.filter((t) => t));
+      case (source = 'members_to_remove'):
+        return (this.memberItems_ = event.source._value.filter((t) => t));
+      default:
+        return;
+    }
   }
-  toggleOne() {
-    if (this.allSelected.selected) {
-      this.allSelected.deselect();
+  toggleOne(allSlc: any, slc: any) {
+    if (allSlc.selected) {
+      allSlc.deselect();
       return false;
     }
-    if (this.select.value.length == this._memberList.length) {
-      this.allSelected.select();
+    switch (slc.value !== null) {
+      case slc == this.membersSelect &&
+        slc.value.length == this._memberList.length:
+        return allSlc.select();
+      case slc == this.membersSelect_ &&
+        slc.value.length == this._memberList.length:
+        return allSlc.select();
+      default:
+        return;
     }
   }
   getChildValue(val?: any, _query?: any) {
@@ -188,6 +209,7 @@ export class AddFellowshipComponent implements OnInit {
         treasurer_id: [this.itemDetails?.treasurer?.member?.id],
         comment: [this.itemDetails?.comment],
         members_to_add: [this.filteredMembers],
+        members_to_remove: [[]],
         date_of_creation: [this.itemDetails?.date_of_creation],
       });
     }
@@ -234,13 +256,22 @@ export class AddFellowshipComponent implements OnInit {
   onUpdateFellowship() {
     this.isBusy = true;
     let ids: any;
+    let ids_: any;
     if (this.updatefellowshipForm.controls['members_to_add'].value !== null) {
       ids = this.updatefellowshipForm.controls['members_to_add'].value
         .filter((x: any) => x !== 0)
         .map((a: any) => a.id);
     }
+    if (
+      this.updatefellowshipForm.controls['members_to_remove'].value !== null
+    ) {
+      ids_ = this.updatefellowshipForm.controls['members_to_remove'].value
+        .filter((x: any) => x !== 0)
+        .map((a: any) => a.id);
+    }
     this.updatefellowshipForm.patchValue({
       members_to_add: ids,
+      members_to_remove: ids_,
     });
     if (this.updatefellowshipForm.invalid) {
       this.isBusy = false;

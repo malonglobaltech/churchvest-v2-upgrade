@@ -137,10 +137,11 @@
                 placeholder="Select members"
                 class="select"
                 multiple
-                #matSelect
-                [compareWith]="compareFunc"
+                #membersSelect
                 formControlName="members_to_add"
-                (selectionChange)="handleMembersChange($event)"
+                (selectionChange)="
+                  handleMembersChange($event, 'members_to_add')
+                "
               >
                 <mat-select-trigger>
                   {{ _memberList ? stripedObjValue : "" }}
@@ -149,15 +150,15 @@
                   </span>
                 </mat-select-trigger>
                 <mat-option
-                  #allSelected
-                  (click)="toggleAllSelection()"
+                  #membersAll
+                  (click)="toggleAllSelection(membersAll, membersSelect)"
                   [value]="0"
                   >All</mat-option
                 >
                 <mat-option
                   *ngFor="let item of _memberList"
                   [value]="item"
-                  (click)="toggleOne()"
+                  (click)="toggleOne(membersAll, membersSelect)"
                 >
                   {{ item.user.first_name }} {{ item.user.last_name }}
                 </mat-option>
@@ -330,15 +331,17 @@
             </div>
             <div class="grid grid--1fr--1fr grid-gap-15 mb-3">
               <div class="input">
-                <label>Members</label>
+                <label>Members Added</label>
                 <mat-select
                   placeholder="Select members"
                   class="select"
                   multiple
-                  #matSelect
+                  #membersSelect
                   [compareWith]="compareFunc"
                   formControlName="members_to_add"
-                  (selectionChange)="handleMembersChange($event)"
+                  (selectionChange)="
+                    handleMembersChange($event, 'members_to_add')
+                  "
                 >
                   <mat-select-trigger>
                     {{ _memberList ? stripedObjValue : "" }}
@@ -347,20 +350,55 @@
                     </span>
                   </mat-select-trigger>
                   <mat-option
-                    #allSelected
-                    (click)="toggleAllSelection()"
+                    #membersAll
+                    (click)="toggleAllSelection(membersAll, membersSelect)"
                     [value]="0"
                     >All</mat-option
                   >
                   <mat-option
                     *ngFor="let item of _memberList"
                     [value]="item"
-                    (click)="toggleOne()"
+                    (click)="toggleOne(membersAll, membersSelect)"
                   >
                     {{ item.user.first_name }} {{ item.user.last_name }}
                   </mat-option>
                 </mat-select>
               </div>
+              <div class="input">
+                <label>Members to Remove</label>
+                <mat-select
+                  placeholder="Select members"
+                  class="select"
+                  multiple
+                  #membersSelect_
+                  formControlName="members_to_remove"
+                  (selectionChange)="
+                    handleMembersChange($event, 'members_to_remove')
+                  "
+                >
+                  <mat-select-trigger>
+                    {{ _memberList ? stripedObjValue_ : "" }}
+                    <span class="more" *ngIf="memberItems_.length > 5">
+                      +{{ memberItems_.length - 5 }} other item
+                    </span>
+                  </mat-select-trigger>
+                  <mat-option
+                    #membersAll_
+                    (click)="toggleAllSelection(membersAll_, membersSelect_)"
+                    [value]="0"
+                    >All</mat-option
+                  >
+                  <mat-option
+                    *ngFor="let item of _memberList"
+                    [value]="item"
+                    (click)="toggleOne(membersAll_, membersSelect_)"
+                  >
+                    {{ item.user.first_name }} {{ item.user.last_name }}
+                  </mat-option>
+                </mat-select>
+              </div>
+            </div>
+            <div class="grid mb-3">
               <div class="input">
                 <label>Date of operation</label>
                 <input

@@ -25,8 +25,10 @@ import { ObservableInput, throwError } from 'rxjs';
   styleUrls: ['./add-evangelism.component.scss'],
 })
 export class AddEvangelismComponent implements OnInit {
-  @ViewChild('allSelected') allSelected: any;
-  @ViewChild('matSelect') select: any;
+  @ViewChild('membersAll') membersAll: any;
+  @ViewChild('membersSelect') membersSelect: any;
+  @ViewChild('membersAll_') membersAll_: any;
+  @ViewChild('membersSelect_') membersSelect_: any;
   queryString: string;
   isBusy: boolean = false;
   screen: number = 1;
@@ -34,6 +36,7 @@ export class AddEvangelismComponent implements OnInit {
   evangelismList: any[] = [];
   _memberList: any[] = [];
   memberItems: any[] = [];
+  memberItems_: any[] = [];
   filteredMembers: any[] = [];
   _evangelismId: any;
   _files: any[] = [];
@@ -66,7 +69,7 @@ export class AddEvangelismComponent implements OnInit {
       address: [null],
       city: [null],
       comment: [null],
-      members_id: [[]],
+      members_to_add: [[]],
     });
   }
 
@@ -85,11 +88,7 @@ export class AddEvangelismComponent implements OnInit {
   get updatedFormValue(): any {
     return this.updateEvangelismForm.getRawValue();
   }
-  get stripedObjValue() {
-    if (this._memberList.length !== 0 && this._memberList !== null) {
-      return this.memberItems.slice(0, 5).map((x: any) => x.user.first_name);
-    }
-  }
+
   get startDateVal() {
     if (this.queryString !== 'edit') {
       return this.evangelismForm.get('start_date').value;
@@ -103,28 +102,51 @@ export class AddEvangelismComponent implements OnInit {
     return this.updateEvangelismForm.get('end_date').value;
   }
 
-  toggleAllSelection() {
-    if (this.allSelected.selected) {
-      this.select.options._results.map((item) => {
+  get stripedObjValue() {
+    if (this._memberList.length !== 0 && this._memberList !== null) {
+      return this.memberItems.slice(0, 5).map((x: any) => x?.user?.first_name);
+    }
+  }
+  get stripedObjValue_() {
+    if (this._memberList.length !== 0 && this._memberList !== null) {
+      return this.memberItems_.slice(0, 5).map((x: any) => x?.user?.first_name);
+    }
+  }
+  toggleAllSelection(allSlc: any, slc: any) {
+    if (allSlc.selected) {
+      slc.options._results.map((item) => {
         item.select();
       });
     } else {
-      this.select.options._results.map((item) => {
+      slc.options._results.map((item) => {
         item.deselect();
       });
     }
   }
-  handleMembersChange(event: any) {
-    let result = event.source._value.filter((t) => t);
-    this.memberItems = result;
+  handleMembersChange(event: any, source: string) {
+    switch (event.source._value !== null && source) {
+      case (source = 'members_to_add'):
+        return (this.memberItems = event.source._value.filter((t) => t));
+      case (source = 'members_to_remove'):
+        return (this.memberItems_ = event.source._value.filter((t) => t));
+      default:
+        return;
+    }
   }
-  toggleOne() {
-    if (this.allSelected.selected) {
-      this.allSelected.deselect();
+  toggleOne(allSlc: any, slc: any) {
+    if (allSlc.selected) {
+      allSlc.deselect();
       return false;
     }
-    if (this.select.value.length == this._memberList.length) {
-      this.allSelected.select();
+    switch (slc.value !== null) {
+      case slc == this.membersSelect &&
+        slc.value.length == this._memberList.length:
+        return allSlc.select();
+      case slc == this.membersSelect_ &&
+        slc.value.length == this._memberList.length:
+        return allSlc.select();
+      default:
+        return;
     }
   }
   onDateChange() {
@@ -174,7 +196,7 @@ export class AddEvangelismComponent implements OnInit {
         .subscribe((res) => {
           const { data } = res;
           this.itemDetails = data;
-          if (this.itemDetails.members.member !== undefined) {
+          if (this.itemDetails.members !== undefined) {
             this.filteredMembers = this.itemDetails.members.map(
               (x: any) => x.member
             );
@@ -198,20 +220,21 @@ export class AddEvangelismComponent implements OnInit {
         address: [this.itemDetails.address],
         city: [this.itemDetails.city],
         comment: [this.itemDetails.comment],
-        members_id: [this.filteredMembers],
+        members_to_add: [this.filteredMembers],
+        members_to_remove: [[]],
       });
     }
   }
   onSubmit() {
     this.isBusy = true;
     let ids: any;
-    if (this.evangelismForm.controls['members_id'].value !== null) {
-      ids = this.evangelismForm.controls['members_id'].value
+    if (this.evangelismForm.controls['members_to_add'].value !== null) {
+      ids = this.evangelismForm.controls['members_to_add'].value
         .filter((x: any) => x !== 0)
         .map((a: any) => a.id);
     }
     this.evangelismForm.patchValue({
-      members_id: ids,
+      members_to_add: ids,
     });
 
     if (this.evangelismForm.invalid) {
@@ -244,13 +267,22 @@ export class AddEvangelismComponent implements OnInit {
   onUpdate() {
     this.isBusy = true;
     let ids: any;
-    if (this.updateEvangelismForm.controls['members_id'].value !== null) {
-      ids = this.updateEvangelismForm.controls['members_id'].value
+    let ids_: any;
+    if (this.updateEvangelismForm.controls['members_to_add'].value !== null) {
+      ids = this.updateEvangelismForm.controls['members_to_add'].value
+        .filter((x: any) => x !== 0)
+        .map((a: any) => a.id);
+    }
+    if (
+      this.updateEvangelismForm.controls['members_to_remove'].value !== null
+    ) {
+      ids_ = this.updateEvangelismForm.controls['members_to_remove'].value
         .filter((x: any) => x !== 0)
         .map((a: any) => a.id);
     }
     this.updateEvangelismForm.patchValue({
-      members_id: ids,
+      members_to_add: ids,
+      members_to_remove: ids_,
     });
     if (this.updateEvangelismForm.invalid) {
       this.isBusy = false;
