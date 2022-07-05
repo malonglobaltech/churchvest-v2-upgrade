@@ -1,0 +1,392 @@
+<div class="d-flex align-items-center mb-4 cursor" (click)="gotoBack()">
+  <button mat-icon-button class="me-2 return-link-wrap">
+    <mat-icon>west</mat-icon>
+  </button>
+  <div class="title-sm">Back</div>
+</div>
+<ng-container>
+  <section class="stepper-wrapper full">
+    <aside *ngIf="queryString !== 'edit'">
+      <form [formGroup]="eventForm" (ngSubmit)="onSubmit()">
+        <div class="form-wrap">
+          <div class="title mb-2">New Event</div>
+          <mat-divider></mat-divider>
+          <div class="grid grid--1fr--1fr grid-gap-15 mt-4 mb-3">
+            <div class="input">
+              <label>Name of Event</label>
+              <input
+                type="text"
+                placeholder="Enter event name"
+                formControlName="name"
+                [ngClass]="{
+                  'is-invalid':
+                    eventForm.controls['name'].hasError('required') &&
+                    eventForm.controls['name'].touched
+                }"
+              />
+            </div>
+            <div class="input">
+              <label>Organizer </label>
+              <input
+                type="text"
+                placeholder="Enter organizer name"
+                formControlName="organizer"
+                [ngClass]="{
+                  'is-invalid':
+                    eventForm.controls['organizer'].hasError('required') &&
+                    eventForm.controls['organizer'].touched
+                }"
+              />
+            </div>
+          </div>
+          <div class="grid grid--1fr--1fr grid-gap-15 mt-4 mb-3">
+            <div class="input">
+              <label>Start date</label>
+              <input
+                type="date"
+                formControlName="start_date"
+                placeholder="Enter start date"
+                (change)="onDateChange()"
+              />
+            </div>
+            <div class="input">
+              <label>End date</label>
+              <input
+                type="date"
+                formControlName="end_date"
+                placeholder="Enter end date"
+                (change)="onDateChange()"
+              />
+              <small class="text-danger" *ngIf="validate"
+                >End date must be greater than start date</small
+              >
+            </div>
+          </div>
+          <div class="grid grid--1fr--1fr grid-gap-15 mb-3">
+            <div class="input">
+              <label>Location Name </label>
+              <input
+                type="text"
+                placeholder="Enter location name"
+                formControlName="location_name"
+              />
+            </div>
+            <div class="input">
+              <label>Location Address</label>
+              <input
+                type="text"
+                placeholder="Enter location address"
+                formControlName="location_address"
+              />
+            </div>
+          </div>
+          <div class="grid grid--1fr--1fr grid-gap-15 mb-3">
+            <div class="input">
+              <label>Name of Participant</label>
+              <input
+                type="number"
+                placeholder="Enter participant size"
+                formControlName="participant_size"
+              />
+            </div>
+            <div class="input">
+                <label>Choose type of event</label>
+              <mat-select
+                class="select"
+                placeholder="Select repeat period"
+                formControlName="type"
+              >
+                <mat-option disabled="" selected="" value=""
+                  >Repeat Event </mat-option
+                >
+                <mat-option
+                  *ngFor="let item of typeOfEvent"
+                  [value]="item"
+                  class="capitalize"
+                  >{{ item }}</mat-option
+                >
+              </mat-select>
+            </div>
+          </div>
+          <div class="grid  grid-gap-15 mb-3">
+            <div class="input">
+              <label> Repeat Event</label>
+              <mat-select
+                class="select"
+                placeholder="Select repeat period"
+                formControlName="repeat"
+              >
+                <mat-option disabled="" selected="" value=""
+                  >Repeat Event </mat-option
+                >
+                <mat-option
+                  *ngFor="let item of repeatMode"
+                  [value]="item"
+                  class="capitalize"
+                  >{{ item }}</mat-option
+                >
+              </mat-select>
+            </div>
+               
+                <div class="wrapper d-flex align-items-center justify-content-between">
+                  <div class="d-flex align-items-center justify-content-between">
+                    <input
+                      type="file"
+                      name="file"
+                      hidden=""
+                      (change)="
+                        imgUp.changeImageUploadListener($event, uploadedBanner)
+                      "
+                      #uploadBanner
+                    />
+                    <div class="image"
+                      [ngStyle]="{
+                        background: fileImage 
+                          ? 'url(' + fileImage + ')'
+                          : 'url(' + 'assets/img/png/image-placeholder.png' + ')'
+                      }"
+                      #uploadedBanner
+                      >
+                      <span>
+                        <mat-icon (click)="imgUp.addBanner(uploadBanner)"
+                          >photo_camera</mat-icon>
+                      </span>
+                    </div>
+                    <div>
+                      <p>Event Banner <span>Click image to change it</span></p>
+                    </div>
+                  </div>
+                </div>
+          </div>
+          <div class="grid mb-3">
+            <div class="input">
+              <label>Comment</label>
+              <textarea
+                cols="30"
+                rows="10"
+                placeholder="Comment"
+                formControlName="comment"
+              ></textarea>
+            </div>
+          </div>
+          <div class="d-flex align-items-center">
+            <button
+              type="submit"
+              mat-flat-button
+              class="me-4"
+              [disabled]="!eventForm.valid"
+            >
+              Save <mat-spinner *ngIf="isBusy"> </mat-spinner>
+            </button>
+          </div>
+        </div>
+      </form>
+    </aside>
+    <ng-container *ngIf="queryString == 'edit' && !itemDetails">
+      <app-loading-roller></app-loading-roller>
+    </ng-container>
+    <ng-container *ngIf="queryString == 'edit' && itemDetails">
+      <aside>
+        <form [formGroup]="updateEventForm" (ngSubmit)="onUpdate()">
+          <div class="form-wrap">
+            <div class="title mb-2">Update Event</div>
+            <mat-divider></mat-divider>
+            <div class="grid grid--1fr--1fr grid-gap-15 mt-4 mb-3">
+              <div class="input">
+              <label>Name of Event</label>
+              <input
+                type="text"
+                placeholder="Enter event name"
+                formControlName="name"
+                  [ngClass]="{
+                    'is-invalid':
+                      updateEventForm.controls['name'].hasError(
+                        'required'
+                      ) && updateEvangelismForm.controls['name'].touched
+                  }"
+                />
+              </div>
+              <div class="input">
+                <label>Organizer </label>
+                <input
+                  type="text"
+                  placeholder="Enter organizer name"
+                  formControlName="organizer"
+                  [ngClass]="{
+                    'is-invalid':
+                      updateEventForm.controls['organizer'].hasError(
+                        'required'
+                      ) && updateEventForm.controls['organizer'].touched
+                  }"
+                />
+              </div>
+            </div>
+            <div class="grid grid--1fr--1fr grid-gap-15 mt-4 mb-3">
+              <div class="input">
+                <label>Start date</label>
+                <input
+                  type="date"
+                  formControlName="start_date"
+                  placeholder="Enter start date"
+                  (change)="onDateChange()"
+                />
+              </div>
+              <div class="input">
+                <label>End date</label>
+                <input
+                  type="date"
+                  formControlName="end_date"
+                  placeholder="Enter end date"
+                  (change)="onDateChange()"
+                />
+                <small class="text-danger" *ngIf="validate"
+                  >End date must be greater than start date</small
+                >
+              </div>
+            </div>
+            <div class="grid grid--1fr--1fr grid-gap-15 mb-3">
+              <div class="input">
+                <label>Location Name</label>
+                <input
+                  type="text"
+                  placeholder="Enter location name"
+                  formControlName="location_name"
+                  [ngClass]="{
+                    'is-invalid':
+                      updateEventForm.controls['location_name'].hasError(
+                        'required'
+                      ) && updateEventForm.controls['location_name'].touched
+                  }"
+                />
+              </div>
+              <div class="input">
+                <label>Location Address </label>
+                <input
+                  type="text"
+                  placeholder="Enter location address"
+                  formControlName="location_address"
+                  [ngClass]="{
+                    'is-invalid':
+                      updateEventForm.controls['location_address'].hasError(
+                        'required'
+                      ) && updateEventForm.controls['location_address'].touched
+                  }"
+                />
+              </div>
+            </div>
+          <div class="grid grid--1fr--1fr grid-gap-15 mb-3">
+            <div class="input">
+              <label>Name of Participant</label>
+              <input
+                type="number"
+                placeholder="Enter participant size"
+                formControlName="participant_size"
+                [ngClass]="{
+                    'is-invalid':
+                      updateEventForm.controls['participant_size'].hasError(
+                        'required'
+                      ) && updateEventForm.controls['participant_size'].touched
+                }"
+              />
+            </div>
+            <div class="input">
+                <label>Choose type of event</label>
+              <mat-select
+                class="select"
+                placeholder="Select repeat period"
+                formControlName="type"
+                [ngClass]="{
+                    'is-invalid': 
+                      updateEventForm.controls['type'].hasError(
+                        'required'
+                      ) && updateEventForm.controls['type'].touched
+                }"
+              >
+                <mat-option disabled="" selected="" value=""
+                  >Repeat Event </mat-option
+                >
+                <mat-option
+                  *ngFor="let item of repeatMode"
+                  [value]="item"
+                  class="capitalize"
+                  >{{ item }}</mat-option
+                >
+              </mat-select>
+            </div>
+          </div>
+            <div class="grid  grid-gap-15 mb-3">
+                <div class="input">
+                <label> Repeat Event</label>
+                <mat-select
+                    class="select"
+                    placeholder="Select repeat period"
+                    formControlName="repeat"
+                >
+                    <mat-option disabled="" selected="" value=""
+                    >Repeat Event </mat-option
+                    >
+                    <mat-option
+                    *ngFor="let item of repeatMode"
+                    [value]="item"
+                    class="capitalize"
+                    >{{ item }}</mat-option
+                    >
+                </mat-select>
+                </div>
+                <div class="wrapper d-flex align-items-center justify-content-between">
+                  <div class="d-flex align-items-center justify-content-between">
+                    <input
+                      type="file"
+                      name="file"
+                      hidden=""
+                      (change)="
+                        imgUp.changeImageUploadListener($event, uploadedBanner)
+                      "
+                      #uploadBanner
+                    />
+                    <div class="image"
+                      [ngStyle]="{
+                        background: itemDetails.image 
+                          ? 'url(' + itemDetails.image + ')'
+                          : 'url(' + fileImage + ')'
+                      }"
+                      #uploadedBanner
+                      >
+                      <span>
+                        <mat-icon (click)="imgUp.addBanner(uploadBanner)"
+                          >photo_camera</mat-icon>
+                      </span>
+                    </div>
+                    <div>
+                      <p>Event Banner <span>Click image to change it</span></p>
+                    </div>
+                  </div>
+                </div>
+            </div>
+            <div class="grid mb-3">
+              <div class="input">
+                <label>Comment</label>
+                <textarea
+                  cols="30"
+                  rows="10"
+                  placeholder="Comment"
+                  formControlName="comment"
+                ></textarea>
+              </div>
+            </div>
+            <div class="d-flex align-items-center">
+              <button
+                type="submit"
+                mat-flat-button
+                class="me-4"
+                [disabled]="!updateEventForm.valid"
+              >
+                Update <mat-spinner *ngIf="isBusy"> </mat-spinner>
+              </button>
+            </div>
+          </div>
+        </form>
+      </aside>
+    </ng-container>
+  </section>
+</ng-container>
