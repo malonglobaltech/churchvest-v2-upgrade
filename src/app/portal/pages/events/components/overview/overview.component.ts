@@ -182,7 +182,7 @@ export class OverviewComponent implements OnInit {
         C: data.organizer,
         D: data.start_date,
         E: data.end_date,
-        F: data.address,
+        F: data.location_address,
       });
     });
     edata.push(udt);

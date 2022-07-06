@@ -21,7 +21,7 @@ export class TrashedDepartmentsComponent implements OnInit {
   @ViewChild('closebtn') closebtn: any;
   @ViewChild('closebtn_') closebtn_: any;
   departmentList: any[] = [];
-  pageSize: number = 20;
+  pageSize: number = 50;
   currentPage = 0;
   isBusy: boolean = false;
   itemDetails: any;

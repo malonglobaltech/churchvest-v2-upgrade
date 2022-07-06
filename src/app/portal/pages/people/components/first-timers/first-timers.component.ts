@@ -137,7 +137,7 @@ export class FirstTimersComponent implements OnInit {
     const edata: Array<any> = [];
     const udt: any = {
       data: [
-        { A: 'CONVERTS DATA' }, // title
+        { A: 'FIRST-TIMER DATA' }, // title
         {
           A: '#',
           B: 'First Name',
