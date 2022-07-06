@@ -6,12 +6,16 @@ import { ReportingComponent } from './reporting.component';
 import { OverviewComponent } from './components/overview/overview.component';
 import { LoadingRollerModule } from '../../components/loading-roller/loading-roller.module';
 import { AngularMaterialModule } from 'src/app/shared/angular-material.module';
+import { MembershipJournalComponent } from './components/membership-journal/membership-journal.component';
+import { FinancialJournalComponent } from './components/financial-journal/financial-journal.component';
 
 
 @NgModule({
   declarations: [
     ReportingComponent,
-    OverviewComponent
+    OverviewComponent,
+    MembershipJournalComponent,
+    FinancialJournalComponent
   ],
   imports: [
     CommonModule,

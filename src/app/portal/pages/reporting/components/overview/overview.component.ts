@@ -17,19 +17,19 @@ export class OverviewComponent implements OnInit {
   getReportsItems() {
     return this.reportsItems = [
       {
-        title: 'Members Journal',
+        title: 'Membership Journal',
         desc: 'Find more insight on regular members, first timers, new converts and much more',
-        url: '/portal/reporting/members-journal',
+        url: '/portal/reporting/membership-journal',
         icon: 'plus-heart'
       },
       {
-        title: 'Financial Jounrnal',
+        title: 'Financial Journal',
         desc: 'Find all your balance sheet information and more',
         url: '/portal/reporting/financial-journal',
         icon: 'reconciliation'
       },
       {
-        title: 'Messages Jounrnal',
+        title: 'Messages Journal',
         desc: 'Text Messages and Email Messages',
         url: '/portal/reporting/messages-journal',
         icon: 'message-mail'
