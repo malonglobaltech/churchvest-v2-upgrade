@@ -75,13 +75,7 @@ export class AuthService {
       .post<any>(`${environment.mainUrl}/management/church/addChurch`, payload)
       .pipe(catchError(handleError));
   }
-  verify(link: string, token?: any): Observable<any> {
-    this.httpOptions = {
-      headers: new HttpHeaders({
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${token}`,
-      }),
-    };
+  verify(link: string): Observable<any> {
     return this.http
       .get<any>(link, this.httpOptions)
       .pipe(catchError(handleError));
