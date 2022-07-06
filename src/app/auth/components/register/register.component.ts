@@ -130,7 +130,7 @@ export class RegisterComponent implements OnInit {
           this.recordFound = false;
           this.toastr.success('Registration successful', 'Message');
           this.form.reset();
-          localStorage.setItem('token', res.access_token);
+          // localStorage.setItem('token', res.access_token);
           this.navigate(data.email);
         },
         (err) => {

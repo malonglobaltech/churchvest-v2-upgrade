@@ -26,18 +26,17 @@
           <p class="txt-grey">You have not verified your email.</p>
 
           <p class="txt-grey">
-            Please check your email to confirm your account or click on the text
-            below to resend the verification link
+            Please check your email to confirm your account.
           </p>
         </div>
 
-        <p class="txt-grey d-flex" *ngIf="token && !loading">
+        <!-- <p class="txt-grey d-flex" *ngIf="token && !loading">
           Didn’t get the email?
           <a class="ms-2 cursor" (click)="resend()"> Resend it</a>
-        </p>
-        <p *ngIf="token && loading" class="f12 txt-grey">
+        </p> -->
+        <!-- <p *ngIf="token && loading" class="f12 txt-grey">
           Sending another email...
-        </p>
+        </p> -->
       </div>
     </div>
     <div class="banner">
