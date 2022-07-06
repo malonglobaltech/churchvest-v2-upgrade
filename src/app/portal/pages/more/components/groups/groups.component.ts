@@ -25,6 +25,7 @@ export class GroupsComponent implements OnInit {
   filterValue: string;
   groupId: number;
   selectedItem: any[] = [];
+  filteredMembers: any[] = [];
   _isAllSelected: boolean = false;
   _isSingleSelected: boolean = false;
   pageSize: number = 50;
@@ -117,13 +118,20 @@ export class GroupsComponent implements OnInit {
   getDetails(id: any) {
     this._loading_ = true;
     this.groupId = id;
+
     if (this.groupId !== undefined) {
       this.groupService.fetchAllGroups(this.currentPage + 1).subscribe(
         (res) => {
           this._loading_ = false;
           const { data } = res;
-
           this.itemDetails = data.filter((x) => x.id == this.groupId);
+          if (this.itemDetails[0].members.length !== 0) {
+            this.filteredMembers = this.itemDetails[0].members
+              .filter((x: any) => x.member !== null)
+              .map((a: any) => a.member);
+          } else {
+            this.filteredMembers = [];
+          }
         },
         (msg) => {
           this._loading_ = false;

@@ -290,12 +290,22 @@ export class AddMembersComponent implements OnInit {
   }
   onUpdateMemberInfo(query: string) {
     this.isBusy = true;
-
     if (query == 'profileImage') {
       if (this.queryString !== 'edit') {
         this.updateProfileImage.patchValue({
           member_id: parseInt(this._memberId),
         });
+      }
+      if (
+        typeof this.updateProfileImage.get('profile').value == 'string' ||
+        this.updateProfileImage.get('profile').value == null
+      ) {
+        this.isBusy = false;
+        this.toastr.info(
+          'No changes made! select a new file to upload',
+          'Message'
+        );
+        return;
       }
       const formData = new FormData();
       formData.append('profile', this.updateProfileImage.get('profile').value);
@@ -311,7 +321,7 @@ export class AddMembersComponent implements OnInit {
       if (this.updateProfileImage.valid) {
         //Make api call here...
         this.peopleServ.updateMember(formData, 'membership').subscribe(
-          ({ message, data }) => {
+          ({ message }) => {
             this.toastr.success(message, 'Message');
             this.isBusy = false;
             this.getMembers();
