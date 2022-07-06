@@ -41,6 +41,11 @@ const routes: Routes = [
           import('../pages/people/people.module').then((m) => m.PeopleModule),
       },
       {
+        path: 'reporting',
+        loadChildren: () => 
+          import('../pages/reporting/reporting.module').then((m) => m.ReportingModule),
+      },
+      {
         path: 'settings',
         loadChildren: () =>
           import('../pages/settings/settings.module').then(
