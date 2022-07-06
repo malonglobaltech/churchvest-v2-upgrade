@@ -38,6 +38,7 @@ export class VerifyEmailComponent implements OnInit {
       this.router.navigate(['/onboarding/register']);
     }
   }
+  //Archiving this method
   resend() {
     this.loading = true;
     this.authService.resendVerificationEmail().subscribe(

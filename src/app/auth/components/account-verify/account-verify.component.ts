@@ -6,10 +6,10 @@ import {
   FormGroup,
   Validators,
 } from '@angular/forms';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { ObservableInput, throwError } from 'rxjs';
-import { catchError } from 'rxjs/operators';
+import { catchError, filter } from 'rxjs/operators';
 import { AuthService } from 'src/app/services/auth.service';
 import { IAuth } from 'src/app/shared/model';
 import { environment } from 'src/environments/environment';
@@ -24,12 +24,14 @@ export class AccountVerifyComponent implements OnInit {
   isBusy: boolean = false;
   url: any;
   isChecked: boolean = true;
+  _token: any;
   public form: FormGroup = new FormGroup({});
   constructor(
     private authServ: AuthService,
     private toastr: ToastrService,
     private fb: FormBuilder,
-    private router: Router
+    private router: Router,
+    private route: ActivatedRoute
   ) {
     this.form = this.fb.group({
       email: ['', [Validators.email, Validators.required]],
@@ -54,6 +56,7 @@ export class AccountVerifyComponent implements OnInit {
           const { data } = res;
           this.form.reset();
           localStorage.setItem('token', res.access_token);
+
           localStorage.setItem('user_details', JSON.stringify(data));
           localStorage.setItem('isLoggedIn', 'true');
           this.getLink();
@@ -74,6 +77,7 @@ export class AccountVerifyComponent implements OnInit {
       );
     }
   }
+
   getLink() {
     this.url = `${environment.managementbaseUrl}`;
     let baseOrigin = window.location.origin;
