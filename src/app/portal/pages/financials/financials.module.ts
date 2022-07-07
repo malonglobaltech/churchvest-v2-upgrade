@@ -10,6 +10,7 @@ import { AngularMaterialModule } from 'src/app/shared/angular-material.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { LoadingRollerModule } from '../../components/loading-roller/loading-roller.module';
 import { SettingsComponent } from './components/settings/settings.component';
+import { ChartGraphModule } from '../../components/chart-graph/chart-graph.module';
 
 @NgModule({
   declarations: [
@@ -26,6 +27,7 @@ import { SettingsComponent } from './components/settings/settings.component';
     ReactiveFormsModule,
     FormsModule,
     LoadingRollerModule,
+    ChartGraphModule,
   ],
   exports: [FinancialsComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
