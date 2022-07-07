@@ -30,7 +30,20 @@
               <p class="">View and download report of the regular members for the period selected</p>
                 <div class="btn-wrap d-flex">
                   <button mat-stroked-button class="mx-2">Print</button>
-                  <button mat-stroked-button color="primary">Export</button>
+                  <div class="ms-3">
+                    <button
+                      mat-stroked-button
+                      class="mat-stroke-secondary"
+                      [matMenuTriggerFor]="exportAsMembers"
+                    >
+                      Export as
+                    </button>
+                    <mat-menu #exportAsMembers="matMenu">
+                      <button mat-menu-item (click)="exportAsRegularMembers()">
+                        Download as Excel
+                      </button>
+                    </mat-menu>
+                  </div>
                 </div>
               </div>
             </div>
@@ -42,7 +55,20 @@
               <p class="">View and download report of the first timers for the period selected</p>
                 <div class="btn-wrap d-flex">
                   <button mat-stroked-button class="mx-2">Print</button>
-                  <button mat-stroked-button color="primary">Export</button>
+                  <div class="ms-3">
+                    <button
+                      mat-stroked-button
+                      class="mat-stroke-secondary"
+                      [matMenuTriggerFor]="exportAsFirstTimer"
+                    >
+                      Export as
+                    </button>
+                    <mat-menu #exportAsFirstTimer="matMenu">
+                      <button mat-menu-item (click)="exportFirstTimersToExcel()">
+                        Download as Excel
+                      </button>
+                    </mat-menu>
+                  </div>
                 </div>
               </div>
             </div>
@@ -54,7 +80,20 @@
               <p class="">View and download report of the first timers for the period selected</p>
                 <div class="btn-wrap d-flex">
                   <button mat-stroked-button class="mx-2">Print</button>
-                  <button mat-stroked-button color="primary">Export</button>
+                  <div class="ms-3">
+                    <button
+                      mat-stroked-button
+                      class="mat-stroke-secondary"
+                      [matMenuTriggerFor]="exportAsConverts"
+                    >
+                      Export as
+                    </button>
+                    <mat-menu #exportAsConverts="matMenu">
+                      <button mat-menu-item>
+                        Download as Excel
+                      </button>
+                    </mat-menu>
+                  </div>
                 </div>
               </div>
             </div>
