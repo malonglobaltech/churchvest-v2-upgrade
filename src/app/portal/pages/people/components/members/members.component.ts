@@ -280,7 +280,7 @@ export class BulkMemberUploadComponent {
         this.toastr.success(message, 'Message');
         this.isBusy = false;
         ref._elementRef.nativeElement.click();
-        window.location.reload();
+        // window.location.reload();
       },
       (error) => {
         this.isBusy = false;
