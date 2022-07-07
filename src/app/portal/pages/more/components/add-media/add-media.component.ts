@@ -73,9 +73,7 @@ export class AddMediaComponent implements OnInit {
     });
   }
   mediaTypeList = ['album', 'book', 'message', 'track'];
-  ngOnInit(): void {
-    this.getRoutes();
-  }
+  ngOnInit(): void {}
   ngAfterViewInit() {
     this.getFieldLabel();
   }
@@ -157,18 +155,7 @@ export class AddMediaComponent implements OnInit {
         return;
     }
   }
-  getRoutes() {
-    this.route.queryParams
-      .pipe(filter((params) => params.query))
-      .subscribe((params) => {
-        this.queryString = params.query;
-        this._id = params.id;
-        this.getMediaDetails();
-      });
-    if (this.queryString === '') {
-      this.router.navigate(['/portal/more/media']);
-    }
-  }
+
   getMediaDetails() {
     if (this._id !== undefined) {
       this.mediaService

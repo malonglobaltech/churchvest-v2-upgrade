@@ -1,10 +1,12 @@
-import { 
+import {
   Component,
   EventEmitter,
-  Input, OnInit, 
-  Output, Renderer2, 
-  TemplateRef, 
-  ViewChild 
+  Input,
+  OnInit,
+  Output,
+  Renderer2,
+  TemplateRef,
+  ViewChild,
 } from '@angular/core';
 import { Location } from '@angular/common';
 import {
@@ -26,7 +28,6 @@ import { catchError, filter } from 'rxjs/operators';
 import { ObservableInput, throwError } from 'rxjs';
 import { EventsService } from 'src/app/portal/services/events.service';
 
-
 @Component({
   template: '',
 })
@@ -41,7 +42,7 @@ export class ImageUploadComponent implements OnInit {
   isLoading: boolean = false;
   constructor(private toastr: ToastrService, private renderer: Renderer2) {}
 
-  ngOnInit(): void { }
+  ngOnInit(): void {}
   ngAfterViewInit() {}
   changeImageUploadListener(event: any, rf): void {
     this.fileImage = event.target.files[0];
@@ -58,12 +59,8 @@ export class ImageUploadComponent implements OnInit {
           this.fileImage.type == 'image/jpeg' ||
           this.fileImage.type == 'image/*'
         ) {
-          this.renderer.setStyle(
-           rf,
-            'background',
-            `url(${e.target.result})`
-          );
-          this._filesize = Math.round(event.target.files[0].size /1000);
+          this.renderer.setStyle(rf, 'background', `url(${e.target.result})`);
+          this._filesize = Math.round(event.target.files[0].size / 1000);
           this._filename = this.fileImage.name;
           this.toastr.success('File successfully added', 'Message');
           this.isLoading = false;
@@ -81,14 +78,12 @@ export class ImageUploadComponent implements OnInit {
   addBanner(ref) {
     ref.click();
   }
-
 }
-
 
 @Component({
   selector: 'app-add-event',
   templateUrl: './add-event.component.html',
-  styleUrls: ['./add-event.component.scss']
+  styleUrls: ['./add-event.component.scss'],
 })
 export class AddEventComponent implements OnInit {
   @ViewChild('allSelected') allSelected: any;
@@ -115,7 +110,14 @@ export class AddEventComponent implements OnInit {
   _formateDate = formatDate;
   _daysOfWeek = getDays;
   repeatMode: string[] = ['weekly', 'monthly', 'annually'];
-  typeOfEvent: string[] = ['vigil', 'praise', 'conference', 'convention', 'wedding', 'others'];
+  typeOfEvent: string[] = [
+    'vigil',
+    'praise',
+    'conference',
+    'convention',
+    'wedding',
+    'others',
+  ];
 
   public eventForm: FormGroup = new FormGroup({});
   public updateEventForm: FormGroup = new FormGroup({});
@@ -212,19 +214,17 @@ export class AddEventComponent implements OnInit {
   }
   getMembers() {
     this._memberList = [];
-    this.peopleServ
-      .fetchAll('members', this.currentPage + 1)
-      .subscribe(
-        (res: any) => {
-          const { data } = res;
-          this._memberList = data;
-        },
-        (errors) => {
-          if (errors) {
-            this._memberList = [];
-          }
+    this.peopleServ.fetchAll('members', this.currentPage + 1).subscribe(
+      (res: any) => {
+        const { data } = res;
+        this._memberList = data;
+      },
+      (errors) => {
+        if (errors) {
+          this._memberList = [];
         }
-      );
+      }
+    );
   }
   getRoutes() {
     this.route.queryParams
@@ -281,67 +281,49 @@ export class AddEventComponent implements OnInit {
       return;
     }
     const eventFormData = new FormData();
-      eventFormData.append('name', this.eventForm.get('name').value);
-      eventFormData.append('start_date', this.eventForm.get('start_date').value);
-      eventFormData.append('end_date', this.eventForm.get('end_date').value);
-      eventFormData.append('organizer', this.eventForm.get('organizer').value);
-      eventFormData.append('location_name', this.eventForm.get('location_name').value);
-      eventFormData.append('location_address', this.eventForm.get('location_address').value);
-      eventFormData.append('participant_size', this.eventForm.get('participant_size').value);
-      eventFormData.append('repeat', this.eventForm.get('repeat').value);
+    eventFormData.append('name', this.eventForm.get('name').value);
+    eventFormData.append('start_date', this.eventForm.get('start_date').value);
+    eventFormData.append('end_date', this.eventForm.get('end_date').value);
+    eventFormData.append('organizer', this.eventForm.get('organizer').value);
+    eventFormData.append(
+      'location_name',
+      this.eventForm.get('location_name').value
+    );
+    eventFormData.append(
+      'location_address',
+      this.eventForm.get('location_address').value
+    );
+    eventFormData.append(
+      'participant_size',
+      this.eventForm.get('participant_size').value
+    );
+    eventFormData.append('repeat', this.eventForm.get('repeat').value);
+    if (this.imgUp.fileImage !== undefined) {
       eventFormData.append('image', this.imgUp.fileImage);
-      eventFormData.append('type', this.eventForm.get('type').value);
-      eventFormData.append('comment', this.eventForm.get('comment').value);
-      //Make api call here...
-      this.evtsService.addEvent(eventFormData).subscribe(
-        ({ message, data }) => {
-          this.toastr.success(message, 'Message');
-          this.router.navigate(['/portal/events']);
-          this.eventForm.reset();
-          this.isBusy = false;
-        },
-        (error) => {
-          this.isBusy = false;
-          this.toastr.error(error, 'Message', {
-            timeOut: 3000,
-          });
-        },
-        () => {
-          this.isBusy = false;
-          this.eventForm.reset();
-        }
-      );
-  }
-  imageDisplay
-  onImageUpload(event) {
-    const file = event.target.files[0];
-    if (file) {
-      this.eventForm.patchValue({ image: file });
-      this.eventForm.get('image').updateValueAndValidity();
     }
+    eventFormData.append('type', this.eventForm.get('type').value);
+    eventFormData.append('comment', this.eventForm.get('comment').value);
+    //Make api call here...
+    this.evtsService.addEvent(eventFormData).subscribe(
+      ({ message, data }) => {
+        this.toastr.success(message, 'Message');
+        this.router.navigate(['/portal/events']);
+        this.eventForm.reset();
+        this.isBusy = false;
+      },
+      (error) => {
+        this.isBusy = false;
+        this.toastr.error(error, 'Message', {
+          timeOut: 3000,
+        });
+      },
+      () => {
+        this.isBusy = false;
+        this.eventForm.reset();
+      }
+    );
   }
 
-  getChildValue(val?: any, _query?: any, formType?: any) {
-    this.addToFormControl(val, _query);
-    console.log(val, _query)
-  }
-  addToFormControl(val: any, identifier?: any, create?: any) {
-    console.log(val, identifier)
-    switch (val !== null && identifier) {
-      case (identifier = 'fileUpdate'):
-        var imgUrl;
-
-        if (create && create == 'create') {
-          imgUrl = this.eventForm.get('image') as FormControl
-        } else {
-          imgUrl = this.updateEventForm.get('image') as FormControl
-        }
-        return imgUrl.setValue(val);
-
-      default:
-        return;
-    }
-  }
   onUpdate() {
     this.isBusy = true;
     if (this.updateEventForm.invalid) {
@@ -350,38 +332,61 @@ export class AddEventComponent implements OnInit {
     }
 
     const updateEventFormData = new FormData();
-      updateEventFormData.append('name', this.updateEventForm.get('name').value);
-      updateEventFormData.append('start_date', this.updateEventForm.get('start_date').value);
-      updateEventFormData.append('end_date', this.updateEventForm.get('end_date').value);
-      updateEventFormData.append('organizer', this.updateEventForm.get('organizer').value);
-      updateEventFormData.append('location_name', this.updateEventForm.get('location_name').value);
-      updateEventFormData.append('location_address', this.updateEventForm.get('location_address').value);
-      updateEventFormData.append('participant_size', this.updateEventForm.get('participant_size').value);
-      updateEventFormData.append('repeat', this.updateEventForm.get('repeat').value);
+    updateEventFormData.append('name', this.updateEventForm.get('name').value);
+    updateEventFormData.append(
+      'start_date',
+      this.updateEventForm.get('start_date').value
+    );
+    updateEventFormData.append(
+      'end_date',
+      this.updateEventForm.get('end_date').value
+    );
+    updateEventFormData.append(
+      'organizer',
+      this.updateEventForm.get('organizer').value
+    );
+    updateEventFormData.append(
+      'location_name',
+      this.updateEventForm.get('location_name').value
+    );
+    updateEventFormData.append(
+      'location_address',
+      this.updateEventForm.get('location_address').value
+    );
+    updateEventFormData.append(
+      'participant_size',
+      this.updateEventForm.get('participant_size').value
+    );
+    updateEventFormData.append(
+      'repeat',
+      this.updateEventForm.get('repeat').value
+    );
+    if (this.imgUp.fileImage !== undefined) {
       updateEventFormData.append('image', this.imgUp.fileImage);
-      updateEventFormData.append('type', this.updateEventForm.get('type').value);
-      updateEventFormData.append('comment', this.updateEventForm.get('comment').value);
-      //Make api call here...
-      this.evtsService
-        .updateEvent(updateEventFormData, this._eventId)
-        .subscribe(
-          ({ message, data }) => {
-            this.toastr.success(message, 'Message');
-            this.isBusy = false;
-            this.updateEventForm.reset();
-            this.router.navigate(['/portal/events']);
-          },
-          (error) => {
-            this.isBusy = false;
-            this.toastr.error(error, 'Message', {
-              timeOut: 3000,
-            });
-          },
-          () => {
-            this.isBusy = false;
-            this.updateEventForm.reset();
-          }
-        );
+    }
+    updateEventFormData.append('type', this.updateEventForm.get('type').value);
+    updateEventFormData.append(
+      'comment',
+      this.updateEventForm.get('comment').value
+    );
+    //Make api call here...
+    this.evtsService.updateEvent(updateEventFormData, this._eventId).subscribe(
+      ({ message, data }) => {
+        this.toastr.success(message, 'Message');
+        this.isBusy = false;
+        this.updateEventForm.reset();
+        this.router.navigate(['/portal/events']);
+      },
+      (error) => {
+        this.isBusy = false;
+        this.toastr.error(error, 'Message', {
+          timeOut: 3000,
+        });
+      },
+      () => {
+        this.isBusy = false;
+        this.updateEventForm.reset();
+      }
+    );
   }
-
 }

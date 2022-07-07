@@ -20,7 +20,7 @@ export class TrashedEventsComponent implements OnInit {
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild('closebtn') closebtn: any;
   @ViewChild('closebtn_') closebtn_: any;
-  departmentList: any[] = [];
+  itemList: any[] = [];
   pageSize: number = 50;
   currentPage = 0;
   isBusy: boolean = false;
@@ -88,20 +88,20 @@ export class TrashedEventsComponent implements OnInit {
   }
   getAllTrashedEvents() {
     this._loading = true;
-    this.departmentList = [];
+    this.itemList = [];
     this.evtsService.fetchAllFromTrash(this.currentPage + 1).subscribe(
       (res: any) => {
         this._loading = false;
         const { data, meta } = res;
-        this.departmentList = data;
-        this.dataSource = new MatTableDataSource(this.departmentList);
+        this.itemList = data;
+        this.dataSource = new MatTableDataSource(this.itemList);
         this.paginator.pageIndex = this.currentPage;
         this.paginator.length = meta.total;
       },
       (errors) => {
         if (errors) {
           this._loading = false;
-          this.departmentList = [];
+          this.itemList = [];
         }
       }
     );
@@ -110,7 +110,7 @@ export class TrashedEventsComponent implements OnInit {
     this._location.back();
   }
   getTrashedEventDetails(id: number) {
-    this.itemDetails = this.departmentList.find((i) => i.id === id);
+    this.itemDetails = this.itemList.find((i) => i.id === id);
     if (typeof this.itemDetails === 'undefined') {
       this.itemDetails = null;
       return this.itemDetails;
