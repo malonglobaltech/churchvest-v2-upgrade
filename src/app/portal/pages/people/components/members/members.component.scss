@@ -1,0 +1,20 @@
+@import "src/scss/_vars.scss";
+.block {
+  p {
+    text-align: center;
+    font-size: 14px;
+    span {
+      color: $purple;
+    }
+    small {
+      display: block;
+      font-size: 12px;
+    }
+  }
+}
+.file-name {
+  font-size: 12px;
+}
+img {
+  width: 50px;
+}

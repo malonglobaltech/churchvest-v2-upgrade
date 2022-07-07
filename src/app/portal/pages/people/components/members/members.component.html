@@ -1,9 +1,19 @@
 <section>
   <div class="header d-flex align-items-center justify-content-between mb-4">
     <div class="title">All Members</div>
-    <button mat-stroked-button routerLink="/portal/people/members/add-new">
-      <mat-icon class="me-2">add</mat-icon> Add New Member
-    </button>
+    <div class="d-flex align-items-center">
+      <button mat-stroked-button routerLink="/portal/people/members/add-new">
+        <mat-icon class="me-2">add</mat-icon> Add New Member
+      </button>
+      <button
+        mat-stroked-button
+        class="ms-3"
+        data-bs-toggle="modal"
+        data-bs-target="#bulk-upload"
+      >
+        <mat-icon class="me-2">upload_file</mat-icon> Bulk Upload
+      </button>
+    </div>
   </div>
   <div
     class="d-flex justify-content-center align-items-center my-3 empty-state"
@@ -309,19 +319,27 @@
                           itemDetails.user.email
                         }}</span></label
                       >
-                      <label>Phone Number<span>08163223507</span></label>
+                      <label
+                        >Phone Number<span>{{
+                          itemDetails["user"].phone !== null
+                            ? itemDetails["user"].phone
+                            : "---"
+                        }}</span></label
+                      >
                     </div>
                     <div class="grid grid--1fr--1fr mb-3">
                       <label
                         >Date of Birth<span>{{
-                          itemDetails["user"].details.personal !== null
+                          itemDetails["user"].details.personal.date_of_birth !==
+                          null
                             ? itemDetails["user"].details.personal.date_of_birth
                             : "---"
                         }}</span></label
                       >
                       <label
                         >Residential Area<span>{{
-                          itemDetails["user"].details.personal !== null
+                          itemDetails["user"].details.personal
+                            .residential_area !== null
                             ? itemDetails["user"].details.personal
                                 .residential_area
                             : "---"
@@ -331,14 +349,15 @@
                     <div class="grid grid--1fr--1fr mb-3">
                       <label
                         >Residential Address<span>{{
-                          itemDetails["user"].details.personal !== null
+                          itemDetails["user"].details.personal.address !== null
                             ? itemDetails["user"].details.personal.address
                             : "---"
                         }}</span></label
                       >
                       <label
                         >Closest Bus stop<span>{{
-                          itemDetails["user"].details.personal !== null
+                          itemDetails["user"].details.personal
+                            .nearest_bus_stop !== null
                             ? itemDetails["user"].details.personal
                                 .nearest_bus_stop
                             : "---"
@@ -348,7 +367,7 @@
                     <div class="grid grid--1fr--1fr mb-3">
                       <label
                         >Gender<span>{{
-                          itemDetails["user"].details.personal !== null
+                          itemDetails["user"].details.personal.gender !== null
                             ? itemDetails["user"].details.personal.gender
                             : "---"
                         }}</span></label
@@ -488,6 +507,103 @@
           <button mat-stroked-button data-bs-dismiss="modal" #closebtn>
             Cancel
           </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal fade" id="bulk-upload" role="dialog">
+  <div class="modal-dialog modal-wrapper">
+    <div class="modal-content-wrap">
+      <div class="modal-body">
+        <div
+          class="header-top d-flex justify-content-between align-items-center px-4 py-3"
+        >
+          <div class="title">Bulk Upload</div>
+          <mat-icon
+            class="cursor"
+            data-bs-dismiss="modal"
+            class="cursor"
+            #closebtn_
+            >close</mat-icon
+          >
+        </div>
+        <div class="container">
+          <div class="mb-2 d-flex justify-content-end mt-3">
+            <a
+              mat-stroked-button
+              download="members_upload"
+              target="_blank"
+              href="/assets/members_upload.xlsx"
+            >
+              Download sample template
+            </a>
+          </div>
+          <form class="pb-3">
+            <div class="form-wrap w--400 mt-0">
+              <div class="dashed-border bg-white">
+                <div
+                  class="d-flex flex-column align-items-center justify-content-center"
+                >
+                  <input
+                    type="file"
+                    accept="application/xls,application/xlsx"
+                    hidden=""
+                    (change)="
+                      bulkUpload.changedocListener($event, uploadedFile)
+                    "
+                    #uploadFile
+                  />
+                  <div
+                    class="my-2 cursor"
+                    #uploadedFile
+                    (click)="bulkUpload.addDoc(uploadFile)"
+                  >
+                    <div class="d-flex justify-content-center">
+                      <img src="assets/img/svg/xls-icon.svg" alt="pdf-icon" />
+                    </div>
+                    <div class="block mt-2" *ngIf="!bulkUpload._filename">
+                      <p>
+                        Drop your file here, or <span>browse</span>
+                        <small
+                          >Only XLS, XLSX files are allowed for upload</small
+                        >
+                      </p>
+                    </div>
+                  </div>
+                  <div>
+                    <div class="d-flex align-items-center flex-column">
+                      <div class="d-flex align-items-center">
+                        <span
+                          title="Change file"
+                          data-bs-toggle="tooltip"
+                          class="d-flex file-name align-items-center cursor"
+                          (click)="bulkUpload.addDoc(uploadFile)"
+                          *ngIf="bulkUpload._isUploaded"
+                        >
+                          {{ bulkUpload.getFileName }} ({{
+                            bulkUpload.getFileSize
+                          }})
+                          <span class="ms-2"><mat-icon>edit</mat-icon></span>
+                        </span>
+                      </div>
+                      <div class="mt-2">
+                        <button
+                          type="button"
+                          mat-flat-button
+                          [disabled]="!bulkUpload._isUploaded"
+                          (click)="bulkUpload.uploadBulk(closebtn_)"
+                        >
+                          Upload
+                          <mat-spinner *ngIf="bulkUpload.isBusy"> </mat-spinner>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </form>
         </div>
       </div>
     </div>

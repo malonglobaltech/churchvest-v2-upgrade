@@ -1,5 +1,15 @@
 import { SelectionModel } from '@angular/cdk/collections';
-import { Component, OnInit, ViewChild } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnInit,
+  Output,
+  Renderer2,
+  TemplateRef,
+  ViewChild,
+} from '@angular/core';
+import { FormGroup } from '@angular/forms';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
@@ -19,6 +29,9 @@ import {
 export class MembersComponent implements OnInit {
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild('closebtn') closebtn: any;
+  closebtn_: TemplateRef<any>;
+  uploadFile: TemplateRef<any>;
+  uploadedFile: TemplateRef<any>;
   memberList: any[] = [];
   pageSize: number = 50;
   currentPage = 0;
@@ -44,7 +57,8 @@ export class MembersComponent implements OnInit {
     private peopleService: PeopleService,
     private exportService: ExportServiceService,
     private router: Router,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    public bulkUpload: BulkMemberUploadComponent
   ) {}
 
   ngOnInit(): void {
@@ -189,5 +203,111 @@ export class MembersComponent implements OnInit {
     });
     edata.push(udt);
     this.exportService.exportTableElmToExcel(edata, this.file_name);
+  }
+}
+
+@Component({
+  template: '',
+})
+export class BulkMemberUploadComponent {
+  @Input() _fileTitle: any;
+
+  @ViewChild(MatPaginator) paginator: MatPaginator;
+  @ViewChild('triggerDocFile') triggerDocFile: any;
+  doc: any;
+  _filesize: any;
+  _filename: string;
+  _isUploaded: boolean = false;
+  isBusy: boolean = false;
+  _loading: boolean = false;
+  memberList: any[] = [];
+  pageSize: number = 50;
+  currentPage = 0;
+  public dataSource: MatTableDataSource<any> = new MatTableDataSource();
+  constructor(
+    private renderer: Renderer2,
+    private toastr: ToastrService,
+    private peopleService: PeopleService
+  ) {}
+  ngAfterViewInit() {
+    this.dataSource.paginator = this.paginator;
+  }
+
+  public addDoc(ref) {
+    ref.click();
+  }
+  public changedocListener(event: any, rf): void {
+    this.doc = event.target.files[0];
+    if (this.doc) {
+      var reader = new FileReader();
+      if (event.target.files[0].size / 1024 / 1024 > 10) {
+        this.toastr.info('File size should be less than 10MB', 'Message');
+        return;
+      }
+      reader.onloadend = () => {
+        if (
+          event.target.files[0].size / 1024 / 1024 < 10 &&
+          this.doc.type ==
+            'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+        ) {
+          this._isUploaded = true;
+          this._filesize = Math.round(event.target.files[0].size / 1000);
+          this._filename = this.doc.name;
+          this.renderer.setStyle(rf, 'display', 'none');
+          this.toastr.success('File successfully added', 'Message');
+        } else {
+          this.toastr.error(
+            'File type not supported, only excel file is allowed',
+            'Message'
+          );
+        }
+      };
+      reader.readAsDataURL(this.doc);
+    }
+  }
+  uploadBulk(ref) {
+    this.isBusy = true;
+    if (this.doc == null) {
+      this.toastr.info('No file added! Please upload a file', 'Message');
+      this.isBusy = false;
+      return;
+    }
+    const formData = new FormData();
+    formData.append('file', this.doc);
+
+    this.peopleService.bulkUpload(formData).subscribe(
+      ({ message, data }) => {
+        this.toastr.success(message, 'Message');
+        this.isBusy = false;
+        ref._elementRef.nativeElement.click();
+        window.location.reload();
+      },
+      (error) => {
+        this.isBusy = false;
+        this.toastr.error(error, 'Message', {
+          timeOut: 3000,
+        });
+      },
+      () => {
+        this.isBusy = false;
+      }
+    );
+  }
+  parseValue(value) {
+    return Math.round(value);
+  }
+  get getFileName() {
+    if (this._filename) {
+      return this._filename;
+    } else {
+      return;
+    }
+  }
+  get getFileSize() {
+    if (this._filesize && this._filesize > 1000) {
+      return [`${this.parseValue(this._filesize / 1024 / 1024)}mb`];
+    } else {
+      return [`${this.parseValue(this._filesize)}kb`];
+    }
   }
 }
