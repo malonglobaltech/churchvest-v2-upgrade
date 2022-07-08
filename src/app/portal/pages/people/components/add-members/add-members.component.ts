@@ -68,11 +68,11 @@ export class AddMembersComponent implements OnInit {
     });
     this.updateServiceInfo = this.fb.group({
       member_id: [null],
-      date_of_membership: [null, Validators.required],
+      date_of_membership: [null],
     });
     this.updateOtherInfo = this.fb.group({
       member_id: [null],
-      occupation: ['', Validators.required],
+      occupation: [''],
       comment: [''],
     });
   }
@@ -244,15 +244,11 @@ export class AddMembersComponent implements OnInit {
         member_id: [parseInt(this.itemDetails.id)],
         date_of_membership: [
           this.itemDetails['details']?.service?.date_of_membership,
-          Validators.required,
         ],
       });
       this.updateOtherInfo = this.fb.group({
         member_id: [parseInt(this.itemDetails.id)],
-        occupation: [
-          this.itemDetails['details']?.other?.occupation,
-          Validators.required,
-        ],
+        occupation: [this.itemDetails['details']?.other?.occupation],
         comment: [this.itemDetails['details']?.other?.comment],
       });
     }
