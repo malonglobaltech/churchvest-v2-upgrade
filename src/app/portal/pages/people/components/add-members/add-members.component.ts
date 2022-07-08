@@ -57,6 +57,8 @@ export class AddMembersComponent implements OnInit {
       country: [null],
       nearest_bus_stop: [null],
       residential_area: [null],
+      relationship: ['single'],
+      date_of_marriage: [null],
       address: [null],
       gender: [null],
     });
@@ -114,7 +116,20 @@ export class AddMembersComponent implements OnInit {
   get updatedFormValue(): any {
     return this.updatePersonalInfoForm.getRawValue();
   }
-
+  handleRelationshipChange(evt: any) {
+    if (evt.value !== 'single' && this.queryString !== 'edit') {
+      this.personalInfoForm.controls['date_of_marriage'].enable();
+    } else {
+      this.personalInfoForm.controls['date_of_marriage'].disable();
+    }
+    if (this.itemDetails) {
+      if (evt.value !== 'single') {
+        this.updatePersonalInfoForm.controls['date_of_marriage'].enable();
+      } else {
+        this.updatePersonalInfoForm.controls['date_of_marriage'].disable();
+      }
+    }
+  }
   gotoView(screenType?: string, screenIndex?: number) {
     if (screenType === 'next') {
       this.screen = this.screen + 1;
@@ -206,6 +221,10 @@ export class AddMembersComponent implements OnInit {
         residential_area: [
           this.itemDetails['user'].details.personal.residential_area,
           Validators.required,
+        ],
+        relationship: [this.itemDetails['user'].details.personal.relationship],
+        date_of_marriage: [
+          this.itemDetails['user'].details.personal.date_of_marriage,
         ],
         address: [
           this.itemDetails['user'].details.personal.address,

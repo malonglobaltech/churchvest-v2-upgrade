@@ -138,6 +138,38 @@
             </div>
             <div class="grid grid--1fr--1fr grid-gap-15 mb-3">
               <div class="input">
+                <label>Relationship status </label>
+                <mat-select
+                  class="select"
+                  placeholder="Select relationship status"
+                  formControlName="relationship"
+                  (selectionChange)="handleRelationshipChange($event)"
+                  [ngClass]="{
+                    'is-invalid':
+                      personalInfoForm.controls['relationship'].hasError(
+                        'required'
+                      ) && personalInfoForm.controls['relationship'].touched
+                  }"
+                >
+                  <mat-option disabled="" selected="" value=""
+                    >Select relationship</mat-option
+                  >
+                  <mat-option value="single">Single</mat-option>
+                  <mat-option value="married">Married</mat-option>
+                </mat-select>
+              </div>
+              <div class="input">
+                <label>Marriage Date </label>
+                <input
+                  type="date"
+                  placeholder="Enter date of marriage"
+                  [attr.disabled]="true"
+                  formControlName="date_of_marriage"
+                />
+              </div>
+            </div>
+            <div class="grid grid--1fr--1fr grid-gap-15 mb-3">
+              <div class="input">
                 <label>Nearest bus-stop</label>
                 <input
                   type="text"
@@ -498,6 +530,39 @@
                           'required'
                         ) && updatePersonalInfoForm.controls['address'].touched
                     }"
+                  />
+                </div>
+              </div>
+              <div class="grid grid--1fr--1fr grid-gap-15 mb-3">
+                <div class="input">
+                  <label>Relationship status </label>
+                  <mat-select
+                    class="select"
+                    placeholder="Select relationship status"
+                    formControlName="relationship"
+                    (selectionChange)="handleRelationshipChange($event)"
+                    [ngClass]="{
+                      'is-invalid':
+                        updatePersonalInfoForm.controls[
+                          'relationship'
+                        ].hasError('required') &&
+                        updatePersonalInfoForm.controls['relationship'].touched
+                    }"
+                  >
+                    <mat-option disabled="" selected="" value=""
+                      >Select relationship</mat-option
+                    >
+                    <mat-option value="single">Single</mat-option>
+                    <mat-option value="married">Married</mat-option>
+                  </mat-select>
+                </div>
+                <div class="input">
+                  <label>Marriage Date </label>
+                  <input
+                    type="date"
+                    placeholder="Enter date of marriage"
+                    [attr.disabled]="true"
+                    formControlName="date_of_marriage"
                   />
                 </div>
               </div>

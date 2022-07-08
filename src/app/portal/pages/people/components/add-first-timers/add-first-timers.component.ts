@@ -65,7 +65,7 @@ export class AddFirstTimersComponent implements OnInit {
       residential_area: [null],
       address: [null],
       nearest_bus_stop: [null],
-      relationship: new FormControl({ value: 'Single' }),
+      relationship: ['single'],
       date_of_marriage: [null],
       occupation: [null],
       follow_up_team: [[null]],
@@ -109,12 +109,17 @@ export class AddFirstTimersComponent implements OnInit {
     this.memberItems = result;
   }
   handleRelationshipChange(evt: any) {
-    if (evt.value !== 'single') {
+    if (evt.value !== 'single' && this.queryString !== 'edit') {
       this.form.controls['date_of_marriage'].enable();
-      this.updateForm.controls['date_of_marriage'].enable();
     } else {
       this.form.controls['date_of_marriage'].disable();
-      this.updateForm.controls['date_of_marriage'].disable();
+    }
+    if (this.itemDetails) {
+      if (evt.value !== 'single') {
+        this.updateForm.controls['date_of_marriage'].enable();
+      } else {
+        this.updateForm.controls['date_of_marriage'].disable();
+      }
     }
   }
   toggleOne() {
