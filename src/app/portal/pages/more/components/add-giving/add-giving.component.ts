@@ -36,6 +36,7 @@ export class AddGivingComponent implements OnInit {
   bankList: any[] = [];
   pageSize: number = 50;
   currentPage = 0;
+  _loading_: boolean = false;
   accountName: string = '';
   bankObj: any;
   _id: any;
@@ -101,7 +102,6 @@ export class AddGivingComponent implements OnInit {
       (res: any) => {
         const { data } = res;
         this.accountList = data;
-        this.setFormControlElement();
       },
       (errors) => {
         if (errors) {
@@ -129,7 +129,8 @@ export class AddGivingComponent implements OnInit {
       .pipe(filter((params) => params.query))
       .subscribe((params) => {
         this.queryString = params.query;
-        // this.getDepartmentDetails();
+        this._id = params.id;
+        this.getDetails(this._id);
       });
     if (this.queryString === '') {
       this.router.navigate(['/portal/more/online-giving']);
@@ -163,6 +164,20 @@ export class AddGivingComponent implements OnInit {
         }
       );
     }
+  }
+  getDetails(id: any) {
+    this._loading_ = true;
+    this.givingService.fetchGiving(id).subscribe(
+      (res) => {
+        this._loading_ = false;
+        const { data } = res;
+        this.itemDetails = data;
+        this.setFormControlElement();
+      },
+      (msg) => {
+        this._loading_ = false;
+      }
+    );
   }
   addAccount() {
     this.isBusy_ = true;
@@ -200,7 +215,7 @@ export class AddGivingComponent implements OnInit {
     if (this.queryString == 'edit' && this._id !== undefined) {
       this.updateGivingForm = this.fb.group({
         type: [this.itemDetails?.type, Validators.required],
-        account_id: [this.itemDetails?.accound_id],
+        account_id: [this.itemDetails?.account?.id],
         currency: [this.itemDetails?.currency],
         amount: [this.itemDetails?.amount],
         request_name: [this.itemDetails?.request_name],

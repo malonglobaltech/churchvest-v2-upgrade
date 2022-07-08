@@ -54,12 +54,6 @@
                   type="text"
                   placeholder="Enter last name"
                   formControlName="last_name"
-                  [ngClass]="{
-                    'is-invalid':
-                      personalInfoForm.controls['last_name'].hasError(
-                        'required'
-                      ) && personalInfoForm.controls['last_name'].touched
-                  }"
                 />
               </div>
             </div>
@@ -70,12 +64,6 @@
                   type="email"
                   placeholder="Enter email address"
                   formControlName="email"
-                  [ngClass]="{
-                    'is-invalid':
-                      personalInfoForm.controls['email'].hasError('required') &&
-                      personalInfoForm.controls['email'].touched &&
-                      !personalInfoForm.controls['email'].valid
-                  }"
                 />
               </div>
               <div class="input">
@@ -102,12 +90,6 @@
                   [max]="maxDate"
                   pattern="^(19[5-9][0-9]|20[0-4][0-9]|2050)[-/](0?[1-9]|1[0-2])[-/](0?[1-9]|[12][0-9]|3[01])$"
                   formControlName="date_of_birth"
-                  [ngClass]="{
-                    'is-invalid':
-                      personalInfoForm.controls['date_of_birth'].hasError(
-                        'required'
-                      ) && personalInfoForm.controls['date_of_birth'].touched
-                  }"
                 />
               </div>
               <div class="input">
@@ -137,12 +119,6 @@
                   type="text"
                   placeholder="Enter area of residence"
                   formControlName="residential_area"
-                  [ngClass]="{
-                    'is-invalid':
-                      personalInfoForm.controls['residential_area'].hasError(
-                        'required'
-                      ) && personalInfoForm.controls['residential_area'].touched
-                  }"
                 />
               </div>
               <div class="input">
@@ -167,12 +143,6 @@
                   type="text"
                   placeholder="Enter bus stop closest to you"
                   formControlName="nearest_bus_stop"
-                  [ngClass]="{
-                    'is-invalid':
-                      personalInfoForm.controls['nearest_bus_stop'].hasError(
-                        'required'
-                      ) && personalInfoForm.controls['nearest_bus_stop'].touched
-                  }"
                 />
               </div>
               <div class="input m-0">
@@ -375,7 +345,7 @@
           <div class="center">
             <h2>All Done</h2>
             <span class="py-2 icon">🎊🎊🎊</span>
-            <p class="f12 txt-grey">Profile update completed</p>
+            <p class="f12 txt-grey">Profile creation completed</p>
             <div class="mt-2">
               <button mat-stroked-button routerLink="/portal/people/members">
                 Go back
@@ -442,14 +412,6 @@
                     type="email"
                     placeholder="Enter email address"
                     formControlName="email"
-                    [ngClass]="{
-                      'is-invalid':
-                        updatePersonalInfoForm.controls['email'].hasError(
-                          'required'
-                        ) &&
-                        updatePersonalInfoForm.controls['email'].touched &&
-                        !updatePersonalInfoForm.controls['email'].valid
-                    }"
                   />
                 </div>
                 <div class="input">

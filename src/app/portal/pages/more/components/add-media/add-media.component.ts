@@ -155,11 +155,10 @@ export class AddMediaComponent implements OnInit {
         .subscribe((res) => {
           const { data } = res;
           this.itemDetails = data;
-          this.setFormControlElement();
         });
     }
   }
-  setFormControlElement() {}
+
   onSubmit() {
     this.isBusy = true;
 
@@ -210,8 +209,10 @@ export class AddMediaComponent implements OnInit {
         },
         (error) => {
           this.isBusy = false;
-          this.toastr.error(error, 'Message', {
-            timeOut: 3000,
+          error.split(',').map((x: any) => {
+            this.toastr.error(x, 'Message', {
+              timeOut: 5000,
+            });
           });
         },
         () => {

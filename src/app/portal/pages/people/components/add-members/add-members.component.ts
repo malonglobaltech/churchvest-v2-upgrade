@@ -50,15 +50,15 @@ export class AddMembersComponent implements OnInit {
   ) {
     this.personalInfoForm = this.fb.group({
       first_name: [null, Validators.required],
-      last_name: [null, Validators.required],
-      email: [null, [Validators.required, Validators.email]],
-      phone: [null, Validators.required],
-      date_of_birth: [null, Validators.required],
-      country: [null, Validators.required],
-      nearest_bus_stop: [null, Validators.required],
-      residential_area: [null, Validators.required],
-      address: [null, Validators.required],
-      gender: [null, Validators.required],
+      last_name: [null],
+      email: [null],
+      phone: [null],
+      date_of_birth: [null],
+      country: [null],
+      nearest_bus_stop: [null],
+      residential_area: [null],
+      address: [null],
+      gender: [null],
     });
     this.updateProfileImage = this.fb.group({
       member_id: [null],
@@ -257,8 +257,10 @@ export class AddMembersComponent implements OnInit {
         },
         (error) => {
           this.isBusy = false;
-          this.toastr.error(error, 'Message', {
-            timeOut: 3000,
+          error.split(',').map((x: any) => {
+            this.toastr.error(x, 'Message', {
+              timeOut: 5000,
+            });
           });
         },
         () => {
@@ -284,8 +286,10 @@ export class AddMembersComponent implements OnInit {
         },
         (error) => {
           this.isBusy = false;
-          this.toastr.error(error, 'Message', {
-            timeOut: 3000,
+          error.split(',').map((x: any) => {
+            this.toastr.error(x, 'Message', {
+              timeOut: 5000,
+            });
           });
         },
         () => {

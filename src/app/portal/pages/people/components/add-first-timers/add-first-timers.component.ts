@@ -126,7 +126,6 @@ export class AddFirstTimersComponent implements OnInit {
       this.allSelected.select();
     }
   }
-
   getMembers() {
     this._memberList = [];
     this.peopleServ.fetchAll('members', this.currentPage + 1).subscribe(
@@ -230,10 +229,12 @@ export class AddFirstTimersComponent implements OnInit {
           this.form.reset();
           this.isBusy = false;
         },
-        (error) => {
+        (err) => {
           this.isBusy = false;
-          this.toastr.error(error, 'Message', {
-            timeOut: 3000,
+          err.split(',').map((x: any) => {
+            this.toastr.error(x, 'Message', {
+              timeOut: 5000,
+            });
           });
         },
         () => {

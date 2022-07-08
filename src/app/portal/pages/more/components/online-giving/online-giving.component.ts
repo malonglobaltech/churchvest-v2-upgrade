@@ -47,7 +47,7 @@ export class OnlineGivingComponent implements OnInit {
 
   ngOnInit(): void {
     this._getAllGivingAccount();
-    this.getFromTrash();
+    // this.getFromTrash();
     this.displayedColumns = this.column;
   }
 
@@ -104,31 +104,33 @@ export class OnlineGivingComponent implements OnInit {
     );
   }
   getFromTrash() {
-    this.givingService.fetchAllFromTrash().subscribe((res: any) => {
-      const { data } = res;
-      this.trashList = data;
-    });
+    this.givingService
+      .fetchAllFromTrash(this.currentPage + 1)
+      .subscribe((res: any) => {
+        const { data } = res;
+        this.trashList = data;
+      });
   }
   getselectedItem(arr: any) {
     let filter = arr.map((x: any) => x.id);
     this.selectedItem = filter;
   }
-  // getDepartmentDetails(id: any) {
-  //   this._loading_ = true;
-  //   this.memberId = id;
-  //   if (this.memberId !== undefined) {
-  //     this.givingService.fetchDepartmentDetails(id).subscribe(
-  //       (res) => {
-  //         this._loading_ = false;
-  //         const { data } = res;
-  //         this.itemDetails = data;
-  //       },
-  //       (msg) => {
-  //         this._loading_ = false;
-  //       }
-  //     );
-  //   }
-  // }
+  getDetails(id: any) {
+    this._loading_ = true;
+    this.memberId = id;
+    if (this.memberId !== undefined) {
+      this.givingService.fetchGiving(id).subscribe(
+        (res) => {
+          this._loading_ = false;
+          const { data } = res;
+          this.itemDetails = data;
+        },
+        (msg) => {
+          this._loading_ = false;
+        }
+      );
+    }
+  }
   pageChanged(event: PageEvent) {
     this.pageSize = event.pageSize;
     this.currentPage = event.pageIndex;
@@ -150,7 +152,7 @@ export class OnlineGivingComponent implements OnInit {
     this.givingService.moveToTrash(payload).subscribe(({ message }) => {
       this.isBusy = false;
       this.toastr.success(message, 'Success');
-      this.router.navigate(['/portal/givings/trash']);
+      this.router.navigate(['/portal/online-giving/trash']);
       this.closebtn._elementRef.nativeElement.click();
       this._getAllGivingAccount();
     });

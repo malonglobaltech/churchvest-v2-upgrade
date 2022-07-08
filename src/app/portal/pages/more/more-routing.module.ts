@@ -8,6 +8,7 @@ import { MediaComponent } from './components/media/media.component';
 import { MessagesComponent } from './components/messages/messages.component';
 import { OnlineGivingComponent } from './components/online-giving/online-giving.component';
 import { SendMessageComponent } from './components/send-message/send-message.component';
+import { TrashGivingsComponent } from './components/trash-givings/trash-givings.component';
 import { TrashMediaComponent } from './components/trash-media/trash-media.component';
 import { TrashMessagesComponent } from './components/trash-messages/trash-messages.component';
 import { TrashedGroupComponent } from './components/trashed-group/trashed-group.component';
@@ -37,6 +38,10 @@ const routes: Routes = [
       {
         path: 'group/trash',
         component: TrashedGroupComponent,
+      },
+      {
+        path: 'online-giving/trash',
+        component: TrashGivingsComponent,
       },
       {
         path: 'media/trash',
