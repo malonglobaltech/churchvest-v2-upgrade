@@ -7,7 +7,7 @@ import {
   FormGroup,
   Validators,
 } from '@angular/forms';
-import { compareObjects } from 'src/app/shared/_helperFunctions';
+import { compareObjects, setMaxDate } from 'src/app/shared/_helperFunctions';
 import { PeopleService } from 'src/app/portal/services/people.service';
 import { ToastrService } from 'ngx-toastr';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -39,7 +39,9 @@ export class CreateGroupComponent implements OnInit {
   pageSize: number = 50;
   currentPage = 0;
   validate: boolean = false;
+  maxDate: any;
   compareFunc = compareObjects;
+  _setMaxDate = setMaxDate;
 
   public groupForm: FormGroup = new FormGroup({});
   public groupFormUpdate: FormGroup = new FormGroup({});
@@ -69,6 +71,7 @@ export class CreateGroupComponent implements OnInit {
   ngOnInit(): void {
     this.getRoutes();
     this.getMembers();
+    this.maxDate = this._setMaxDate();
   }
   ngAfterViewInit() {}
   gotoBack() {
@@ -230,8 +233,10 @@ export class CreateGroupComponent implements OnInit {
         },
         (error) => {
           this.isBusy = false;
-          this.toastr.error(error, 'Message', {
-            timeOut: 3000,
+          error.split(',').map((x: any) => {
+            this.toastr.error(x, 'Message', {
+              timeOut: 5000,
+            });
           });
         },
         () => {
@@ -276,8 +281,10 @@ export class CreateGroupComponent implements OnInit {
           },
           (error) => {
             this.isBusy = false;
-            this.toastr.error(error, 'Message', {
-              timeOut: 3000,
+            error.split(',').map((x: any) => {
+              this.toastr.error(x, 'Message', {
+                timeOut: 5000,
+              });
             });
           },
           () => {

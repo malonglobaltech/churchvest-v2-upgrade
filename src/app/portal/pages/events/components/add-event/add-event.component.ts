@@ -313,8 +313,10 @@ export class AddEventComponent implements OnInit {
       },
       (error) => {
         this.isBusy = false;
-        this.toastr.error(error, 'Message', {
-          timeOut: 3000,
+        error.split(',').map((x: any) => {
+          this.toastr.error(x, 'Message', {
+            timeOut: 5000,
+          });
         });
       },
       () => {
@@ -379,8 +381,10 @@ export class AddEventComponent implements OnInit {
       },
       (error) => {
         this.isBusy = false;
-        this.toastr.error(error, 'Message', {
-          timeOut: 3000,
+        error.split(',').map((x: any) => {
+          this.toastr.error(x, 'Message', {
+            timeOut: 5000,
+          });
         });
       },
       () => {
