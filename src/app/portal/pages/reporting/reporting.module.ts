@@ -8,6 +8,7 @@ import { LoadingRollerModule } from '../../components/loading-roller/loading-rol
 import { AngularMaterialModule } from 'src/app/shared/angular-material.module';
 import { MembershipJournalComponent } from './components/membership-journal/membership-journal.component';
 import { FinancialJournalComponent } from './components/financial-journal/financial-journal.component';
+import { MessagesJournalComponent } from './components/messages-journal/messages-journal.component';
 
 
 @NgModule({
@@ -15,7 +16,8 @@ import { FinancialJournalComponent } from './components/financial-journal/financ
     ReportingComponent,
     OverviewComponent,
     MembershipJournalComponent,
-    FinancialJournalComponent
+    FinancialJournalComponent,
+    MessagesJournalComponent
   ],
   imports: [
     CommonModule,

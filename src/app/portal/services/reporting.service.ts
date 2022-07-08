@@ -27,4 +27,14 @@ export class ReportingService {
       )
       .pipe(catchError(handleError));
   }
+
+  fetchJournal(type: any, date?: any): Observable<any> {
+    return this.http
+      .get<any>(
+        `${
+          environment.managementbaseUrl
+        }/${this.authService.getChurchSlug()}/reporting/${type}/?date=${date}`
+      )
+      .pipe(catchError(handleError));
+  }
 }

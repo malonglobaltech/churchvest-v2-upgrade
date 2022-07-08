@@ -1,0 +1,82 @@
+<div class="bg-white p-3">
+    <section class="message py-3 px-2">
+        <div class="my-3">
+            <mat-form-field>
+              <mat-label>Query by date</mat-label>
+                <input
+                  #ref
+                  matInput
+                  [matDatepicker]="datepicker"
+                  (dateChange)="getMessageJournal(ref.value)"
+                />
+                <mat-datepicker-toggle
+                  matSuffix
+                  [for]="datepicker"
+                ></mat-datepicker-toggle>
+                <mat-datepicker #datepicker>
+                  <mat-datepicker-actions>
+                    <button mat-button matDatepickerCancel>Cancel</button>
+                    <button mat-raised-button color="primary" matDatepickerApply>Apply</button>
+                  </mat-datepicker-actions>
+                </mat-datepicker>
+            </mat-form-field>
+        </div>
+        <ng-container *ngIf="_loading_">
+          <app-loading-roller></app-loading-roller>
+        </ng-container>
+        <div class="grid grid--1fr--1fr gap mt-5">
+          <ng-container *ngIf="!_loading_">
+            <div class="journal">
+              <h3 class="title pt-3">SMS Message</h3>
+              <div class="d-md-flex align-items-center justify-content-between py-3">
+              <p class="">View and download report of the regular members for the period selected</p>
+                <div class="btn-wrap d-flex">
+                  <button mat-stroked-button class="mx-2">Print</button>
+                  <div class="ms-3">
+                    <button
+                      mat-stroked-button
+                      class="mat-stroke-secondary"
+                      [matMenuTriggerFor]="exportAsSms"
+                    >
+                      Export as
+                    </button>
+                    <mat-menu #exportAsSms="matMenu">
+                      <button mat-menu-item 
+                        (click)="exportSmsToExcel()"
+                        >
+                        Download as Excel</button
+                      >
+                    </mat-menu>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </ng-container>
+          <ng-container *ngIf="!_loading_">
+            <div class="journal">
+              <h3 class="title pt-3">Email Message</h3>
+              <div class="d-flex align-items-center justify-content-between py-3">
+              <p class="">See in detail the number of email messsages sent.</p>
+                <div class="btn-wrap d-flex">
+                  <button mat-stroked-button class="mx-2">Print</button>
+                  <div class="ms-3">
+                    <button
+                      mat-stroked-button
+                      class="mat-stroke-secondary"
+                      [matMenuTriggerFor]="exportAsEmail"
+                    >
+                      Export as
+                    </button>
+                    <mat-menu #exportAsEmail="matMenu">
+                      <button mat-menu-item (click)="exportEmailToExcel()">
+                        Download as Excel
+                      </button>
+                    </mat-menu>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </ng-container>
+        </div>
+    </section>
+</div>
