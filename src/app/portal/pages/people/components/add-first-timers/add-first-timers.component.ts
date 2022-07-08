@@ -1,6 +1,5 @@
 import { Component, OnInit, Renderer2, ViewChild } from '@angular/core';
 import { Location } from '@angular/common';
-import { environment } from 'src/environments/environment';
 import {
   FormArray,
   FormBuilder,
@@ -8,12 +7,7 @@ import {
   FormGroup,
   Validators,
 } from '@angular/forms';
-import {
-  compareObjects,
-  formatDate,
-  getCompletedStatus,
-  getDays,
-} from 'src/app/shared/_helperFunctions';
+import { compareObjects, setMaxDate } from 'src/app/shared/_helperFunctions';
 import { PeopleService } from 'src/app/portal/services/people.service';
 import { ToastrService } from 'ngx-toastr';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -45,7 +39,9 @@ export class AddFirstTimersComponent implements OnInit {
   currentPage = 0;
   _val: boolean = false;
   validate: boolean = false;
+  maxDate: any;
   compareFunc = compareObjects;
+  _setMaxDate = setMaxDate;
 
   public form: FormGroup = new FormGroup({});
   public updateForm: FormGroup = new FormGroup({});
@@ -69,7 +65,7 @@ export class AddFirstTimersComponent implements OnInit {
       residential_area: [null],
       address: [null],
       nearest_bus_stop: [null],
-      relationship: [null],
+      relationship: new FormControl({ value: 'Single' }),
       date_of_marriage: [null],
       occupation: [null],
       follow_up_team: [[null]],
@@ -77,6 +73,7 @@ export class AddFirstTimersComponent implements OnInit {
   }
   ngOnInit(): void {
     this.getRoutes();
+    this.maxDate = this._setMaxDate();
     this.getMembers();
   }
   ngAfterViewInit() {}
@@ -110,6 +107,15 @@ export class AddFirstTimersComponent implements OnInit {
   handleMembersChange(event: any) {
     let result = event.source._value.filter((t) => t);
     this.memberItems = result;
+  }
+  handleRelationshipChange(evt: any) {
+    if (evt.value !== 'single') {
+      this.form.controls['date_of_marriage'].enable();
+      this.updateForm.controls['date_of_marriage'].enable();
+    } else {
+      this.form.controls['date_of_marriage'].disable();
+      this.updateForm.controls['date_of_marriage'].disable();
+    }
   }
   toggleOne() {
     if (this.allSelected.selected) {

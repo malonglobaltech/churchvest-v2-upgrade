@@ -88,19 +88,6 @@ export class AddMediaComponent implements OnInit {
     return this.updateConvertForm.getRawValue();
   }
 
-  selectedControl() {
-    let response: any;
-    if (this._selectedMediaType == 'message') {
-      return this.mediaForm.get('resources') as FormArray;
-    }
-    if (this._selectedMediaType == 'album') {
-      return this.mediaForm.get('tracks') as FormArray;
-    }
-    if (this._selectedMediaType == 'track') {
-      return this.mediaForm.get('resources') as FormArray;
-    }
-    return response;
-  }
   handleMediaTypeChange(val: any) {
     this._selectedMediaType = val.value;
     this.getFieldLabel(this._selectedMediaType);

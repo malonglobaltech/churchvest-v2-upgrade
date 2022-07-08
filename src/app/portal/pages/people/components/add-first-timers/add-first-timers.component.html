@@ -74,6 +74,8 @@
               <label>Date of birth</label>
               <input
                 type="date"
+                [max]="maxDate"
+                pattern="^(19[5-9][0-9]|20[0-4][0-9]|2050)[-/](0?[1-9]|1[0-2])[-/](0?[1-9]|[12][0-9]|3[01])$"
                 placeholder="Enter date of birth"
                 formControlName="date_of_birth"
               />
@@ -140,6 +142,7 @@
                 class="select"
                 placeholder="Select relationship status"
                 formControlName="relationship"
+                (selectionChange)="handleRelationshipChange($event)"
                 [ngClass]="{
                   'is-invalid':
                     form.controls['relationship'].hasError('required') &&
@@ -154,13 +157,11 @@
               </mat-select>
             </div>
             <div class="input">
-              <label
-                >Marriage Date
-                <span class="f12 txt-grey">(Optional)</span></label
-              >
+              <label>Marriage Date </label>
               <input
                 type="date"
                 placeholder="Enter date of marriage"
+                [attr.disabled]="true"
                 formControlName="date_of_marriage"
               />
             </div>
@@ -237,7 +238,7 @@
       <aside>
         <form [formGroup]="updateForm" (ngSubmit)="onUpdate()">
           <div class="form-wrap">
-            <div class="title mb-2">First Timer</div>
+            <div class="title mb-2">Update First Timer</div>
             <mat-divider></mat-divider>
             <div class="grid grid--1fr--1fr grid-gap-15 mt-4 mb-3">
               <div class="input">
@@ -302,6 +303,8 @@
                 <label>Date of birth</label>
                 <input
                   type="date"
+                  [max]="maxDate"
+                  pattern="^(19[5-9][0-9]|20[0-4][0-9]|2050)[-/](0?[1-9]|1[0-2])[-/](0?[1-9]|[12][0-9]|3[01])$"
                   placeholder="Enter date of birth"
                   formControlName="date_of_birth"
                 />
@@ -368,12 +371,7 @@
                   class="select"
                   placeholder="Select relationship status"
                   formControlName="relationship"
-                  [ngClass]="{
-                    'is-invalid':
-                      updateForm.controls['relationship'].hasError(
-                        'required'
-                      ) && updateForm.controls['relationship'].touched
-                  }"
+                  (selectionChange)="handleRelationshipChange($event)"
                 >
                   <mat-option disabled="" selected="" value=""
                     >Select relationship</mat-option
@@ -387,6 +385,7 @@
                 <input
                   type="date"
                   placeholder="Enter date of marriage"
+                  [attr.disabled]="true"
                   formControlName="date_of_marriage"
                 />
               </div>

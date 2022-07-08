@@ -7,7 +7,10 @@ import {
   FormGroup,
   Validators,
 } from '@angular/forms';
-import { getCompletedStatus } from 'src/app/shared/_helperFunctions';
+import {
+  getCompletedStatus,
+  setMaxDate,
+} from 'src/app/shared/_helperFunctions';
 import { PeopleService } from 'src/app/portal/services/people.service';
 import { ToastrService } from 'ngx-toastr';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -29,7 +32,9 @@ export class AddMembersComponent implements OnInit {
   _memberId: any;
   _files: any[] = [];
   fileData: any;
+  maxDate: any;
   _pathStatus = getCompletedStatus;
+  _setMaxDate = setMaxDate;
   public personalInfoForm: FormGroup = new FormGroup({});
   public updatePersonalInfoForm: FormGroup = new FormGroup({});
   public updateProfileImage: FormGroup = new FormGroup({});
@@ -94,6 +99,7 @@ export class AddMembersComponent implements OnInit {
   ];
   ngOnInit(): void {
     this.getRoutes();
+    this.maxDate = this._setMaxDate();
   }
   ngAfterViewInit() {
     this.getMembers();

@@ -227,12 +227,26 @@ export class BulkMemberUploadComponent {
   constructor(
     private renderer: Renderer2,
     private toastr: ToastrService,
-    private peopleService: PeopleService
+    private peopleService: PeopleService,
+    private router: Router
   ) {}
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;
   }
-
+  get getFileName() {
+    if (this._filename) {
+      return this._filename;
+    } else {
+      return;
+    }
+  }
+  get getFileSize() {
+    if (this._filesize && this._filesize > 1000) {
+      return [`${this.parseValue(this._filesize / 1024 / 1024)}mb`];
+    } else {
+      return [`${this.parseValue(this._filesize)}kb`];
+    }
+  }
   public addDoc(ref) {
     ref.click();
   }
@@ -254,7 +268,7 @@ export class BulkMemberUploadComponent {
           this._filesize = Math.round(event.target.files[0].size / 1000);
           this._filename = this.doc.name;
           this.renderer.setStyle(rf, 'display', 'none');
-          this.toastr.success('File successfully added', 'Message');
+          this.toastr.info('File successfully added', 'Message');
         } else {
           this.toastr.error(
             'File type not supported, only excel file is allowed',
@@ -264,6 +278,16 @@ export class BulkMemberUploadComponent {
       };
       reader.readAsDataURL(this.doc);
     }
+  }
+
+  parseValue(value) {
+    return Math.round(value);
+  }
+  reloadCurrentRoute() {
+    const currentUrl = this.router.url;
+    this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
+      this.router.navigate([currentUrl]);
+    });
   }
   uploadBulk(ref) {
     this.isBusy = true;
@@ -277,10 +301,10 @@ export class BulkMemberUploadComponent {
 
     this.peopleService.bulkUpload(formData).subscribe(
       ({ message, data }) => {
+        this.reloadCurrentRoute();
         this.toastr.success(message, 'Message');
         this.isBusy = false;
         ref._elementRef.nativeElement.click();
-        // window.location.reload();
       },
       (error) => {
         this.isBusy = false;
@@ -292,22 +316,5 @@ export class BulkMemberUploadComponent {
         this.isBusy = false;
       }
     );
-  }
-  parseValue(value) {
-    return Math.round(value);
-  }
-  get getFileName() {
-    if (this._filename) {
-      return this._filename;
-    } else {
-      return;
-    }
-  }
-  get getFileSize() {
-    if (this._filesize && this._filesize > 1000) {
-      return [`${this.parseValue(this._filesize / 1024 / 1024)}mb`];
-    } else {
-      return [`${this.parseValue(this._filesize)}kb`];
-    }
   }
 }
