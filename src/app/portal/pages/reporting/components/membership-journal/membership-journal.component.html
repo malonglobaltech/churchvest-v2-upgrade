@@ -2,6 +2,7 @@
     <section class="membership py-3 px-2">
         <div class="my-3">
             <mat-form-field>
+              <mat-label>Query by date</mat-label>
                 <input
                   #ref
                   matInput
@@ -26,7 +27,7 @@
           <ng-container *ngIf="!_loading_">
             <div class="journal">
               <h3 class="title pt-3">Regular Members</h3>
-              <div class="d-flex align-items-center justify-content-between py-3">
+              <div class="d-md-flex align-items-center justify-content-between py-3">
               <p class="">View and download report of the regular members for the period selected</p>
                 <div class="btn-wrap d-flex">
                   <button mat-stroked-button class="mx-2">Print</button>
@@ -39,9 +40,11 @@
                       Export as
                     </button>
                     <mat-menu #exportAsMembers="matMenu">
-                      <button mat-menu-item (click)="exportAsRegularMembers()">
-                        Download as Excel
-                      </button>
+                      <button mat-menu-item 
+                        (click)="exportRegularMembersToExcel()"
+                        >
+                        Download as Excel</button
+                      >
                     </mat-menu>
                   </div>
                 </div>
@@ -52,7 +55,7 @@
             <div class="journal">
               <h3 class="title pt-3">First Timers</h3>
               <div class="d-flex align-items-center justify-content-between py-3">
-              <p class="">View and download report of the first timers for the period selected</p>
+              <p class="">See in detail the number of first timers.</p>
                 <div class="btn-wrap d-flex">
                   <button mat-stroked-button class="mx-2">Print</button>
                   <div class="ms-3">
@@ -77,7 +80,7 @@
             <div class="journal">
               <h3 class="title pt-3">New Converts</h3>
               <div class="d-flex align-items-center justify-content-between py-3">
-              <p class="">View and download report of the first timers for the period selected</p>
+              <p class="">See in detail of the newly converted souls in church.</p>
                 <div class="btn-wrap d-flex">
                   <button mat-stroked-button class="mx-2">Print</button>
                   <div class="ms-3">
@@ -89,9 +92,11 @@
                       Export as
                     </button>
                     <mat-menu #exportAsConverts="matMenu">
-                      <button mat-menu-item>
-                        Download as Excel
-                      </button>
+                      <button mat-menu-item
+                        (click)="exportNewConvertsToExcel()"
+                       >
+                        Download as Excel</button
+                      >
                     </mat-menu>
                   </div>
                 </div>

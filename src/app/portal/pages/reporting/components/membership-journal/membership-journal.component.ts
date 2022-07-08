@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ExportServiceService } from 'src/app/portal/services/export-service.service';
 import { ReportingService } from 'src/app/portal/services/reporting.service';
-import { printElement } from 'src/app/shared';
+import { concatColumnString, printElement } from 'src/app/shared';
 
 @Component({
   selector: 'app-membership-journal',
@@ -21,20 +21,24 @@ export class MembershipJournalComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.getMemberShipJournal()
+    this.getMemberShipJournal();
   }
 
   getMemberShipJournal() {
     this._loading_ = true
     this.reportService
-    .fetchMembershipJournal('membership_journal').subscribe(
+    .fetchMembershipJournal('membership_journal', '2022-04-30').subscribe(
       (res) => {
         this._loading_ = false;
-        const { first_timers, members, new_converts } = res;
+        const { first_timers, regular_members, new_converts } = res;
         console.log('res', res)
         this.firstTimersList = first_timers;
         this.newConvertList= new_converts;
-        this.regularMemberList = members
+        this.regularMemberList = regular_members
+      },
+      (error) => {
+        this._loading_ = false;
+        this.regularMemberList = [];
       }
     )
   }
@@ -66,6 +70,34 @@ export class MembershipJournalComponent implements OnInit {
     });
     edata.push(udt);
     this.exportService.exportTableElmToExcel(edata, 'First Timer data')
+  }
+
+  exportNewConvertsToExcel(): void {
+    const edata: Array<any> = [];
+    const udt: any = {
+      data: [
+        { A: 'CONVERTS DATA' }, // title
+        {
+          A: '#',
+          B: 'First Name',
+          C: 'Last Name',
+          D: 'Membership Info',
+          E: 'Convert Status',
+        }, // table header
+      ],
+      skipHeader: true,
+    };
+    this.newConvertList.forEach((data) => {
+      udt.data.push({
+        A: data.id,
+        B: data.first_name,
+        C: data.last_name,
+        D: data.membership_info,
+        E: data.convert_status,
+      });
+    });
+    edata.push(udt);
+    this.exportService.exportTableElmToExcel(edata, 'New converts Journal Data')
   }
 
   exportRegularMembersToExcel(): void {
