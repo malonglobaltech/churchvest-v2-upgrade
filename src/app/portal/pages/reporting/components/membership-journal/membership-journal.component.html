@@ -7,6 +7,7 @@
                   #ref
                   matInput
                   [matDatepicker]="datepicker"
+                  (dateChange)="getMemberShipJournal(ref.value)"
                 />
                 <mat-datepicker-toggle
                   matSuffix
@@ -15,7 +16,7 @@
                 <mat-datepicker #datepicker>
                   <mat-datepicker-actions>
                     <button mat-button matDatepickerCancel>Cancel</button>
-                    <button mat-raiseed-button color="primary" matDatepickerApply>Apply</button>
+                    <button mat-raised-button color="primary" matDatepickerApply>Apply</button>
                   </mat-datepicker-actions>
                 </mat-datepicker>
             </mat-form-field>

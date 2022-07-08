@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ExportServiceService } from 'src/app/portal/services/export-service.service';
 import { ReportingService } from 'src/app/portal/services/reporting.service';
-import { concatColumnString, printElement } from 'src/app/shared';
+import Swal from 'sweetalert2';
+import { printElement, setDateQuery } from 'src/app/shared';
 
 @Component({
   selector: 'app-membership-journal',
@@ -14,6 +15,8 @@ export class MembershipJournalComponent implements OnInit {
   newConvertList: any[] = [];
   _loading_: boolean = false;
   _printElement = printElement;
+  _setDateQuery = setDateQuery;
+  dateQuery = new Date();
 
   constructor(
     private reportService: ReportingService,
@@ -24,24 +27,28 @@ export class MembershipJournalComponent implements OnInit {
     this.getMemberShipJournal();
   }
 
-  getMemberShipJournal() {
+  getMemberShipJournal(evt?:any) {
     this._loading_ = true
+    let date = setDateQuery(evt)
     this.reportService
-    .fetchMembershipJournal('membership_journal', '2022-04-30').subscribe(
+    .fetchMembershipJournal('membership_journal', date).subscribe(
       (res) => {
         this._loading_ = false;
         const { first_timers, regular_members, new_converts } = res;
-        console.log('res', res)
         this.firstTimersList = first_timers;
         this.newConvertList= new_converts;
         this.regularMemberList = regular_members
       },
       (error) => {
         this._loading_ = false;
+            Swal.fire('Server error', error, 'error');
+        this.firstTimersList = []
+        this.newConvertList = [];
         this.regularMemberList = [];
       }
     )
   }
+
   exportFirstTimersToExcel(): void {
     const edata: Array<any> = [];
     const udt: any = {
