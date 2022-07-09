@@ -143,3 +143,18 @@ export const maxLengthCheck = (event) => {
     event.target.value = event.target.value.slice(0, event.target.maxLength);
   }
 };
+
+export const setMaxDate = () => {
+  const dtToday = new Date();
+  let month = String(dtToday.getMonth() + 1);
+  let day = String(dtToday.getDate());
+  let year = dtToday.getFullYear();
+
+  if (parseInt(month, 10) < 10) {
+    month = '0' + month.toString();
+  }
+  if (parseInt(day, 10) < 10) {
+    day = '0' + day.toString();
+  }
+  return `${year}-${month}-${day}`;
+};

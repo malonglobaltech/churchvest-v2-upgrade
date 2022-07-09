@@ -7,7 +7,10 @@ import {
   FormGroup,
   Validators,
 } from '@angular/forms';
-import { getCompletedStatus } from 'src/app/shared/_helperFunctions';
+import {
+  getCompletedStatus,
+  setMaxDate,
+} from 'src/app/shared/_helperFunctions';
 import { PeopleService } from 'src/app/portal/services/people.service';
 import { ToastrService } from 'ngx-toastr';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -29,7 +32,9 @@ export class AddMembersComponent implements OnInit {
   _memberId: any;
   _files: any[] = [];
   fileData: any;
+  maxDate: any;
   _pathStatus = getCompletedStatus;
+  _setMaxDate = setMaxDate;
   public personalInfoForm: FormGroup = new FormGroup({});
   public updatePersonalInfoForm: FormGroup = new FormGroup({});
   public updateProfileImage: FormGroup = new FormGroup({});
@@ -45,15 +50,17 @@ export class AddMembersComponent implements OnInit {
   ) {
     this.personalInfoForm = this.fb.group({
       first_name: [null, Validators.required],
-      last_name: [null, Validators.required],
-      email: [null, [Validators.required, Validators.email]],
-      phone: [null, Validators.required],
-      date_of_birth: [null, Validators.required],
-      country: [null, Validators.required],
-      nearest_bus_stop: [null, Validators.required],
-      residential_area: [null, Validators.required],
-      address: [null, Validators.required],
-      gender: [null, Validators.required],
+      last_name: [null],
+      email: [null],
+      phone: [null],
+      date_of_birth: [null],
+      country: [null],
+      nearest_bus_stop: [null],
+      residential_area: [null],
+      relationship: ['single'],
+      date_of_marriage: [null],
+      address: [null],
+      gender: [null],
     });
     this.updateProfileImage = this.fb.group({
       member_id: [null],
@@ -61,11 +68,11 @@ export class AddMembersComponent implements OnInit {
     });
     this.updateServiceInfo = this.fb.group({
       member_id: [null],
-      date_of_membership: [null, Validators.required],
+      date_of_membership: [null],
     });
     this.updateOtherInfo = this.fb.group({
       member_id: [null],
-      occupation: ['', Validators.required],
+      occupation: [''],
       comment: [''],
     });
   }
@@ -94,6 +101,11 @@ export class AddMembersComponent implements OnInit {
   ];
   ngOnInit(): void {
     this.getRoutes();
+    this.maxDate = this._setMaxDate();
+    let arr = [3, 5, 7, 8, 6, 1];
+    let target = 20;
+    // this.threeNumberSum(arr, target);
+    // this.twoNumberSum(arr, target);
   }
   ngAfterViewInit() {
     this.getMembers();
@@ -108,7 +120,20 @@ export class AddMembersComponent implements OnInit {
   get updatedFormValue(): any {
     return this.updatePersonalInfoForm.getRawValue();
   }
-
+  handleRelationshipChange(evt: any) {
+    if (evt.value !== 'single' && this.queryString !== 'edit') {
+      this.personalInfoForm.controls['date_of_marriage'].enable();
+    } else {
+      this.personalInfoForm.controls['date_of_marriage'].disable();
+    }
+    if (this.itemDetails) {
+      if (evt.value !== 'single') {
+        this.updatePersonalInfoForm.controls['date_of_marriage'].enable();
+      } else {
+        this.updatePersonalInfoForm.controls['date_of_marriage'].disable();
+      }
+    }
+  }
   gotoView(screenType?: string, screenIndex?: number) {
     if (screenType === 'next') {
       this.screen = this.screen + 1;
@@ -201,6 +226,10 @@ export class AddMembersComponent implements OnInit {
           this.itemDetails['user'].details.personal.residential_area,
           Validators.required,
         ],
+        relationship: [this.itemDetails['user'].details.personal.relationship],
+        date_of_marriage: [
+          this.itemDetails['user'].details.personal.date_of_marriage,
+        ],
         address: [
           this.itemDetails['user'].details.personal.address,
           Validators.required,
@@ -219,15 +248,11 @@ export class AddMembersComponent implements OnInit {
         member_id: [parseInt(this.itemDetails.id)],
         date_of_membership: [
           this.itemDetails['details']?.service?.date_of_membership,
-          Validators.required,
         ],
       });
       this.updateOtherInfo = this.fb.group({
         member_id: [parseInt(this.itemDetails.id)],
-        occupation: [
-          this.itemDetails['details']?.other?.occupation,
-          Validators.required,
-        ],
+        occupation: [this.itemDetails['details']?.other?.occupation],
         comment: [this.itemDetails['details']?.other?.comment],
       });
     }
@@ -251,8 +276,10 @@ export class AddMembersComponent implements OnInit {
         },
         (error) => {
           this.isBusy = false;
-          this.toastr.error(error, 'Message', {
-            timeOut: 3000,
+          error.split(',').map((x: any) => {
+            this.toastr.error(x, 'Message', {
+              timeOut: 5000,
+            });
           });
         },
         () => {
@@ -278,8 +305,10 @@ export class AddMembersComponent implements OnInit {
         },
         (error) => {
           this.isBusy = false;
-          this.toastr.error(error, 'Message', {
-            timeOut: 3000,
+          error.split(',').map((x: any) => {
+            this.toastr.error(x, 'Message', {
+              timeOut: 5000,
+            });
           });
         },
         () => {
@@ -290,12 +319,22 @@ export class AddMembersComponent implements OnInit {
   }
   onUpdateMemberInfo(query: string) {
     this.isBusy = true;
-
     if (query == 'profileImage') {
       if (this.queryString !== 'edit') {
         this.updateProfileImage.patchValue({
           member_id: parseInt(this._memberId),
         });
+      }
+      if (
+        typeof this.updateProfileImage.get('profile').value == 'string' ||
+        this.updateProfileImage.get('profile').value == null
+      ) {
+        this.isBusy = false;
+        this.toastr.info(
+          'No changes made! select a new file to upload',
+          'Message'
+        );
+        return;
       }
       const formData = new FormData();
       formData.append('profile', this.updateProfileImage.get('profile').value);
@@ -311,7 +350,7 @@ export class AddMembersComponent implements OnInit {
       if (this.updateProfileImage.valid) {
         //Make api call here...
         this.peopleServ.updateMember(formData, 'membership').subscribe(
-          ({ message, data }) => {
+          ({ message }) => {
             this.toastr.success(message, 'Message');
             this.isBusy = false;
             this.getMembers();

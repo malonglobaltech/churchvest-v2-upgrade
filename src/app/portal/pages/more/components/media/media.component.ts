@@ -143,7 +143,7 @@ export class MediaComponent implements OnInit {
     this._loading_ = true;
     this.mediaId = id;
     if (this.mediaId !== undefined) {
-      this.mediaService.fetchAllMedia().subscribe(
+      this.mediaService.fetchAllMedia(this.currentPage + 1).subscribe(
         (res) => {
           this._loading_ = false;
           const { data } = res;

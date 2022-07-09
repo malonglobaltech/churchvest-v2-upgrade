@@ -6,13 +6,21 @@
     </button>
   </div>
   <div
-    class="d-flex justify-content-center align-items-center my-3 empty-state"
     *ngIf="!_loading && (!eventList || eventList.length === 0)"
+    class="d-flex flex-column justify-content-center align-items-center my-3 empty-state"
   >
-    <span class="txt-grey txt-md"
-      >No record found! Please create a record.</span
+    <span class="txt-grey txt-md mb-2">
+      No record found! Please create an event
+    </span>
+    <button
+      routerLink="/portal/events/trash"
+      mat-stroked-button
+      *ngIf="trashList && trashList.length !== 0"
     >
+      Recover from trash
+    </button>
   </div>
+
   <ng-container *ngIf="_loading">
     <app-loading-roller></app-loading-roller>
   </ng-container>

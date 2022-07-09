@@ -37,7 +37,7 @@ export class OverviewComponent implements OnInit {
     this.fullname = `${this.userData.first_name} ${this.userData.last_name}`;
     this.email = `${this.userData.email}`;
     this.churchData = JSON.parse(localStorage.getItem('user_church'));
-    this.profileImg = this.userData.memberships[0].profile;
+    this.profileImg = this.userData.memberships[0]?.profile;
   }
   toggleEdit() {
     this.isEditing = !this.isEditing;

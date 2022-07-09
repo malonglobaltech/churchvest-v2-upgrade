@@ -82,7 +82,7 @@
           </div>
           <div class="grid grid--1fr--1fr grid-gap-15 mb-3">
             <div class="input">
-              <label>Name of Participant</label>
+              <label>Participant Size</label>
               <input
                 type="number"
                 placeholder="Enter participant size"
@@ -277,7 +277,7 @@
             </div>
             <div class="grid grid--1fr--1fr grid-gap-15 mb-3">
               <div class="input">
-                <label>Name of Participant</label>
+                <label>Participant Size</label>
                 <input
                   type="number"
                   placeholder="Enter participant size"
@@ -306,7 +306,7 @@
                     >Repeat Event
                   </mat-option>
                   <mat-option
-                    *ngFor="let item of repeatMode"
+                    *ngFor="let item of typeOfEvent"
                     [value]="item"
                     class="capitalize"
                     >{{ item }}</mat-option

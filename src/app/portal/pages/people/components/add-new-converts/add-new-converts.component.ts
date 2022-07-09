@@ -13,6 +13,7 @@ import {
   formatDate,
   getCompletedStatus,
   getDays,
+  setMaxDate,
 } from 'src/app/shared/_helperFunctions';
 import { PeopleService } from 'src/app/portal/services/people.service';
 import { ToastrService } from 'ngx-toastr';
@@ -45,7 +46,9 @@ export class AddNewConvertsComponent implements OnInit {
   currentPage = 0;
   _val: boolean = false;
   validate: boolean = false;
+  maxDate: any;
   compareFunc = compareObjects;
+  _setMaxDate = setMaxDate;
 
   public convertForm: FormGroup = new FormGroup({});
   public updateConvertForm: FormGroup = new FormGroup({});
@@ -64,7 +67,7 @@ export class AddNewConvertsComponent implements OnInit {
       phone: [null],
       is_member: [false],
       is_rededication: [false],
-      service_day: [null],
+      service_day: [null, Validators.required],
       prayer_requests: [[]],
       follow_up_team: [[null]],
       members_id: [null],
@@ -74,6 +77,7 @@ export class AddNewConvertsComponent implements OnInit {
 
   ngOnInit(): void {
     this.getRoutes();
+    this.maxDate = this._setMaxDate();
     this.getMembers();
   }
   ngAfterViewInit() {}

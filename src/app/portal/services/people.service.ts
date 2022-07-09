@@ -92,6 +92,19 @@ export class PeopleService {
       )
       .pipe(catchError(handleError));
   }
+  bulkUpload(model: any): Observable<any> {
+    return this.http
+      .post<IPersonalInfo>(
+        ` ${
+          environment.managementbaseUrl
+        }/${this.authService.getChurchSlug()}/people/members/bulk_upload`,
+        model
+      )
+      .pipe(
+        map((status) => status),
+        catchError(handleError)
+      );
+  }
   deleteFromTrash(model: any, type: string): Observable<any> {
     return this.http
       .post<any>(

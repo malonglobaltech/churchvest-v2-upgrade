@@ -110,14 +110,14 @@ export class LoginComponent implements OnInit {
         (res) => {
           const { data, status, access_token } = res;
           if (status === 'success') {
-            localStorage.setItem('token', access_token);
-            localStorage.setItem('user_details', JSON.stringify(data));
             if (data.memberships.length !== 0 && !this.selectedChurch) {
               this.toastr.info('Please select a church', 'Message');
               this.isBusy = false;
               return;
             }
             if (data.memberships.length !== 0) {
+              localStorage.setItem('token', access_token);
+              localStorage.setItem('user_details', JSON.stringify(data));
               this.recordFound = false;
               this.form.reset();
               this.toastr.success('Login successful', 'Message');
@@ -132,6 +132,8 @@ export class LoginComponent implements OnInit {
               this.navigate(data.email);
             }
             if (data.email_verified_at !== null && !this.selectedChurch) {
+              localStorage.setItem('token', access_token);
+              localStorage.setItem('user_details', JSON.stringify(data));
               this.router.navigateByUrl('/onboarding/church-setup');
             }
           }

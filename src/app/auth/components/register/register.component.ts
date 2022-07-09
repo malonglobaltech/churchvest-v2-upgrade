@@ -55,6 +55,7 @@ export class RegisterComponent implements OnInit {
         name: ['', Validators.required],
         password: ['', Validators.required],
         confirmPassword: [''],
+        accept: [this.isChecked],
       },
       { validators: this.checkPasswordMatch }
     );
@@ -130,7 +131,6 @@ export class RegisterComponent implements OnInit {
           this.recordFound = false;
           this.toastr.success('Registration successful', 'Message');
           this.form.reset();
-          localStorage.setItem('token', res.access_token);
           this.navigate(data.email);
         },
         (err) => {

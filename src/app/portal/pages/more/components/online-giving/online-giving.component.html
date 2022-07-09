@@ -1,10 +1,7 @@
 <section>
   <div class="header d-flex align-items-center justify-content-between mb-4">
     <div class="title">Online Giving</div>
-    <button
-      mat-stroked-button
-      routerLink="/portal/more/online-giving/add-giving"
-    >
+    <button mat-stroked-button routerLink="/portal/more/online-giving/add">
       <mat-icon>add</mat-icon> Add Giving
     </button>
   </div>
@@ -164,13 +161,13 @@
                       mat-menu-item
                       data-bs-toggle="modal"
                       data-bs-target="#view-details"
-                      (click)="getDepartmentDetails(element.id)"
+                      (click)="getDetails(element.id)"
                     >
                       View
                     </button>
                     <button
                       mat-menu-item
-                      [routerLink]="['/portal/department/all/update']"
+                      [routerLink]="['/portal/more/online-giving/update']"
                       [queryParams]="{
                         query: 'edit',
                         id: element.id
@@ -186,7 +183,7 @@
                       (click)="
                         _isSingleSelected = true;
                         _isAllSelected = false;
-                        getDepartmentDetails(element.id)
+                        getDetails(element.id)
                       "
                     >
                       Move to trash
@@ -201,12 +198,10 @@
                 <span>{{ element.currency ? element.currency : "---" }} </span>
               </td>
             </ng-container>
-            <ng-container *ngIf="disCol == 'receiving account'">
+            <ng-container *ngIf="disCol == 'receiving accont'">
               <td mat-cell *matCellDef="let element">
                 <span
-                  >{{
-                    element["account"].name ? element["account"].name : "---"
-                  }}
+                  >{{ element.account.name ? element.account.name : "---" }}
                 </span>
               </td>
             </ng-container>
@@ -261,67 +256,30 @@
                 <div class="grid grid--1fr--1fr mb-3">
                   <label
                     >Name
-                    <span class="capitalize">
-                      {{ itemDetails?.name }}
+                    <span class="capitalize" style="width: 250px">
+                      {{ itemDetails?.type }}
                     </span></label
                   >
                   <label
-                    >Description
-                    <span class="">
-                      {{ itemDetails?.description }}
+                    >Giving account
+                    <span style="width: 250px">
+                      {{ itemDetails?.account.name }}
                     </span></label
                   >
                 </div>
                 <div class="grid grid--1fr--1fr mb-3">
                   <label
-                    >Leader
+                    >Currency
                     <span class="capitalize">
-                      {{ itemDetails?.roles?.leader?.member?.user?.first_name }}
-                      {{ itemDetails?.roles?.leader?.member?.user?.last_name }}
+                      {{ itemDetails?.currency }}
                     </span></label
                   >
                   <label
-                    >Assitant
-                    <span class="">
-                      {{
-                        itemDetails?.roles?.assistant?.member?.user?.first_name
-                      }}
-                      {{
-                        itemDetails?.roles?.assistant?.member?.user?.last_name
-                      }}
+                    >Amount
+                    <span>
+                      {{ itemDetails?.amount | currency: "₦":"symbol" }}
                     </span></label
                   >
-                </div>
-                <div class="grid grid--1fr--1fr mb-3">
-                  <label
-                    >Meeting day(s)
-                    <span class="capitalize">
-                      {{ itemDetails?.meeting_days }}
-                      {{ !itemDetails?.meeting_days && "no meetings" }}
-                    </span></label
-                  >
-                  <label
-                    >Meeting time
-                    <span class="">
-                      {{ itemDetails?.start_time }} -
-                      {{ itemDetails?.end_time }}
-                    </span></label
-                  >
-                </div>
-                <div class="grid grid--1fr--1fr mb-3">
-                  <label>Date Formed <span> dateFormed </span> </label>
-                  <label
-                    >Comment
-                    <span style="width: 200px">
-                      {{ itemDetails?.comment }}
-                    </span></label
-                  >
-                </div>
-                <div class="grid grid--1fr--1fr grid-row-gap-15">
-                  <label *ngFor="">
-                    Member
-                    <span style="width: 250px"></span>
-                  </label>
                 </div>
               </div>
             </div>
@@ -356,7 +314,7 @@
               *ngIf="itemDetails && !_loading_ && _isSingleSelected"
             >
               <p>
-                Are you sure you want to move this department
+                Are you sure you want to move this giving
                 <span>{{ itemDetails.name }} </span>
                 to trash? This will be temporarily deleted, and can be recovered
                 from trash
@@ -364,8 +322,8 @@
             </div>
             <div class="center" *ngIf="_isAllSelected">
               <p>
-                Are you sure you want to move
-                <span> ajnflkf nskdnksd </span>
+                Are you sure you want to move {{ selection.selected.length }}
+                {{ selection.selected.length == 1 ? "item" : "items" }}
                 to trash? This will be temporarily deleted, and can be recovered
                 from trash
               </p>

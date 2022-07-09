@@ -73,9 +73,7 @@ export class AddMediaComponent implements OnInit {
     });
   }
   mediaTypeList = ['album', 'book', 'message', 'track'];
-  ngOnInit(): void {
-    this.getRoutes();
-  }
+  ngOnInit(): void {}
   ngAfterViewInit() {
     this.getFieldLabel();
   }
@@ -90,19 +88,6 @@ export class AddMediaComponent implements OnInit {
     return this.updateConvertForm.getRawValue();
   }
 
-  selectedControl() {
-    let response: any;
-    if (this._selectedMediaType == 'message') {
-      return this.mediaForm.get('resources') as FormArray;
-    }
-    if (this._selectedMediaType == 'album') {
-      return this.mediaForm.get('tracks') as FormArray;
-    }
-    if (this._selectedMediaType == 'track') {
-      return this.mediaForm.get('resources') as FormArray;
-    }
-    return response;
-  }
   handleMediaTypeChange(val: any) {
     this._selectedMediaType = val.value;
     this.getFieldLabel(this._selectedMediaType);
@@ -157,18 +142,7 @@ export class AddMediaComponent implements OnInit {
         return;
     }
   }
-  getRoutes() {
-    this.route.queryParams
-      .pipe(filter((params) => params.query))
-      .subscribe((params) => {
-        this.queryString = params.query;
-        this._id = params.id;
-        this.getMediaDetails();
-      });
-    if (this.queryString === '') {
-      this.router.navigate(['/portal/more/media']);
-    }
-  }
+
   getMediaDetails() {
     if (this._id !== undefined) {
       this.mediaService
@@ -181,11 +155,10 @@ export class AddMediaComponent implements OnInit {
         .subscribe((res) => {
           const { data } = res;
           this.itemDetails = data;
-          this.setFormControlElement();
         });
     }
   }
-  setFormControlElement() {}
+
   onSubmit() {
     this.isBusy = true;
 
@@ -236,8 +209,10 @@ export class AddMediaComponent implements OnInit {
         },
         (error) => {
           this.isBusy = false;
-          this.toastr.error(error, 'Message', {
-            timeOut: 3000,
+          error.split(',').map((x: any) => {
+            this.toastr.error(x, 'Message', {
+              timeOut: 5000,
+            });
           });
         },
         () => {

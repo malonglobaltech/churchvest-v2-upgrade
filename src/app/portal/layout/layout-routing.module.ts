@@ -30,10 +30,15 @@ const routes: Routes = [
       },
       {
         path: 'events',
-        loadChildren: () => 
-          import ('../pages/events/events.module').then(
-            (m) => m.EventsModule
-          )
+        loadChildren: () =>
+          import('../pages/events/events.module').then((m) => m.EventsModule),
+      },
+      {
+        path: 'financials',
+        loadChildren: () =>
+          import('../pages/financials/financials.module').then(
+            (m) => m.FinancialsModule
+          ),
       },
       {
         path: 'people',

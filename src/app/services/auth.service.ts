@@ -12,6 +12,7 @@ import { JwtHelperService } from '@auth0/angular-jwt';
 })
 export class AuthService {
   currentUser: any;
+  httpOptions: any;
   constructor(private http: HttpClient, public jwtHelper: JwtHelperService) {}
   getUserData() {
     const user = JSON.parse(localStorage.getItem('user_details'));
@@ -75,7 +76,9 @@ export class AuthService {
       .pipe(catchError(handleError));
   }
   verify(link: string): Observable<any> {
-    return this.http.get<any>(link).pipe(catchError(handleError));
+    return this.http
+      .get<any>(link, this.httpOptions)
+      .pipe(catchError(handleError));
   }
   updateProfile(model: any): Observable<any> {
     return this.http

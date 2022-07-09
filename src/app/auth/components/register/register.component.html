@@ -173,7 +173,12 @@
               </mat-error>
             </div>
             <div class="d-flex align-items-center my-4">
-              <mat-checkbox [checked]="isChecked">I agree to the</mat-checkbox>
+              <mat-checkbox
+                [checked]="isChecked"
+                formControlName="accept"
+                required
+                >I agree to the</mat-checkbox
+              >
               <span class="link"
                 ><a data-bs-toggle="modal" data-bs-target="#terms-condition"
                   >terms & conditions</a

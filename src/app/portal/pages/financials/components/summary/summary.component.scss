@@ -1,0 +1,42 @@
+@import "src/scss/_vars.scss";
+.summary-overview {
+  .item {
+    border: 1px solid rgba($light-grey, 0.1);
+    border-radius: 10px;
+    padding: 1em;
+    .icon {
+      display: flex;
+      align-items: center;
+      padding: 10px;
+      border-radius: 10px;
+      &.green {
+        background: rgba($green, 0.2);
+        mat-icon {
+          color: $green;
+        }
+      }
+      &.red {
+        background: rgba($red, 0.2);
+        mat-icon {
+          color: $red;
+        }
+      }
+    }
+    .d-flex {
+      label {
+        font-size: 30px;
+      }
+      .d-flex {
+        span {
+          font-size: 13px;
+          &:first-child {
+            color: rgba($light-grey, 0.5);
+          }
+          &:last-child {
+            color: $green;
+          }
+        }
+      }
+    }
+  }
+}

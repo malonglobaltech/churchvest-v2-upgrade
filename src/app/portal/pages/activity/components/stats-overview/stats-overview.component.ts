@@ -43,7 +43,7 @@ export class StatsOverviewComponent implements OnInit {
     );
   }
   getActivitySummary(summary: any) {
-    this.activitiesItems = [
+    return (this.activitiesItems = [
       {
         title: 'Regular Members',
         url: '/portal/people/members',
@@ -74,6 +74,6 @@ export class StatsOverviewComponent implements OnInit {
         count: '0',
         icon: 'reconciliation',
       },
-    ];
+    ]);
   }
 }

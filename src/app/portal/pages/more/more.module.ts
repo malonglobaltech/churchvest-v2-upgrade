@@ -22,6 +22,7 @@ import { AddGivingComponent } from './components/add-giving/add-giving.component
 import { GroupsComponent } from './components/groups/groups.component';
 import { CreateGroupComponent } from './components/create-group/create-group.component';
 import { TrashedGroupComponent } from './components/trashed-group/trashed-group.component';
+import { TrashGivingsComponent } from './components/trash-givings/trash-givings.component';
 
 @NgModule({
   declarations: [
@@ -37,6 +38,7 @@ import { TrashedGroupComponent } from './components/trashed-group/trashed-group.
     GroupsComponent,
     CreateGroupComponent,
     TrashedGroupComponent,
+    TrashGivingsComponent,
   ],
   imports: [
     CommonModule,

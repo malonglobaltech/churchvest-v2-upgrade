@@ -29,7 +29,12 @@
           <div class="grid grid--1fr--1fr grid-gap-15 mt-4 mb-3">
             <div class="input">
               <label>Date Formed</label>
-              <input type="date" formControlName="date_created" />
+              <input
+                type="date"
+                [max]="maxDate"
+                pattern="^(19[5-9][0-9]|20[0-4][0-9]|2050)[-/](0?[1-9]|1[0-2])[-/](0?[1-9]|[12][0-9]|3[01])$"
+                formControlName="date_created"
+              />
             </div>
             <div class="input">
               <label>Date to Disolve</label>
@@ -168,6 +173,8 @@
                 <input
                   type="date"
                   formControlName="date_created"
+                  [max]="maxDate"
+                  pattern="^(19[5-9][0-9]|20[0-4][0-9]|2050)[-/](0?[1-9]|1[0-2])[-/](0?[1-9]|[12][0-9]|3[01])$"
                   [ngClass]="{
                     'is-invalid':
                       groupFormUpdate.controls['name'].hasError('required') &&

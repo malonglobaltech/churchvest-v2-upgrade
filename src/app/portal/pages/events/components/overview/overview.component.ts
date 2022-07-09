@@ -35,6 +35,7 @@ export class OverviewComponent implements OnInit {
   _isAllSelected: boolean = false;
   _isSingleSelected: boolean = false;
   payload: any[] = [];
+  trashList: any[] = [];
   _printElement = printElement;
   _concatColumnString = concatColumnString;
   _truncateString = truncateString;
@@ -43,7 +44,6 @@ export class OverviewComponent implements OnInit {
   public displayedColumns: string[];
 
   constructor(
-    private peopleService: PeopleService,
     private eventsService: EventsService,
     private exportService: ExportServiceService,
     private router: Router,
@@ -52,6 +52,7 @@ export class OverviewComponent implements OnInit {
 
   ngOnInit(): void {
     this.getEvent();
+    this.getFromTrash();
 
     this.displayedColumns = this.column;
   }
@@ -112,6 +113,14 @@ export class OverviewComponent implements OnInit {
         }
       }
     );
+  }
+  getFromTrash() {
+    this.eventsService
+      .fetchAllFromTrash(this.currentPage + 1)
+      .subscribe((res: any) => {
+        const { data } = res;
+        this.trashList = data;
+      });
   }
   getSelectedEvent(arr: any) {
     let filter = arr.map((x: any) => x.id);
@@ -182,7 +191,7 @@ export class OverviewComponent implements OnInit {
         C: data.organizer,
         D: data.start_date,
         E: data.end_date,
-        F: data.address,
+        F: data.location_address,
       });
     });
     edata.push(udt);

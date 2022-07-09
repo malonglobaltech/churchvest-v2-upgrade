@@ -33,7 +33,7 @@ export class HeaderComponent implements OnInit {
   ngOnInit(): void {
     this.paystack_key = environment.paystack;
     this.userData = this.authService.getUserData();
-    this.profileImg = this.userData.memberships[0].profile;
+    this.profileImg = this.userData.memberships[0]?.profile;
     this.getSmsBalance();
   }
   amountChange(event: any) {

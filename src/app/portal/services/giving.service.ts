@@ -75,12 +75,21 @@ export class GivingService {
       )
       .pipe(catchError(handleError));
   }
-  fetchAllFromTrash(pageNumber?: number, pageSize?: number): Observable<any> {
+  fetchGiving(id): Observable<any> {
     return this.http
       .get<any>(
         `${
           environment.managementbaseUrl
-        }/${this.authService.getChurchSlug()}/givings/trash`
+        }/${this.authService.getChurchSlug()}/givings/${id}`
+      )
+      .pipe(catchError(handleError));
+  }
+  fetchAllFromTrash(pageNumber?: number): Observable<any> {
+    return this.http
+      .get<any>(
+        `${
+          environment.managementbaseUrl
+        }/${this.authService.getChurchSlug()}/givings/trash?page=${pageNumber}`
       )
       .pipe(catchError(handleError));
   }

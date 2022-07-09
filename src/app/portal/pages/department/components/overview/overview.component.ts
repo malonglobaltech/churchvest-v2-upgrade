@@ -172,18 +172,21 @@ export class OverviewComponent implements OnInit {
           B: 'Department Name',
           C: 'Department Leader',
           D: 'Meeting Days',
-          E: 'Meeting Time',
+          E: 'Meeting Start Time',
+          F: 'Meeting End Time',
         }, // table header
       ],
       skipHeader: true,
     };
     this.departmentList.forEach((data) => {
+      let days = data.meeting_days.map((x) => x);
       udt.data.push({
         A: data.id,
         B: data.name,
         C: data.roles.leader.member.user.first_name,
-        D: data.meeting_days,
+        D: days.toString(),
         E: data.start_time,
+        F: data.end_time,
       });
     });
     edata.push(udt);

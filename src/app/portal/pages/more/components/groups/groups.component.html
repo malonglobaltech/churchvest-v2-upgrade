@@ -254,7 +254,7 @@
           <ng-container *ngIf="!_loading_ && itemDetails">
             <div class="details-panel">
               <mat-divider></mat-divider>
-              <div class="details-wrap-list">
+              <div class="details-wrap-list scroll">
                 <div class="grid grid--1fr--1fr mb-3">
                   <label
                     >Group Name
@@ -273,7 +273,7 @@
                     </span></label
                   >
                 </div>
-                <div class="grid mb-3">
+                <div class="grid grid--1fr--1fr mb-3">
                   <label
                     >Group Leader
                     <span class="capitalize">
@@ -291,14 +291,22 @@
                       }}
                     </span></label
                   >
+                  <label
+                    >Comment
+                    <span style="width: 250px">
+                      {{
+                        itemDetails[0].comment ? itemDetails[0]?.comment : "---"
+                      }}
+                    </span></label
+                  >
                 </div>
                 <div class="title sm mb-2">Group Members</div>
                 <div class="grid grid--1fr--1fr grid-row-gap-15">
-                  <label *ngFor="let item of itemDetails[0]?.members">
+                  <label *ngFor="let item of filteredMembers">
                     Member
                     <span style="width: 250px"
-                      >{{ item.member.user.first_name }}
-                      {{ item.member.user.last_name }}</span
+                      >{{ item.user.first_name }}
+                      {{ item.user.last_name }}</span
                     >
                   </label>
                 </div>
