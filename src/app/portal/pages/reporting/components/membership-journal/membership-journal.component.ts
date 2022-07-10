@@ -39,7 +39,6 @@ export class MembershipJournalComponent implements OnInit {
     this.displayedColumns = this.column;
   }
   ngAfterViewInit() {
-    window.scrollTo(0, 0);
     this.dataSource.paginator = this.paginator;
   }
   column = ['first name', 'last name', 'role', 'phone', 'email'];
