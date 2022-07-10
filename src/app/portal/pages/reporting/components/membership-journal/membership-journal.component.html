@@ -1,109 +1,425 @@
-<div class="bg-white p-3">
-    <section class="membership py-3 px-2">
-        <div class="my-3">
-            <mat-form-field>
-              <mat-label>Query by date</mat-label>
-                <input
-                  #ref
-                  matInput
-                  [matDatepicker]="datepicker"
-                  (dateChange)="getMemberShipJournal(ref.value)"
-                />
-                <mat-datepicker-toggle
-                  matSuffix
-                  [for]="datepicker"
-                ></mat-datepicker-toggle>
-                <mat-datepicker #datepicker>
-                  <mat-datepicker-actions>
-                    <button mat-button matDatepickerCancel>Cancel</button>
-                    <button mat-raised-button color="primary" matDatepickerApply>Apply</button>
-                  </mat-datepicker-actions>
-                </mat-datepicker>
-            </mat-form-field>
-        </div>
-        <ng-container *ngIf="_loading_">
-          <app-loading-roller></app-loading-roller>
-        </ng-container>
-        <div class="grid grid--1fr--1fr gap mt-5">
-          <ng-container *ngIf="!_loading_">
-            <div class="journal">
-              <h3 class="title pt-3">Regular Members</h3>
-              <div class="d-md-flex align-items-center justify-content-between py-3">
-              <p class="">View and download report of the regular members for the period selected</p>
-                <div class="btn-wrap d-flex">
-                  <button mat-stroked-button class="mx-2">Print</button>
-                  <div class="ms-3">
-                    <button
-                      mat-stroked-button
-                      class="mat-stroke-secondary"
-                      [matMenuTriggerFor]="exportAsMembers"
-                    >
-                      Export as
-                    </button>
-                    <mat-menu #exportAsMembers="matMenu">
-                      <button mat-menu-item 
-                        (click)="exportRegularMembersToExcel()"
-                        >
-                        Download as Excel</button
-                      >
-                    </mat-menu>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </ng-container>
-          <ng-container *ngIf="!_loading_">
-            <div class="journal">
-              <h3 class="title pt-3">First Timers</h3>
-              <div class="d-flex align-items-center justify-content-between py-3">
-              <p class="">See in detail the number of first timers.</p>
-                <div class="btn-wrap d-flex">
-                  <button mat-stroked-button class="mx-2">Print</button>
-                  <div class="ms-3">
-                    <button
-                      mat-stroked-button
-                      class="mat-stroke-secondary"
-                      [matMenuTriggerFor]="exportAsFirstTimer"
-                    >
-                      Export as
-                    </button>
-                    <mat-menu #exportAsFirstTimer="matMenu">
-                      <button mat-menu-item (click)="exportFirstTimersToExcel()">
-                        Download as Excel
-                      </button>
-                    </mat-menu>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </ng-container>
-          <ng-container *ngIf="!_loading_">
-            <div class="journal">
-              <h3 class="title pt-3">New Converts</h3>
-              <div class="d-flex align-items-center justify-content-between py-3">
-              <p class="">See in detail of the newly converted souls in church.</p>
-                <div class="btn-wrap d-flex">
-                  <button mat-stroked-button class="mx-2">Print</button>
-                  <div class="ms-3">
-                    <button
-                      mat-stroked-button
-                      class="mat-stroke-secondary"
-                      [matMenuTriggerFor]="exportAsConverts"
-                    >
-                      Export as
-                    </button>
-                    <mat-menu #exportAsConverts="matMenu">
-                      <button mat-menu-item
-                        (click)="exportNewConvertsToExcel()"
-                       >
-                        Download as Excel</button
-                      >
-                    </mat-menu>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </ng-container>
-        </div>
-    </section>
+<div class="header d-flex align-items-center mb-4">
+  <div class="d-flex align-items-center cursor me-3" (click)="gotoBack()">
+    <button mat-icon-button class="me-2 return-link-wrap">
+      <mat-icon>west</mat-icon>
+    </button>
+    <div class="title-sm">Back</div>
+  </div>
+  <div class="title md">Membership Journal</div>
 </div>
+<div class="bg-white p-3">
+  <section class="membership py-3 px-2">
+    <div class="my-3">
+      <mat-form-field>
+        <mat-label>Query by date</mat-label>
+        <input
+          #ref
+          matInput
+          [matDatepicker]="datepicker"
+          (dateChange)="getMemberShipJournal(ref.value)"
+        />
+        <mat-datepicker-toggle
+          matSuffix
+          [for]="datepicker"
+        ></mat-datepicker-toggle>
+        <mat-datepicker #datepicker>
+          <mat-datepicker-actions>
+            <button mat-button matDatepickerCancel>Cancel</button>
+            <button mat-raised-button color="primary" matDatepickerApply>
+              Apply
+            </button>
+          </mat-datepicker-actions>
+        </mat-datepicker>
+      </mat-form-field>
+    </div>
+    <ng-container *ngIf="_loading_">
+      <app-loading-roller></app-loading-roller>
+    </ng-container>
+    <div class="grid grid--1fr--1fr gap mt-5">
+      <ng-container *ngIf="!_loading_">
+        <div class="journal">
+          <div class="d-flex align-items-center justify-content-between">
+            <h3 class="title md pt-3">Regular Members</h3>
+            <div class="cursor" [mat-menu-trigger-for]="menu">
+              <span>
+                <mat-icon>more_horiz</mat-icon>
+              </span>
+              <mat-menu #menu="matMenu">
+                <button
+                  type="button"
+                  mat-menu-item
+                  (click)="onPreview('reg_members')"
+                >
+                  Preview
+                </button>
+                <button
+                  type="button"
+                  mat-menu-item
+                  (click)="_printElement('print-reg-members')"
+                >
+                  Print
+                </button>
+                <button type="button" mat-menu-item>Download as Excel</button>
+              </mat-menu>
+            </div>
+          </div>
+          <div class="d-flex align-items-center justify-content-between py-3">
+            <p class="">
+              View and download report of the regular members for the period
+              selected
+            </p>
+          </div>
+        </div>
+      </ng-container>
+      <ng-container *ngIf="!_loading_">
+        <div class="journal">
+          <div class="d-flex align-items-center justify-content-between">
+            <h3 class="title md pt-3">First Timers</h3>
+            <div class="cursor" [mat-menu-trigger-for]="menu">
+              <span>
+                <mat-icon>more_horiz</mat-icon>
+              </span>
+              <mat-menu #menu="matMenu">
+                <button
+                  type="button"
+                  mat-menu-item
+                  (click)="onPreview('first-timer')"
+                >
+                  Preview
+                </button>
+                <button
+                  type="button"
+                  mat-menu-item
+                  (click)="_printElement('print-first-timer')"
+                >
+                  Print
+                </button>
+                <button type="button" mat-menu-item>Download as Excel</button>
+              </mat-menu>
+            </div>
+          </div>
+          <div class="d-flex align-items-center justify-content-between py-3">
+            <p class="">See in detail the number of first timers.</p>
+          </div>
+        </div>
+      </ng-container>
+      <ng-container *ngIf="!_loading_">
+        <div class="journal">
+          <div class="d-flex align-items-center justify-content-between">
+            <h3 class="title md pt-3">New Converts</h3>
+            <div class="cursor" [mat-menu-trigger-for]="menu">
+              <span>
+                <mat-icon>more_horiz</mat-icon>
+              </span>
+              <mat-menu #menu="matMenu">
+                <button
+                  type="button"
+                  mat-menu-item
+                  (click)="onPreview('new-convert')"
+                >
+                  Preview
+                </button>
+                <button
+                  type="button"
+                  mat-menu-item
+                  (click)="_printElement('print-new-convert')"
+                >
+                  Print
+                </button>
+                <button type="button" mat-menu-item>Download as Excel</button>
+              </mat-menu>
+            </div>
+          </div>
+          <div class="d-flex align-items-center justify-content-between py-3">
+            <p class="">
+              See in detail of the newly converted souls in church.
+            </p>
+          </div>
+        </div>
+      </ng-container>
+    </div>
+  </section>
+</div>
+<ng-container *ngIf="_query == 'reg_members'">
+  <ng-container *ngTemplateOutlet="regMembers"></ng-container>
+</ng-container>
+<ng-container *ngIf="_query == 'first-timer'">
+  <ng-container *ngTemplateOutlet="firstTimer"></ng-container>
+</ng-container>
+<ng-container *ngIf="_query == 'new-convert'">
+  <ng-container *ngTemplateOutlet="newConvert"></ng-container>
+</ng-container>
+
+<ng-template #regMembers>
+  <div class="overflow--wrap _visible">
+    <div class="table-wrapper tbl-wrap">
+      <ng-container *ngIf="regularMemberList.length !== 0">
+        <table
+          mat-table
+          [dataSource]="dataSource"
+          class="table custom-table w--100"
+          style="width: 100%"
+          id="print-reg-members"
+        >
+          <ng-container
+            *ngFor="
+              let disCol of displayedColumns;
+              let colIndex = index;
+              let last = last
+            "
+            [matColumnDef]="disCol"
+          >
+            <th mat-header-cell *matHeaderCellDef>
+              {{ disCol }}
+            </th>
+            <ng-container *ngIf="colIndex === 0">
+              <td *matCellDef="let element" style="padding-left: 3.5em">
+                <span>{{ element["user"].first_name }}</span>
+              </td>
+            </ng-container>
+            <!--Table  Row Content-->
+            <ng-container *ngIf="disCol == 'last name'">
+              <td mat-cell *matCellDef="let element">
+                <span>{{ element["user"].last_name }}</span>
+              </td>
+            </ng-container>
+            <ng-container *ngIf="disCol == 'role'">
+              <td mat-cell *matCellDef="let element">
+                <span
+                  class="tag"
+                  [ngClass]="{
+                    green: element.role == 'admin',
+                    purple: element.role == 'member'
+                  }"
+                  >{{ element["role"] }}</span
+                >
+              </td>
+            </ng-container>
+            <ng-container *ngIf="disCol == 'phone'">
+              <td mat-cell *matCellDef="let element">
+                <span>{{
+                  element["user"].phone ? element["user"].phone : "---"
+                }}</span>
+              </td>
+            </ng-container>
+            <ng-container *ngIf="disCol == 'email'">
+              <td mat-cell *matCellDef="let element">
+                <span class="lowercase">{{
+                  element["user"].email ? element["user"].email : "---"
+                }}</span>
+              </td>
+            </ng-container>
+            <td mat-cell *matCellDef="let element">
+              <span> {{ element[_concatColumnString(disCol)] }}</span>
+            </td>
+          </ng-container>
+          <!--Mat-table  configurations-->
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr
+            mat-row
+            *matRowDef="let row; columns: displayedColumns"
+            [ngClass]="{
+              'bg-wrap': selection.isSelected(row)
+            }"
+          ></tr>
+          <!-- Row shown when there is no matching data. -->
+          <tr class="mat-row" *matNoDataRow>
+            <td class="mat-cell" colspan="4">
+              No data matching the search item: "{{ filterValue }}"
+            </td>
+          </tr>
+        </table>
+      </ng-container>
+      <mat-paginator
+        showFirstLastButton
+        [pageIndex]="currentPage"
+        [pageSize]="pageSize"
+        (page)="pageChanged($event)"
+        class="visibility"
+        [ngClass]="{ hidden: regularMemberList.length == 0 }"
+      ></mat-paginator>
+    </div>
+  </div>
+</ng-template>
+<ng-template #firstTimer>
+  <div class="overflow--wrap _visible">
+    <div class="table-wrapper tbl-wrap">
+      <ng-container *ngIf="firstTimersList.length !== 0">
+        <table
+          mat-table
+          [dataSource]="dataSource"
+          class="table custom-table w--100"
+          style="width: 100%"
+          id="print-first-timer"
+        >
+          <ng-container
+            *ngFor="
+              let disCol of displayedColumns;
+              let colIndex = index;
+              let last = last
+            "
+            [matColumnDef]="disCol"
+          >
+            <th mat-header-cell *matHeaderCellDef>
+              {{ disCol }}
+            </th>
+            <ng-container *ngIf="colIndex === 0">
+              <td *matCellDef="let element" style="padding-left: 3.5em">
+                <span>{{ element["user"].first_name }}</span>
+              </td>
+            </ng-container>
+            <!--Table  Row Content-->
+            <ng-container *ngIf="disCol == 'last name'">
+              <td mat-cell *matCellDef="let element">
+                <span>{{ element["user"].last_name }}</span>
+              </td>
+            </ng-container>
+            <ng-container *ngIf="disCol == 'role'">
+              <td mat-cell *matCellDef="let element">
+                <span
+                  class="tag"
+                  [ngClass]="{
+                    green: element.role == 'admin',
+                    purple: element.role == 'member'
+                  }"
+                  >{{ element["role"] }}</span
+                >
+              </td>
+            </ng-container>
+            <ng-container *ngIf="disCol == 'phone'">
+              <td mat-cell *matCellDef="let element">
+                <span>{{
+                  element["user"].phone ? element["user"].phone : "---"
+                }}</span>
+              </td>
+            </ng-container>
+            <ng-container *ngIf="disCol == 'email'">
+              <td mat-cell *matCellDef="let element">
+                <span class="lowercase">{{
+                  element["user"].email ? element["user"].email : "---"
+                }}</span>
+              </td>
+            </ng-container>
+            <td mat-cell *matCellDef="let element">
+              <span> {{ element[_concatColumnString(disCol)] }}</span>
+            </td>
+          </ng-container>
+          <!--Mat-table  configurations-->
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr
+            mat-row
+            *matRowDef="let row; columns: displayedColumns"
+            [ngClass]="{
+              'bg-wrap': selection.isSelected(row)
+            }"
+          ></tr>
+          <!-- Row shown when there is no matching data. -->
+          <tr class="mat-row" *matNoDataRow>
+            <td class="mat-cell" colspan="4">
+              No data matching the search item: "{{ filterValue }}"
+            </td>
+          </tr>
+        </table>
+      </ng-container>
+      <mat-paginator
+        showFirstLastButton
+        [pageIndex]="currentPage"
+        [pageSize]="pageSize"
+        (page)="pageChanged($event)"
+        class="visibility"
+        [ngClass]="{ hidden: firstTimersList.length == 0 }"
+      ></mat-paginator>
+    </div>
+  </div>
+</ng-template>
+<ng-template #newConvert>
+  <div class="overflow--wrap _visible">
+    <div class="table-wrapper tbl-wrap">
+      <ng-container *ngIf="firstTimersList.length !== 0">
+        <table
+          mat-table
+          [dataSource]="dataSource"
+          class="table custom-table w--100"
+          style="width: 100%"
+          id="print-new-convert"
+        >
+          <ng-container
+            *ngFor="
+              let disCol of displayedColumns;
+              let colIndex = index;
+              let last = last
+            "
+            [matColumnDef]="disCol"
+          >
+            <th mat-header-cell *matHeaderCellDef>
+              {{ disCol }}
+            </th>
+            <ng-container *ngIf="colIndex === 0">
+              <td *matCellDef="let element" style="padding-left: 3.5em">
+                <span>{{ element["user"].first_name }}</span>
+              </td>
+            </ng-container>
+            <!--Table  Row Content-->
+            <ng-container *ngIf="disCol == 'last name'">
+              <td mat-cell *matCellDef="let element">
+                <span>{{ element["user"].last_name }}</span>
+              </td>
+            </ng-container>
+            <ng-container *ngIf="disCol == 'role'">
+              <td mat-cell *matCellDef="let element">
+                <span
+                  class="tag"
+                  [ngClass]="{
+                    green: element.role == 'admin',
+                    purple: element.role == 'member'
+                  }"
+                  >{{ element["role"] }}</span
+                >
+              </td>
+            </ng-container>
+            <ng-container *ngIf="disCol == 'phone'">
+              <td mat-cell *matCellDef="let element">
+                <span>{{
+                  element["user"].phone ? element["user"].phone : "---"
+                }}</span>
+              </td>
+            </ng-container>
+            <ng-container *ngIf="disCol == 'email'">
+              <td mat-cell *matCellDef="let element">
+                <span class="lowercase">{{
+                  element["user"].email ? element["user"].email : "---"
+                }}</span>
+              </td>
+            </ng-container>
+            <td mat-cell *matCellDef="let element">
+              <span> {{ element[_concatColumnString(disCol)] }}</span>
+            </td>
+          </ng-container>
+          <!--Mat-table  configurations-->
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr
+            mat-row
+            *matRowDef="let row; columns: displayedColumns"
+            [ngClass]="{
+              'bg-wrap': selection.isSelected(row)
+            }"
+          ></tr>
+          <!-- Row shown when there is no matching data. -->
+          <tr class="mat-row" *matNoDataRow>
+            <td class="mat-cell" colspan="4">
+              No data matching the search item: "{{ filterValue }}"
+            </td>
+          </tr>
+        </table>
+      </ng-container>
+      <mat-paginator
+        showFirstLastButton
+        [pageIndex]="currentPage"
+        [pageSize]="pageSize"
+        (page)="pageChanged($event)"
+        class="visibility"
+        [ngClass]="{ hidden: firstTimersList.length == 0 }"
+      ></mat-paginator>
+    </div>
+  </div>
+</ng-template>

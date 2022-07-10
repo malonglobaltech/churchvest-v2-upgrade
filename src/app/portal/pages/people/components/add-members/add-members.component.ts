@@ -102,10 +102,6 @@ export class AddMembersComponent implements OnInit {
   ngOnInit(): void {
     this.getRoutes();
     this.maxDate = this._setMaxDate();
-    let arr = [3, 5, 7, 8, 6, 1];
-    let target = 20;
-    // this.threeNumberSum(arr, target);
-    // this.twoNumberSum(arr, target);
   }
   ngAfterViewInit() {
     this.getMembers();

@@ -1,38 +1,36 @@
 <section class="report-overview">
-    <div class="header d-flex align-items-center jsutify-content-between mb-2">
-        <h2 class="title">Church Records Reporting</h2>
-    </div>
-    <div>
-        <p class="welcome-note">
-            You can view, and download reports for church leaders at a time so you save time and focus on what really matters, your firm and clients
-        </p>
-    </div>  
-    <div class="card-list-wrap">
-        <ng-container>
-            <!-- <app-loading-roller></app-loading-roller> -->
-        </ng-container>
-        <div class="items-wrap grid grid--1fr--1fr">
-            <div class="card" *ngFor="let item of reportsItems">
-                <div class="d-flex justify-content-between align-items-center">
-                    <img
-                      [src]="'assets/img/svg/'  + item.icon + '.svg'"
-                      [alt]="item.title"
-                      class="icon"
-                    />
-                    <div class="cursor" [mat-menu-trigger-for]="menu">
-                        <span>
-                            <mat-icon>more_horiz</mat-icon>
-                        </span>
-                        <mat-menu #menu="matMenu">
-                            <button type="button" mat-menu-item [routerLink]="item.url">
-                                View report
-                            </button>
-                        </mat-menu>
-                    </div>
-                </div>
-                <h3 class="title mt-4"> {{ item.title }} </h3>
-                <p class=""> {{ item.desc }} </p>
-            </div>
+  <div class="header d-flex align-items-center jsutify-content-between mb-2">
+    <h2 class="title">Church Records Reporting</h2>
+  </div>
+  <div>
+    <p class="welcome-note f12 txt-grey">
+      You can view, and download reports for church leaders at a time so you
+      save time and <br />focus on what really matters, your firm and clients
+    </p>
+  </div>
+  <div class="card-list-wrap">
+    <div class="items-wrap grid grid--1fr--1fr">
+      <div class="card" *ngFor="let item of reportsItems">
+        <div class="d-flex justify-content-between align-items-center">
+          <img
+            [src]="'assets/img/svg/' + item.icon + '.svg'"
+            [alt]="item.title"
+            class="icon"
+          />
+          <div class="cursor" [mat-menu-trigger-for]="menu">
+            <span>
+              <mat-icon>more_horiz</mat-icon>
+            </span>
+            <mat-menu #menu="matMenu">
+              <button type="button" mat-menu-item [routerLink]="item.url">
+                View report
+              </button>
+            </mat-menu>
+          </div>
         </div>
-    </div>  
+        <h3 class="title md mt-4">{{ item.title }}</h3>
+        <p class="f14 txt-grey">{{ item.desc }}</p>
+      </div>
+    </div>
+  </div>
 </section>

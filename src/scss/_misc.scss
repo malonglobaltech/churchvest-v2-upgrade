@@ -2,6 +2,9 @@
   font-size: 24px;
   font-weight: 700;
   color: $black;
+  &.md {
+    font-size: 20px;
+  }
 }
 .cursor {
   cursor: pointer;

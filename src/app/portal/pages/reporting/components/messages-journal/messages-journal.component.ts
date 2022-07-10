@@ -3,11 +3,11 @@ import { ExportServiceService } from 'src/app/portal/services/export-service.ser
 import { ReportingService } from 'src/app/portal/services/reporting.service';
 import Swal from 'sweetalert2';
 import { printElement, setDateQuery } from 'src/app/shared';
-
+import { Location } from '@angular/common';
 @Component({
   selector: 'app-messages-journal',
   templateUrl: './messages-journal.component.html',
-  styleUrls: ['./messages-journal.component.scss']
+  styleUrls: ['./messages-journal.component.scss'],
 })
 export class MessagesJournalComponent implements OnInit {
   emailMessagesList: any[] = [];
@@ -20,17 +20,19 @@ export class MessagesJournalComponent implements OnInit {
   constructor(
     private reportService: ReportingService,
     private exportService: ExportServiceService,
-  ) { }
+    private _location: Location
+  ) {}
 
   ngOnInit(): void {
     this.getMessageJournal();
   }
-
-  getMessageJournal(evt?:any) {
-    this._loading_ = true
-    let date = setDateQuery(evt)
-    this.reportService
-    .fetchJournal('message_journal', date).subscribe(
+  gotoBack() {
+    this._location.back();
+  }
+  getMessageJournal(evt?: any) {
+    this._loading_ = true;
+    let date = setDateQuery(evt);
+    this.reportService.fetchJournal('message_journal', date).subscribe(
       (res) => {
         this._loading_ = false;
         const { message_by_mail, message_by_sms } = res;
@@ -39,11 +41,11 @@ export class MessagesJournalComponent implements OnInit {
       },
       (error) => {
         this._loading_ = false;
-            Swal.fire('Server error', error, 'error');
+        Swal.fire('Server error', error, 'error');
         this.emailMessagesList = [];
         this.smsMessagesList = [];
       }
-    )
+    );
   }
 
   exportEmailToExcel() {
@@ -71,7 +73,10 @@ export class MessagesJournalComponent implements OnInit {
       });
     });
     edata.push(udt);
-    this.exportService.exportTableElmToExcel(edata, 'Email message journal data');
+    this.exportService.exportTableElmToExcel(
+      edata,
+      'Email message journal data'
+    );
   }
 
   exportSmsToExcel() {
@@ -99,8 +104,9 @@ export class MessagesJournalComponent implements OnInit {
       });
     });
     edata.push(udt);
-    this.exportService.exportTableElmToExcel(edata, 'Email message journal data');
+    this.exportService.exportTableElmToExcel(
+      edata,
+      'Email message journal data'
+    );
   }
-
-
 }
