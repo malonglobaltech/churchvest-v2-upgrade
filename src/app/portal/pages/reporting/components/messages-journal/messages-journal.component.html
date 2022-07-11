@@ -38,7 +38,31 @@
     <div class="grid grid--1fr--1fr gap mt-5">
       <ng-container *ngIf="!_loading_">
         <div class="journal">
-          <h3 class="title md pt-3">SMS Message</h3>
+          <div class="d-flex align-items-center justify-content-between">
+            <h3 class="title md pt-3">SMS Message</h3>
+            <div class="cursor" [mat-menu-trigger-for]="menu">
+              <span>
+                <mat-icon>more_horiz</mat-icon>
+              </span>
+                <mat-menu #menu="matMenu">
+                  <button
+                    type="button"
+                    mat-menu-item
+                  >
+                    Preview
+                  </button>
+                  <button
+                    type="button"
+                    mat-menu-item
+                  >
+                    Print
+                  </button>
+                  <button mat-menu-item (click)="exportSmsToExcel()">
+                    Download as Excel
+                  </button>
+                </mat-menu>
+            </div>
+          </div>
           <div
             class="d-md-flex align-items-center justify-content-between py-3"
           >
@@ -46,7 +70,7 @@
               View and download report of the regular members for the period
               selected
             </p>
-            <div class="btn-wrap d-flex">
+            <!-- <div class="btn-wrap d-flex">
               <button mat-stroked-button class="mx-2">Print</button>
               <div class="ms-2">
                 <button
@@ -62,32 +86,39 @@
                   </button>
                 </mat-menu>
               </div>
-            </div>
+            </div> -->
           </div>
         </div>
       </ng-container>
       <ng-container *ngIf="!_loading_">
         <div class="journal">
-          <h3 class="title md pt-3">Email Message</h3>
-          <div class="d-flex align-items-center justify-content-between py-3">
-            <p class="">See in detail the number of email messsages sent.</p>
-            <div class="btn-wrap d-flex">
-              <button mat-stroked-button class="mx-2">Print</button>
-              <div class="ms-2">
-                <button
-                  mat-stroked-button
-                  class="mat-stroke-secondary"
-                  [matMenuTriggerFor]="exportAsEmail"
-                >
-                  Export as
-                </button>
-                <mat-menu #exportAsEmail="matMenu">
+          <div class="d-flex align-items-center justify-content-between">
+            <h3 class="title md pt-3">Email Message</h3>
+            <div class="cursor" [mat-menu-trigger-for]="menu">
+              <span>
+                <mat-icon>more_horiz</mat-icon>
+              </span>
+                <mat-menu #menu="matMenu">
+                  <button
+                    type="button"
+                    mat-menu-item
+                  >
+                    Preview
+                  </button>
+                  <button
+                    type="button"
+                    mat-menu-item
+                  >
+                    Print
+                  </button>
                   <button mat-menu-item (click)="exportEmailToExcel()">
                     Download as Excel
                   </button>
                 </mat-menu>
-              </div>
             </div>
+          </div>
+          <div class="d-flex align-items-center justify-content-between py-3">
+            <p class="">See in detail the number of email messsages sent.</p>
           </div>
         </div>
       </ng-container>
