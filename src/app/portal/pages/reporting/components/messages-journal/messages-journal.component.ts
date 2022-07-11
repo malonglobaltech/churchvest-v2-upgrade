@@ -2,8 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { ExportServiceService } from 'src/app/portal/services/export-service.service';
 import { ReportingService } from 'src/app/portal/services/reporting.service';
 import Swal from 'sweetalert2';
-import { printElement, setDateQuery } from 'src/app/shared';
+import { concatColumnString, printElement, setDateQuery, truncateString } from 'src/app/shared';
 import { Location } from '@angular/common';
+import { MatTableDataSource } from '@angular/material/table';
+import { SelectionModel } from '@angular/cdk/collections';
 @Component({
   selector: 'app-messages-journal',
   templateUrl: './messages-journal.component.html',
@@ -16,6 +18,13 @@ export class MessagesJournalComponent implements OnInit {
   _loading_: boolean = false;
   _printElement = printElement;
   _setDateQuery = setDateQuery;
+  _truncateString = truncateString;
+  _query: any;
+  _concatColumnString = concatColumnString;
+
+  public dataSource: MatTableDataSource<any> = new MatTableDataSource();
+  public selection = new SelectionModel(true, []);
+  public displayedColumns: string[];
 
   constructor(
     private reportService: ReportingService,
@@ -25,9 +34,34 @@ export class MessagesJournalComponent implements OnInit {
 
   ngOnInit(): void {
     this.getMessageJournal();
+    this.displayedColumns = this.column;
   }
+
+  column = [
+    'from',
+    'to',
+    'message',
+    'status',
+    'type',
+    'created at',
+  ];
+
   gotoBack() {
     this._location.back();
+  }
+  onPreview(query) {
+    this._query = query;
+    console.log('this.dataSource', this.dataSource)
+    switch (query) {
+      case (query = 'sms_messages'):
+        return (this.dataSource = new MatTableDataSource(this.smsMessagesList))
+   
+      case (query = 'email_messages'):
+        return (this.dataSource = new MatTableDataSource(this.emailMessagesList))
+
+      default:
+        return;
+    }
   }
   getMessageJournal(evt?: any) {
     this._loading_ = true;
