@@ -122,6 +122,7 @@
 
 <ng-template #smsMessages>
   <div class="overflow-wrap _visible">
+    <div class="table-wrapper tbl-wrap">
     <ng-container *ngIf="smsMessagesList.length !== 0">
       
       <table
@@ -222,12 +223,14 @@
         </tr>
       </table>
     </ng-container>
+    </div>
   </div>
 </ng-template>
 
 
 <ng-template #emailMessages>
   <div class="overflow-wrap _visible">
+    <div class="table-wrapper tbl-wrap">
     <ng-container *ngIf="emailMessagesList.length !== 0">
       
       <table
@@ -328,6 +331,7 @@
         </tr>
       </table>
     </ng-container>
+    </div>
   </div>
 </ng-template>
 
