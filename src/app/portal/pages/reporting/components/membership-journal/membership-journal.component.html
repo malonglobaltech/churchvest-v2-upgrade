@@ -230,14 +230,6 @@
           </tr>
         </table>
       </ng-container>
-      <mat-paginator
-        showFirstLastButton
-        [pageIndex]="currentPage"
-        [pageSize]="pageSize"
-        (page)="pageChanged($event)"
-        class="visibility"
-        [ngClass]="{ hidden: regularMemberList.length == 0 }"
-      ></mat-paginator>
     </div>
   </div>
 </ng-template>
@@ -321,14 +313,6 @@
           </tr>
         </table>
       </ng-container>
-      <mat-paginator
-        showFirstLastButton
-        [pageIndex]="currentPage"
-        [pageSize]="pageSize"
-        (page)="pageChanged($event)"
-        class="visibility"
-        [ngClass]="{ hidden: firstTimersList.length == 0 }"
-      ></mat-paginator>
     </div>
   </div>
 </ng-template>
@@ -412,14 +396,6 @@
           </tr>
         </table>
       </ng-container>
-      <mat-paginator
-        showFirstLastButton
-        [pageIndex]="currentPage"
-        [pageSize]="pageSize"
-        (page)="pageChanged($event)"
-        class="visibility"
-        [ngClass]="{ hidden: firstTimersList.length == 0 }"
-      ></mat-paginator>
     </div>
   </div>
 </ng-template>

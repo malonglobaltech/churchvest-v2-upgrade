@@ -72,10 +72,6 @@ export class MembershipJournalComponent implements OnInit {
           this.firstTimersList = first_timers;
           this.newConvertList = new_converts;
           this.regularMemberList = regular_members;
-          // this.dataSource = new MatTableDataSource(this.regularMemberList);
-
-          // this.paginator.pageIndex = this.currentPage;
-          // this.paginator.length = meta.total;
         },
         (error) => {
           this._loading_ = false;

@@ -118,6 +118,15 @@ export class PeopleService {
         catchError(handleError)
       );
   }
+  fetchMembersRole(pageNumber?: number): Observable<any> {
+    return this.http
+      .get<any>(
+        `${
+          environment.managementbaseUrl
+        }/${this.authService.getChurchSlug()}/people/members/role?page=${pageNumber}`
+      )
+      .pipe(catchError(handleError));
+  }
   fetchAll(type: string, pageNumber?: number): Observable<any> {
     return this.http
       .get<any>(

@@ -1,0 +1,170 @@
+<div class="header d-flex align-items-center justify-content-between mb-3">
+  <h2 class="title mb-0">Online Giving Accounts</h2>
+  <button
+    mat-stroked-button
+    data-bs-toggle="modal"
+    data-bs-target="#addAccount"
+  >
+    <mat-icon class="me-2">add</mat-icon> Add New Account
+  </button>
+</div>
+<div
+  class="d-flex justify-content-center align-items-center my-3 empty-state"
+  *ngIf="!_loading_ && (!accountList || accountList.length === 0)"
+>
+  <span class="txt-grey txt-md">No account added yet.</span>
+</div>
+<ng-container *ngIf="_loading_">
+  <app-loading-roller></app-loading-roller>
+</ng-container>
+<div class="bg-white p-3" *ngIf="!_loading_">
+  <ng-container>
+    <div class="card-list-wrap">
+      <div class="items-wrap grid grid-rep-three">
+        <div class="card" *ngFor="let item of accountList">
+          <div class="d-flex justify-content-between align-items-center">
+            <img
+              [src]="'assets/img/png/bank-logos/' + item.bank_slug + '.png'"
+              [alt]="item.bank_code"
+              class="icon"
+            />
+          </div>
+          <h3 class="title md mt-4">{{ item.name }}</h3>
+          <p class="f14 txt-grey">{{ item.number }}</p>
+          <div class="mt-auto">
+            <div class="d-flex align-items-center justify-content-between">
+              <span
+                class="tag"
+                [ngClass]="{
+                  green: item.is_active == 1,
+                  grey: item.is_active == 0
+                }"
+                >{{ item.is_active == 1 ? "Active" : "Inactive" }}</span
+              >
+              <div class="d-flex align-items-center">
+                <mat-slide-toggle
+                  [disabled]="isBusy_"
+                  [(ngModel)]="item.is_active"
+                  (change)="toggleIsActive($event, item.id)"
+                ></mat-slide-toggle>
+                <mat-spinner *ngIf="isBusy_"> </mat-spinner>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </ng-container>
+</div>
+<div class="modal fade" id="addAccount" role="dialog">
+  <div class="modal-dialog modal-wrapper">
+    <div class="modal-content-wrap">
+      <div class="modal-body">
+        <div
+          class="header-top d-flex justify-content-between align-items-center px-4 py-3"
+        >
+          <div class="title">Add New Account</div>
+          <mat-icon class="cursor" data-bs-dismiss="modal" class="cursor"
+            >close</mat-icon
+          >
+        </div>
+        <div class="container">
+          <form
+            class="pb-3"
+            [formGroup]="newAccountForm"
+            (ngSubmit)="addAccount()"
+          >
+            <div class="form-wrap w--400">
+              <div class="grid grid--1fr--1fr grid-gap-15">
+                <div class="input">
+                  <label>Title of Account</label>
+                  <input
+                    type="text"
+                    placeholder="Enter account title - Mr/Mrs/Ms"
+                    formControlName="title"
+                    [ngClass]="{
+                      'is-invalid':
+                        newAccountForm.controls['title'].hasError('required') &&
+                        newAccountForm.controls['title'].touched
+                    }"
+                  />
+                </div>
+                <div class="input">
+                  <label>Bank </label>
+                  <mat-select
+                    class="select"
+                    placeholder="Select bank"
+                    formControlName="bank_slug"
+                    (selectionChange)="handleBankChange($event)"
+                    [ngClass]="{
+                      'is-invalid':
+                        newAccountForm.controls['bank_slug'].hasError(
+                          'required'
+                        ) && newAccountForm.controls['bank_slug'].touched
+                    }"
+                  >
+                    <mat-option disabled="" selected="" value=""
+                      >Select bank</mat-option
+                    >
+                    <mat-option
+                      class="capitalize"
+                      *ngFor="let item of bankList"
+                      [value]="item"
+                      >{{ item.name }}</mat-option
+                    >
+                  </mat-select>
+                </div>
+              </div>
+              <div class="grid grid--1fr--1fr grid-gap-15">
+                <div class="input">
+                  <label>Account Number</label>
+                  <input
+                    type="text"
+                    placeholder="Enter account number"
+                    formControlName="number"
+                    maxLength="10"
+                    (input)="_maxLengthCheck($event)"
+                    (blur)="blurHandler()"
+                    [ngClass]="{
+                      'is-invalid':
+                        newAccountForm.controls['number'].hasError(
+                          'required'
+                        ) && newAccountForm.controls['number'].touched
+                    }"
+                  />
+                </div>
+                <div class="input">
+                  <label>Account Name</label>
+                  <input
+                    type="text"
+                    placeholder="Enter account name"
+                    formControlName="name"
+                  />
+                </div>
+              </div>
+              <div class="d-flex align-items-center mt-3">
+                <button
+                  type="submit"
+                  mat-flat-button
+                  class="me-3"
+                  [disabled]="!newAccountForm.valid"
+                >
+                  Create
+                  <mat-spinner *ngIf="isBusy"> </mat-spinner>
+                </button>
+                <button
+                  type="button"
+                  mat-stroked-button
+                  data-bs-dismiss="modal"
+                  #closebtn
+                >
+                  Cancel
+                </button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -140,4 +140,17 @@ export class GivingService {
         catchError(handleError)
       );
   }
+  updateAccount(model: any, id: number): Observable<any> {
+    return this.http
+      .post<any>(
+        ` ${
+          environment.managementbaseUrl
+        }/${this.authService.getChurchSlug()}/accounts/${id}/update`,
+        model
+      )
+      .pipe(
+        map((status) => status),
+        catchError(handleError)
+      );
+  }
 }

@@ -232,11 +232,13 @@ export class SidenavComponent implements OnInit {
           title: 'Member Connect (Web)',
           url: 'member-connect',
           hasSelector: false,
+          disabled: true,
         },
         {
           title: 'Live Streaming',
           url: 'live-streaming',
           hasSelector: false,
+          disabled: true,
         },
       ],
     },
@@ -259,10 +261,6 @@ export class SidenavComponent implements OnInit {
         {
           title: 'Module Access',
           url: 'module-access',
-        },
-        {
-          title: 'Trash',
-          url: 'trash',
         },
       ],
     },

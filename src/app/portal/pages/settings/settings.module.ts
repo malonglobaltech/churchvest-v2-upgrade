@@ -10,9 +10,11 @@ import {
   ImageuploadComponent,
   OverviewComponent,
 } from './components/overview/overview.component';
+import { OnlineGivingComponent } from './components/online-giving/online-giving.component';
+import { ModuleAccessComponent } from './components/module-access/module-access.component';
 
 @NgModule({
-  declarations: [SettingsComponent, OverviewComponent],
+  declarations: [SettingsComponent, OverviewComponent, OnlineGivingComponent, ModuleAccessComponent],
   imports: [
     CommonModule,
     SettingsRoutingModule,
