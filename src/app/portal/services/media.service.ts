@@ -64,7 +64,7 @@ export class MediaService {
       )
       .pipe(catchError(handleError));
   }
-  fetchAllFromTrash(query?: string, page?: number): Observable<any> {
+  fetchAllFromTrash(page?: number): Observable<any> {
     return this.http
       .get<any>(
         `${

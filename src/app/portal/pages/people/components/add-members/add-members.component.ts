@@ -64,7 +64,7 @@ export class AddMembersComponent implements OnInit {
     });
     this.updateProfileImage = this.fb.group({
       member_id: [null],
-      profile: [null, Validators.required],
+      profile: [null],
     });
     this.updateServiceInfo = this.fb.group({
       member_id: [null],

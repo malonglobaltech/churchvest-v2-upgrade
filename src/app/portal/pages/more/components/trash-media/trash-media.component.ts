@@ -85,34 +85,34 @@ export class TrashMediaComponent implements OnInit {
   getMedia() {
     this._loading = true;
     this.mediaList = [];
-    this.mediaService
-      .fetchAllFromTrash(this.mediaType, this.currentPage + 1)
-      .subscribe(
-        (res: any) => {
+    this.mediaService.fetchAllFromTrash(this.currentPage + 1).subscribe(
+      (res: any) => {
+        this._loading = false;
+        const { data } = res;
+        this.mediaList = data;
+        this.dataSource = new MatTableDataSource(this.mediaList);
+        this.paginator.pageIndex = this.currentPage;
+        this.paginator.length = this.mediaList.length;
+      },
+      (errors) => {
+        if (errors) {
           this._loading = false;
-          const { data } = res;
-          this.mediaList = data;
-          this.dataSource = new MatTableDataSource(this.mediaList);
-          this.paginator.pageIndex = this.currentPage;
-          this.paginator.length = this.mediaList.length;
-        },
-        (errors) => {
-          if (errors) {
-            this._loading = false;
-            this.mediaList = [];
-          }
+          this.mediaList = [];
         }
-      );
+      }
+    );
   }
   gotoBack() {
     this._location.back();
   }
   getMediaDetails(id: any) {
     if (id !== undefined) {
-      this.mediaService.fetchAllFromTrash(this.mediaType).subscribe((res) => {
-        const { data } = res;
-        this.itemDetails = data.filter((x) => x.id == id);
-      });
+      this.mediaService
+        .fetchAllFromTrash(this.currentPage + 1)
+        .subscribe((res) => {
+          const { data } = res;
+          this.itemDetails = data.filter((x) => x.id == id);
+        });
     }
   }
   getSelectedMedia(arr: any) {

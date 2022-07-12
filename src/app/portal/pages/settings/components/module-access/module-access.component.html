@@ -310,8 +310,17 @@
                     <div class="d-flex align-items-center">
                       <ng-container *ngFor="let item of roleList">
                         <button
+                          mat-flat-button
+                          [disabled]="isBusy"
+                          *ngIf="itemDetails.role == item.type"
+                          (click)="changeRole(item.type, itemDetails.id)"
+                        >
+                          {{ item.label }}
+                        </button>
+                        <button
                           mat-stroked-button
                           [disabled]="isBusy"
+                          *ngIf="itemDetails.role !== item.type"
                           (click)="changeRole(item.type, itemDetails.id)"
                         >
                           {{ item.label }}
