@@ -81,7 +81,6 @@ export class MediaService {
       )
       .pipe(catchError(handleError));
   }
-
   moveToTrash(model: any): Observable<any> {
     return this.http.post<any>(
       `${

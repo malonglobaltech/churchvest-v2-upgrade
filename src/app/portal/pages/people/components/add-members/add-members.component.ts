@@ -203,37 +203,26 @@ export class AddMembersComponent implements OnInit {
       this.updatePersonalInfoForm = this.fb.group({
         member_id: [parseInt(this.itemDetails.id)],
         first_name: [this.itemDetails['user'].first_name, Validators.required],
-        last_name: [this.itemDetails['user'].last_name, Validators.required],
-        email: [this.itemDetails['user'].email, Validators.required],
-        phone: [this.itemDetails['user'].phone, Validators.required],
+        last_name: [this.itemDetails['user'].last_name],
+        email: [this.itemDetails['user'].email],
+        phone: [this.itemDetails['user'].phone],
         date_of_birth: [
           this.itemDetails['user'].details.personal.date_of_birth,
-          Validators.required,
+          ,
         ],
-        country: [
-          this.itemDetails['user'].details.personal.country,
-          Validators.required,
-        ],
+        country: [this.itemDetails['user'].details.personal.country],
         nearest_bus_stop: [
           this.itemDetails['user'].details.personal.nearest_bus_stop,
-          Validators.required,
         ],
         residential_area: [
           this.itemDetails['user'].details.personal.residential_area,
-          Validators.required,
         ],
         relationship: [this.itemDetails['user'].details.personal.relationship],
         date_of_marriage: [
           this.itemDetails['user'].details.personal.date_of_marriage,
         ],
-        address: [
-          this.itemDetails['user'].details.personal.address,
-          Validators.required,
-        ],
-        gender: [
-          this.itemDetails['user'].details.personal.gender,
-          Validators.required,
-        ],
+        address: [this.itemDetails['user'].details.personal.address],
+        gender: [this.itemDetails['user'].details.personal.gender],
       });
 
       this.updateProfileImage = this.fb.group({

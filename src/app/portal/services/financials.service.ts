@@ -27,6 +27,19 @@ export class FinancialsService {
         catchError(handleError)
       );
   }
+  addReconciliation(model: any): Observable<any> {
+    return this.http
+      .post<any>(
+        ` ${
+          environment.managementbaseUrl
+        }/${this.authService.getChurchSlug()}/reconciliations`,
+        model
+      )
+      .pipe(
+        map((status) => status),
+        catchError(handleError)
+      );
+  }
   deleteTransaction(model: any): Observable<any> {
     return this.http
       .post<any>(
@@ -40,12 +53,38 @@ export class FinancialsService {
         catchError(handleError)
       );
   }
+  fetchFinancials(
+    accid?: number,
+    type?: string,
+    page?: number
+  ): Observable<any> {
+    return this.http
+      .get<any>(
+        `${
+          environment.managementbaseUrl
+        }/${this.authService.getChurchSlug()}/accounts/financial?page=${page}`
+      )
+      .pipe(catchError(handleError));
+  }
+  fetchReconciliation(
+    accid?: number,
+    type?: string,
+    page?: number
+  ): Observable<any> {
+    return this.http
+      .get<any>(
+        `${
+          environment.managementbaseUrl
+        }/${this.authService.getChurchSlug()}/reconciliations?account_id=${accid}?account_type=${type}?page=${page}`
+      )
+      .pipe(catchError(handleError));
+  }
   fetchTransactionsByType(type?: string, page?: number): Observable<any> {
     return this.http
       .get<any>(
         `${
           environment.managementbaseUrl
-        }/${this.authService.getChurchSlug()}/transactions?type=${type}?page=${page}`
+        }/${this.authService.getChurchSlug()}/transactions?type=${type}`
       )
       .pipe(catchError(handleError));
   }
