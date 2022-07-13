@@ -236,6 +236,11 @@
 <ng-template #firstTimer>
   <div class="overflow--wrap _visible">
     <div class="table-wrapper tbl-wrap">
+      <ng-container *ngIf="firstTimersList.length == 0">
+        <span class="f12 txt-grey d-flex justify-content-center"
+          >No record found!</span
+        >
+      </ng-container>
       <ng-container *ngIf="firstTimersList.length !== 0">
         <table
           mat-table
@@ -319,7 +324,12 @@
 <ng-template #newConvert>
   <div class="overflow--wrap _visible">
     <div class="table-wrapper tbl-wrap">
-      <ng-container *ngIf="firstTimersList.length !== 0">
+      <ng-container *ngIf="newConvertList.length == 0">
+        <span class="f12 txt-grey d-flex justify-content-center"
+          >No record found!</span
+        >
+      </ng-container>
+      <ng-container *ngIf="newConvertList.length !== 0">
         <table
           mat-table
           [dataSource]="dataSource"
