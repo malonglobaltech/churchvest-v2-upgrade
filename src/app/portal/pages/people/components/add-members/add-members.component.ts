@@ -51,7 +51,7 @@ export class AddMembersComponent implements OnInit {
     this.personalInfoForm = this.fb.group({
       first_name: [null, Validators.required],
       last_name: [null],
-      email: [null],
+      email: [null, Validators.email],
       phone: [null],
       date_of_birth: [null],
       country: [null],
@@ -204,7 +204,7 @@ export class AddMembersComponent implements OnInit {
         member_id: [parseInt(this.itemDetails.id)],
         first_name: [this.itemDetails['user'].first_name, Validators.required],
         last_name: [this.itemDetails['user'].last_name],
-        email: [this.itemDetails['user'].email],
+        email: [this.itemDetails['user'].email, Validators.email],
         phone: [this.itemDetails['user'].phone],
         date_of_birth: [
           this.itemDetails['user'].details.personal.date_of_birth,

@@ -64,6 +64,9 @@
                   type="email"
                   placeholder="Enter email address"
                   formControlName="email"
+                  [ngClass]="{
+                    'is-invalid': !personalInfoForm.controls['email'].valid
+                  }"
                 />
               </div>
               <div class="input">
@@ -437,6 +440,10 @@
                     type="email"
                     placeholder="Enter email address"
                     formControlName="email"
+                    [ngClass]="{
+                      'is-invalid':
+                        !updatePersonalInfoForm.controls['email'].valid
+                    }"
                   />
                 </div>
                 <div class="input">
