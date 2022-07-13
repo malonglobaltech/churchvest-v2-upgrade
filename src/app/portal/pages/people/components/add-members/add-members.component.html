@@ -68,6 +68,12 @@
                     'is-invalid': !personalInfoForm.controls['email'].valid
                   }"
                 />
+                <mat-error
+                  class="f12 my-2"
+                  *ngIf="!personalInfoForm.controls['email'].valid"
+                >
+                  Email must be a valid email address
+                </mat-error>
               </div>
               <div class="input">
                 <label>Phone number </label>
@@ -445,6 +451,12 @@
                         !updatePersonalInfoForm.controls['email'].valid
                     }"
                   />
+                  <mat-error
+                    class="f12 my-2"
+                    *ngIf="!updatePersonalInfoForm.controls['email'].valid"
+                  >
+                    Email must be a valid email address
+                  </mat-error>
                 </div>
                 <div class="input">
                   <label>Phone number </label>

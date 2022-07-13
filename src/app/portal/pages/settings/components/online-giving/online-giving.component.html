@@ -17,7 +17,7 @@
 <ng-container *ngIf="_loading_">
   <app-loading-roller></app-loading-roller>
 </ng-container>
-<div class="bg-white p-3" *ngIf="!_loading_">
+<div class="bg-white p-3" *ngIf="!_loading_ && accountList.length !== 0">
   <ng-container>
     <div class="card-list-wrap">
       <div class="items-wrap grid grid-rep-three">
