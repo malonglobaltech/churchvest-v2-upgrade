@@ -55,7 +55,6 @@ export class MembershipJournalComponent implements OnInit {
       case (query = 'first-timer'):
         return (this.dataSource = new MatTableDataSource(this.firstTimersList));
       case (query = 'new-convert'):
-        console.log(this.newConvertList);
         return (this.dataSource = new MatTableDataSource(this.newConvertList));
       default:
         return;

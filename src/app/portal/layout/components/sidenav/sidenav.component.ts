@@ -171,6 +171,7 @@ export class SidenavComponent implements OnInit {
         {
           title: 'Expenses',
           url: 'expenses',
+          disabled: true,
         },
         {
           title: 'Reconciliation',
@@ -182,10 +183,10 @@ export class SidenavComponent implements OnInit {
           url: 'payroll',
           disabled: true,
         },
-        {
-          title: 'Settings',
-          url: 'settings',
-        },
+        // {
+        //   title: 'Settings',
+        //   url: 'settings',
+        // },
       ],
     },
     {

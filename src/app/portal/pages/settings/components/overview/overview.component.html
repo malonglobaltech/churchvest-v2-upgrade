@@ -125,6 +125,178 @@
           </div>
         </section>
       </mat-tab>
+      <mat-tab label="Change Password">
+        <section class="profile py-3 px-2">
+          <div class="section">
+            <div *ngIf="validatePassword" class="panel mb-3 p-3">
+              <div class="d-flex align-items-center mb-2">
+                <mat-icon *ngIf="validatePassword.length >= 8" class="txt-green"
+                  >check_circle</mat-icon
+                >
+                <mat-icon
+                  class="text-danger"
+                  *ngIf="validatePassword.length < 8"
+                  >cancel</mat-icon
+                >
+                <span class="f12 text-grey ms-2"
+                  >Password should contain 8 characters or more</span
+                >
+              </div>
+              <div class="d-flex align-items-center mb-2">
+                <mat-icon *ngIf="!upperCaseChar" class="txt-green"
+                  >check_circle</mat-icon
+                >
+                <mat-icon *ngIf="upperCaseChar" class="text-danger"
+                  >cancel</mat-icon
+                >
+                <span class="f12 text-grey ms-2"
+                  >Password should contain at least one upper case
+                  character</span
+                >
+              </div>
+              <div class="d-flex align-items-center mb-2">
+                <mat-icon *ngIf="numberChar" class="txt-green"
+                  >check_circle</mat-icon
+                >
+                <mat-icon *ngIf="!numberChar" class="text-danger"
+                  >cancel</mat-icon
+                >
+                <span class="f12 text-grey ms-2"
+                  >Password should contain at least a number</span
+                >
+              </div>
+              <div class="d-flex align-items-center">
+                <mat-icon *ngIf="specialChar" class="txt-green"
+                  >check_circle</mat-icon
+                >
+                <mat-icon *ngIf="!specialChar" class="text-danger"
+                  >cancel</mat-icon
+                >
+                <span class="f12 text-grey ms-2"
+                  >Password should contain at least one special character</span
+                >
+              </div>
+            </div>
+            <form [formGroup]="passwordForm" (ngSubmit)="passwordChange()">
+              <div class="form w-500">
+                <ng-container *ngIf="!recordFound">
+                  <div class="input">
+                    <label>Old Password</label>
+                    <input
+                      [type]="show ? 'text' : 'password'"
+                      placeholder="Enter old password"
+                      formControlName="old_password"
+                      [ngClass]="{
+                        'is-invalid':
+                          passwordForm.controls['old_password'].hasError(
+                            'required'
+                          ) && passwordForm.controls['old_password'].touched
+                      }"
+                    />
+                    <span
+                      class="toggle-btn txt-grey"
+                      *ngIf="!show"
+                      (click)="password()"
+                    >
+                      <mat-icon>visibility_off</mat-icon></span
+                    >
+                    <span
+                      class="toggle-btn txt-grey"
+                      *ngIf="show"
+                      (click)="password()"
+                    >
+                      <mat-icon>visibility</mat-icon></span
+                    >
+                  </div>
+                  <button
+                    type="submit"
+                    mat-stroked-button
+                    (click)="verifyPassword()"
+                    class="w-100"
+                    [disabled]="
+                      passwordForm.controls['old_password'].value == null
+                    "
+                  >
+                    Verify <mat-spinner *ngIf="isBusy"> </mat-spinner>
+                  </button>
+                </ng-container>
+                <ng-container *ngIf="recordFound">
+                  <div class="input">
+                    <label>Password</label>
+                    <input
+                      [type]="show ? 'text' : 'password'"
+                      placeholder="Enter password"
+                      formControlName="password"
+                      (input)="checkPassword(passwordValue)"
+                      [ngClass]="{
+                        'is-invalid':
+                          passwordForm.controls['password'].hasError(
+                            'required'
+                          ) && passwordForm.controls['password'].touched
+                      }"
+                    />
+                    <span
+                      class="toggle-btn txt-grey"
+                      *ngIf="!show"
+                      (click)="password()"
+                    >
+                      <mat-icon>visibility_off</mat-icon></span
+                    >
+                    <span
+                      class="toggle-btn txt-grey"
+                      *ngIf="show"
+                      (click)="password()"
+                    >
+                      <mat-icon>visibility</mat-icon></span
+                    >
+                  </div>
+                  <div class="input">
+                    <label>Confirm Password</label>
+                    <input
+                      [type]="show ? 'text' : 'password'"
+                      formControlName="password_confirmation"
+                      placeholder="Confirm password"
+                      [errorStateMatcher]="matcher"
+                    />
+                    <span
+                      class="toggle-btn txt-grey"
+                      *ngIf="!show"
+                      (click)="password()"
+                    >
+                      <mat-icon>visibility_off</mat-icon></span
+                    >
+                    <span
+                      class="toggle-btn txt-grey"
+                      *ngIf="show"
+                      (click)="password()"
+                    >
+                      <mat-icon>visibility</mat-icon></span
+                    >
+                    <mat-error
+                      class="f12 my-2"
+                      *ngIf="
+                        passwordForm.hasError('notSame') &&
+                        passwordForm.controls['password_confirmation'].touched
+                      "
+                    >
+                      Passwords do not match
+                    </mat-error>
+                  </div>
+                  <div class="d-flex mt-2">
+                    <button
+                      type="submit"
+                      mat-flat-button
+                      [disabled]="!passwordForm.valid"
+                    >
+                      Save <mat-spinner *ngIf="isBusy"></mat-spinner>
+                    </button>
+                  </div>
+                </ng-container>
+              </div>
+            </form>
+          </div>
+        </section>
+      </mat-tab>
     </mat-tab-group>
   </div>
 </div>

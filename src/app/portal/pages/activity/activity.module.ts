@@ -7,6 +7,7 @@ import { AngularMaterialModule } from 'src/app/shared/angular-material.module';
 import { StatsOverviewComponent } from './components/stats-overview/stats-overview.component';
 import { EventsComponent } from './components/events/events.component';
 import { LoadingRollerModule } from '../../components/loading-roller/loading-roller.module';
+import { EmptyStateModule } from '../../components/empty-state/empty-state.module';
 
 @NgModule({
   declarations: [ActivityComponent, StatsOverviewComponent, EventsComponent],
@@ -15,6 +16,7 @@ import { LoadingRollerModule } from '../../components/loading-roller/loading-rol
     ActivityRoutingModule,
     AngularMaterialModule,
     LoadingRollerModule,
+    EmptyStateModule,
   ],
   exports: [ActivityComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],

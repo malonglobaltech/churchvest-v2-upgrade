@@ -8,8 +8,23 @@ import {
   TemplateRef,
   ViewChild,
 } from '@angular/core';
+import {
+  AbstractControl,
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  ValidationErrors,
+  ValidatorFn,
+  Validators,
+} from '@angular/forms';
+import { ErrorStateMatcher } from '@angular/material/core';
 import { ToastrService } from 'ngx-toastr';
 import { AuthService } from 'src/app/services/auth.service';
+import {
+  checkForSpecialChars,
+  hasNumber,
+  validateCapital,
+} from 'src/app/shared';
 
 @Component({
   selector: 'app-overview',
@@ -19,18 +34,39 @@ import { AuthService } from 'src/app/services/auth.service';
 export class OverviewComponent implements OnInit {
   uploadAvatar: TemplateRef<any>;
   uploadedAvatar: TemplateRef<any>;
+  show: boolean = false;
+  isBusy: boolean = false;
   userData: any;
   churchData: any;
   profileImg: any;
   fullname: any;
   email: any;
   isEditing: boolean = false;
-  isBusy: boolean = false;
+  matcher = new MyErrorStateMatcher();
+  upperCaseChar: any;
+  numberChar: any;
+  specialChar: any;
+  validatePassword: any;
+  recordFound: boolean = false;
+  _validateCaps = validateCapital;
+  _hasNumber = hasNumber;
+  _checkForSpecialChars = checkForSpecialChars;
+  public passwordForm: FormGroup = new FormGroup({});
   constructor(
     private authService: AuthService,
     private toastr: ToastrService,
-    public imgUp: ImageuploadComponent
-  ) {}
+    public imgUp: ImageuploadComponent,
+    private fb: FormBuilder
+  ) {
+    this.passwordForm = this.fb.group(
+      {
+        old_password: [null],
+        password: [null, Validators.required],
+        password_confirmation: [null],
+      },
+      { validators: this.checkPasswordMatch }
+    );
+  }
 
   ngOnInit(): void {
     this.userData = this.authService.getUserData();
@@ -38,6 +74,26 @@ export class OverviewComponent implements OnInit {
     this.email = `${this.userData.email}`;
     this.churchData = JSON.parse(localStorage.getItem('user_church'));
     this.profileImg = this.userData.memberships[0]?.profile;
+  }
+  get passwordValue(): any {
+    return this.passwordForm.controls['password'].value;
+  }
+  checkPasswordMatch: ValidatorFn = (
+    group: AbstractControl
+  ): ValidationErrors | null => {
+    let pass = group.get('password').value;
+    let confirmPass = group.get('password_confirmation').value;
+    return pass === confirmPass ? null : { notSame: true };
+  };
+
+  password() {
+    this.show = !this.show;
+  }
+  checkPassword(password) {
+    this.validatePassword = password;
+    this.upperCaseChar = this._validateCaps(password);
+    this.numberChar = this._hasNumber(password);
+    this.specialChar = this._checkForSpecialChars(password);
   }
   toggleEdit() {
     this.isEditing = !this.isEditing;
@@ -56,8 +112,8 @@ export class OverviewComponent implements OnInit {
     formData.append('email', this.email);
 
     this.authService.updateProfile(formData).subscribe(
-      ({ message, data }) => {
-        this.toastr.success(message, 'Message');
+      (res) => {
+        this.toastr.success('Profile updated sucessfully', 'Message');
         this.isBusy = false;
         this.isEditing = !this.isEditing;
       },
@@ -69,6 +125,69 @@ export class OverviewComponent implements OnInit {
       },
       () => {
         this.isBusy = false;
+      }
+    );
+  }
+  verifyPassword() {
+    this.isBusy = true;
+    const payload = {
+      old_password: this.passwordForm.controls['old_password'].value,
+    };
+    this.authService.verifyOldPassword(payload).subscribe(
+      ({ message, status }) => {
+        if (status == 'error') {
+          this.isBusy = false;
+          this.recordFound = false;
+          this.toastr.error(message, 'Message', {
+            timeOut: 3000,
+          });
+        } else {
+          this.isBusy = false;
+          this.recordFound = true;
+          this.toastr.info(message, 'Message', {
+            timeOut: 3000,
+          });
+        }
+      },
+      ({ message }) => {
+        this.isBusy = false;
+        this.recordFound = false;
+        this.toastr.error(message, 'Message');
+      }
+    );
+  }
+  passwordChange() {
+    this.isBusy = true;
+
+    if (!this.passwordForm.valid) {
+      this.isBusy = false;
+      return;
+    }
+    const formData = new FormData();
+    formData.append('password', this.passwordForm.controls['password'].value);
+    formData.append(
+      'password_confirmation',
+      this.passwordForm.controls['password_confirmation'].value
+    );
+
+    this.authService.updateProfile(formData).subscribe(
+      ({ message }) => {
+        this.toastr.success(message, 'Message');
+        this.isBusy = false;
+        this.isEditing = !this.isEditing;
+        this.passwordForm.reset();
+        this.recordFound = false;
+        this.validatePassword = null;
+      },
+      (error) => {
+        this.isBusy = false;
+        this.toastr.error(error, 'Message', {
+          timeOut: 3000,
+        });
+      },
+      () => {
+        this.isBusy = false;
+        this.passwordForm.reset();
       }
     );
   }
@@ -143,5 +262,15 @@ export class ImageuploadComponent implements OnInit {
   }
   addAvatar(ref) {
     ref.click();
+  }
+}
+export class MyErrorStateMatcher implements ErrorStateMatcher {
+  isErrorState(control: FormControl): boolean {
+    const invalidCtrl = !!(control?.invalid && control?.parent?.dirty);
+    const invalidParent = !!(
+      control?.parent?.invalid && control?.parent?.dirty
+    );
+
+    return invalidCtrl || invalidParent;
   }
 }

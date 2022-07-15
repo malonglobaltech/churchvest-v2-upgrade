@@ -80,6 +80,16 @@ export class AuthService {
       .get<any>(link, this.httpOptions)
       .pipe(catchError(handleError));
   }
+  verifyOldPassword(payload: any): Observable<any> {
+    return this.http
+      .post<any>(
+        `${
+          environment.mainUrl
+        }/management/${this.getChurchSlug()}/user/verify_old_password`,
+        payload
+      )
+      .pipe(catchError(handleError));
+  }
   updateProfile(model: any): Observable<any> {
     return this.http
       .post<any>(
