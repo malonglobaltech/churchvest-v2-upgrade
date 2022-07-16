@@ -1,0 +1,51 @@
+@import "src/scss/_vars.scss";
+.subscribe {
+    background-color: $purple;
+    padding: 2em 0;
+
+    .content {
+        max-width: 600px;
+        margin: 0 auto;
+        padding: 4em 0;
+        text-align: center;
+
+        h2 {
+            color: $dark-grey;
+            font-size: 220%;
+            margin-bottom: 1em;
+        }
+        p {
+            color: $grey;
+            font-size: 120%;
+        }
+
+        form {
+            width: 100%;
+            display: flex;
+            background-color: $white;
+            border: none;
+            border-radius: 10px;
+            margin-top: 2em;
+
+            input {
+                outline: 0;
+                border: 0;
+                flex: auto;
+                padding: 0.5em;
+                color: $blue;
+                border-top-left-radius: 10px;
+                border-bottom-left-radius: 10px;
+                // border: 1px solid red;
+            }
+            button {
+                border: 0;
+                outline: 0;
+                background-color: $blue;
+                color: $grey;
+                // padding: 1em;
+                border-top-right-radius: 10px;
+                border-bottom-right-radius: 10px;
+            }
+        }
+    }
+}
