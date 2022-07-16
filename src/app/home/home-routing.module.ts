@@ -18,10 +18,6 @@ const routes: Routes = [
       title: 'Contact - Churchvest'
     },
   },
-  {
-    path: '**',
-    redirectTo: ''
-  }
 ];
 
 @NgModule({

@@ -1,0 +1,62 @@
+@import "src/scss/_vars.scss";
+.header {
+    font-size: 120%;
+    padding: 0.5em 0;
+    img {
+        width: 40px;
+        height: auto;
+    }
+
+    ul {
+        list-style: none;
+        display: flex;
+        justify-content: space-evenly;
+        align-items: center;
+        vertical-align: middle;
+
+        li {
+            justify-self: center;
+        }
+    }
+    .links a {
+        font-weight: bolder;
+        color: $purple;
+        transition: all .3s ease-in-out;
+        &:hover {
+            color: $blue;
+        }
+    }
+
+
+    button {
+        outline: none;
+        // padding:  1em;
+        padding: 14px 1em;
+        border: none;
+        border-radius: 5px;
+    }
+    .btn-full {
+        background-color: $blue;
+        color: #ffffff;
+        border: 1px solid $blue;
+        transition: all .3s ease-in-out;
+        &:hover {
+        background-color: #ffffff;
+        color: $blue;
+        }
+    }
+    .btn-ghost {
+        margin-right: 1em;
+        background-color: #ffffff;
+        color: $blue;
+        border: 1px solid $blue;
+        transition: all .3s ease-in-out;
+        &:hover {
+        background-color: $blue;
+        color: #ffffff;
+        }
+    }
+    .actions {
+        text-align: right;
+    }
+}

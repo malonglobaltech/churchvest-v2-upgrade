@@ -9,6 +9,8 @@ import { FooterComponent } from './components/footer/footer.component';
 import { SubscribeComponent } from './components/subscribe/subscribe.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { TutorialComponent } from './components/tutorial/tutorial.component';
+import { HeaderComponent } from './components/header/header.component';
+import { AngularMaterialModule } from '../shared/angular-material.module';
 
 
 @NgModule({
@@ -18,11 +20,13 @@ import { TutorialComponent } from './components/tutorial/tutorial.component';
     ContactPageComponent,
     FooterComponent,
     SubscribeComponent,
-    TutorialComponent
+    TutorialComponent,
+    HeaderComponent
   ],
   imports: [
     CommonModule,
     FormsModule,
+    AngularMaterialModule,
     ReactiveFormsModule,
     HomeRoutingModule,
   ]
