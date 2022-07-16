@@ -7,6 +7,7 @@ import { HomePageComponent } from './components/home-page/home-page.component';
 import { ContactPageComponent } from './components/contact-page/contact-page.component';
 import { FooterComponent } from './components/footer/footer.component';
 import { SubscribeComponent } from './components/subscribe/subscribe.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 
 @NgModule({
@@ -19,7 +20,9 @@ import { SubscribeComponent } from './components/subscribe/subscribe.component';
   ],
   imports: [
     CommonModule,
-    HomeRoutingModule
+    FormsModule,
+    ReactiveFormsModule,
+    HomeRoutingModule,
   ]
 })
 export class HomeModule { }

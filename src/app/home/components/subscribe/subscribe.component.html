@@ -7,15 +7,38 @@
                 we’ll keep you up to date with latest features added.
             </p>
             <div class="form-wrap">
-                <form>
-                    <input
-                      type="email"
-                      placeholder="Enter your email address"
-                    />
-                    <button
-                      class="py-md-3 px-md-4 p-2"
-                      >Subscribe Me</button
+                <form [formGroup]="subscribeForm" (ngSubmit)="onSubmit()">
+                    <div class="form-container">
+                        <div class="input-wrap">
+                            <input
+                            type="email"
+                            formControlName="email"
+                            placeholder="Enter your email address"
+                            />
+                        </div>
+                        <button
+                        class="py-md-3 px-md-4 p-2"
+                        >Subscribe Me</button
+                        >
+                    </div>
+                    <div 
+                      class="errors"
+                      *ngIf="
+                        subscribeForm.controls['email'].hasError('required') 
+                        && subscribeForm.controls['email'].touched
+                      "
                     >
+                        <span 
+                          class="text-danger"
+                          *ngIf="subscribeForm.controls['email'].hasError('required')"
+                          >Email is required</span
+                        > <br/>
+                        <span 
+                          class="text-danger"
+                          *ngIf="subscribeForm.controls['email'].invalid"
+                          >Enter valid email</span
+                        >
+                    </div>
                 </form>
             </div>
         </div>
