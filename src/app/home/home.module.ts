@@ -8,6 +8,7 @@ import { ContactPageComponent } from './components/contact-page/contact-page.com
 import { FooterComponent } from './components/footer/footer.component';
 import { SubscribeComponent } from './components/subscribe/subscribe.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { TutorialComponent } from './components/tutorial/tutorial.component';
 
 
 @NgModule({
@@ -16,7 +17,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     HomePageComponent,
     ContactPageComponent,
     FooterComponent,
-    SubscribeComponent
+    SubscribeComponent,
+    TutorialComponent
   ],
   imports: [
     CommonModule,

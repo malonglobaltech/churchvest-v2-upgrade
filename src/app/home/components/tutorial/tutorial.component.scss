@@ -1,0 +1,12 @@
+@import '/src/scss/_vars.scss';
+.tutorial {
+    background-color: $dark-grey;
+    text-align: center;
+    padding: 3em 0;
+    font-weight: bold;
+
+    h2 {        
+        font-size: 220%;
+        margin-bottom: 1em;
+    }
+}
