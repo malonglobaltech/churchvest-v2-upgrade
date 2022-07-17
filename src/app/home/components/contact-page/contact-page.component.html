@@ -10,6 +10,127 @@
                     a message or fill up this form below and our team will get back to you shortly.
                 </p>
             </div>
+            <div class="form-wrapper">
+                <form [formGroup]="contactForm" (ngSubmit)="onSubmit()">
+                    <div class="form-wrap">
+                        <div class="d-md-flex">
+                            <div class="input">
+                                <label>Full Name</label>
+                                <input 
+                                  type="text"
+                                  placeholder="Enter full name"
+                                  formControlName="name"
+                                />
+                            </div>
+                            <div class="input">
+                                <label>Select means of contact</label>
+                                <mat-select
+                                placeholder="Select means of contact"
+                                  [(value)]="meansOfContact"
+                                  (selectionChange)="onChangeMode($event)"
+                                >
+                                    <mat-option>Select Means of contact</mat-option>
+                                    <mat-option
+                                      *ngFor="let item of modeOfContact"
+                                      [value]="item"
+                                    >
+                                        {{ item }}
+                                    </mat-option>
+                                </mat-select>
+                            </div>
+                        </div>
+                        <div class="d-md-flex">
+                            <div class="input" *ngIf="meansOfContact == 'email'">
+                                <label>Email</label>
+                                <input 
+                                  type="email"
+                                  placeholder="Enter full name"
+                                  formControlName="email"
+                                  pattern="[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z0-9]{2,}$"
+                                />
+                            </div>
+                            <div class="input" *ngIf="meansOfContact == 'phone'">
+                                <label>Phone</label>
+                                <input 
+                                  type="text"
+                                  placeholder="Enter full name"
+                                  formControlName="phone"
+                                [ngClass]="{
+                                'is-invalid':
+                                    contactForm.controls['phone'].hasError('required') &&
+                                    contactForm.controls['phone'].touched
+                                }"
+                                />
+                            </div>
+                        </div>
+                        <div class="d-md-flex">
+                            <div class="input">
+                                <label>Church Name</label>
+                                <input 
+                                  type="text"
+                                  placeholder="Enter full name"
+                                  formControlName="church_name"
+                                />
+                            </div>
+                            <div class="input">
+                                <label>Church Address</label>
+                                <input 
+                                  type="text"
+                                  placeholder="Enter full name"
+                                  formControlName="church_address"
+                                />
+                            </div>
+                        </div>
+                        <div class="d-md-flex">
+                            <div class="input">
+                                <label>Enter Church Position</label>
+                                <input 
+                                  type="text"
+                                  placeholder="Enter full name"
+                                  formControlName="position"
+                                />
+                            </div>
+                            <div class="input">
+                                <label>Select Reason</label>
+                                <mat-select
+                                  placeholder="Select Reason"
+                                  formControlName="subject"
+                                >
+                                    <mat-option disabled="" selected="" value="">
+                                        Select Reason
+                                    </mat-option>
+                                    <mat-option
+                                      *ngFor="let item of reasonOfContact"
+                                      [value]="item"
+                                    >
+                                        {{ item }}
+                                    </mat-option>
+                                </mat-select>
+                            </div>
+                        </div>
+                        <div class="grid mb-3">
+                            <div class="input">
+                            <label>Message</label>
+                            <textarea
+                                cols="30"
+                                rows="10"
+                                placeholder="Message"
+                                  formControlName="message"
+                            ></textarea>
+                            </div>
+                        </div>
+                        <div class="d-flex">
+                            <button
+                            type="submit"
+                            class="btn btn-primary form-control"
+                            >
+                            Save <mat-spinner *ngIf="isBusy"> </mat-spinner>
+                            </button>
+                        </div>
+                        
+                    </div>
+                </form>
+            </div>
         </div>
     </section>
     <app-footer></app-footer>
