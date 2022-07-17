@@ -40,18 +40,18 @@
                 </div>
             </div>
             <div class="icon-column">
-                icons
+                <mat-icon (click)="toggleMenu()">menu</mat-icon>
             </div>
         </div>
     </div>
-        <div class="header-dropdown">
+        <div *ngIf="showMenu" class="header-dropdown animate animate__fadeInLeft">
             <div class="container">
                 <nav class="dropdown-links">
                     <a href="">Features</a>
                     <a href="">How it works</a>
-                    <a href="">contact</a>
-                    <button class="btn-outline ">login</button>
-                    <button class="btn-raised">Get Started</button>
+                    <a href="">Contact</a>
+                    <button class="btn-outline" routerLink="/onboarding/login">login</button>
+                    <button class="btn-raised" routerLink="/onboarding/register">Get Started</button>
                 </nav>
             </div>
         </div>

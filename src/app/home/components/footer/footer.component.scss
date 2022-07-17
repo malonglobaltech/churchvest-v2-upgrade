@@ -1,7 +1,6 @@
 @import "src/scss/_vars.scss";
 .footer {
     font-family: "Roboto", san-serif;
-    font-size: 110%;
     padding: 1em 0;
     .column {
         margin-top: 1em;
@@ -11,13 +10,14 @@
         }
         p {
             line-height: 2;
+            font-size: 1.2rem;
         }
         ul {
             li {
                 a {
                     color: black;
                     display: block!important;
-                    font-weight: bold;
+                    font-size: 1.2rem;
                     margin: 12px 0;
                     transform: .3s all ease-in;
                     &:hover {

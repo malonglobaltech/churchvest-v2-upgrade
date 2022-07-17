@@ -16,7 +16,6 @@
             nav {
                 a {
                     display: block!important;
-                    // font-weight: bold;
                     color: #000215;
                     font-size: 1.2rem;
                     border-bottom: 1px solid $dark-grey;
@@ -46,7 +45,7 @@
                     }
                 }
             }
-            @media screen and (max-width: 768px) {
+            @media screen and (max-width: 770px) {
                 display: block;
             }
         }
@@ -66,14 +65,18 @@
                 align-items: center;
                 justify-content: space-between;
 
-                @media screen and (max-width: 768px) {
+                @media screen and (max-width: 769px) {
                     display: none;
                 }
             }
 
             .icon-column {
                 display: block;
-                @media screen and (min-width: 768px) {
+                mat-icon {
+                    font-size: 2.5rem;
+                    cursor: pointer;
+                }
+                @media screen and (min-width: 770px) {
                     display: none;
                 }
             }
