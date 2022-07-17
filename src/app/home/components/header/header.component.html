@@ -1,15 +1,17 @@
 <header class="header">
-    <div class="container">
-        <div class="wrap-header row align-content-center">
-            <div class="col-md-1">
+    <div class="container header-content">
+        <div class="wrap-header">
+            <div class="logo-column">
+                <a routerLink="/">
                 <img 
                   src="assets/img/png/church_logo.png" 
                   alt="churchvest logo"
                 />
+                </a>
             </div>
-            <div class="col-md-10 row align-content-center d-md-flex d-none">
-                <div class="col-md-6">
-                    <div class="links mt-3">
+            <div class="links-column">
+                <div class="">
+                    <div class="links">
                         <ul class="list-unstyled">
                             <li>
                                 <a href="#">Features</a>
@@ -18,12 +20,12 @@
                                 <a href="#">How it works</a>
                             </li>
                             <li>
-                                <a href="#">Contact</a>
+                                <a routerLink="/contact">Contact</a>
                             </li>
                         </ul>
                     </div>
                 </div>
-                <div class="col-md-6 align-content-center">
+                <div class="">
                     <div class="actions">
                         <button 
                           class="btn-ghost mr-4"
@@ -37,6 +39,20 @@
                     </div>
                 </div>
             </div>
+            <div class="icon-column">
+                icons
+            </div>
         </div>
     </div>
+        <div class="header-dropdown">
+            <div class="container">
+                <nav class="dropdown-links">
+                    <a href="">Features</a>
+                    <a href="">How it works</a>
+                    <a href="">contact</a>
+                    <button class="btn-outline ">login</button>
+                    <button class="btn-raised">Get Started</button>
+                </nav>
+            </div>
+        </div>
 </header>
