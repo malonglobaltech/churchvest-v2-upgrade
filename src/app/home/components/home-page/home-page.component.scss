@@ -12,14 +12,13 @@
             // align-items: center;
             .banner-left {
                 h1{
-                    // padding: 1rem 0 0 3.5rem;
                     margin-top: 7rem;
                     font-size: 48px;
                 }
                 p.desc {
                     color: #010326;
                     font-size: 18px;
-                    line-height: 28.8px;
+                    line-height: 2;
                 }
                 button {
                     outline: none;
@@ -28,6 +27,7 @@
                     border-radius: 5px;
                 }
                 .btn-full {
+                    margin-right: 1em;
                     background-color: #0410f1;
                     color: #ffffff;
                     border: 1px solid #0410f1;
@@ -37,10 +37,12 @@
                     }
                 }
                 .btn-ghost {
-                    margin-left: 1em;
                     background-color: #ffffff;
                     color: #0410f1;
                     border: 1px solid #0410f1;
+                    @media screen and (max-width: 600px) {
+                        margin-top: 1em;
+                    }
                     &:hover {
                     background-color: #0410f1;
                     color: #ffffff;
@@ -56,7 +58,8 @@
                     align-self: center;
 
                     img {
-                        height: 400px;
+                        text-align: right;
+                        height: 300px;
                         &:first-child {
                             transition: all .8s ease-in-out;
                             margin-top: 5rem;
@@ -67,6 +70,25 @@
                             margin-top: 9rem;
                             box-shadow: 15px 15px 0 0 rgb(163 172 191 / 20%);
                         }
+                        @media screen and (min-width: 770px) and (max-width: 990px) {
+                            height: 200px;
+                        }
+                        @media screen and (max-width: 768px) {
+                            height: 150px;
+                        }
+                    }
+                    @media screen and (max-width: 768px) {
+                        display: block;
+                    }
+                }
+            }
+            @media screen and (max-width: 768px) {
+                display: block;
+                min-height: 100vh;
+                height: 100%;
+                .banner-right {
+                    img {
+                        height: 150px;
                     }
                 }
             }
@@ -89,6 +111,11 @@
                 }
             }
         }
+            @media screen and (max-width: 768px) {
+                // display: block;
+                // min-height: 100vh;
+                height: 100%;
+            }
         
     }
 }
