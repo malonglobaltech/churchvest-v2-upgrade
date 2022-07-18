@@ -12,6 +12,7 @@ import { TutorialComponent } from './components/tutorial/tutorial.component';
 import { HeaderComponent } from './components/header/header.component';
 import { AngularMaterialModule } from '../shared/angular-material.module';
 import { LearnMoreComponent } from './components/learn-more/learn-more.component';
+import { FeaturesComponent } from './components/features/features.component';
 
 
 @NgModule({
@@ -23,7 +24,8 @@ import { LearnMoreComponent } from './components/learn-more/learn-more.component
     SubscribeComponent,
     TutorialComponent,
     HeaderComponent,
-    LearnMoreComponent
+    LearnMoreComponent,
+    FeaturesComponent
   ],
   imports: [
     CommonModule,

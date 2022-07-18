@@ -1,0 +1,44 @@
+<div class="features">
+    <div class="container">
+        <div class="h2-bg">
+            <!-- <img src="assets/img/png/features-bg.png" alt=""> -->
+            <h2 class="mt-4">Features of ChurchVest</h2>
+        </div>
+        <p class="des-title pt-3">
+            With just one click you can get started In enjoying the features that Church Vest offers.
+        </p>
+        <div *ngIf="!allFeatures" class="features-details mt-5">
+            <div class="details-wrap row mb-5">
+                <div class="col-md-4" *ngFor="let item of viewSomeFeature">
+                    <div class="detail-content text-center mt-3">
+                        <i [class]="item.icon" aria-hidden="true"></i>
+                        <h3>{{ item.title }}</h3>
+                        <p> {{ item.description }}</p>
+                    </div>
+                </div>
+            </div>
+            <button 
+              class="btn btn-outline-primary p-3 px-5"
+              (click)="toggleAllFeatures()"
+              >View All</button
+            >
+        </div>
+        <div *ngIf="allFeatures" class="features-details mt-5">
+            <div class="details-wrap row mb-5">
+                <div class="col-md-4" *ngFor="let item of allFeaturesList">
+                    <div class="detail-content text-center mt-3">
+                        <i *ngIf="item.icon" [class]="item.icon" aria-hidden="true"></i>
+                        <img *ngIf="item.image" [src]="item.image" alt="">
+                        <h3>{{ item.title }}</h3>
+                        <p> {{ item.description }}</p>
+                    </div>
+                </div>
+            </div>
+            <button 
+              class="btn btn-outline-primary p-3 px-5"
+              (click)="toggleAllFeatures()"
+              >View Less</button
+            >
+        </div>
+    </div>
+</div>
