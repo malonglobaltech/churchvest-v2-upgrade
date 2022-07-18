@@ -1,3 +1,4 @@
+@import "src/scss/_vars.scss";
 .home {
     font-family: "Roboto", san-serif;
     .banner {
@@ -28,23 +29,21 @@
                 }
                 .btn-full {
                     margin-right: 1em;
-                    background-color: #0410f1;
+                    background-color: $blue;
                     color: #ffffff;
-                    border: 1px solid #0410f1;
+                    border: 1px solid $blue;
                     &:hover {
                     background-color: #ffffff;
-                    color: #0410f1;
+                    color: $blue;
                     }
+                    border: 1px solid $blue;
+
                 }
                 .btn-ghost {
                     background-color: #ffffff;
-                    color: #0410f1;
-                    border: 1px solid #0410f1;
-                    @media screen and (max-width: 600px) {
-                        margin-top: 1em;
-                    }
+                    color: $blue;
                     &:hover {
-                    background-color: #0410f1;
+                    background-color: $blue;
                     color: #ffffff;
                     }
                 }
