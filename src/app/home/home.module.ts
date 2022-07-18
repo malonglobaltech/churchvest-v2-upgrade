@@ -11,6 +11,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { TutorialComponent } from './components/tutorial/tutorial.component';
 import { HeaderComponent } from './components/header/header.component';
 import { AngularMaterialModule } from '../shared/angular-material.module';
+import { LearnMoreComponent } from './components/learn-more/learn-more.component';
 
 
 @NgModule({
@@ -21,7 +22,8 @@ import { AngularMaterialModule } from '../shared/angular-material.module';
     FooterComponent,
     SubscribeComponent,
     TutorialComponent,
-    HeaderComponent
+    HeaderComponent,
+    LearnMoreComponent
   ],
   imports: [
     CommonModule,
