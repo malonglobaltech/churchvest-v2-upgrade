@@ -61,14 +61,17 @@ export class ContactPageComponent implements OnInit {
     if (this.meansOfContact == 'phone') {
       delete  payload.email
     }
-    console.log('this.contactForm', JSON.stringify(this.contactForm.value))
+    this.isBusy = true;
     this.contactService.postContact(this.contactForm.value).subscribe(
       
         (res) => {
           // const { message } = res;
-          this.toastr.success('Message sent successfully', 'Message')
+          this.isBusy = false
+          this.toastr.success('Message sent successfully', 'Message');
+          this.contactForm.reset();
         },
         (error) => {
+          this.isBusy = false;
           this.toastr.error(error, 'Message')
         }
     )

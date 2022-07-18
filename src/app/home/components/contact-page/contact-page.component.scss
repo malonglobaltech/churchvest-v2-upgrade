@@ -13,4 +13,25 @@
             line-height: 2;
         }
     }
+
+    mat-form-field {
+        border: 0;
+
+        span.mat-form-field-label-wrapper,
+        mat-label {
+            font-size: 20px;
+        }
+        input,
+        textarea {
+            padding: 0;
+            margin: 0;
+            font-size: 20px;
+            color: $blue;
+        }
+
+        mat-select {
+            border: 0;
+            padding: 0;
+        }
+    }
 }
