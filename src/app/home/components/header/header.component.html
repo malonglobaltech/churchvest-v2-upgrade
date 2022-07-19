@@ -1,0 +1,61 @@
+<header class="header">
+    <div class="container header-content">
+        <div class="wrap-header">
+            <div class="logo-column">
+                <a routerLink="/">
+                <img 
+                  src="assets/img/png/church_logo.png" 
+                  alt="churchvest logo"
+                />
+                </a>
+            </div>
+            <div class="links-column">
+                <div class="">
+                    <div class="links">
+                        <ul class="list-unstyled">
+                            <li>
+                                <a href="#">Features</a>
+                            </li>
+                            <li>
+                                <a href="#">How it works</a>
+                            </li>
+                            <li>
+                                <a routerLink="/contact">Contact</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="">
+                    <div class="actions">
+                        <button 
+                          class="btn-ghost mr-4"
+                          routerLink="/onboarding/login"
+                          >Login</button
+                        >
+                        <button
+                          class="btn-full"
+                          routerLink="/onboarding/register"
+                        >Get Started</button>
+                    </div>
+                </div>
+            </div>
+            <div class="icon-column">
+                <mat-icon (click)="toggleMenu()">menu</mat-icon>
+            </div>
+        </div>
+    </div>
+        <div *ngIf="showMenu" 
+          class="header-dropdown"
+          data-aos="fade-down"
+        >
+            <div class="container">
+                <nav class="dropdown-links">
+                    <a href="/#feature">Features</a>
+                    <a href="/#tutorial">How it works</a>
+                    <a href="/contact">Contact</a>
+                    <button class="btn-outline" routerLink="/onboarding/login">login</button>
+                    <button class="btn-raised" routerLink="/onboarding/register">Get Started</button>
+                </nav>
+            </div>
+        </div>
+</header>

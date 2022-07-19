@@ -1,1 +1,113 @@
-<p>financial-journal works!</p>
+<div class="header d-flex align-items-center mb-4">
+  <div class="d-flex align-items-center cursor me-3" (click)="gotoBack()">
+    <button mat-icon-button class="me-2 return-link-wrap">
+      <mat-icon>west</mat-icon>
+    </button>
+    <div class="title-sm">Back</div>
+  </div>
+  <div class="title md">Financial Journal</div>
+</div>
+<div class="bg-white p-3">
+  <section class="financial py-3 px-2">
+    <div class="my-3">
+      <mat-form-field>
+        <mat-label>Query by date</mat-label>
+        <input
+          #ref
+          matInput
+          [matDatepicker]="datepicker"
+          (dateChange)="getFinancialJournal(ref.value)"
+        />
+        <mat-datepicker-toggle
+          matSuffix
+          [for]="datepicker"
+        ></mat-datepicker-toggle>
+        <mat-datepicker #datepicker>
+          <mat-datepicker-actions>
+            <button mat-button matDatepickerCancel>Cancel</button>
+            <button mat-raised-button color="primary" matDatepickerApply>
+              Apply
+            </button>
+          </mat-datepicker-actions>
+        </mat-datepicker>
+      </mat-form-field>
+    </div>
+    <ng-container *ngIf="_loading_">
+      <app-loading-roller></app-loading-roller>
+    </ng-container>
+    <div class="grid grid--1fr--1fr gap mt-5">
+      <ng-container *ngIf="!_loading_">
+        <div class="journal">
+          <div class="d-flex align-items-center justify-content-between">
+            <h3 class="title md pt-3">Income Information</h3>
+            <div class="cursor" [mat-menu-trigger-for]="menu">
+              <span>
+                <mat-icon>more_horiz</mat-icon>
+              </span>
+                <mat-menu #menu="matMenu">
+                  <button
+                    type="button"
+                    mat-menu-item
+                    (click)="onPreview('expenses')"
+                  >
+                    Preview
+                  </button>
+                  <button
+                    type="button"
+                    mat-menu-item
+                    (click)="_printElement('print-icome')"
+                  >
+                    Print
+                  </button>
+                  <button mat-menu-item (click)="exportIncomeToExcel()">
+                    Download as Excel
+                  </button>
+                </mat-menu>
+            </div>
+          </div>
+          <div
+            class="d-md-flex align-items-center justify-content-between py-3"
+          >
+            <p class="">
+              See in detail the income(revenue) transaction history of the church.
+            </p>
+          </div>
+        </div>
+      </ng-container>
+      <ng-container *ngIf="!_loading_">
+        <div class="journal">
+          <div class="d-flex align-items-center justify-content-between">
+            <h3 class="title md pt-3">Expenses Information</h3>
+            <div class="cursor" [mat-menu-trigger-for]="menu">
+              <span>
+                <mat-icon>more_horiz</mat-icon>
+              </span>
+                <mat-menu #menu="matMenu">
+                  <button
+                    type="button"
+                    mat-menu-item
+                    (click)="onPreview('expenses-data')"
+                  >
+                    Preview
+                  </button>
+                  <button
+                    type="button"
+                    mat-menu-item
+                    (click)="_printElement('print-expenses')"
+                  >
+                    Print
+                  </button>
+                  <button mat-menu-item (click)="exportExpensesToExcel()">
+                    Download as Excel
+                  </button>
+                </mat-menu>
+            </div>
+          </div>
+          <div class="d-flex align-items-center justify-content-between py-3">
+            <p class="">See in detail the transaction history on expenses of the church.</p>
+          </div>
+        </div>
+      </ng-container>
+    </div>
+  </section>
+</div>

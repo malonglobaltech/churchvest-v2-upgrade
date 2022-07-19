@@ -1,0 +1,28 @@
+@import "src/scss/_vars.scss";
+.features {
+    font-family: "Roboto", sans-serif;
+    font-size: 1.4rem;
+    text-align: center;
+    padding: 4em 0;
+
+    .container {}
+
+    h2 {
+        font-size: 2rem;
+        background-image: url(../../../../assets/img/png/features-bg.png);   
+         padding: 0.5rem 1rem;
+        background-repeat: no-repeat;
+        background-position: top;
+        background-size: contain;
+        color: #4c5273;
+    }
+
+    .features-details {
+
+        button {
+            &:hover {
+                background-color: $dark-purple;
+            }
+        }
+    }
+}
