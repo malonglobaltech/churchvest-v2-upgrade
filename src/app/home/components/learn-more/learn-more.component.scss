@@ -18,14 +18,17 @@
     justify-content: center;
     .icon-wrapper {
         background-color: $dark-blue;
-        padding: 2em;
-        width: 45%;
+        padding: 2em 1em;
+        width: 46%;
         line-height: 2;
         &:first-child {
             margin-left: 2em;
         }
         img {
             width: 80px;
+        }
+        .mat-icon {
+            transform: scale(3);
         }
     }
     @media screen and (max-width:768px) {
