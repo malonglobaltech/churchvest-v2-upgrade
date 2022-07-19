@@ -1,56 +1,53 @@
 @import "src/scss/_vars.scss";
 .subscribe {
-    background-color: $dark-purple;
-    font-family: "Roboto", sans-serif;
-    padding: 2em 0;
+  background-color: $dark-purple;
+  font-family: "Roboto", sans-serif;
+  padding: 2em 0;
 
-    .content {
-        max-width: 600px;
-        margin: 0 auto;
-        padding: 4em 0;
-        text-align: center;
+  .content {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 4em 0;
+    text-align: center;
 
-        h2 {
-            color: $dark-grey;
-            font-size: 220%;
-            margin-bottom: 1em;
-        }
-        p {
-            color: $grey;
-            font-size: 120%;
-        }
-
-        .form-container {
-            width: 100%;
-            display: flex;
-            background-color: $white;
-            border: none;
-            border-radius: 10px;
-            margin-top: 2em;
-
-            .input-wrap {
-                flex: auto;
-                input {
-                    outline: 0;
-                    border: 0;
-                    padding: 0.5em;
-                    color: $blue;
-                    border-top-left-radius: 10px;
-                    border-bottom-left-radius: 10px;
-                    width: 100%;
-                    height: 100%;
-                }
-
-            }
-            button {
-                border: 0;
-                outline: 0;
-                background-color: $blue;
-                color: $grey;
-                // padding: 1em;
-                border-top-right-radius: 10px;
-                border-bottom-right-radius: 10px;
-            }
-        }
+    h2 {
+      color: $dark-grey;
+      font-size: 220%;
+      margin-bottom: 1em;
     }
+    p {
+      color: $grey;
+      font-size: 120%;
+    }
+
+    .form-container {
+      width: 100%;
+      display: flex;
+      background-color: $white;
+      border: none;
+      border-radius: 10px;
+      margin-top: 2em;
+
+      .input-wrap {
+        flex: auto;
+        input {
+          outline: 0;
+          border: 0;
+          padding: 0.5em 0em 0.5em 1.5em;
+          border-top-left-radius: 10px;
+          border-bottom-left-radius: 10px;
+          width: 100%;
+          height: 100%;
+        }
+      }
+      button {
+        border: 0;
+        outline: 0;
+        background-color: $blue;
+        color: $white;
+        border-top-right-radius: 10px;
+        border-bottom-right-radius: 10px;
+      }
+    }
+  }
 }
