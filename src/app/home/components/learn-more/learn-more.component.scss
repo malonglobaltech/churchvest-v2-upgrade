@@ -3,7 +3,7 @@
   background-color: $dark-purple;
   color: $grey;
   font-family: "Roboto", sans-serif;
-  font-size: 1.4rem;
+  font-size: 18px;
   line-height: 1.8;
   padding: 5em 0;
   
@@ -26,6 +26,7 @@
         padding: 2em 1em;
         width: 46%;
         line-height: 2;
+        min-height: 200px;
         &:first-child {
             margin-left: 2em;
         }
@@ -39,6 +40,7 @@
     @media screen and (max-width:768px) {
         display: block;
         .icon-wrapper {
+          min-width: 400px;
             margin: 0.6em auto;
             &:first-child {
                 margin: 0.6em auto;
@@ -50,7 +52,6 @@
   .text-content-wrap {
     h2 {
         line-height: 1.6;
-        font-size: 2rem;
     }
 
     button {
