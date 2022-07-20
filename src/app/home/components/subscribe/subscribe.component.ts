@@ -32,7 +32,8 @@ export class SubscribeComponent implements OnInit {
       .subscribe(
         (res) => {
           const { message } = res;
-          this.toastr.success(message, 'Message')
+          this.toastr.success(message, 'Message');
+          this.subscribeForm.reset();
         },
         (error) => {
           this.toastr.error(error, 'Message')

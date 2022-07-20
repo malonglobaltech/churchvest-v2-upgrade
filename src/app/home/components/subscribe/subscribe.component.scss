@@ -2,6 +2,7 @@
 .subscribe {
   background-color: $dark-purple;
   font-family: "Roboto", sans-serif;
+  font-size: 18px;
   padding: 2em 0;
   
   .section-wrapper {
@@ -21,12 +22,11 @@
 
     h2 {
       color: $dark-grey;
-      font-size: 220%;
+      // font-size: 220%;
       margin-bottom: 1em;
     }
     p {
       color: $grey;
-      font-size: 120%;
     }
 
     .form-container {
