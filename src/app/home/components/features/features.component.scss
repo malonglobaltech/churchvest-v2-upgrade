@@ -1,7 +1,7 @@
 @import "src/scss/_vars.scss";
 .features {
     font-family: "Roboto", sans-serif;
-    font-size: 1.4rem;
+    font-size: 18px;
     text-align: center;
     padding: 4em 0;
 
@@ -19,10 +19,18 @@
 
     .features-details {
 
+
         button {
             &:hover {
                 background-color: $dark-purple;
             }
+        }
+        .mat-icon {
+            transform: scale(1.8)
+        }
+        img {
+            width: 30px;
+            height: 30px;
         }
     }
 }
