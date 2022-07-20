@@ -1,17 +1,30 @@
 @import "src/scss/_vars.scss";
 .home {
     font-family: "Roboto", san-serif;
+  
+
     .banner {
         background: #ebecff;
         padding: 5em 0;
-        height: 100vh;
+        height: 700px;
         overflow: hidden;
+
+        .section-wrapper {
+            width: 100%;
+            padding: 0 5%;
+            margin: auto;
+            @media screen and (min-width: 1440px) {
+            max-width: 1420px;
+            }
+        } 
+        
         .wrap-banner {
             display: grid;
-            grid-template-columns: 3fr 5fr;
+            grid-template-columns: 1fr 1fr;
             gap: 2em;
             // align-items: center;
             .banner-left {
+                max-width: 550px;
                 h1{
                     margin-top: 7rem;
                     font-size: 48px;
@@ -49,12 +62,10 @@
                 }
             }
             .banner-right {
+                text-align: right;
+                margin-right: 2em;
+
                 .wrap-images {
-                    display: flex;
-                    max-width: 650px;
-                    margin: 1em auto;
-                    gap: 0.2em;
-                    align-self: center;
 
                     img {
                         text-align: right;
@@ -67,6 +78,7 @@
                         &:last-child {
                             transition: all .8s ease-in-out;
                             margin-top: 9rem;
+                            margin-left: 2%;
                             box-shadow: 15px 15px 0 0 rgb(163 172 191 / 20%);
                         }
                         @media screen and (min-width: 770px) and (max-width: 990px) {
@@ -78,6 +90,7 @@
                     }
                     @media screen and (max-width: 768px) {
                         display: block;
+                        text-align: center;
                     }
                 }
             }
