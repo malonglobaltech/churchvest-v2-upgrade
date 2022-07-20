@@ -6,10 +6,15 @@
   font-size: 1.4rem;
   line-height: 1.8;
   padding: 5em 0;
-
-//   .container {
-
-//   }
+  
+  .section-wrapper {
+    width: 100%;
+    padding: 0 5%;
+    margin: auto;
+    @media screen and (min-width: 1440px) {
+      max-width: 1420px;
+    }
+  }
 
   .icon-content-wrap {
     display: flex;

@@ -5,6 +5,15 @@
   padding: 0.5em 0;
   position: relative;
 
+  .section-wrapper {
+    width: 100%;
+    padding: 0 5%;
+    margin: auto;
+    @media screen and (min-width: 1440px) {
+      max-width: 1420px;
+    }
+  }
+
   .header-dropdown {
     display: none;
     background-color: white;
@@ -58,7 +67,7 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 1em;
+      // gap: 1em;
 
       .links-column {
         width: 90%;
@@ -73,8 +82,10 @@
 
       .icon-column {
         display: block;
-        mat-icon {
-          font-size: 2.5rem;
+        .mat-icon {
+          // font-size: 2.5rem;
+          transform: scale(1.5);
+          vertical-align: middle;
           cursor: pointer;
         }
         @media screen and (min-width: 770px) {

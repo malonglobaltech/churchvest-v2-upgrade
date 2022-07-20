@@ -5,7 +5,14 @@
     text-align: center;
     padding: 4em 0;
 
-    .container {}
+    .section-wrapper {
+        width: 100%;
+        padding: 0 5%;
+        margin: auto;
+        @media screen and (min-width: 1440px) {
+        max-width: 1420px;
+        }
+    }
 
     h2 {
         font-size: 2rem;
