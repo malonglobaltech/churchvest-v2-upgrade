@@ -6,7 +6,7 @@
   font-size: 18px;
   line-height: 1.8;
   padding: 5em 0;
-  
+
   .section-wrapper {
     width: 100%;
     padding: 0 5%;
@@ -22,48 +22,48 @@
     gap: 1em;
     justify-content: center;
     .icon-wrapper {
-        background-color: $dark-blue;
-        padding: 2em 1em;
-        width: 46%;
-        line-height: 2;
-        min-height: 200px;
-        &:first-child {
-            margin-left: 2em;
-        }
-        img {
-            width: 80px;
-        }
-        .mat-icon {
-            transform: scale(3);
-        }
+      background-color: $dark-blue;
+      padding: 2em 1em;
+      width: 46%;
+      line-height: 2;
+      min-height: 200px;
+      &:first-child {
+        margin-left: 2em;
+      }
+      img {
+        width: 80px;
+      }
+      .mat-icon {
+        transform: scale(3);
+      }
     }
-    @media screen and (max-width:768px) {
-        display: block;
-        .icon-wrapper {
-          min-width: 400px;
-            margin: 0.6em auto;
-            &:first-child {
-                margin: 0.6em auto;
-            }
+    @media screen and (max-width: 768px) {
+      display: block;
+      .icon-wrapper {
+        width: auto;
+        margin: 0.6em auto;
+        &:first-child {
+          margin: 0.6em auto;
         }
+      }
     }
   }
 
   .text-content-wrap {
     h2 {
-        line-height: 1.6;
+      line-height: 1.6;
     }
 
     button {
-        background-color: transparent;
-        border: 2px solid white;
-        color: $grey;
-        border-radius: 5px;
-        transition: all .3s ease-in-out;
-        &:hover {
-            background-color: white;
-            color: $dark-purple;
-        }
+      background-color: transparent;
+      border: 2px solid white;
+      color: $grey;
+      border-radius: 5px;
+      transition: all 0.3s ease-in-out;
+      &:hover {
+        background-color: white;
+        color: $dark-purple;
+      }
     }
   }
 }
