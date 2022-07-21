@@ -1,18 +1,25 @@
 @import "src/scss/_vars.scss";
 .footer {
   font-family: "Roboto", san-serif;
-  padding: 1em 0;
+  padding: 3em 0;
+  font-size: 18px;
+  
+  .section-wrapper {
+    width: 100%;
+    padding: 0 5%;
+    margin: auto;
+    @media screen and (min-width: 1440px) {
+      max-width: 1420px;
+    }
+  }
+  
   .column {
     margin-top: 1em;
     h3 {
-      font-weight: bold;
       margin-bottom: 1em;
-      font-size: 18px;
     }
     p {
       line-height: 2;
-      font-size: 1.2rem;
-      font-size: 12px;
     }
     ul {
       li {
@@ -21,8 +28,7 @@
           display: block !important;
           font-size: 1.2rem;
           margin: 12px 0;
-          transform: 0.3s all ease-in;
-          font-size: 14px;
+          transform: 0.3s all ease-in-out;
           &:hover {
             color: $blue;
           }

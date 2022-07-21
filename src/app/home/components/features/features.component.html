@@ -1,20 +1,20 @@
 <div class="features"
   data-aos="fade-up"
   data-aos-duration="3000">
-    <div class="container">
+    <div class="section-wrapper">
         <div class="h2-bg">
-            <!-- <img src="assets/img/png/features-bg.png" alt=""> -->
             <h2 class="mt-4">Features of ChurchVest</h2>
         </div>
-        <p class="des-title pt-3">
+        <h6 class="des-title pt-3">
             With just one click you can get started In enjoying the features that Church Vest offers.
-        </p>
+        </h6>
         <div *ngIf="!allFeatures" class="features-details mt-5">
             <div class="details-wrap row mb-5">
                 <div class="col-md-4" *ngFor="let item of viewSomeFeature">
                     <div class="detail-content text-center mt-3">
                         <i [class]="item.icon" aria-hidden="true"></i>
-                        <h3>{{ item.title }}</h3>
+                        <mat-icon *ngIf="item.icon">{{ item.icon }}</mat-icon>
+                        <h3 class="mt-2">{{ item.title }}</h3>
                         <p> {{ item.description }}</p>
                     </div>
                 </div>
@@ -28,10 +28,10 @@
         <div *ngIf="allFeatures" class="features-details mt-5">
             <div class="details-wrap row mb-5">
                 <div class="col-md-4" *ngFor="let item of allFeaturesList">
-                    <div class="detail-content text-center mt-3">
-                        <i *ngIf="item.icon" [class]="item.icon" aria-hidden="true"></i>
+                    <div class="detail-content text-center mt-5">
+                        <mat-icon *ngIf="item.icon">{{ item.icon }}</mat-icon>
                         <img *ngIf="item.image" [src]="item.image" alt="">
-                        <h3>{{ item.title }}</h3>
+                        <h3 class="mt-2">{{ item.title }}</h3>
                         <p> {{ item.description }}</p>
                     </div>
                 </div>

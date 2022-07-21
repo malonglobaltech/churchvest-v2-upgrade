@@ -1,5 +1,5 @@
 <header class="header">
-    <div class="container header-content">
+    <div class="section-wrapper header-content">
         <div class="wrap-header">
             <div class="logo-column">
                 <a routerLink="/">
@@ -10,7 +10,7 @@
                 </a>
             </div>
             <div class="links-column">
-                <div class="">
+                <div class="d-none d-md-flex">
                     <div class="links">
                         <ul class="list-unstyled">
                             <li>
@@ -26,7 +26,7 @@
                     </div>
                 </div>
                 <div class="">
-                    <div class="actions">
+                    <div class="actions d-none d-md-block">
                         <button 
                           class="btn-ghost mr-4"
                           routerLink="/onboarding/login"
@@ -37,18 +37,21 @@
                           routerLink="/onboarding/register"
                         >Get Started</button>
                     </div>
+            <!-- <div class="menu-box d-block d-md-none">
+            <mat-icon (click)="toggleMenu()">menu</mat-icon>
+            </div> -->
                 </div>
             </div>
-            <div class="icon-column">
-                <mat-icon (click)="toggleMenu()">menu</mat-icon>
+            <div class="icon-column d-md-none animate animate__zoomIn">
+                <mat-icon (click)="toggleMenu()">{{ showMenu ? 'close' : 'menu' }}</mat-icon>                
             </div>
         </div>
     </div>
         <div *ngIf="showMenu" 
           class="header-dropdown"
-          data-aos="fade-down"
+          data-aos="fade-up"
         >
-            <div class="container">
+            <div class="section-wrapper">
                 <nav class="dropdown-links">
                     <a href="/#feature">Features</a>
                     <a href="/#tutorial">How it works</a>

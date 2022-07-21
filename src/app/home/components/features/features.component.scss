@@ -1,11 +1,18 @@
 @import "src/scss/_vars.scss";
 .features {
     font-family: "Roboto", sans-serif;
-    font-size: 1.4rem;
+    font-size: 18px;
     text-align: center;
     padding: 4em 0;
 
-    .container {}
+    .section-wrapper {
+        width: 100%;
+        padding: 0 5%;
+        margin: auto;
+        @media screen and (min-width: 1440px) {
+        max-width: 1420px;
+        }
+    }
 
     h2 {
         font-size: 2rem;
@@ -19,10 +26,19 @@
 
     .features-details {
 
+
         button {
             &:hover {
                 background-color: $dark-purple;
             }
+        }
+        .mat-icon {
+            transform: scale(1.8);
+            color: $dark-purple;
+        }
+        img {
+            width: 30px;
+            height: 30px;
         }
     }
 }

@@ -5,6 +5,15 @@
   padding: 0.5em 0;
   position: relative;
 
+  .section-wrapper {
+    width: 100%;
+    padding: 0 5%;
+    margin: auto;
+    @media screen and (min-width: 1440px) {
+      max-width: 1420px;
+    }
+  }
+
   .header-dropdown {
     display: none;
     background-color: white;
@@ -57,7 +66,6 @@
     .wrap-header {
       display: flex;
       align-items: center;
-      justify-content: space-between;
       gap: 1em;
 
       .links-column {
@@ -66,26 +74,21 @@
         align-items: center;
         justify-content: space-between;
 
-        @media screen and (max-width: 769px) {
-          display: none;
-        }
+        
+
       }
 
-      .icon-column {
-        display: block;
-        mat-icon {
-          font-size: 2.5rem;
-          cursor: pointer;
-        }
-        @media screen and (min-width: 770px) {
-          display: none;
-        }
-      }
     }
   }
   img {
-    width: 40px;
+    width: 30px;
     height: auto;
+  }
+  
+  .mat-icon {
+    transform: scale(1.5);
+    vertical-align: middle;
+    cursor: pointer;
   }
 
   ul {

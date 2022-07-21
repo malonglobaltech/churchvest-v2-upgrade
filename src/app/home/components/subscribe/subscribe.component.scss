@@ -2,7 +2,17 @@
 .subscribe {
   background-color: $dark-purple;
   font-family: "Roboto", sans-serif;
+  font-size: 18px;
   padding: 2em 0;
+  
+  .section-wrapper {
+    width: 100%;
+    padding: 0 5%;
+    margin: auto;
+    @media screen and (min-width: 1440px) {
+      max-width: 1420px;
+    }
+  }
 
   .content {
     max-width: 600px;
@@ -12,12 +22,11 @@
 
     h2 {
       color: $dark-grey;
-      font-size: 220%;
+      // font-size: 220%;
       margin-bottom: 1em;
     }
     p {
       color: $grey;
-      font-size: 120%;
     }
 
     .form-container {
