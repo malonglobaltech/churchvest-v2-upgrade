@@ -32,8 +32,7 @@ export class HeaderComponent implements OnInit {
 
   ngOnInit(): void {
     this.paystack_key = environment.paystack;
-    this.userData = this.authService.getUserData();
-    this.profileImg = this.userData.memberships[0]?.profile;
+    this.getUserData();
     this.getSmsBalance();
   }
   amountChange(event: any) {
@@ -49,7 +48,20 @@ export class HeaderComponent implements OnInit {
       this._unit = null;
     }
   }
-
+  getUserData() {
+    this._loading_ = true;
+    this.authService.getLoggedInUser().subscribe(
+      (res) => {
+        this._loading_ = false;
+        const { data } = res;
+        this.userData = data;
+        this.profileImg = this.userData.profile;
+      },
+      (msg) => {
+        this._loading_ = false;
+      }
+    );
+  }
   calcUnit(amt: number) {
     if (amt !== null && amt >= 500) {
       this._isValid = true;

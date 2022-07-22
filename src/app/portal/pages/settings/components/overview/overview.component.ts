@@ -41,6 +41,9 @@ export class OverviewComponent implements OnInit {
   profileImg: any;
   fullname: any;
   email: any;
+  churchName: string;
+  churchLocation: string;
+  churchAddress: string;
   isEditing: boolean = false;
   isEditing_: boolean = false;
   matcher = new MyErrorStateMatcher();
@@ -136,6 +139,36 @@ export class OverviewComponent implements OnInit {
         this.isBusy = false;
         this.isEditing = !this.isEditing;
         this.getUserData();
+      },
+      (error) => {
+        this.isBusy = false;
+        this.toastr.error(error, 'Message', {
+          timeOut: 3000,
+        });
+      },
+      () => {
+        this.isBusy = false;
+      }
+    );
+  }
+  onUpdateChurch() {
+    this.isBusy = true;
+    let payload = {
+      name: this.churchData.name,
+      location: this.churchData.location,
+      address: this.churchData.address,
+    };
+
+    if (payload == null) {
+      this.isBusy = false;
+      return;
+    }
+
+    this.authService.updateChurch(payload).subscribe(
+      (res) => {
+        this.toastr.success('Church updated sucessfully', 'Message');
+        this.isBusy = false;
+        this.isEditing_ = !this.isEditing_;
       },
       (error) => {
         this.isBusy = false;

@@ -106,4 +106,15 @@ export class AuthService {
         catchError(handleError)
       );
   }
+  updateChurch(model: any): Observable<any> {
+    return this.http
+      .post<any>(
+        ` ${environment.managementbaseUrl}/${this.getChurchSlug()}/update`,
+        model
+      )
+      .pipe(
+        map((status) => status),
+        catchError(handleError)
+      );
+  }
 }
