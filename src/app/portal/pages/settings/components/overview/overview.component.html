@@ -3,126 +3,150 @@
     <mat-tab-group animationDuration="0.5ms" class="py-4">
       <mat-tab label="Profile Settings">
         <section class="profile py-3 px-2">
-          <div class="d-flex align-items-center justify-content-between">
-            <div class="avater d-flex align-items-center mb-4">
-              <input
-                type="file"
-                name="file"
-                hidden=""
-                (change)="
-                  imgUp.changeImageUploadListener($event, uploadedAvatar)
-                "
-                #uploadAvatar
-              />
-              <div
-                class="image"
-                [ngStyle]="{
-                  background: profileImg
-                    ? 'url(' + profileImg + ')'
-                    : 'url(' + 'assets/img/png/avatar.png' + ')'
-                }"
-                #uploadedAvatar
+          <ng-container *ngIf="!this.userData">
+            <app-loading-roller></app-loading-roller>
+          </ng-container>
+          <ng-container *ngIf="this.userData">
+            <div class="d-flex align-items-center justify-content-between">
+              <div class="avater d-flex align-items-center mb-4">
+                <input
+                  type="file"
+                  name="file"
+                  hidden=""
+                  (change)="
+                    imgUp.changeImageUploadListener($event, uploadedAvatar)
+                  "
+                  #uploadAvatar
+                />
+                <div
+                  class="image"
+                  [ngStyle]="{
+                    background: profileImg
+                      ? 'url(' + profileImg + ')'
+                      : 'url(' + 'assets/img/png/avatar.png' + ')'
+                  }"
+                  #uploadedAvatar
+                >
+                  <span>
+                    <mat-icon (click)="imgUp.addAvatar(uploadAvatar)"
+                      >edit</mat-icon
+                    >
+                  </span>
+                </div>
+                <div>
+                  <p>Profile Photo <span>Click image to change it</span></p>
+                </div>
+              </div>
+              <button
+                type="button"
+                mat-stroked-button
+                (click)="imgUp.updateProfileImg()"
               >
-                <span>
-                  <mat-icon (click)="imgUp.addAvatar(uploadAvatar)"
-                    >edit</mat-icon
-                  >
-                </span>
-              </div>
-              <div>
-                <p>Profile Photo <span>Click image to change it</span></p>
-              </div>
-            </div>
-            <button
-              type="button"
-              mat-stroked-button
-              (click)="imgUp.updateProfileImg()"
-            >
-              <mat-icon class="me-2">account_circle</mat-icon>
-              Update Profile <mat-spinner *ngIf="imgUp.isBusy"></mat-spinner>
-            </button>
-          </div>
-          <div class="section">
-            <div class="d-flex justify-content-end">
-              <button mat-mini-fab color="primary" (click)="toggleEdit()">
-                <mat-icon>edit</mat-icon>
+                <mat-icon class="me-2">account_circle</mat-icon>
+                Update Profile <mat-spinner *ngIf="imgUp.isBusy"></mat-spinner>
               </button>
             </div>
-            <div class="row" *ngIf="!isEditing">
-              <div class="col-lg-4">
-                <p>
-                  Full Name
-                  <span
-                    >{{ userData.first_name }} {{ userData.last_name }}</span
-                  >
-                </p>
-              </div>
-              <div class="col-lg-8">
-                <div class="d-flex">
-                  <p>
-                    Email address <span>{{ userData.email }}</span>
-                  </p>
-                  <p>
-                    Phone number <span>{{ userData.phone }}1</span>
-                  </p>
-                </div>
-              </div>
-            </div>
-            <ng-container *ngIf="isEditing">
-              <div class="row">
-                <div class="col-lg-6">
-                  <div class="input">
-                    <label>Full name</label>
-                    <input
-                      type="text"
-                      name="fullname"
-                      [(ngModel)]="fullname"
-                      placeholder="Full name"
-                    />
-                  </div>
-                </div>
-                <div class="col-lg-6">
-                  <div class="input">
-                    <label>Email</label>
-                    <input
-                      type="email"
-                      name="email"
-                      placeholder="Email address"
-                      [(ngModel)]="email"
-                    />
-                  </div>
-                </div>
-              </div>
-              <div class="d-flex mt-2">
-                <button type="button" mat-flat-button (click)="onUpdate()">
-                  Update <mat-spinner *ngIf="isBusy"></mat-spinner>
+            <div class="section">
+              <div class="d-flex justify-content-end">
+                <button
+                  mat-mini-fab
+                  color="primary"
+                  (click)="toggleEdit('profile')"
+                >
+                  <mat-icon>edit</mat-icon>
                 </button>
               </div>
-            </ng-container>
-          </div>
+              <div class="row" *ngIf="!isEditing">
+                <div class="col-lg-4">
+                  <p>
+                    Full Name
+                    <span
+                      >{{ userData.user.first_name }}
+                      {{ userData.user.last_name }}</span
+                    >
+                  </p>
+                </div>
+                <div class="col-lg-8">
+                  <div class="d-flex">
+                    <p>
+                      Email address <span>{{ userData.user.email }}</span>
+                    </p>
+                    <p>
+                      Phone number <span>{{ userData.user?.phone }}1</span>
+                    </p>
+                  </div>
+                </div>
+              </div>
+              <ng-container *ngIf="isEditing">
+                <div class="row">
+                  <div class="col-lg-6">
+                    <div class="input">
+                      <label>Full name</label>
+                      <input
+                        type="text"
+                        name="fullname"
+                        [(ngModel)]="fullname"
+                        placeholder="Full name"
+                      />
+                    </div>
+                  </div>
+                  <div class="col-lg-6">
+                    <div class="input">
+                      <label>Email</label>
+                      <input
+                        type="email"
+                        name="email"
+                        placeholder="Email address"
+                        [(ngModel)]="email"
+                      />
+                    </div>
+                  </div>
+                </div>
+                <div class="d-flex mt-2">
+                  <button type="button" mat-flat-button (click)="onUpdate()">
+                    Update <mat-spinner *ngIf="isBusy"></mat-spinner>
+                  </button>
+                </div>
+              </ng-container>
+            </div>
+          </ng-container>
         </section>
       </mat-tab>
       <mat-tab label="Church Settings">
         <section class="profile py-3 px-2">
-          <div class="section">
-            <div class="row">
-              <div class="col-lg-4">
-                <p>
-                  Church Name <span>{{ churchData.name }}</span>
-                </p>
-              </div>
-              <div class="col-lg-8">
-                <div class="d-flex">
+          <ng-container *ngIf="!this.userData">
+            <app-loading-roller></app-loading-roller>
+          </ng-container>
+          <ng-container *ngIf="this.userData">
+            <div class="d-flex justify-content-end mb-2">
+              <button
+                mat-mini-fab
+                color="primary"
+                (click)="toggleEdit('church')"
+              >
+                <mat-icon>edit</mat-icon>
+              </button>
+            </div>
+            <div class="section">
+              <div class="row">
+                <div class="col-lg-4">
                   <p>
-                    Church Location <span>{{ churchData.location }}</span>
+                    Church Name <span>{{ churchData.name }}</span>
                   </p>
-                  <p>
-                    Church Address <span>{{ churchData.address }}</span>
-                  </p>
+                </div>
+                <div class="col-lg-8">
+                  <div class="d-flex">
+                    <p>
+                      Church Location <span>{{ churchData.location }}</span>
+                    </p>
+                    <p>
+                      Church Address <span>{{ churchData.address }}</span>
+                    </p>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
+          </ng-container>
         </section>
       </mat-tab>
       <mat-tab label="Change Password">

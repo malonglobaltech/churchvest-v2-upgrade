@@ -42,12 +42,14 @@ export class OverviewComponent implements OnInit {
   fullname: any;
   email: any;
   isEditing: boolean = false;
+  isEditing_: boolean = false;
   matcher = new MyErrorStateMatcher();
   upperCaseChar: any;
   numberChar: any;
   specialChar: any;
   validatePassword: any;
   recordFound: boolean = false;
+  _loading_: boolean = false;
   _validateCaps = validateCapital;
   _hasNumber = hasNumber;
   _checkForSpecialChars = checkForSpecialChars;
@@ -69,11 +71,8 @@ export class OverviewComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.userData = this.authService.getUserData();
-    this.fullname = `${this.userData.first_name} ${this.userData.last_name}`;
-    this.email = `${this.userData.email}`;
+    this.getUserData();
     this.churchData = JSON.parse(localStorage.getItem('user_church'));
-    this.profileImg = this.userData.memberships[0]?.profile;
   }
   get passwordValue(): any {
     return this.passwordForm.controls['password'].value;
@@ -95,8 +94,28 @@ export class OverviewComponent implements OnInit {
     this.numberChar = this._hasNumber(password);
     this.specialChar = this._checkForSpecialChars(password);
   }
-  toggleEdit() {
-    this.isEditing = !this.isEditing;
+  getUserData() {
+    this._loading_ = true;
+    this.authService.getLoggedInUser().subscribe(
+      (res) => {
+        this._loading_ = false;
+        const { data } = res;
+        this.userData = data;
+        this.fullname = `${this.userData.user.first_name} ${this.userData.user.last_name}`;
+        this.email = `${this.userData.user.email}`;
+        this.profileImg = this.userData.profile;
+      },
+      (msg) => {
+        this._loading_ = false;
+      }
+    );
+  }
+  toggleEdit(query?: string) {
+    if (query == 'profile') {
+      this.isEditing = !this.isEditing;
+    } else {
+      this.isEditing_ = !this.isEditing_;
+    }
   }
   onUpdate() {
     this.isBusy = true;
@@ -116,6 +135,7 @@ export class OverviewComponent implements OnInit {
         this.toastr.success('Profile updated sucessfully', 'Message');
         this.isBusy = false;
         this.isEditing = !this.isEditing;
+        this.getUserData();
       },
       (error) => {
         this.isBusy = false;
@@ -200,6 +220,9 @@ export class ImageuploadComponent implements OnInit {
   @Input() setImageFile: any;
   fileImage: any;
   isBusy: boolean = false;
+  _loading_: boolean = false;
+  userData: any;
+  profileImg: any;
   constructor(
     private toastr: ToastrService,
     private authService: AuthService,
@@ -246,20 +269,40 @@ export class ImageuploadComponent implements OnInit {
 
     this.authService.updateProfile(formData).subscribe(
       ({ message, data }) => {
+        this.fileImage == null;
         this.toastr.success(message, 'Message');
         this.isBusy = false;
+        this.getUserData();
       },
       (error) => {
         this.isBusy = false;
+        this.fileImage == null;
         this.toastr.error(error, 'Message', {
           timeOut: 3000,
         });
       },
       () => {
         this.isBusy = false;
+        this.fileImage == null;
       }
     );
   }
+  getUserData() {
+    this._loading_ = true;
+    this.authService.getLoggedInUser().subscribe(
+      (res) => {
+        this._loading_ = false;
+        const { data } = res;
+        this.userData = data;
+
+        this.profileImg = this.userData.profile;
+      },
+      (msg) => {
+        this._loading_ = false;
+      }
+    );
+  }
+
   addAvatar(ref) {
     ref.click();
   }

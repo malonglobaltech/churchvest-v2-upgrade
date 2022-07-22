@@ -20,6 +20,11 @@ export class AuthService {
       return user;
     }
   }
+  getLoggedInUser() {
+    return this.http
+      .get<any>(environment.managementbaseUrl + `/${this.getChurchSlug()}/user`)
+      .pipe(catchError(handleError));
+  }
   getChurchSlug() {
     let church: any = JSON.parse(localStorage.getItem('user_church'));
     return church?.slug;
