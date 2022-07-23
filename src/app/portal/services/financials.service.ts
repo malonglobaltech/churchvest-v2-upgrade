@@ -90,14 +90,13 @@ export class FinancialsService {
   }
   fetchTransactionsByAccount(
     accId?: string,
-    accType?: string,
-    page?: number
+    accType?: string
   ): Observable<any> {
     return this.http
       .get<any>(
         `${
           environment.managementbaseUrl
-        }/${this.authService.getChurchSlug()}/transactions?account_id=${accId}&account_type=${accType} ?page=${page}`
+        }/${this.authService.getChurchSlug()}/transactions?account_id=${accId}&account_type=${accType}`
       )
       .pipe(catchError(handleError));
   }

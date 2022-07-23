@@ -1,120 +1,128 @@
 @import "src/scss/_vars.scss";
 .home {
-    font-family: "Roboto", san-serif;
-    .banner {
-        background: #ebecff;
-        padding: 5em 0;
-        height: 100vh;
-        overflow: hidden;
-        .wrap-banner {
-            display: grid;
-            grid-template-columns: 3fr 5fr;
-            gap: 2em;
-            // align-items: center;
-            .banner-left {
-                h1{
-                    margin-top: 7rem;
-                    font-size: 48px;
-                }
-                p.desc {
-                    color: #010326;
-                    font-size: 18px;
-                    line-height: 2;
-                }
-                button {
-                    outline: none;
-                    padding:  1em;
-                    border: none;
-                    border-radius: 5px;
-                }
-                .btn-full {
-                    margin-right: 1em;
-                    background-color: $blue;
-                    color: #ffffff;
-                    border: 1px solid $blue;
-                    &:hover {
-                    background-color: #ffffff;
-                    color: $blue;
-                    }
-                    border: 1px solid $blue;
+  font-family: "Roboto", san-serif;
 
-                }
-                .btn-ghost {
-                    background-color: #ffffff;
-                    color: $blue;
-                    &:hover {
-                    background-color: $blue;
-                    color: #ffffff;
-                    }
-                }
-            }
-            .banner-right {
-                .wrap-images {
-                    display: flex;
-                    max-width: 650px;
-                    margin: 1em auto;
-                    gap: 0.2em;
-                    align-self: center;
+  .banner {
+    background: #ebecff;
+    padding: 5em 0;
+    height: 700px;
+    overflow: hidden;
 
-                    img {
-                        text-align: right;
-                        height: 300px;
-                        &:first-child {
-                            transition: all .8s ease-in-out;
-                            margin-top: 5rem;
-                            box-shadow: -15px 15px 0 0 rgb(163 172 191 / 20%);
-                        }
-                        &:last-child {
-                            transition: all .8s ease-in-out;
-                            margin-top: 9rem;
-                            box-shadow: 15px 15px 0 0 rgb(163 172 191 / 20%);
-                        }
-                        @media screen and (min-width: 770px) and (max-width: 990px) {
-                            height: 200px;
-                        }
-                        @media screen and (max-width: 768px) {
-                            height: 150px;
-                        }
-                    }
-                    @media screen and (max-width: 768px) {
-                        display: block;
-                    }
-                }
-            }
-            @media screen and (max-width: 768px) {
-                display: block;
-                min-height: 100vh;
-                height: 100%;
-                .banner-right {
-                    img {
-                        height: 150px;
-                    }
-                }
-            }
-        }
-        &:hover {
-            .wrap-banner {
-                .banner-right {
-                    .wrap-images {
-                    img {
-                        &:first-child {
-                            margin-top: 9rem;
-                            box-shadow: -15px 15px 0 0 rgb(163 172 191 / 20%);
-                        }
-                        &:last-child {
-                            margin-top: 5rem;
-                            box-shadow: 15px 15px 0 0 rgb(163 172 191 / 20%);
-                        }
-                    }
-                    }
-                }
-            }
-        }
-            @media screen and (max-width: 768px) {
-                // display: block;
-                // min-height: 100vh;
-                height: 100%;
-            }
-        
+    .section-wrapper {
+      width: 100%;
+      padding: 0 5%;
+      margin: auto;
+      @media screen and (min-width: 1440px) {
+        max-width: 1420px;
+      }
     }
+
+    .wrap-banner {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2em;
+      .banner-left {
+        max-width: 550px;
+        h1 {
+          margin-top: 7rem;
+          font-size: 48px;
+        }
+        p.desc {
+          color: #010326;
+          font-size: 18px;
+          line-height: 2;
+        }
+        button {
+          outline: none;
+          padding: 1em;
+          border: none;
+          border-radius: 5px;
+        }
+        .btn-full {
+          margin-right: 1em;
+          background-color: $blue;
+          color: #ffffff;
+          border: 1px solid $blue;
+          &:hover {
+            background-color: #ffffff;
+            color: $blue;
+          }
+          border: 1px solid $blue;
+        }
+        .btn-ghost {
+          background-color: #ffffff;
+          color: $blue;
+          &:hover {
+            background-color: $blue;
+            color: #ffffff;
+          }
+        }
+      }
+      .banner-right {
+        text-align: right;
+        margin-right: 2em;
+        .wrap-images {
+          img {
+            text-align: right;
+            height: 300px;
+            &:first-child {
+              transition: all 0.8s ease-in-out;
+              margin-top: 5rem;
+              box-shadow: -15px 15px 0 0 rgb(163 172 191 / 20%);
+            }
+            &:last-child {
+              transition: all 0.8s ease-in-out;
+              margin-top: 9rem;
+              margin-left: 2%;
+              box-shadow: 15px 15px 0 0 rgb(163 172 191 / 20%);
+            }
+            @media screen and (min-width: 770px) and (max-width: 990px) {
+              height: 200px;
+            }
+            @media screen and (max-width: 768px) {
+              height: 150px;
+            }
+          }
+          @media screen and (max-width: 768px) {
+            display: block;
+            text-align: center;
+          }
+        }
+      }
+      @media screen and (max-width: 768px) {
+        display: block;
+        min-height: 100vh;
+        height: 100%;
+        .banner-right {
+          img {
+            height: 150px;
+          }
+        }
+      }
+    }
+    &:hover {
+      .wrap-banner {
+        .banner-right {
+          .wrap-images {
+            img {
+              &:first-child {
+                margin-top: 9rem;
+                box-shadow: -15px 15px 0 0 rgb(163 172 191 / 20%);
+              }
+              &:last-child {
+                margin-top: 5rem;
+                box-shadow: 15px 15px 0 0 rgb(163 172 191 / 20%);
+              }
+            }
+          }
+        }
+      }
+    }
+    @media screen and (max-width: 768px) {
+      .wrap-banner .banner-left h1 {
+        margin-top: 0rem;
+      }
+      height: 100%;
+    }
+  }
 }

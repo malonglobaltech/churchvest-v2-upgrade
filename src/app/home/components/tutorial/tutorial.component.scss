@@ -3,7 +3,15 @@
     background-color: $dark-grey;
     text-align: center;
     padding: 3em 0;
-    // font-size: 1.2rem;
+  
+  .section-wrapper {
+    width: 100%;
+    padding: 0 5%;
+    margin: auto;
+    @media screen and (min-width: 1440px) {
+      max-width: 1420px;
+    }
+  }
 
     h2 {        
         font-size: 220%;

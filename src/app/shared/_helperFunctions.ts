@@ -94,7 +94,7 @@ export const setDateQuery = (query: string) => {
   }
   return date;
 };
-export const checkForBirthdayMonth = (val) => {
+export const checkForEventMonth = (val) => {
   const parts = val.split(/[- :]/);
   let month = parts[1];
   let day = parts[2];

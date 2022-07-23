@@ -171,7 +171,6 @@ export class SidenavComponent implements OnInit {
         {
           title: 'Expenses',
           url: 'expenses',
-          disabled: true,
         },
         {
           title: 'Reconciliation',

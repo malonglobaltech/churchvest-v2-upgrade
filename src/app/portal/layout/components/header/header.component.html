@@ -1,7 +1,7 @@
 <header>
   <div class="d-flex justify-content-between align-items-center">
     <div class="title-sm">
-      Hello, {{ userData.first_name }} 👋
+      Hello, {{ userData?.user?.first_name }} 👋
       <label class="f12 txt-grey"
         >Today is <span>{{ currentDate | date: "fullDate" }}</span></label
       >
@@ -31,7 +31,8 @@
       </div>
       <div class="d-block">
         <label class="profile-name" *ngIf="userData"
-          >{{ userData.first_name }} {{ userData.last_name }}</label
+          >{{ userData?.user?.first_name }}
+          {{ userData?.user?.last_name }}</label
         >
       </div>
       <div class="dropdown cursor" [matMenuTriggerFor]="menu">

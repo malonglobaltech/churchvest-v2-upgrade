@@ -13,7 +13,12 @@ import { ToastrService } from 'ngx-toastr';
 import { ExportServiceService } from 'src/app/portal/services/export-service.service';
 import { FinancialsService } from 'src/app/portal/services/financials.service';
 import { GivingService } from 'src/app/portal/services/giving.service';
-import { concatColumnString, printElement } from 'src/app/shared';
+import {
+  compareObjects,
+  concatColumnString,
+  maxLengthCheck,
+  printElement,
+} from 'src/app/shared';
 
 @Component({
   selector: 'app-income',
@@ -39,12 +44,19 @@ export class IncomeComponent implements OnInit {
   currentPage = 0;
   itemDetails: any;
   payload: any[] = [];
+  bankList: any[] = [];
+  bankObj: any;
+  accountName: string = '';
   _printElement = printElement;
   _concatColumnString = concatColumnString;
+  compareFunc = compareObjects;
+  _maxLengthCheck = maxLengthCheck;
   public dataSource: MatTableDataSource<any> = new MatTableDataSource();
   public selection = new SelectionModel(true, []);
   public displayedColumns: string[];
   public addIncomeForm: FormGroup = new FormGroup({});
+  public editIncomeForm: FormGroup = new FormGroup({});
+  public newAccountForm: FormGroup = new FormGroup({});
   constructor(
     private financialService: FinancialsService,
     private exportService: ExportServiceService,
@@ -55,17 +67,26 @@ export class IncomeComponent implements OnInit {
   ) {
     this.addIncomeForm = this.fb.group({
       title: [null, Validators.required],
-      type: [null],
+      type: ['income'],
       account_id: [null, Validators.required],
+      account_type: [null],
       date: [null],
       amount: [null],
       description: [null],
+    });
+    this.newAccountForm = this.fb.group({
+      title: [null, Validators.required],
+      bank_code: [null],
+      number: [null, Validators.required],
+      bank_slug: [null, Validators.required],
+      name: new FormControl({ value: null, disabled: true }),
     });
   }
 
   ngOnInit(): void {
     this.queryAccount();
     this.getAccounts();
+    this.getBanks();
     this.displayedColumns = this.column;
   }
 
@@ -74,8 +95,12 @@ export class IncomeComponent implements OnInit {
   }
 
   column = ['title', 'type', 'account type', 'action'];
+  accountTypeList = ['financial', 'giving'];
   get incomeRawValue(): any {
     return this.addIncomeForm.getRawValue();
+  }
+  get accountFormValue(): any {
+    return this.newAccountForm.getRawValue();
   }
   isAllSelected() {
     const numSelected = this.selection.selected.length;
@@ -89,7 +114,9 @@ export class IncomeComponent implements OnInit {
     }
     this.selection.select(...this.dataSource.data);
   }
-
+  handleBankChange(evt: any) {
+    this.bankObj = evt.value;
+  }
   checkboxLabel(row?: any): string {
     if (!row) {
       return `${this.isAllSelected() ? 'deselect' : 'select'} all`;
@@ -102,7 +129,49 @@ export class IncomeComponent implements OnInit {
     this.filterValue = (event.target as HTMLInputElement).value;
     this.dataSource.filter = this.filterValue.trim().toLowerCase();
   }
+  getBanks() {
+    this.bankList = [];
+    this.givingService.fetchBanks().subscribe(
+      (res: any) => {
+        const { data } = res;
+        this.bankList = data;
+      },
+      (errors) => {
+        if (errors) {
+          this.bankList = [];
+        }
+      }
+    );
+  }
+  blurHandler() {
+    let payload: any;
+    if (this.bankObj) {
+      payload = {
+        bank_code: this.bankObj.code,
+        number: this.newAccountForm.get('number').value,
+      };
 
+      this.givingService.resolveAccount(payload).subscribe(
+        (res: any) => {
+          const { data, message } = res;
+          this.accountName = data;
+          this.newAccountForm.controls['name'].setValue(data.account_name);
+          this.toastr.info(message, 'Message', {
+            timeOut: 3000,
+          });
+        },
+        (errors) => {
+          this.toastr.error(
+            'Could not resolve account name. Check parameters or try again.',
+            'Message',
+            {
+              timeOut: 3000,
+            }
+          );
+        }
+      );
+    }
+  }
   queryAccount() {
     this._loading = true;
     this.itemList = [];
@@ -143,6 +212,38 @@ export class IncomeComponent implements OnInit {
       }
     );
   }
+  addAccount() {
+    this.isBusy = true;
+    this.newAccountForm.patchValue({
+      bank_code: this.bankObj.code,
+      bank_slug: this.bankObj.slug,
+    });
+    if (this.newAccountForm.invalid) {
+      this.isBusy = false;
+      return;
+    }
+    if (this.newAccountForm.valid) {
+      //Make api call here...
+      this.givingService.createAccount(this.accountFormValue).subscribe(
+        ({ message, data }) => {
+          this.newAccountForm.reset();
+          this.isBusy = false;
+          this.closebtn._elementRef.nativeElement.click();
+          this.getAccounts();
+        },
+        (error) => {
+          this.isBusy = false;
+          this.toastr.error(error, 'Message', {
+            timeOut: 3000,
+          });
+        },
+        () => {
+          this.isBusy = false;
+          this.newAccountForm.reset();
+        }
+      );
+    }
+  }
   onSubmit() {
     this.isBusy = true;
 
@@ -173,22 +274,69 @@ export class IncomeComponent implements OnInit {
     }
   }
 
-  // getDetails(id: any) {
-  //   this._loading_ = true;
-  //   this.memberId = id;
-  //   if (this.memberId !== undefined) {
-  //     this.givingService.fetchGiving(id).subscribe(
-  //       (res) => {
-  //         this._loading_ = false;
-  //         const { data } = res;
-  //         this.itemDetails = data;
-  //       },
-  //       (msg) => {
-  //         this._loading_ = false;
-  //       }
-  //     );
-  //   }
-  // }
+  onUpdate() {
+    this.isBusy = true;
+
+    if (this.editIncomeForm.invalid) {
+      this.isBusy = false;
+      return;
+    }
+    if (this.editIncomeForm.valid) {
+      //Make api call here...
+      this.financialService
+        .updateTransaction(
+          this.addIncomeForm.getRawValue(),
+          this.itemDetails.id
+        )
+        .subscribe(
+          ({ message, data }) => {
+            this.editIncomeForm.reset();
+            this.isBusy = false;
+            this.closebtn._elementRef.nativeElement.click();
+            this.queryAccount();
+          },
+          (error) => {
+            this.isBusy = false;
+            this.toastr.error(error, 'Message', {
+              timeOut: 3000,
+            });
+          },
+          () => {
+            this.isBusy = false;
+            this.editIncomeForm.reset();
+          }
+        );
+    }
+  }
+
+  getDetails(id: any, type?: string) {
+    this._loading_ = true;
+
+    if (id !== undefined) {
+      this.financialService.fetchTransactionsByAccount(id, type).subscribe(
+        (res) => {
+          this._loading_ = false;
+          const { data } = res;
+          this.itemDetails = data;
+          this.setFormControlElement();
+        },
+        (msg) => {
+          this._loading_ = false;
+        }
+      );
+    }
+  }
+  setFormControlElement() {
+    this.editIncomeForm = this.fb.group({
+      title: [this.itemDetails[0]?.title, Validators.required],
+      type: ['income'],
+      account_id: [this.itemDetails[0]?.account.id, Validators.required],
+      account_type: [this.itemDetails[0]?.account_type],
+      date: [this.itemDetails[0]?.date],
+      amount: [this.itemDetails[0]?.amount],
+      description: [this.itemDetails[0]?.description],
+    });
+  }
   pageChanged(event: PageEvent) {
     this.pageSize = event.pageSize;
     this.currentPage = event.pageIndex;

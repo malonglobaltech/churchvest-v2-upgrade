@@ -1,7 +1,7 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { PeopleService } from 'src/app/portal/services/people.service';
 import {
-  checkForBirthdayMonth,
+  checkForEventMonth,
   getMonthList,
   setDateQuery,
   truncateString,
@@ -22,7 +22,7 @@ export class SummaryComponent implements OnInit {
   memberSummary: any;
   listItem: any;
 
-  _checkForBirthMonth = checkForBirthdayMonth;
+  _checkForBirthMonth = checkForEventMonth;
   _setDateQuery = setDateQuery;
   _truncateString = truncateString;
   _monthList = getMonthList;
@@ -52,7 +52,7 @@ export class SummaryComponent implements OnInit {
 
   isBirthdayMonth(val: string) {
     let days = this._checkForBirthMonth(val);
-    if (days == 0) {
+    if (days == 365) {
       return `Today is your birthday!`;
     } else {
       return `${days} ${days > 1 ? 'days' : 'day'} to birthday!`;

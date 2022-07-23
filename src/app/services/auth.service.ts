@@ -20,6 +20,11 @@ export class AuthService {
       return user;
     }
   }
+  getLoggedInUser() {
+    return this.http
+      .get<any>(environment.managementbaseUrl + `/${this.getChurchSlug()}/user`)
+      .pipe(catchError(handleError));
+  }
   getChurchSlug() {
     let church: any = JSON.parse(localStorage.getItem('user_church'));
     return church?.slug;
@@ -94,6 +99,17 @@ export class AuthService {
     return this.http
       .post<any>(
         ` ${environment.managementbaseUrl}/${this.getChurchSlug()}/user/update`,
+        model
+      )
+      .pipe(
+        map((status) => status),
+        catchError(handleError)
+      );
+  }
+  updateChurch(model: any): Observable<any> {
+    return this.http
+      .post<any>(
+        ` ${environment.managementbaseUrl}/${this.getChurchSlug()}/update`,
         model
       )
       .pipe(

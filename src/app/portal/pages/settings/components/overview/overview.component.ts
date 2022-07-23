@@ -1,3 +1,4 @@
+import { ActivatedRoute, Router } from '@angular/router';
 import {
   Component,
   EventEmitter,
@@ -41,13 +42,18 @@ export class OverviewComponent implements OnInit {
   profileImg: any;
   fullname: any;
   email: any;
+  churchName: string;
+  churchLocation: string;
+  churchAddress: string;
   isEditing: boolean = false;
+  isEditing_: boolean = false;
   matcher = new MyErrorStateMatcher();
   upperCaseChar: any;
   numberChar: any;
   specialChar: any;
   validatePassword: any;
   recordFound: boolean = false;
+  _loading_: boolean = false;
   _validateCaps = validateCapital;
   _hasNumber = hasNumber;
   _checkForSpecialChars = checkForSpecialChars;
@@ -56,7 +62,8 @@ export class OverviewComponent implements OnInit {
     private authService: AuthService,
     private toastr: ToastrService,
     public imgUp: ImageuploadComponent,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private router: Router
   ) {
     this.passwordForm = this.fb.group(
       {
@@ -69,11 +76,8 @@ export class OverviewComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.userData = this.authService.getUserData();
-    this.fullname = `${this.userData.first_name} ${this.userData.last_name}`;
-    this.email = `${this.userData.email}`;
+    this.getUserData();
     this.churchData = JSON.parse(localStorage.getItem('user_church'));
-    this.profileImg = this.userData.memberships[0]?.profile;
   }
   get passwordValue(): any {
     return this.passwordForm.controls['password'].value;
@@ -95,8 +99,34 @@ export class OverviewComponent implements OnInit {
     this.numberChar = this._hasNumber(password);
     this.specialChar = this._checkForSpecialChars(password);
   }
-  toggleEdit() {
-    this.isEditing = !this.isEditing;
+  getUserData() {
+    this._loading_ = true;
+    this.authService.getLoggedInUser().subscribe(
+      (res) => {
+        this._loading_ = false;
+        const { data } = res;
+        this.userData = data;
+        this.fullname = `${this.userData.user.first_name} ${this.userData.user.last_name}`;
+        this.email = `${this.userData.user.email}`;
+        this.profileImg = this.userData.profile;
+      },
+      (msg) => {
+        this._loading_ = false;
+      }
+    );
+  }
+  reloadComponent() {
+    let currentUrl = this.router.url;
+    this.router.routeReuseStrategy.shouldReuseRoute = () => false;
+    this.router.onSameUrlNavigation = 'reload';
+    this.router.navigate([currentUrl]);
+  }
+  toggleEdit(query?: string) {
+    if (query == 'profile') {
+      this.isEditing = !this.isEditing;
+    } else {
+      this.isEditing_ = !this.isEditing_;
+    }
   }
   onUpdate() {
     this.isBusy = true;
@@ -113,14 +143,48 @@ export class OverviewComponent implements OnInit {
 
     this.authService.updateProfile(formData).subscribe(
       (res) => {
-        this.toastr.success('Profile updated sucessfully', 'Message');
+        this.toastr.success('Profile updated sucessfully', 'Message', {
+          timeOut: 1000,
+        });
         this.isBusy = false;
         this.isEditing = !this.isEditing;
+        this.getUserData();
+        this.reloadComponent();
       },
       (error) => {
         this.isBusy = false;
         this.toastr.error(error, 'Message', {
-          timeOut: 3000,
+          timeOut: 1000,
+        });
+      },
+      () => {
+        this.isBusy = false;
+      }
+    );
+  }
+  onUpdateChurch() {
+    this.isBusy = true;
+    let payload = {
+      name: this.churchData.name,
+      location: this.churchData.location,
+      address: this.churchData.address,
+    };
+
+    if (payload == null) {
+      this.isBusy = false;
+      return;
+    }
+
+    this.authService.updateChurch(payload).subscribe(
+      (res) => {
+        this.toastr.success('Church updated sucessfully', 'Message');
+        this.isBusy = false;
+        this.isEditing_ = !this.isEditing_;
+      },
+      (error) => {
+        this.isBusy = false;
+        this.toastr.error(error, 'Message', {
+          timeOut: 1000,
         });
       },
       () => {
@@ -139,13 +203,13 @@ export class OverviewComponent implements OnInit {
           this.isBusy = false;
           this.recordFound = false;
           this.toastr.error(message, 'Message', {
-            timeOut: 3000,
+            timeOut: 1000,
           });
         } else {
           this.isBusy = false;
           this.recordFound = true;
           this.toastr.info(message, 'Message', {
-            timeOut: 3000,
+            timeOut: 1000,
           });
         }
       },
@@ -182,7 +246,7 @@ export class OverviewComponent implements OnInit {
       (error) => {
         this.isBusy = false;
         this.toastr.error(error, 'Message', {
-          timeOut: 3000,
+          timeOut: 1000,
         });
       },
       () => {
@@ -200,10 +264,14 @@ export class ImageuploadComponent implements OnInit {
   @Input() setImageFile: any;
   fileImage: any;
   isBusy: boolean = false;
+  _loading_: boolean = false;
+  userData: any;
+  profileImg: any;
   constructor(
     private toastr: ToastrService,
     private authService: AuthService,
-    private renderer: Renderer2
+    private renderer: Renderer2,
+    private router: Router
   ) {}
 
   ngOnInit(): void {}
@@ -222,7 +290,9 @@ export class ImageuploadComponent implements OnInit {
           this.fileImage.type == 'image/png'
         ) {
           this.renderer.setStyle(rf, 'background', `url(${e.target.result})`);
-          this.toastr.success('File successfully added', 'Message');
+          this.toastr.success('File successfully added', 'Message', {
+            timeOut: 1000,
+          });
         } else {
           this.toastr.error(
             'File type not supported, only jpeg and png file is allowed',
@@ -246,19 +316,47 @@ export class ImageuploadComponent implements OnInit {
 
     this.authService.updateProfile(formData).subscribe(
       ({ message, data }) => {
-        this.toastr.success(message, 'Message');
+        this.fileImage == null;
+        this.toastr.success(message, 'Message', {
+          timeOut: 1000,
+        });
         this.isBusy = false;
+        this.getUserData();
+        this.reloadComponent();
       },
       (error) => {
         this.isBusy = false;
+        this.fileImage == null;
         this.toastr.error(error, 'Message', {
-          timeOut: 3000,
+          timeOut: 1000,
         });
       },
       () => {
         this.isBusy = false;
+        this.fileImage == null;
       }
     );
+  }
+  getUserData() {
+    this._loading_ = true;
+    this.authService.getLoggedInUser().subscribe(
+      (res) => {
+        this._loading_ = false;
+        const { data } = res;
+        this.userData = data;
+
+        this.profileImg = this.userData.profile;
+      },
+      (msg) => {
+        this._loading_ = false;
+      }
+    );
+  }
+  reloadComponent() {
+    let currentUrl = this.router.url;
+    this.router.routeReuseStrategy.shouldReuseRoute = () => false;
+    this.router.onSameUrlNavigation = 'reload';
+    this.router.navigate([currentUrl]);
   }
   addAvatar(ref) {
     ref.click();
