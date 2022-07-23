@@ -1,3 +1,4 @@
+import { ActivatedRoute, Router } from '@angular/router';
 import {
   Component,
   EventEmitter,
@@ -61,7 +62,8 @@ export class OverviewComponent implements OnInit {
     private authService: AuthService,
     private toastr: ToastrService,
     public imgUp: ImageuploadComponent,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private router: Router
   ) {
     this.passwordForm = this.fb.group(
       {
@@ -113,6 +115,12 @@ export class OverviewComponent implements OnInit {
       }
     );
   }
+  reloadComponent() {
+    let currentUrl = this.router.url;
+    this.router.routeReuseStrategy.shouldReuseRoute = () => false;
+    this.router.onSameUrlNavigation = 'reload';
+    this.router.navigate([currentUrl]);
+  }
   toggleEdit(query?: string) {
     if (query == 'profile') {
       this.isEditing = !this.isEditing;
@@ -135,15 +143,18 @@ export class OverviewComponent implements OnInit {
 
     this.authService.updateProfile(formData).subscribe(
       (res) => {
-        this.toastr.success('Profile updated sucessfully', 'Message');
+        this.toastr.success('Profile updated sucessfully', 'Message', {
+          timeOut: 1000,
+        });
         this.isBusy = false;
         this.isEditing = !this.isEditing;
         this.getUserData();
+        this.reloadComponent();
       },
       (error) => {
         this.isBusy = false;
         this.toastr.error(error, 'Message', {
-          timeOut: 3000,
+          timeOut: 1000,
         });
       },
       () => {
@@ -173,7 +184,7 @@ export class OverviewComponent implements OnInit {
       (error) => {
         this.isBusy = false;
         this.toastr.error(error, 'Message', {
-          timeOut: 3000,
+          timeOut: 1000,
         });
       },
       () => {
@@ -192,13 +203,13 @@ export class OverviewComponent implements OnInit {
           this.isBusy = false;
           this.recordFound = false;
           this.toastr.error(message, 'Message', {
-            timeOut: 3000,
+            timeOut: 1000,
           });
         } else {
           this.isBusy = false;
           this.recordFound = true;
           this.toastr.info(message, 'Message', {
-            timeOut: 3000,
+            timeOut: 1000,
           });
         }
       },
@@ -235,7 +246,7 @@ export class OverviewComponent implements OnInit {
       (error) => {
         this.isBusy = false;
         this.toastr.error(error, 'Message', {
-          timeOut: 3000,
+          timeOut: 1000,
         });
       },
       () => {
@@ -259,7 +270,8 @@ export class ImageuploadComponent implements OnInit {
   constructor(
     private toastr: ToastrService,
     private authService: AuthService,
-    private renderer: Renderer2
+    private renderer: Renderer2,
+    private router: Router
   ) {}
 
   ngOnInit(): void {}
@@ -278,7 +290,9 @@ export class ImageuploadComponent implements OnInit {
           this.fileImage.type == 'image/png'
         ) {
           this.renderer.setStyle(rf, 'background', `url(${e.target.result})`);
-          this.toastr.success('File successfully added', 'Message');
+          this.toastr.success('File successfully added', 'Message', {
+            timeOut: 1000,
+          });
         } else {
           this.toastr.error(
             'File type not supported, only jpeg and png file is allowed',
@@ -303,15 +317,18 @@ export class ImageuploadComponent implements OnInit {
     this.authService.updateProfile(formData).subscribe(
       ({ message, data }) => {
         this.fileImage == null;
-        this.toastr.success(message, 'Message');
+        this.toastr.success(message, 'Message', {
+          timeOut: 1000,
+        });
         this.isBusy = false;
         this.getUserData();
+        this.reloadComponent();
       },
       (error) => {
         this.isBusy = false;
         this.fileImage == null;
         this.toastr.error(error, 'Message', {
-          timeOut: 3000,
+          timeOut: 1000,
         });
       },
       () => {
@@ -335,7 +352,12 @@ export class ImageuploadComponent implements OnInit {
       }
     );
   }
-
+  reloadComponent() {
+    let currentUrl = this.router.url;
+    this.router.routeReuseStrategy.shouldReuseRoute = () => false;
+    this.router.onSameUrlNavigation = 'reload';
+    this.router.navigate([currentUrl]);
+  }
   addAvatar(ref) {
     ref.click();
   }

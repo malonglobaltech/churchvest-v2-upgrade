@@ -1,6 +1,9 @@
 <section class="event-list-wrap">
   <div class="title-sm">Upcoming Events</div>
-  <ng-container>
+  <ng-container *ngIf="_loading">
+    <app-loading-roller></app-loading-roller>
+  </ng-container>
+  <ng-container *ngIf="!_loading && eventList.length == 0">
     <div
       class="empty-state d-flex flex-column justify-content-center align-items-center"
     >
@@ -8,14 +11,34 @@
       <p class="f12 txt-grey mt-2">No upcoming events</p>
     </div>
   </ng-container>
-  <div class="list--items">
-    <!-- <div class="item d-flex align-items-center">
+  <ng-container *ngIf="!_loading && eventList">
+    <div class="list--items">
+      <div
+        class="item d-flex align-items-center"
+        *ngFor="let item of eventList"
+      >
+        <div class="icon d-flex align-items-center me-2">
+          <mat-icon>receipt</mat-icon>
+        </div>
+        <label
+          >{{ item.name }}
+          <span>{{ getEventDay(item?.start_date) }} </span>
+          <span>
+            {{ isEventMonth(item.start_date) }}
+          </span>
+        </label>
+      </div>
+    </div>
+  </ng-container>
+
+  <!-- <div class="list--items">
+    <div class="item d-flex align-items-center">
       <div class="icon d-flex align-items-center me-2">
         <mat-icon>receipt</mat-icon>
       </div>
       <label>Assign new member <span>March, 6, 10:00PM</span></label>
-    </div> -->
-  </div>
+    </div>
+  </div> -->
   <!-- <div class="overdue-event mt-auto">
     <div class="d-flex flex-column">
       <label>Board Meeting <span class="f12 txt-grey">Feb 12</span></label>
