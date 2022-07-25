@@ -11,6 +11,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { LoadingRollerModule } from '../../components/loading-roller/loading-roller.module';
 import { SettingsComponent } from './components/settings/settings.component';
 import { ChartGraphModule } from '../../components/chart-graph/chart-graph.module';
+import { TrashComponent } from './components/trash/trash.component';
 
 @NgModule({
   declarations: [
@@ -19,6 +20,7 @@ import { ChartGraphModule } from '../../components/chart-graph/chart-graph.modul
     IncomeComponent,
     ExpensesComponent,
     SettingsComponent,
+    TrashComponent,
   ],
   imports: [
     CommonModule,

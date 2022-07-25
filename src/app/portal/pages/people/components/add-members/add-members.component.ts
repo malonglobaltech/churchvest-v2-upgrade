@@ -263,7 +263,7 @@ export class AddMembersComponent implements OnInit {
           this.isBusy = false;
           error.split(',').map((x: any) => {
             this.toastr.error(x, 'Message', {
-              timeOut: 5000,
+              timeOut: 1000,
             });
           });
         },
@@ -292,7 +292,7 @@ export class AddMembersComponent implements OnInit {
           this.isBusy = false;
           error.split(',').map((x: any) => {
             this.toastr.error(x, 'Message', {
-              timeOut: 5000,
+              timeOut: 1000,
             });
           });
         },
@@ -409,8 +409,10 @@ export class AddMembersComponent implements OnInit {
             },
             (error) => {
               this.isBusy = false;
-              this.toastr.error(error, 'Message', {
-                timeOut: 3000,
+              error.split(',').map((x: any) => {
+                this.toastr.error(x, 'Message', {
+                  timeOut: 1000,
+                });
               });
             },
             () => {

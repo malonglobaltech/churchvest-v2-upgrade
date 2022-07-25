@@ -27,7 +27,10 @@ import {
 })
 export class IncomeComponent implements OnInit {
   @ViewChild(MatPaginator) paginator: MatPaginator;
+  @ViewChild('close') close: any;
   @ViewChild('closebtn') closebtn: any;
+  @ViewChild('closebtn_') closebtn_: any;
+  @ViewChild('closebtn__') closebtn__: any;
   itemList: any[] = [];
   trashList: any[] = [];
   accountList: any[] = [];
@@ -94,8 +97,8 @@ export class IncomeComponent implements OnInit {
     this.dataSource.paginator = this.paginator;
   }
 
-  column = ['title', 'type', 'account type', 'action'];
-  accountTypeList = ['financial', 'giving'];
+  column = ['title', 'type', 'amount', 'account type', 'status', 'action'];
+  accountTypeList = ['giving'];
   get incomeRawValue(): any {
     return this.addIncomeForm.getRawValue();
   }
@@ -228,13 +231,15 @@ export class IncomeComponent implements OnInit {
         ({ message, data }) => {
           this.newAccountForm.reset();
           this.isBusy = false;
-          this.closebtn._elementRef.nativeElement.click();
+          this.close._elementRef.nativeElement.click();
           this.getAccounts();
         },
         (error) => {
           this.isBusy = false;
-          this.toastr.error(error, 'Message', {
-            timeOut: 3000,
+          error.split(',').map((x: any) => {
+            this.toastr.error(x, 'Message', {
+              timeOut: 5000,
+            });
           });
         },
         () => {
@@ -262,8 +267,10 @@ export class IncomeComponent implements OnInit {
         },
         (error) => {
           this.isBusy = false;
-          this.toastr.error(error, 'Message', {
-            timeOut: 3000,
+          error.split(',').map((x: any) => {
+            this.toastr.error(x, 'Message', {
+              timeOut: 5000,
+            });
           });
         },
         () => {
@@ -285,20 +292,25 @@ export class IncomeComponent implements OnInit {
       //Make api call here...
       this.financialService
         .updateTransaction(
-          this.addIncomeForm.getRawValue(),
+          this.editIncomeForm.getRawValue(),
           this.itemDetails.id
         )
         .subscribe(
           ({ message, data }) => {
+            this.toastr.success(message, 'Message', {
+              timeOut: 1000,
+            });
             this.editIncomeForm.reset();
             this.isBusy = false;
-            this.closebtn._elementRef.nativeElement.click();
+            this.closebtn__._elementRef.nativeElement.click();
             this.queryAccount();
           },
           (error) => {
             this.isBusy = false;
-            this.toastr.error(error, 'Message', {
-              timeOut: 3000,
+            error.split(',').map((x: any) => {
+              this.toastr.error(x, 'Message', {
+                timeOut: 5000,
+              });
             });
           },
           () => {
@@ -309,11 +321,10 @@ export class IncomeComponent implements OnInit {
     }
   }
 
-  getDetails(id: any, type?: string) {
+  getDetails(id: any) {
     this._loading_ = true;
-
     if (id !== undefined) {
-      this.financialService.fetchTransactionsByAccount(id, type).subscribe(
+      this.financialService.fetchTransactionDetails(id).subscribe(
         (res) => {
           this._loading_ = false;
           const { data } = res;
@@ -328,13 +339,13 @@ export class IncomeComponent implements OnInit {
   }
   setFormControlElement() {
     this.editIncomeForm = this.fb.group({
-      title: [this.itemDetails[0]?.title, Validators.required],
+      title: [this.itemDetails?.title, Validators.required],
       type: ['income'],
-      account_id: [this.itemDetails[0]?.account.id, Validators.required],
-      account_type: [this.itemDetails[0]?.account_type],
-      date: [this.itemDetails[0]?.date],
-      amount: [this.itemDetails[0]?.amount],
-      description: [this.itemDetails[0]?.description],
+      account_id: [this.itemDetails?.account?.id],
+      account_type: [this.itemDetails?.account_type],
+      date: [this.itemDetails?.date],
+      amount: [Math.round(this.itemDetails?.amount)],
+      description: [this.itemDetails?.description],
     });
   }
   pageChanged(event: PageEvent) {
@@ -355,11 +366,11 @@ export class IncomeComponent implements OnInit {
         transactions_id: this.selectedItem,
       };
     }
-    this.givingService.moveToTrash(payload).subscribe(({ message }) => {
+    this.financialService.moveToTrash(payload).subscribe(({ message }) => {
       this.isBusy = false;
       this.toastr.success(message, 'Success');
-      // this.router.navigate(['/portal/online-giving/trash']);
-      this.closebtn._elementRef.nativeElement.click();
+      this.router.navigate(['/portal/financials/trash']);
+      this.closebtn_._elementRef.nativeElement.click();
       this.queryAccount();
     });
   }
@@ -372,8 +383,9 @@ export class IncomeComponent implements OnInit {
           A: '#',
           B: 'Title',
           C: 'Type',
-          D: 'Account Type',
-          E: 'Amount Received',
+          D: 'Amount',
+          E: 'Account Type',
+          F: 'Status',
         }, // table header
       ],
       skipHeader: true,
@@ -383,8 +395,9 @@ export class IncomeComponent implements OnInit {
         A: data.id,
         B: data.title,
         C: data.type,
-        D: data.account_type,
-        E: data.amount,
+        D: data.amount,
+        E: data.account_type,
+        F: data.status,
       });
     });
     edata.push(udt);
