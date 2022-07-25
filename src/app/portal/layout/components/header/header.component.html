@@ -110,7 +110,7 @@
                   [key]="paystack_key"
                   type="submit"
                   mat-flat-button
-                  [email]="userData?.email"
+                  [email]="userData?.user.email"
                   [amount]="_amount * 100"
                   [disabled]="!_isValid"
                   [ref]="reference"
