@@ -53,18 +53,57 @@ export class FinancialsService {
         catchError(handleError)
       );
   }
-  fetchFinancials(
-    accid?: number,
-    type?: string,
-    page?: number
-  ): Observable<any> {
+  deleteFromTrash(model: any): Observable<any> {
+    return this.http
+      .post<any>(
+        ` ${
+          environment.managementbaseUrl
+        }/${this.authService.getChurchSlug()}/transanctions/trash/delete`,
+        model
+      )
+      .pipe(
+        map((status) => status),
+        catchError(handleError)
+      );
+  }
+  fetchTransactionDetails(id?: number): Observable<any> {
     return this.http
       .get<any>(
         `${
           environment.managementbaseUrl
-        }/${this.authService.getChurchSlug()}/accounts/financial?page=${page}`
+        }/${this.authService.getChurchSlug()}/transactions/${id}/show`
       )
       .pipe(catchError(handleError));
+  }
+  fetchAllFromTrash(pageNumber?: number): Observable<any> {
+    return this.http
+      .get<any>(
+        `${
+          environment.managementbaseUrl
+        }/${this.authService.getChurchSlug()}/transactions/trash?page=${pageNumber}`
+      )
+      .pipe(catchError(handleError));
+  }
+  moveToTrash(model: any): Observable<any> {
+    return this.http.post<any>(
+      `${
+        environment.managementbaseUrl
+      }/${this.authService.getChurchSlug()}/transactions/delete`,
+      model
+    );
+  }
+  restore(model: any): Observable<any> {
+    return this.http
+      .post<any>(
+        `${
+          environment.managementbaseUrl
+        }/${this.authService.getChurchSlug()}/transactions/trash/restore`,
+        model
+      )
+      .pipe(
+        map((status) => status),
+        catchError(handleError)
+      );
   }
   fetchReconciliation(
     accid?: number,
