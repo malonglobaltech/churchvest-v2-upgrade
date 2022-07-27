@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { GuidedTour, GuidedTourService, Orientation } from 'ngx-guided-tour';
+import { PeopleService } from 'src/app/portal/services/people.service';
 @Component({
   selector: 'app-sidenav',
   templateUrl: './sidenav.component.html',
@@ -7,16 +8,20 @@ import { GuidedTour, GuidedTourService, Orientation } from 'ngx-guided-tour';
 })
 export class SidenavComponent implements OnInit {
   _isOpen: boolean = false;
-  openAccordion: boolean = false;
-  constructor(private guidedTourService: GuidedTourService) {}
+  memberList: any[] = [];
+  currentPage = 0;
+  constructor(
+    private guidedTourService: GuidedTourService,
+    private peopleService: PeopleService
+  ) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.getMembers();
+  }
   ngAfterViewInit() {
     setTimeout(() => {
-      if (!localStorage.getItem('viewed-tour')) {
+      if (this.memberList.length == 1) {
         this.takeTour();
-        this.openAccordion = !this.openAccordion;
-        localStorage.setItem('viewed-tour', 'yes');
       }
     }, 2000);
   }
@@ -98,6 +103,20 @@ export class SidenavComponent implements OnInit {
       },
     ],
   };
+  getMembers() {
+    this.memberList = [];
+    this.peopleService.fetchAll('members', this.currentPage + 1).subscribe(
+      (res: any) => {
+        const { data, meta } = res;
+        this.memberList = data;
+      },
+      (errors) => {
+        if (errors) {
+          this.memberList = [];
+        }
+      }
+    );
+  }
   menu = [
     {
       title: 'Activity',
@@ -217,26 +236,25 @@ export class SidenavComponent implements OnInit {
           url: 'online-giving',
           hasSelector: true,
         },
-        {
-          title: 'Location',
-          url: 'location',
-          hasSelector: false,
-          disabled: true,
-        },
+        // {
+        //   title: 'Location',
+        //   url: 'location',
+        //   hasSelector: false,
+        //   disabled: true,
+        // },
         {
           title: 'Group',
           url: 'group',
           hasSelector: false,
         },
         {
-          title: 'Member Connect (Web)',
-          url: 'member-connect',
-          hasSelector: false,
-          disabled: true,
-        },
-        {
           title: 'Live Streaming',
           url: 'live-streaming',
+          hasSelector: false,
+        },
+        {
+          title: 'Member Connect (Web)',
+          url: 'member-connect',
           hasSelector: false,
           disabled: true,
         },

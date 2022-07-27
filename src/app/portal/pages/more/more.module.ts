@@ -23,6 +23,7 @@ import { GroupsComponent } from './components/groups/groups.component';
 import { CreateGroupComponent } from './components/create-group/create-group.component';
 import { TrashedGroupComponent } from './components/trashed-group/trashed-group.component';
 import { TrashGivingsComponent } from './components/trash-givings/trash-givings.component';
+import { LiveStreamingComponent } from './components/live-streaming/live-streaming.component';
 
 @NgModule({
   declarations: [
@@ -39,6 +40,7 @@ import { TrashGivingsComponent } from './components/trash-givings/trash-givings.
     CreateGroupComponent,
     TrashedGroupComponent,
     TrashGivingsComponent,
+    LiveStreamingComponent,
   ],
   imports: [
     CommonModule,

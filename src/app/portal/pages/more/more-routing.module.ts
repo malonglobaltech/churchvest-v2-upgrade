@@ -1,3 +1,4 @@
+import { LiveStreamingComponent } from './components/live-streaming/live-streaming.component';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { AddGivingComponent } from './components/add-giving/add-giving.component';
@@ -50,6 +51,10 @@ const routes: Routes = [
       {
         path: 'messages/trash',
         component: TrashMessagesComponent,
+      },
+      {
+        path: 'live-streaming',
+        component: LiveStreamingComponent,
       },
       {
         path: 'group/:query',

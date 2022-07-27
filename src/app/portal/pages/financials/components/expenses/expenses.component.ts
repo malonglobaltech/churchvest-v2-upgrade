@@ -99,7 +99,7 @@ export class ExpensesComponent implements OnInit {
 
   column = ['title', 'type', 'amount', 'account type', 'status', 'action'];
   accountTypeList = ['expense', 'giving'];
-  get incomeRawValue(): any {
+  get expenseRawValue(): any {
     return this.addExpenseForm.getRawValue();
   }
   get accountFormValue(): any {
@@ -258,7 +258,7 @@ export class ExpensesComponent implements OnInit {
     }
     if (this.addExpenseForm.valid) {
       //Make api call here...
-      this.financialService.addTransaction(this.incomeRawValue).subscribe(
+      this.financialService.addTransaction(this.expenseRawValue).subscribe(
         ({ message, data }) => {
           this.addExpenseForm.reset();
           this.isBusy = false;
