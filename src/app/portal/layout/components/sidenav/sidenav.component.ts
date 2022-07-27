@@ -236,26 +236,25 @@ export class SidenavComponent implements OnInit {
           url: 'online-giving',
           hasSelector: true,
         },
-        {
-          title: 'Location',
-          url: 'location',
-          hasSelector: false,
-          disabled: true,
-        },
+        // {
+        //   title: 'Location',
+        //   url: 'location',
+        //   hasSelector: false,
+        //   disabled: true,
+        // },
         {
           title: 'Group',
           url: 'group',
           hasSelector: false,
         },
         {
-          title: 'Member Connect (Web)',
-          url: 'member-connect',
-          hasSelector: false,
-          disabled: true,
-        },
-        {
           title: 'Live Streaming',
           url: 'live-streaming',
+          hasSelector: false,
+        },
+        {
+          title: 'Member Connect (Web)',
+          url: 'member-connect',
           hasSelector: false,
           disabled: true,
         },
