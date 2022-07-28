@@ -13,6 +13,7 @@ import {
   getCompletedStatus,
   getDays,
   maxLengthCheck,
+  truncateString,
 } from 'src/app/shared/_helperFunctions';
 import { PeopleService } from 'src/app/portal/services/people.service';
 import { ToastrService } from 'ngx-toastr';
@@ -43,7 +44,7 @@ export class AddGivingComponent implements OnInit {
 
   compareFunc = compareObjects;
   _maxLengthCheck = maxLengthCheck;
-
+  _truncateString = truncateString;
   public givingForm: FormGroup = new FormGroup({});
   public newAccountForm: FormGroup = new FormGroup({});
   public updateGivingForm: FormGroup = new FormGroup({});
@@ -193,6 +194,9 @@ export class AddGivingComponent implements OnInit {
       //Make api call here...
       this.givingService.createAccount(this.accountFormValue).subscribe(
         ({ message, data }) => {
+          this.toastr.success(message, 'Message', {
+            timeOut: 1000,
+          });
           this.newAccountForm.reset();
           this.isBusy_ = false;
           this.closebtn._elementRef.nativeElement.click();
@@ -201,7 +205,7 @@ export class AddGivingComponent implements OnInit {
         (error) => {
           this.isBusy_ = false;
           this.toastr.error(error, 'Message', {
-            timeOut: 3000,
+            timeOut: 1000,
           });
         },
         () => {

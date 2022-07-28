@@ -40,6 +40,19 @@ export class FinancialsService {
         catchError(handleError)
       );
   }
+  createFinancialAccount(model: any): Observable<any> {
+    return this.http
+      .post<any>(
+        ` ${
+          environment.managementbaseUrl
+        }/${this.authService.getChurchSlug()}/accounts/financial`,
+        model
+      )
+      .pipe(
+        map((status) => status),
+        catchError(handleError)
+      );
+  }
   deleteTransaction(model: any): Observable<any> {
     return this.http
       .post<any>(
@@ -72,6 +85,15 @@ export class FinancialsService {
         `${
           environment.managementbaseUrl
         }/${this.authService.getChurchSlug()}/transactions/${id}/show`
+      )
+      .pipe(catchError(handleError));
+  }
+  fetchFinancialAccounts(): Observable<any> {
+    return this.http
+      .get<any>(
+        `${
+          environment.managementbaseUrl
+        }/${this.authService.getChurchSlug()}/accounts/financial`
       )
       .pipe(catchError(handleError));
   }
@@ -150,6 +172,15 @@ export class FinancialsService {
       .get<any>(
         `${environment.managementbaseUrl}/${this.authService.getChurchSlug()}
         /transactions?account_id=${accId}&account_type=${accType}&start_date=${start_date}&end_date=${end_date}?page=${page}`
+      )
+      .pipe(catchError(handleError));
+  }
+  fetchTransactionSummary(): Observable<any> {
+    return this.http
+      .get<any>(
+        `${
+          environment.managementbaseUrl
+        }/${this.authService.getChurchSlug()}/transactions/financial_summary`
       )
       .pipe(catchError(handleError));
   }

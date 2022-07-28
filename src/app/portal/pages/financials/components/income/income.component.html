@@ -178,6 +178,31 @@
                       Edit
                     </button>
                     <button
+                      mat-menu-item
+                      data-bs-toggle="modal"
+                      data-bs-target="#validate-status"
+                      (click)="
+                        getDetails(element.id); setTransactionStatus('valid')
+                      "
+                      *ngIf="
+                        element.status == 'pending' ||
+                        element.status == 'invalid'
+                      "
+                    >
+                      Validate transaction
+                    </button>
+                    <button
+                      mat-menu-item
+                      data-bs-toggle="modal"
+                      data-bs-target="#validate-status"
+                      (click)="
+                        getDetails(element.id); setTransactionStatus('invalid')
+                      "
+                      *ngIf="element.status == 'valid'"
+                    >
+                      Invalidate transaction
+                    </button>
+                    <button
                       type="button"
                       mat-menu-item
                       data-bs-toggle="modal"
@@ -299,7 +324,7 @@
                     <mat-option
                       *ngFor="let item of accountList"
                       [value]="item.id"
-                      >{{ item.name }}</mat-option
+                      >{{ _truncateString(item.name, 16) }}</mat-option
                     >
                     <mat-option
                       data-bs-toggle="modal"
@@ -437,7 +462,7 @@
                       <mat-option
                         *ngFor="let item of accountList"
                         [value]="item.id"
-                        >{{ item.name }}</mat-option
+                        >{{ _truncateString(item.name, 16) }}</mat-option
                       >
                       <mat-option
                         data-bs-toggle="modal"
@@ -613,7 +638,7 @@
               *ngIf="itemDetails && !_loading_ && _isSingleSelected"
             >
               <p>
-                Are you sure you want to move this giving
+                Are you sure you want to move this transaction
                 <span>{{ itemDetails.title }} </span>
                 to trash? This will be temporarily deleted, and can be recovered
                 from trash
@@ -748,6 +773,55 @@
               </div>
             </div>
           </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal fade" id="validate-status" role="dialog">
+  <div class="modal-dialog modal-wrapper">
+    <div class="modal-content-wrap">
+      <div class="modal-body">
+        <div
+          class="header-top d-flex justify-content-between align-items-center px-4 py-3"
+        >
+          <div class="title">Validate Transaction</div>
+          <ion-icon name="close-outline" data-bs-dismiss="modal"></ion-icon>
+        </div>
+        <div class="container">
+          <div class="pb-3">
+            <ng-container *ngIf="_loading_">
+              <app-loading-roller></app-loading-roller>
+            </ng-container>
+            <div class="center" *ngIf="itemDetails && !_loading_">
+              <p>
+                Are you sure you want to
+                {{
+                  itemDetails.status == "pending" ? "validate" : "invalidate"
+                }}
+                this transaction
+                <span>{{ itemDetails.title }} </span>
+              </p>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer d-flex justify-content-end align-items-center">
+          <button
+            mat-flat-button
+            class="me-3"
+            (click)="confirmValidation()"
+            *ngIf="itemDetails"
+          >
+            {{
+              itemDetails.status == "pending" || itemDetails.status == "invalid"
+                ? "Validate"
+                : "Invalidate"
+            }}
+            <mat-spinner *ngIf="isBusy"></mat-spinner>
+          </button>
+          <button mat-stroked-button data-bs-dismiss="modal" #_closebtn>
+            Cancel
+          </button>
         </div>
       </div>
     </div>

@@ -18,6 +18,8 @@ import {
   concatColumnString,
   maxLengthCheck,
   printElement,
+  setMaxDate,
+  truncateString,
 } from 'src/app/shared';
 
 @Component({
@@ -31,6 +33,7 @@ export class ExpensesComponent implements OnInit {
   @ViewChild('closebtn') closebtn: any;
   @ViewChild('closebtn_') closebtn_: any;
   @ViewChild('closebtn__') closebtn__: any;
+  @ViewChild('_closebtn') _closebtn: any;
   itemList: any[] = [];
   trashList: any[] = [];
   accountList: any[] = [];
@@ -50,10 +53,14 @@ export class ExpensesComponent implements OnInit {
   bankList: any[] = [];
   bankObj: any;
   accountName: string = '';
+  maxDate: any;
+  _status: string = '';
   _printElement = printElement;
   _concatColumnString = concatColumnString;
   compareFunc = compareObjects;
   _maxLengthCheck = maxLengthCheck;
+  _setMaxDate = setMaxDate;
+  _truncateString = truncateString;
   public dataSource: MatTableDataSource<any> = new MatTableDataSource();
   public selection = new SelectionModel(true, []);
   public displayedColumns: string[];
@@ -78,18 +85,17 @@ export class ExpensesComponent implements OnInit {
       description: [null],
     });
     this.newAccountForm = this.fb.group({
-      title: [null, Validators.required],
-      bank_code: [null],
-      number: [null, Validators.required],
-      bank_slug: [null, Validators.required],
-      name: new FormControl({ value: null, disabled: true }),
+      name: [null, Validators.required],
+      type: [null],
+      description: [null],
     });
   }
 
   ngOnInit(): void {
     this.queryAccount();
-    this.getAccounts();
+    this.getFinancialAccounts();
     this.getBanks();
+    this.maxDate = this._setMaxDate();
     this.displayedColumns = this.column;
   }
 
@@ -98,7 +104,9 @@ export class ExpensesComponent implements OnInit {
   }
 
   column = ['title', 'type', 'amount', 'account type', 'status', 'action'];
-  accountTypeList = ['financial', 'giving'];
+  financialTypes = ['asset', 'liability', 'income', 'expense'];
+  STATUS = ['pending', 'valid', 'invalid'];
+  accountTypeList = ['financial'];
   get expenseRawValue(): any {
     return this.addExpenseForm.getRawValue();
   }
@@ -202,9 +210,9 @@ export class ExpensesComponent implements OnInit {
     let filter = arr.map((x: any) => x.id);
     this.selectedItem = filter;
   }
-  getAccounts() {
+  getFinancialAccounts() {
     this._loading_ = true;
-    this.givingService.fetchAccounts().subscribe(
+    this.financialService.fetchFinancialAccounts().subscribe(
       (res) => {
         this._loading_ = false;
         const { data } = res;
@@ -215,39 +223,42 @@ export class ExpensesComponent implements OnInit {
       }
     );
   }
-
+  setTransactionStatus(val: string) {
+    this._status = val;
+  }
   addAccount() {
     this.isBusy = true;
-    this.newAccountForm.patchValue({
-      bank_code: this.bankObj.code,
-      bank_slug: this.bankObj.slug,
-    });
     if (this.newAccountForm.invalid) {
       this.isBusy = false;
       return;
     }
     if (this.newAccountForm.valid) {
       //Make api call here...
-      this.givingService.createAccount(this.accountFormValue).subscribe(
-        ({ message, data }) => {
-          this.newAccountForm.reset();
-          this.isBusy = false;
-          this.close._elementRef.nativeElement.click();
-          this.getAccounts();
-        },
-        (error) => {
-          this.isBusy = false;
-          error.split(',').map((x: any) => {
-            this.toastr.error(x, 'Message', {
-              timeOut: 5000,
+      this.financialService
+        .createFinancialAccount(this.accountFormValue)
+        .subscribe(
+          ({ message, data }) => {
+            this.toastr.success(message, 'Message', {
+              timeOut: 1000,
             });
-          });
-        },
-        () => {
-          this.isBusy = false;
-          this.newAccountForm.reset();
-        }
-      );
+            this.newAccountForm.reset();
+            this.isBusy = false;
+            this.close._elementRef.nativeElement.click();
+            this.getFinancialAccounts();
+          },
+          (error) => {
+            this.isBusy = false;
+            error.split(',').map((x: any) => {
+              this.toastr.error(x, 'Message', {
+                timeOut: 1000,
+              });
+            });
+          },
+          () => {
+            this.isBusy = false;
+            this.newAccountForm.reset();
+          }
+        );
     }
   }
   onSubmit() {
@@ -260,6 +271,9 @@ export class ExpensesComponent implements OnInit {
       //Make api call here...
       this.financialService.addTransaction(this.expenseRawValue).subscribe(
         ({ message, data }) => {
+          this.toastr.success(message, 'Message', {
+            timeOut: 1000,
+          });
           this.addExpenseForm.reset();
           this.isBusy = false;
           this.closebtn._elementRef.nativeElement.click();
@@ -296,6 +310,9 @@ export class ExpensesComponent implements OnInit {
         )
         .subscribe(
           ({ message, data }) => {
+            this.toastr.success(message, 'Message', {
+              timeOut: 1000,
+            });
             this.editExpenseForm.reset();
             this.isBusy = false;
             this.closebtn__._elementRef.nativeElement.click();
@@ -305,7 +322,7 @@ export class ExpensesComponent implements OnInit {
             this.isBusy = false;
             error.split(',').map((x: any) => {
               this.toastr.error(x, 'Message', {
-                timeOut: 5000,
+                timeOut: 1000,
               });
             });
           },
@@ -317,11 +334,10 @@ export class ExpensesComponent implements OnInit {
     }
   }
 
-  getDetails(id: any, type?: string) {
+  getDetails(id: any) {
     this._loading_ = true;
-
     if (id !== undefined) {
-      this.financialService.fetchTransactionsByAccount(id, type).subscribe(
+      this.financialService.fetchTransactionDetails(id).subscribe(
         (res) => {
           this._loading_ = false;
           const { data } = res;
@@ -336,13 +352,13 @@ export class ExpensesComponent implements OnInit {
   }
   setFormControlElement() {
     this.editExpenseForm = this.fb.group({
-      title: [this.itemDetails[0]?.title, Validators.required],
+      title: [this.itemDetails?.title, Validators.required],
       type: ['expense'],
-      account_id: [this.itemDetails[0]?.account.id, Validators.required],
-      account_type: [this.itemDetails[0]?.account_type],
-      date: [this.itemDetails[0]?.date],
-      amount: [this.itemDetails[0]?.amount],
-      description: [this.itemDetails[0]?.description],
+      account_id: [this.itemDetails?.account?.id],
+      account_type: [this.itemDetails?.account_type],
+      date: [this.itemDetails?.date],
+      amount: [Math.round(this.itemDetails?.amount)],
+      description: [this.itemDetails?.description],
     });
   }
   pageChanged(event: PageEvent) {
@@ -370,6 +386,22 @@ export class ExpensesComponent implements OnInit {
       this.closebtn_._elementRef.nativeElement.click();
       this.queryAccount();
     });
+  }
+  confirmValidation() {
+    this.isBusy = true;
+    let payload: any;
+    payload = {
+      status: this._status,
+    };
+
+    this.financialService
+      .updateTransaction(payload, this.itemDetails.id)
+      .subscribe(({ message }) => {
+        this.isBusy = false;
+        this.toastr.success(message, 'Success');
+        this._closebtn._elementRef.nativeElement.click();
+        this.queryAccount();
+      });
   }
   exportToExcel(): void {
     const edata: Array<any> = [];
