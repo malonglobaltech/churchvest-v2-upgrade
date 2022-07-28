@@ -98,7 +98,7 @@ export class ExpensesComponent implements OnInit {
   }
 
   column = ['title', 'type', 'amount', 'account type', 'status', 'action'];
-  accountTypeList = ['expense', 'giving'];
+  accountTypeList = ['financial', 'giving'];
   get expenseRawValue(): any {
     return this.addExpenseForm.getRawValue();
   }
