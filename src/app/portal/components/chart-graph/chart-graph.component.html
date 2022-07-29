@@ -1,10 +1,12 @@
 <ng-container *ngIf="_chartType === 'pie'">
   <div class="card">
     <div class="header d-flex justify-content-between align-items-center">
-      <div class="title-sm">Distribution by Pay Scale</div>
+      <div class="title-sm">Financial Breakdown</div>
       <div class="filter_wrap" [matMenuTriggerFor]="filterOne">
-        <span>{{ filterItem || "Filter items" }}</span
-        ><span><ion-icon name="chevron-down"></ion-icon></span>
+        <span>{{ filterItem || "Filter items" }}</span>
+        <span>
+          <mat-icon>expand_more</mat-icon>
+        </span>
       </div>
       <mat-menu #filterOne>
         <button mat-menu-item (click)="setFilterItem('last-month')">
@@ -15,24 +17,41 @@
         </button>
       </mat-menu>
     </div>
+    <ng-container *ngIf="!itemDetails"
+      ><app-loading-roller></app-loading-roller
+    ></ng-container>
     <div class="block pt-5 pb-3">
-      <canvas
-        mdbChart
-        [chartType]="pieChartType"
-        [data]="pieChartData"
-        [labels]="pieChartLabels"
-        [options]="pieChartOptions"
-        [colors]="pieChartColors"
-        width="300"
-      ></canvas>
+      <ng-container
+        *ngIf="
+          itemDetails &&
+          itemDetails.income_amount == 0 && itemDetails.expense_amount == 0
+        "
+      >
+        <p class="d-flex justify-content-center">No data yet</p>
+      </ng-container>
+      <ng-container
+        *ngIf="
+          itemDetails &&
+          (itemDetails.income_amount !== 0 || itemDetails.expense_amount !== 0)
+        "
+      >
+        <canvas
+          mdbChart
+          [chartType]="pieChartType"
+          [data]="pieChartData"
+          [labels]="pieChartLabels"
+          [options]="pieChartOptions"
+          [colors]="pieChartColors"
+          width="300"
+        ></canvas>
+      </ng-container>
     </div>
     <mat-divider></mat-divider>
     <div
       class="chart-label d-flex align-items-center justify-content-evenly mt-auto"
     >
-      <label>Deductions</label>
-      <label>Earnings</label>
-      <label>Net Pay</label>
+      <label>Expense</label>
+      <label>Income</label>
     </div>
   </div>
 </ng-container>

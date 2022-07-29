@@ -62,7 +62,7 @@
                 <mat-option
                   *ngFor="let item of accountList"
                   [value]="item.id"
-                  >{{ item.name }}</mat-option
+                  >{{ _truncateString(item.name, 30) }}</mat-option
                 >
                 <mat-option data-bs-toggle="modal" data-bs-target="#addAccount"
                   >Create New</mat-option
@@ -154,7 +154,7 @@
                   <mat-option
                     *ngFor="let item of accountList"
                     [value]="item.id"
-                    >{{ item.name }}</mat-option
+                    >{{ _truncateString(item.name, 30) }}</mat-option
                   >
                   <mat-option
                     data-bs-toggle="modal"
@@ -246,7 +246,7 @@
                       class="capitalize"
                       *ngFor="let item of bankList"
                       [value]="item"
-                      >{{ item.name }}</mat-option
+                      >{{ _truncateString(item.name, 16) }}</mat-option
                     >
                   </mat-select>
                 </div>

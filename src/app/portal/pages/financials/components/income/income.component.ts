@@ -18,6 +18,7 @@ import {
   concatColumnString,
   maxLengthCheck,
   printElement,
+  truncateString,
 } from 'src/app/shared';
 
 @Component({
@@ -31,6 +32,7 @@ export class IncomeComponent implements OnInit {
   @ViewChild('closebtn') closebtn: any;
   @ViewChild('closebtn_') closebtn_: any;
   @ViewChild('closebtn__') closebtn__: any;
+  @ViewChild('_closebtn') _closebtn: any;
   itemList: any[] = [];
   trashList: any[] = [];
   accountList: any[] = [];
@@ -50,8 +52,10 @@ export class IncomeComponent implements OnInit {
   bankList: any[] = [];
   bankObj: any;
   accountName: string = '';
+  _status: string = '';
   _printElement = printElement;
   _concatColumnString = concatColumnString;
+  _truncateString = truncateString;
   compareFunc = compareObjects;
   _maxLengthCheck = maxLengthCheck;
   public dataSource: MatTableDataSource<any> = new MatTableDataSource();
@@ -127,6 +131,9 @@ export class IncomeComponent implements OnInit {
     return `${this.selection.isSelected(row) ? 'deselect' : 'select'} row ${
       row.position + 1
     }`;
+  }
+  setTransactionStatus(val: string) {
+    this._status = val;
   }
   applyFilter(event: Event) {
     this.filterValue = (event.target as HTMLInputElement).value;
@@ -229,6 +236,9 @@ export class IncomeComponent implements OnInit {
       //Make api call here...
       this.givingService.createAccount(this.accountFormValue).subscribe(
         ({ message, data }) => {
+          this.toastr.success(message, 'Message', {
+            timeOut: 1000,
+          });
           this.newAccountForm.reset();
           this.isBusy = false;
           this.close._elementRef.nativeElement.click();
@@ -260,6 +270,9 @@ export class IncomeComponent implements OnInit {
       //Make api call here...
       this.financialService.addTransaction(this.incomeRawValue).subscribe(
         ({ message, data }) => {
+          this.toastr.success(message, 'Message', {
+            timeOut: 1000,
+          });
           this.addIncomeForm.reset();
           this.isBusy = false;
           this.closebtn._elementRef.nativeElement.click();
@@ -269,7 +282,7 @@ export class IncomeComponent implements OnInit {
           this.isBusy = false;
           error.split(',').map((x: any) => {
             this.toastr.error(x, 'Message', {
-              timeOut: 5000,
+              timeOut: 1000,
             });
           });
         },
@@ -309,7 +322,7 @@ export class IncomeComponent implements OnInit {
             this.isBusy = false;
             error.split(',').map((x: any) => {
               this.toastr.error(x, 'Message', {
-                timeOut: 5000,
+                timeOut: 1000,
               });
             });
           },
@@ -373,6 +386,22 @@ export class IncomeComponent implements OnInit {
       this.closebtn_._elementRef.nativeElement.click();
       this.queryAccount();
     });
+  }
+  confirmValidation() {
+    this.isBusy = true;
+    let payload: any;
+    payload = {
+      status: this._status,
+    };
+
+    this.financialService
+      .updateTransaction(payload, this.itemDetails.id)
+      .subscribe(({ message }) => {
+        this.isBusy = false;
+        this.toastr.success(message, 'Success');
+        this._closebtn._elementRef.nativeElement.click();
+        this.queryAccount();
+      });
   }
   exportToExcel(): void {
     const edata: Array<any> = [];

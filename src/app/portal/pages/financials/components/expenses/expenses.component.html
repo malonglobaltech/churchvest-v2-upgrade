@@ -172,10 +172,35 @@
                     <button
                       mat-menu-item
                       data-bs-toggle="modal"
-                      data-bs-target="#edit-income"
+                      data-bs-target="#edit-expense"
                       (click)="getDetails(element.id)"
                     >
                       Edit
+                    </button>
+                    <button
+                      mat-menu-item
+                      data-bs-toggle="modal"
+                      data-bs-target="#validate-status"
+                      (click)="
+                        getDetails(element.id); setTransactionStatus('valid')
+                      "
+                      *ngIf="
+                        element.status == 'pending' ||
+                        element.status == 'invalid'
+                      "
+                    >
+                      Validate transaction
+                    </button>
+                    <button
+                      mat-menu-item
+                      data-bs-toggle="modal"
+                      data-bs-target="#validate-status"
+                      (click)="
+                        getDetails(element.id); setTransactionStatus('invalid')
+                      "
+                      *ngIf="element.status == 'valid'"
+                    >
+                      Invalidate transaction
                     </button>
                     <button
                       type="button"
@@ -287,19 +312,19 @@
                   />
                 </div>
                 <div class="input">
-                  <label>Receiving Account </label>
+                  <label>Financial Account </label>
                   <mat-select
                     class="select"
-                    placeholder="Select receiving account"
+                    placeholder="Select financial account"
                     formControlName="account_id"
                   >
                     <mat-option disabled="" selected="" value=""
-                      >Select receiving account</mat-option
+                      >Select financial account</mat-option
                     >
                     <mat-option
                       *ngFor="let item of accountList"
                       [value]="item.id"
-                      >{{ item.name }}</mat-option
+                      >{{ _truncateString(item.name, 16) }}</mat-option
                     >
                     <mat-option
                       data-bs-toggle="modal"
@@ -335,6 +360,7 @@
                   <input
                     type="date"
                     formControlName="date"
+                    [max]="maxDate"
                     [ngClass]="{
                       'is-invalid':
                         addExpenseForm.controls['date'].hasError('required') &&
@@ -343,10 +369,10 @@
                   />
                 </div>
                 <div class="input">
-                  <label>Total Amount Received</label>
+                  <label>Total Amount Spent</label>
                   <input
                     type="text"
-                    placeholder="Enter amount received"
+                    placeholder="Enter amount spent"
                     formControlName="amount"
                   />
                 </div>
@@ -425,10 +451,10 @@
                     />
                   </div>
                   <div class="input">
-                    <label>Receiving Account </label>
+                    <label>Financial Account </label>
                     <mat-select
                       class="select"
-                      placeholder="Select receiving account"
+                      placeholder="Select financial account"
                       formControlName="account_id"
                     >
                       <mat-option disabled="" selected="" value=""
@@ -437,7 +463,7 @@
                       <mat-option
                         *ngFor="let item of accountList"
                         [value]="item.id"
-                        >{{ item.name }}</mat-option
+                        >{{ _truncateString(item.name, 16) }}</mat-option
                       >
                       <mat-option
                         data-bs-toggle="modal"
@@ -473,6 +499,7 @@
                     <input
                       type="date"
                       formControlName="date"
+                      [max]="maxDate"
                       [ngClass]="{
                         'is-invalid':
                           editExpenseForm.controls['date'].hasError(
@@ -482,10 +509,10 @@
                     />
                   </div>
                   <div class="input">
-                    <label>Total Amount Received</label>
+                    <label>Total Amount Spent</label>
                     <input
                       type="text"
-                      placeholder="Enter amount received"
+                      placeholder="Enter amount spent"
                       formControlName="amount"
                     />
                   </div>
@@ -648,7 +675,7 @@
         <div
           class="header-top d-flex justify-content-between align-items-center px-4 py-3"
         >
-          <div class="title">Add New Account</div>
+          <div class="title">Add Financial Account</div>
           <mat-icon class="cursor" data-bs-dismiss="modal" class="cursor"
             >close</mat-icon
           >
@@ -662,69 +689,49 @@
             <div class="form-wrap w--400">
               <div class="grid grid--1fr--1fr grid-gap-15">
                 <div class="input">
-                  <label>Title of Account</label>
-                  <input
-                    type="text"
-                    placeholder="Enter account title - Mr/Mrs/Ms"
-                    formControlName="title"
-                    [ngClass]="{
-                      'is-invalid':
-                        newAccountForm.controls['title'].hasError('required') &&
-                        newAccountForm.controls['title'].touched
-                    }"
-                  />
-                </div>
-                <div class="input">
-                  <label>Bank </label>
-                  <mat-select
-                    class="select"
-                    placeholder="Select bank"
-                    formControlName="bank_slug"
-                    (selectionChange)="handleBankChange($event)"
-                    [ngClass]="{
-                      'is-invalid':
-                        newAccountForm.controls['bank_slug'].hasError(
-                          'required'
-                        ) && newAccountForm.controls['bank_slug'].touched
-                    }"
-                  >
-                    <mat-option disabled="" selected="" value=""
-                      >Select bank</mat-option
-                    >
-                    <mat-option
-                      class="capitalize"
-                      *ngFor="let item of bankList"
-                      [value]="item"
-                      >{{ item.name }}</mat-option
-                    >
-                  </mat-select>
-                </div>
-              </div>
-              <div class="grid grid--1fr--1fr grid-gap-15">
-                <div class="input">
-                  <label>Account Number</label>
-                  <input
-                    type="text"
-                    placeholder="Enter account number"
-                    formControlName="number"
-                    maxLength="10"
-                    (input)="_maxLengthCheck($event)"
-                    (blur)="blurHandler()"
-                    [ngClass]="{
-                      'is-invalid':
-                        newAccountForm.controls['number'].hasError(
-                          'required'
-                        ) && newAccountForm.controls['number'].touched
-                    }"
-                  />
-                </div>
-                <div class="input">
-                  <label>Account Name</label>
+                  <label>Name</label>
                   <input
                     type="text"
                     placeholder="Enter account name"
                     formControlName="name"
+                    [ngClass]="{
+                      'is-invalid':
+                        newAccountForm.controls['name'].hasError('required') &&
+                        newAccountForm.controls['name'].touched
+                    }"
                   />
+                </div>
+                <div class="input">
+                  <label>Type </label>
+                  <mat-select
+                    class="select"
+                    placeholder="Select type"
+                    formControlName="type"
+                    [ngClass]="{
+                      'is-invalid':
+                        newAccountForm.controls['type'].hasError('required') &&
+                        newAccountForm.controls['type'].touched
+                    }"
+                  >
+                    <mat-option disabled="" selected="" value=""
+                      >Select type</mat-option
+                    >
+                    <mat-option
+                      class="capitalize"
+                      *ngFor="let item of financialTypes"
+                      [value]="item"
+                      >{{ item }}</mat-option
+                    >
+                  </mat-select>
+                </div>
+              </div>
+              <div class="grid">
+                <div class="input">
+                  <label>Description</label>
+                  <textarea
+                    formControlName="description"
+                    placeholder="Description"
+                  ></textarea>
                 </div>
               </div>
               <div class="d-flex align-items-center mt-3">
@@ -748,6 +755,65 @@
               </div>
             </div>
           </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal fade" id="validate-status" role="dialog">
+  <div class="modal-dialog modal-wrapper">
+    <div class="modal-content-wrap">
+      <div class="modal-body">
+        <div
+          class="header-top d-flex justify-content-between align-items-center px-4 py-3"
+        >
+          <div class="title" *ngIf="itemDetails">
+            {{
+              itemDetails.status == "pending" || itemDetails.status == "invalid"
+                ? "Validate"
+                : "Invalidate"
+            }}
+            Transaction
+          </div>
+          <ion-icon name="close-outline" data-bs-dismiss="modal"></ion-icon>
+        </div>
+        <div class="container">
+          <div class="pb-3">
+            <ng-container *ngIf="_loading_">
+              <app-loading-roller></app-loading-roller>
+            </ng-container>
+            <div class="center" *ngIf="itemDetails && !_loading_">
+              <p>
+                Are you sure you want to
+                {{
+                  itemDetails.status == "pending" ||
+                  itemDetails.status == "invalid"
+                    ? "validate"
+                    : "invalidate"
+                }}
+                this transaction
+                <span>{{ itemDetails.title }} </span>
+              </p>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer d-flex justify-content-end align-items-center">
+          <button
+            mat-flat-button
+            class="me-3"
+            (click)="confirmValidation()"
+            *ngIf="itemDetails"
+          >
+            {{
+              itemDetails.status == "pending" || itemDetails.status == "invalid"
+                ? "Validate"
+                : "Invalidate"
+            }}
+            <mat-spinner *ngIf="isBusy"></mat-spinner>
+          </button>
+          <button mat-stroked-button data-bs-dismiss="modal" #_closebtn>
+            Cancel
+          </button>
         </div>
       </div>
     </div>
