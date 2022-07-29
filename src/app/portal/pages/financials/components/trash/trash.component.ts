@@ -89,7 +89,7 @@ export class TrashComponent implements OnInit {
         this.itemList = data;
         this.dataSource = new MatTableDataSource(this.itemList);
         this.paginator.pageIndex = this.currentPage;
-        this.paginator.length = meta.total;
+        this.paginator.length = this.itemList.length;
       },
       (errors) => {
         if (errors) {
@@ -125,12 +125,12 @@ export class TrashComponent implements OnInit {
     let payload: any;
     if (this._isAllSelected) {
       payload = {
-        transaction_id: this.selectedItem,
+        transactions_id: this.selectedItem,
       };
     }
     if (this._isSingleSelected) {
       payload = {
-        transaction_id: [this.itemDetails.id],
+        transactions_id: [this.itemDetails.id],
       };
     }
     this.financialService.deleteFromTrash(payload).subscribe(
@@ -152,12 +152,12 @@ export class TrashComponent implements OnInit {
     let payload: any;
     if (this._isAllSelected) {
       payload = {
-        transaction_id: this.selectedItem,
+        transactions_id: this.selectedItem,
       };
     }
     if (this._isSingleSelected) {
       payload = {
-        transaction_id: [this.itemDetails.id],
+        transactions_id: [this.itemDetails.id],
       };
     }
 
