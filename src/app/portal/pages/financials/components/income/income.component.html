@@ -785,7 +785,14 @@
         <div
           class="header-top d-flex justify-content-between align-items-center px-4 py-3"
         >
-          <div class="title">Validate Transaction</div>
+          <div class="title" *ngIf="itemDetails">
+            {{
+              itemDetails.status == "pending" || itemDetails.status == "invalid"
+                ? "Validate"
+                : "Invalidate"
+            }}
+            Transaction
+          </div>
           <ion-icon name="close-outline" data-bs-dismiss="modal"></ion-icon>
         </div>
         <div class="container">
@@ -797,7 +804,10 @@
               <p>
                 Are you sure you want to
                 {{
-                  itemDetails.status == "pending" ? "validate" : "invalidate"
+                  itemDetails.status == "pending" ||
+                  itemDetails.status == "invalid"
+                    ? "validate"
+                    : "invalidate"
                 }}
                 this transaction
                 <span>{{ itemDetails.title }} </span>

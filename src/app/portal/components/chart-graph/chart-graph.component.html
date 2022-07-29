@@ -24,7 +24,7 @@
       <ng-container
         *ngIf="
           itemDetails &&
-          (itemDetails.income_amount == 0 || itemDetails.expense_amount == 0)
+          itemDetails.income_amount == 0 && itemDetails.expense_amount == 0
         "
       >
         <p class="d-flex justify-content-center">No data yet</p>
