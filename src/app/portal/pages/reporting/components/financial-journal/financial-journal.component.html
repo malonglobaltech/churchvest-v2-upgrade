@@ -111,3 +111,10 @@
     </div>
   </section>
 </div>
+
+<ng-container *ngIf="_query == 'financial_income'">
+  <ng-container *ngTemplateOutlet="financialIncome"></ng-container>
+</ng-container>
+<ng-container *ngIf="_query == 'financial_expenses'">
+  <ng-container *ngTemplateOutlet="financialExpenses"></ng-container>
+</ng-container>
