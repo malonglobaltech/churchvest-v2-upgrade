@@ -1,1 +1,153 @@
-<p>live-streaming works!</p>
+
+     
+  <div class="header d-flex align-items-center justify-content-between mb-4">
+    <button
+      mat-flat-button
+      class="b-flat-sm"
+      data-bs-toggle="modal"
+      data-bs-target="#updateStreamKey"
+    >
+      <mat-icon>edit</mat-icon> Update Stream Key
+    </button>
+  </div>
+    
+    <div class="modal fade" id="updateStreamKey" role="dialog">
+        <div class="modal-dialog modal-wrapper">
+            <div class="modal-content-wrap">
+                <div class="modal-body">
+                    <div class="header-top d-flex justify-content-between align-items-center py-3 px-2">
+                        <div class="title">Update church stream key</div>
+                        <mat-icon
+                          class="cursor"
+                          data-bs-dismiss="modal"
+                          #closebtn
+                        >close</mat-icon>
+                    </div>
+                    <div class="container">
+                        <form [formGroup]="myForm" class="pb-3">
+                            <div class="form-wrap w--500">
+                                <div class="grid grid-gap-15">
+                                    <div class="input">
+                                        <label for="streamKey">Stream key</label>
+                                        <input 
+                                          type="text"
+                                          formControlName="stream_key"
+                                          class="form-control"
+                                          name="stream_key"
+                                        />
+                                    </div>
+                                </div>
+                                <div class="d-flex align-items-center mt-2">
+                                    <button
+                                      mat-flat-button
+                                      (click)="onUpdateKey()"
+                                    >
+                                        Save Changes
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="bg-white px-4 py-3">
+        <ol>
+            <li>
+                Download <a href="https://obsproject.com/" class="d-inline" target="_blank" rel="noopener noreferrer">OBS for Windows, Linux or Mac OS</a>
+                <div class="help-image-container mt-1 mb-2">
+                    <img 
+                        src="assets/img/png/obs-download.png" alt=""
+                        style="max-width: 100%; height: auto;"
+                    >
+                </div>
+            </li>
+            <li>
+                <p>Click on file and go to settings</p>
+                <div class="help-image-container mt-1 mb-2">
+                    <img 
+                        src="assets/img/jpeg/setting.jpeg" alt=""
+                        style="max-width: 100%; height: auto;"
+                    >
+                </div>
+            </li>
+            <li>
+                <p>Click on stream</p>
+                <div class="help-image-container mt-1 mb-2">
+                    <img 
+                        src="assets/img/jpeg/stream.jpeg" alt=""
+                        style="max-width: 100%; height: auto;"
+                    >
+                </div>
+            </li>
+            <li>
+                <p>On service select custom</p>
+            </li>
+            <li>
+                <p>
+                    On server, copy the link here and 
+                    paste <span
+                      title="copy to clipboard"
+                      class="fw-bold pointer"
+                      #streamingServer
+                      (click)="copyToClipboard(streamingServer)">
+                        rtmp://churchvest.com/live
+                    </span>
+                </p>
+            </li>
+            <li>
+                <p>On stream key copy the key above and paste (always looks like the name of your church with - inbetween and click ok</p>
+                <div class="help-image-container mt-1 mb-2">
+                    <img 
+                        src="assets/img/png/stepsSummary.png" alt=""
+                        style="max-width: 100%; height: auto;"
+                    >
+                </div>
+                <p>Please ensure that your service and server are custom and rtmp://churchvest.com/live respectively as shown in the image above</p>
+                <p class="font-weight-bold" *ngIf="activeStreamKey">
+                    <strong>N.B: your stream key is - </strong> 
+                    <button
+                        title="copy to clipboard"
+                        class="font-weight-bold pointer"
+                        (click)="copyToClipboard(activeStreamKey)">
+                        {{activeStreamKey}}
+                  </button>
+                </p>
+                <p class="font-weight-bol">
+                    <button (click)="updateStreamKey()">Click here to update your stream key</button>
+                </p>
+            </li>
+            <li>
+                <p>Select what item you want to project or stream</p>
+                <div class="help-image-container mt-1 mb-2">
+                    <img 
+                        src="assets/img/jpeg/source2.jpeg" alt=""
+                        style="max-width: 100%; height: auto;"
+                    >
+                </div>
+            </li>
+            <li>
+                <p>Chose your input source and a screen similar to the second image below will be shown.</p>
+                <div class="help-image-container mt-1 mb-2">
+                    <img 
+                        src="assets/img/jpeg/source2.jpeg" alt=""
+                        style="max-width: 100%; height: auto;"
+                    >
+                </div>
+                <div class="help-image-container mt-1 mb-2">
+                    <img 
+                        src="assets/img/jpeg/final.jpeg" alt=""
+                        style="max-width: 100%; height: auto;"
+                    >
+                </div>
+            </li>
+            <li>
+                <p>Then click on start streaming on the bottm right of your OBS app</p>
+            </li>
+            <li>
+                <p>If you have published your website, then click on live stream, you wil see the content you are projecting.</p>
+            </li>
+        </ol>
+    </div>
