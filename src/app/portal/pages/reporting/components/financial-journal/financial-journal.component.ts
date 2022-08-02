@@ -34,7 +34,10 @@ export class FinancialJournalComponent implements OnInit {
 
   ngOnInit(): void {
     this.getFinancialJournal();
+    this.displayedColumns = this.column;
   }
+
+  column = ['title', 'type', 'account type', 'amount', 'status', 'date', 'description']
 
   gotoBack() {
     this._location.back();
@@ -42,6 +45,20 @@ export class FinancialJournalComponent implements OnInit {
 
   onPreview(query) {
     this._query = query;
+    switch (query) {
+      case (query = 'financial_income'):
+        return (this.dataSource = new MatTableDataSource(
+          this.incomeList
+        ));
+      case (query = 'financial_expenses'):
+        return (this.dataSource = new MatTableDataSource(
+          this.expensesList
+        ));
+      default:
+        return (this.dataSource = new MatTableDataSource(
+          this.incomeList
+        ));
+    }
   }
 
   getFinancialJournal(evt?: any) {
@@ -53,8 +70,6 @@ export class FinancialJournalComponent implements OnInit {
         const { income_data, expenses_data } = res;
         this.incomeList = income_data;
         this.expensesList = expenses_data;
-        console.log('this.incomeList', this.incomeList)
-        console.log('this.expensesList', this.expensesList)
       },
       (error)=> {
         this._loading_ = false;
