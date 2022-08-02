@@ -34,7 +34,10 @@ export class FinancialJournalComponent implements OnInit {
 
   ngOnInit(): void {
     this.getFinancialJournal();
+    this.displayedColumns = this.column;
   }
+
+  column = ['title', 'type', 'account type', 'amount', 'status', 'date', 'description']
 
   gotoBack() {
     this._location.back();
@@ -42,6 +45,20 @@ export class FinancialJournalComponent implements OnInit {
 
   onPreview(query) {
     this._query = query;
+    switch (query) {
+      case (query = 'financial_income'):
+        return (this.dataSource = new MatTableDataSource(
+          this.incomeList
+        ));
+      case (query = 'financial_expenses'):
+        return (this.dataSource = new MatTableDataSource(
+          this.expensesList
+        ));
+      default:
+        return (this.dataSource = new MatTableDataSource(
+          this.incomeList
+        ));
+    }
   }
 
   getFinancialJournal(evt?: any) {
@@ -50,7 +67,9 @@ export class FinancialJournalComponent implements OnInit {
     this.reportService.fetchJournal('financial_journal', date).subscribe(
       (res) => {
         this._loading_ = false;
-        console.log('res', res)
+        const { income_data, expenses_data } = res;
+        this.incomeList = income_data;
+        this.expensesList = expenses_data;
       },
       (error)=> {
         this._loading_ = false;
@@ -60,11 +79,71 @@ export class FinancialJournalComponent implements OnInit {
   }
 
   exportIncomeToExcel() {
-    // 
+    const edata: Array<any> = [];
+    const udt: any = {
+      data: [
+        { A: 'FINANCIAL EXPENDITURE REPORT' }, //title
+        {
+          A: '#',
+          B: 'title',
+          C: 'type',
+          D: 'account_type',
+          E: 'amount',
+          F: 'status',
+          G: 'date',
+          H: 'description',
+        }, // table header
+      ],
+      skipHeader: true,
+    };
+    this.incomeList.forEach((data) => {
+      udt.data.push({
+        A: data.id,
+        B: data.title,
+        C: data.type,
+        D: data.account_type,
+        E: data.amount,
+        F: data.status,
+        G: data.date,
+        H: data.description,
+      });
+    });
+    edata.push(udt);
+    this.exportService.exportTableElmToExcel(edata, 'FINANCIAL INCOME REPORT');
   }
 
   exportExpensesToExcel() {
-    // 
+    const edata: Array<any> = [];
+    const udt: any = {
+      data: [
+        { A: 'FINANCIAL EXPENDITURE REPORT' }, //title
+        {
+          A: '#',
+          B: 'title',
+          C: 'type',
+          D: 'account_type',
+          E: 'amount',
+          F: 'status',
+          G: 'date',
+          H: 'description',
+        }, // table header
+      ],
+      skipHeader: true,
+    };
+    this.incomeList.forEach((data) => {
+      udt.data.push({
+        A: data.id,
+        B: data.title,
+        C: data.type,
+        D: data.account_type,
+        E: data.amount,
+        F: data.status,
+        G: data.date,
+        H: data.description,
+      });
+    });
+    edata.push(udt);
+    this.exportService.exportTableElmToExcel(edata, 'FINANCIAL EXPENDITURE REPORT');
   }
 
 }
