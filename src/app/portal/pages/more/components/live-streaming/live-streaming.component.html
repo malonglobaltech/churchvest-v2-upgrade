@@ -1,4 +1,58 @@
 
+     
+  <div class="header d-flex align-items-center justify-content-between mb-4">
+    <button
+      mat-flat-button
+      class="b-flat-sm"
+      data-bs-toggle="modal"
+      data-bs-target="#updateStreamKey"
+    >
+      <mat-icon>edit</mat-icon> Update Stream Key
+    </button>
+  </div>
+    
+    <div class="modal fade" id="updateStreamKey" role="dialog">
+        <div class="modal-dialog modal-wrapper">
+            <div class="modal-content-wrap">
+                <div class="modal-body">
+                    <div class="header-top d-flex justify-content-between align-items-center py-3 px-2">
+                        <div class="title">Update church stream key</div>
+                        <mat-icon
+                          class="cursor"
+                          data-bs-dismiss="modal"
+                          #closebtn
+                        >close</mat-icon>
+                    </div>
+                    <div class="container">
+                        <form [formGroup]="myForm" class="pb-3">
+                            <div class="form-wrap w--500">
+                                <div class="grid grid-gap-15">
+                                    <div class="input">
+                                        <label for="streamKey">Stream key</label>
+                                        <input 
+                                          type="text"
+                                          formControlName="stream_key"
+                                          class="form-control"
+                                          name="stream_key"
+                                        />
+                                    </div>
+                                </div>
+                                <div class="d-flex align-items-center mt-2">
+                                    <button
+                                      mat-flat-button
+                                      (click)="onUpdateKey()"
+                                    >
+                                        Save Changes
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <div class="bg-white px-4 py-3">
         <ol>
             <li>

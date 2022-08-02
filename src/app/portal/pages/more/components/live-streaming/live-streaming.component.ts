@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
+import { LiveStreamService } from 'src/app/portal/services/live-stream.service';
 
 @Component({
   selector: 'app-live-streaming',
@@ -8,12 +10,18 @@ import { ToastrService } from 'ngx-toastr';
 })
 export class LiveStreamingComponent implements OnInit {
   activeStreamKey
+    myForm: FormGroup;
+    loading = false;
+    encoderVerticalIcon = false;
 
   constructor(
     private toastr: ToastrService,
+    private formBuilder: FormBuilder,
+    private liveStreamService: LiveStreamService,
   ) { }
 
   ngOnInit(): void {
+    this._initialForm();
   }
 
   copyToClipboard(el: HTMLSpanElement) {
@@ -29,5 +37,26 @@ export class LiveStreamingComponent implements OnInit {
   }
 
   updateStreamKey() {}
+  getActiveStreamingKey() {}
+  
+    private _initialForm() {
+        this.myForm = this.formBuilder.group({
+            stream_key: ['']
+        })
+    }
+
+    onUpdateKey() {
+        this.loading = true;
+        const streamKeyValue = {
+            stream_key: this.myForm.controls['stream_key'].value
+        };
+        this.liveStreamService.createUpdateStreamKey(streamKeyValue).subscribe(res => {
+            this.getActiveStreamingKey();
+          this.toastr.success('Stream key updated successfully', 'success')
+        },
+        (error) => {
+      this.toastr.error('Error occurred, please try again later', 'Error')
+        })
+    }
 
 }
