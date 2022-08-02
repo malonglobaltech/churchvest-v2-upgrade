@@ -33,13 +33,14 @@
             </li>
             <li>
                 <p>
-                    On server, copy the link above and 
-                    paste <button
+                    On server, copy the link here and 
+                    paste <span
                       title="copy to clipboard"
-                      class="font-weight-bold pointer"
-                      (click)="copyToClipboard('rtmp://churchvest.com/live')">
+                      class="fw-bold pointer"
+                      #streamingServer
+                      (click)="copyToClipboard(streamingServer)">
                         rtmp://churchvest.com/live
-                    </button>
+                    </span>
                 </p>
             </li>
             <li>
