@@ -55,7 +55,7 @@
                   <button
                     type="button"
                     mat-menu-item
-                    (click)="_printElement('print-icome')"
+                    (click)="_printElement('print-financial-income')"
                   >
                     Print
                   </button>
@@ -93,7 +93,7 @@
                   <button
                     type="button"
                     mat-menu-item
-                    (click)="_printElement('print-expenses')"
+                    (click)="_printElement('print-financial-expenses')"
                   >
                     Print
                   </button>
@@ -128,7 +128,7 @@
           [dataSource]="dataSource"
           class="table custom-table w--100"
           style="width: 100%"
-          id="print-income"
+          id="print-financial-income"
         >
           <ng-container
             *ngFor="
@@ -216,7 +216,7 @@
           [dataSource]="dataSource"
           class="table custom-table w--100"
           style="width: 100%"
-          id="print-income"
+          id="print-financial-expenses"
         >
           <ng-container
             *ngFor="
